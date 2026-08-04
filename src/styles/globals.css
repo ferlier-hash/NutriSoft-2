@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-app: #F7F9FA;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F2F7F8;
+  --color-surface-tinted: #EDF8F7;
+
+  --color-text-primary: #151B22;
+  --color-text-secondary: #66727D;
+  --color-text-tertiary: #8A959D;
+
+  --color-border-subtle: #E2E9EC;
+  --color-border-hover: #CCD9DE;
+
+  --color-brand-primary: #55AEB8;
+  --color-brand-strong: #357984;
+  --color-brand-soft: #DDF3F2;
+
+  --color-aqua-soft: #BDE9EA;
+  --color-aqua-light: #DDF6F5;
+  --color-sky-soft: #CFE8F5;
+  --color-sky-light: #EAF5FA;
+  --color-mint-soft: #D8F0E8;
+  --color-butter-soft: #F5E8A9;
+  --color-butter-light: #FBF6DC;
+
+  --color-semantic-info: #5267C7;
+  --color-semantic-info-bg: #EAEFFC;
+  --color-semantic-warning: #C98A27;
+  --color-semantic-warning-bg: #FDF6E2;
+  --color-semantic-critical: #C95F59;
+  --color-semantic-critical-bg: #FCEBEA;
+  --color-semantic-success: #39835A;
+  --color-semantic-success-bg: #E8F5EE;
+}
+
+:root {
+  --bg-app: #F7F9FA;
+  --surface: #FFFFFF;
+  --surface-subtle: #F2F7F8;
+  --surface-tinted: #EDF8F7;
+
+  --text-primary: #151B22;
+  --text-secondary: #66727D;
+  --text-tertiary: #8A959D;
+
+  --border-subtle: #E2E9EC;
+  --border-hover: #CCD9DE;
+
+  --brand-primary: #55AEB8;
+  --brand-strong: #357984;
+  --brand-soft: #DDF3F2;
+
+  --aqua-soft: #BDE9EA;
+  --aqua-light: #DDF6F5;
+  --sky-soft: #CFE8F5;
+  --sky-light: #EAF5FA;
+  --mint-soft: #D8F0E8;
+  --butter-soft: #F5E8A9;
+  --butter-light: #FBF6DC;
+
+  --semantic-info: #5267C7;
+  --semantic-info-bg: #EAEFFC;
+  --semantic-warning: #C98A27;
+  --semantic-warning-bg: #FDF6E2;
+  --semantic-critical: #C95F59;
+  --semantic-critical-bg: #FCEBEA;
+  --semantic-success: #39835A;
+  --semantic-success-bg: #E8F5EE;
+
+  --grad-primary-button: linear-gradient(90deg, #AEE5E8 0%, #CDEAF5 52%, #F5E6A4 100%);
+  --grad-card-highlight: linear-gradient(135deg, #E9F8F7 0%, #EEF7FB 58%, #FCF9E8 100%);
+  --grad-patient-cta: linear-gradient(90deg, #B9EAEC 0%, #D5EDF6 50%, #F4E5A1 100%);
+  --grad-nav-active: linear-gradient(90deg, #D9F3F2 0%, #E3F1F8 100%);
+  --grad-icon: linear-gradient(135deg, #8EDADD 0%, #A9DFF3 55%, #EDE196 100%);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco Accesible por Teclado */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--brand-strong);
+}
+
+/* Scrollbar suave */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 9999px;
+}
