@@ -2,8 +2,8 @@
 BEGIN;
 SELECT plan(4);
 
--- Autenticar como María González (p1111111-1111-4111-8111-111111111111)
-SELECT set_config('request.jwt.claims', '{"sub": "p1111111-1111-4111-8111-111111111111", "role": "authenticated"}', true);
+-- Autenticar como María González (d1111111-1111-4111-8111-111111111111)
+SELECT set_config('request.jwt.claims', '{"sub": "d1111111-1111-4111-8111-111111111111", "role": "authenticated"}', true);
 
 -- María ve únicamente su ficha clínica en el portal
 SELECT results_eq('SELECT COUNT(*)::integer FROM api.patient_portal_home', ARRAY[1]);

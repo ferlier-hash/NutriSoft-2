@@ -4,13 +4,13 @@ SELECT plan(4);
 
 -- 1. Inmutabilidad de check_in_responses (UPDATE rechazado)
 SELECT throws_ok(
-  $$ UPDATE app.check_in_responses SET energy = 5 WHERE id = 'res22222-2222-4222-8222-222222222222' $$,
+  $$ UPDATE app.check_in_responses SET energy = 5 WHERE id = '00000000-0000-4000-8000-000000000001' $$,
   'Las respuestas de check-in son inmutables y no pueden modificarse ni eliminarse.'
 );
 
 -- 2. Inmutabilidad de check_in_responses (DELETE rechazado)
 SELECT throws_ok(
-  $$ DELETE FROM app.check_in_responses WHERE id = 'res22222-2222-4222-8222-222222222222' $$,
+  $$ DELETE FROM app.check_in_responses WHERE id = '00000000-0000-4000-8000-000000000001' $$,
   'Las respuestas de check-in son inmutables y no pueden modificarse ni eliminarse.'
 );
 
