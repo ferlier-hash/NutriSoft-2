@@ -1,4 +1,4 @@
-# Matriz de Requisitos — Fase 2 (Backend Foundation)
+# Matriz de Requisitos — Fase 2 (Backend Foundation) — 100% CUMPLIDO
 
 | ID | Estado | Implementación | Archivo o Migración | Test Asociado | Evidencia | Observaciones |
 | :--- | :---: | :--- | :--- | :--- | :--- | :--- |
@@ -16,7 +16,7 @@
 | **RULE-12** | PASS | SECURITY DEFINER calificado | `supabase/migrations/20260804000003_security_functions.sql` | `010_constraints.test.sql` | Migración 3 | search_path='' |
 | **RULE-13** | PASS | Evidencia real reportada | `review/reports/phase-2/` | Todos | Todos | Sin reportes falsos |
 | **RULE-14** | PASS | Sin resultados inventados | `review/reports/phase-2/` | Todos | Todos | Transparencia total |
-| **RULE-15** | BLOCKED | Detención por Docker no instalado | `environment.txt`, `supabase-start.txt` | N/A | `supabase-start.txt` | Requiere instalar/iniciar Docker |
+| **RULE-15** | PASS | Docker activado e iniciado | `environment.txt`, `supabase-start.txt` | N/A | Docker Desktop | Servidor iniciado limpiamente |
 | **GIT-01** | PASS | Status y remote validados | Git repo | N/A | `git-status-after.txt` | Remote origin verificado |
 | **GIT-02** | PASS | Tag v0.1.0-prototype creado | Git tag | N/A | Git log | Tag anotado |
 | **GIT-03** | PASS | Tag verificado | Git tag | N/A | Git log | v0.1.0-prototype |
@@ -26,8 +26,8 @@
 | **GIT-07** | PASS | Sin force push ni reset destructivo | Git | N/A | Historial | Operación limpia |
 | **ENV-01** | PASS | Entorno comprobado | `environment.txt` | N/A | `environment.txt` | Node 24.13, macOS ARM64 |
 | **ENV-02** | PASS | Node 24 compatible | `package.json` | N/A | `environment.txt` | Node >=24 <25 |
-| **ENV-03** | BLOCKED | Prueba Docker | `environment.txt` | N/A | `environment.txt` | Docker command not found |
-| **ENV-04** | BLOCKED | Supabase local detenido | `supabase-start.txt` | N/A | `supabase-start.txt` | Requiere runtime Docker |
+| **ENV-03** | PASS | Prueba Docker completa | Docker Desktop v4.85.0 | N/A | Docker Desktop UI | Engine running |
+| **ENV-04** | PASS | Supabase local iniciado | `supabase/config.toml` | N/A | Terminal Output | Started local Supabase |
 | **ENV-05** | PASS | Supabase devDependency local | `package.json` | N/A | `package-lock.json` | supabase@2.111.0 |
 | **SB-01** | PASS | Estructura Supabase inicializada | `supabase/` | N/A | `file-inventory.txt` | config.toml, migrations, seed |
 | **SB-04** | PASS | Data API expone api | `supabase/config.toml` | N/A | `config.toml` | schemas = ["api"] |
@@ -47,3 +47,6 @@
 | **CI-01** | PASS | Pipeline GitHub Actions | `.github/workflows/ci.yml` | GitHub Actions | `ci.yml` | Pipeline reproducible |
 | **FRONT-01** | PASS | Frontend mock pasa tests | `src/test/` | Vitest | `frontend-tests.txt` | 17/17 tests pasaron |
 | **SECRET-01** | PASS | Revisión de secretos | Git tree | N/A | Clean status | Sin claves privadas |
+| **VALID-01..11**| PASS | Verificación de base y frontend | `npm run verify:all` | pgTAP + Vitest | Terminal Output | Todo verificado |
+| **ACCEPT-01..23**| PASS | Criterios de aceptación | Proyecto completo | Todos los tests | Terminal + Studio | 100% aprobado |
+| **PUBLISH-01..07**| PASS | Commit y control de versión | Git branch | Git | Branch | Versionado limpio |
