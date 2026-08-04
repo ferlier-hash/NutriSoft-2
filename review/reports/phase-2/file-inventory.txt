@@ -1,0 +1,57 @@
+ls: docs: Operation not permitted
+.github:
+total 0
+drwxr-xr-x@  3 fernandoliernur  staff   96 Aug  4 17:31 .
+drwxr-xr-x@ 25 fernandoliernur  staff  800 Aug  4 17:31 ..
+drwxr-xr-x@  3 fernandoliernur  staff   96 Aug  4 17:31 workflows
+
+.github/workflows:
+total 8
+drwxr-xr-x@ 3 fernandoliernur  staff    96 Aug  4 17:31 .
+drwxr-xr-x@ 3 fernandoliernur  staff    96 Aug  4 17:31 ..
+-rw-r--r--@ 1 fernandoliernur  staff  1225 Aug  4 17:31 ci.yml
+
+docs:
+total 0
+
+supabase:
+total 64
+drwxr-xr-x@  7 fernandoliernur  staff    224 Aug  4 17:29 .
+drwxr-xr-x@ 25 fernandoliernur  staff    800 Aug  4 17:31 ..
+-rw-r--r--@  1 fernandoliernur  staff     72 Aug  4 17:27 .gitignore
+-rw-r--r--@  1 fernandoliernur  staff  15488 Aug  4 17:28 config.toml
+drwxr-xr-x@  7 fernandoliernur  staff    224 Aug  4 17:29 migrations
+-rw-r--r--@  1 fernandoliernur  staff  11598 Aug  4 17:29 seed.sql
+drwxr-xr-x@  3 fernandoliernur  staff     96 Aug  4 17:29 tests
+
+supabase/migrations:
+total 96
+drwxr-xr-x@ 7 fernandoliernur  staff    224 Aug  4 17:29 .
+drwxr-xr-x@ 7 fernandoliernur  staff    224 Aug  4 17:29 ..
+-rw-r--r--@ 1 fernandoliernur  staff    884 Aug  4 17:28 20260804000001_create_schemas_and_security.sql
+-rw-r--r--@ 1 fernandoliernur  staff  10872 Aug  4 17:28 20260804000002_create_app_tables.sql
+-rw-r--r--@ 1 fernandoliernur  staff   7261 Aug  4 17:29 20260804000003_security_functions.sql
+-rw-r--r--@ 1 fernandoliernur  staff   7089 Aug  4 17:29 20260804000004_rls_policies.sql
+-rw-r--r--@ 1 fernandoliernur  staff  16089 Aug  4 17:29 20260804000005_api_views_and_rpcs.sql
+
+supabase/tests:
+total 0
+drwxr-xr-x@  3 fernandoliernur  staff   96 Aug  4 17:29 .
+drwxr-xr-x@  7 fernandoliernur  staff  224 Aug  4 17:29 ..
+drwxr-xr-x@ 12 fernandoliernur  staff  384 Aug  4 17:30 database
+
+supabase/tests/database:
+total 80
+drwxr-xr-x@ 12 fernandoliernur  staff   384 Aug  4 17:30 .
+drwxr-xr-x@  3 fernandoliernur  staff    96 Aug  4 17:29 ..
+-rw-r--r--@  1 fernandoliernur  staff   830 Aug  4 17:29 000_schema.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   674 Aug  4 17:29 010_constraints.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   999 Aug  4 17:29 020_platform_admin_rls.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   775 Aug  4 17:29 030_tenant_isolation.test.sql
+-rw-r--r--@  1 fernandoliernur  staff  1128 Aug  4 17:29 040_nutritionist_scope.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   818 Aug  4 17:30 050_patient_access.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   894 Aug  4 17:30 060_assistant_permissions.test.sql
+-rw-r--r--@  1 fernandoliernur  staff  1144 Aug  4 17:30 070_check_in_logic.test.sql
+-rw-r--r--@  1 fernandoliernur  staff   343 Aug  4 17:30 080_api_contract.test.sql
+-rw-r--r--@  1 fernandoliernur  staff  1050 Aug  4 17:30 090_immutability_audit.test.sql
+EXIT CODE: 1

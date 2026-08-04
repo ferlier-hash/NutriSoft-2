@@ -1,0 +1,6 @@
+
+> nutrisoft@0.1.0 db:types
+> supabase gen types typescript --local > src/types/database.types.ts
+
+sh: src/types/database.types.ts: Operation not permitted
+EXIT CODE: 1

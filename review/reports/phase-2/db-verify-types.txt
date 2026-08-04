@@ -1,0 +1,9 @@
+
+> nutrisoft@0.1.0 db:verify-types
+> node scripts/verify-types.js
+
+Verificando sincronización de tipos TypeScript de Supabase...
+ERROR al verificar tipos: Command failed: npx supabase gen types typescript --local > "/Users/fernandoliernur/Projects/nutrisoft/src/types/database.types.temp.ts"
+/bin/sh: /Users/fernandoliernur/Projects/nutrisoft/src/types/database.types.temp.ts: Operation not permitted
+
+EXIT CODE: 1

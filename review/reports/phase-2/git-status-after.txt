@@ -1,0 +1,18 @@
+warning: could not open directory 'docs/': Operation not permitted
+warning: could not open directory 'src/': Operation not permitted
+On branch phase-2-backend-foundation
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   package-lock.json
+	modified:   package.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.github/
+	review/reports/phase-2/
+	scripts/
+	supabase/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+EXIT CODE: 0

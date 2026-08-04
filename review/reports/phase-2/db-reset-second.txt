@@ -1,0 +1,51 @@
+
+> nutrisoft@0.1.0 db:reset
+> supabase db reset
+
+252 | }`:T.stack,bWT=(T,_)=>{let R=T.stack.split(`
+253 | `),A=`${_}[cause]: ${R[0]}`;for(let N=1,O=R.length;N<O;N++)A+=`
+254 | ${_}${R[N]}`;if(T.cause)A+=` {
+255 | ${bWT(T.cause,`${_}  `)}
+256 | ${_}}`;return A},a2=`~effect/Fiber/${Aj}`,hJ_={_A:tT,_E:tT},yJ_={id:0},_H=()=>globalThis[ZY];class Yp{constructor(T,_=!0){this[a2]=hJ_,this.setContext(T),this.id=++yJ_.id,this.currentOpCount=0,this.currentLoopCount=0,this.interruptible=_,this._stack=[],this._observers=[],this._exit=void 0,this._children=void 0,this._interruptedCause=void 0,this._yielded=void 0,this.runtimeMetrics?.recordFiberStart(this.context)}[a2];id;interruptible;currentOpCount;currentLoopCount;_stack;_observers;_exit;_currentExit;_children;_interruptedCause;_yielded;context;currentScheduler;currentTracerContext;currentSpan;currentLogLevel;minimumLogLevel;currentStackFrame;runtimeMetrics;maxOpsBeforeYield;currentPreventYield;_dispatcher=void 0;get currentDispatcher(){return this._dispatcher??=this.currentScheduler.makeDispatcher()}getRef(T){return If(this.context,T)}addObserver(T){if(this._exit)return T(this._exit),i0;return this._observers.push(T),()=>{let _=this._observers.indexOf(T);if(_>=0)this._observers.splice(_,1)}}interruptUnsafe(T
+257 |   at ${R}`}return _}function pC(T){switch(T._tag){case"InvalidType":case"OneOf":case"Composite":case"AnyOf":return fC(T.ast.annotations);case"InvalidValue":case"Forbidden":return fC(T.annotations);case"MissingKey":return fC(T.annotations,"messageMissingKey");case"UnexpectedKey":return fC(T.ast.annotations,"messageUnexpectedKey");case"Filter":return fC(T.filter.annotations);case"Encoding":return pC(T.issue)}}function fC(T,_="message"){let R=T?.[_];if(typeof R==="string")return R}function h5T(T){if(Y_(T))return"no value provided";return b_(T.value)}function QP(T){switch(T._tag){case"MissingKey":return T;case"Forbidden":return new KZ(wO(T.actual,x0),T.annotations);case"Filter":return new qP(x0(T.actual),T.filter,QP(T.issue));case"Pointer":return new NN(T.path,QP(T.issue));case"Encoding":case"InvalidType":case"InvalidValue":case"Composite":return new VA(wO(T.actual,x0));case"AnyOf":case"OneOf":case"UnexpectedKey":return new VA(BT(x0(T.actual)))}}function YP(T){let _;for(let R of T.reasons){if(!ZC(R)||!yi(R.error)
+
+error: Unknown: FileSystem.writeFile (/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd)
+       _tag: "PlatformError",
+ ~effect/platform/PlatformError: "~effect/platform/PlatformError",
+
+      at j7 (/$bunfs/root/supabase:257:45537)
+      at <anonymous> (/$bunfs/root/supabase:264:16473)
+
+252 | }`:T.stack,bWT=(T,_)=>{let R=T.stack.split(`
+253 | `),A=`${_}[cause]: ${R[0]}`;for(let N=1,O=R.length;N<O;N++)A+=`
+254 | ${_}${R[N]}`;if(T.cause)A+=` {
+255 | ${bWT(T.cause,`${_}  `)}
+256 | ${_}}`;return A},a2=`~effect/Fiber/${Aj}`,hJ_={_A:tT,_E:tT},yJ_={id:0},_H=()=>globalThis[ZY];class Yp{constructor(T,_=!0){this[a2]=hJ_,this.setContext(T),this.id=++yJ_.id,this.currentOpCount=0,this.currentLoopCount=0,this.interruptible=_,this._stack=[],this._observers=[],this._exit=void 0,this._children=void 0,this._interruptedCause=void 0,this._yielded=void 0,this.runtimeMetrics?.recordFiberStart(this.context)}[a2];id;interruptible;currentOpCount;currentLoopCount;_stack;_observers;_exit;_currentExit;_children;_interruptedCause;_yielded;context;currentScheduler;currentTracerContext;currentSpan;currentLogLevel;minimumLogLevel;currentStackFrame;runtimeMetrics;maxOpsBeforeYield;currentPreventYield;_dispatcher=void 0;get currentDispatcher(){return this._dispatcher??=this.currentScheduler.makeDispatcher()}getRef(T){return If(this.context,T)}addObserver(T){if(this._exit)return T(this._exit),i0;return this._observers.push(T),()=>{let _=this._observers.indexOf(T);if(_>=0)this._observers.splice(_,1)}}interruptUnsafe(T
+257 |   at ${R}`}return _}function pC(T){switch(T._tag){case"InvalidType":case"OneOf":case"Composite":case"AnyOf":return fC(T.ast.annotations);case"InvalidValue":case"Forbidden":return fC(T.annotations);case"MissingKey":return fC(T.annotations,"messageMissingKey");case"UnexpectedKey":return fC(T.ast.annotations,"messageUnexpectedKey");case"Filter":return fC(T.filter.annotations);case"Encoding":return pC(T.issue)}}function fC(T,_="message"){let R=T?.[_];if(typeof R==="string")return R}function h5T(T){if(Y_(T))return"no value provided";return b_(T.value)}function QP(T){switch(T._tag){case"MissingKey":return T;case"Forbidden":return new KZ(wO(T.actual,x0),T.annotations);case"Filter":return new qP(x0(T.actual),T.filter,QP(T.issue));case"Pointer":return new NN(T.path,QP(T.issue));case"Encoding":case"InvalidType":case"InvalidValue":case"Composite":return new VA(wO(T.actual,x0));case"AnyOf":case"OneOf":case"UnexpectedKey":return new VA(BT(x0(T.actual)))}}function YP(T){let _;for(let R of T.reasons){if(!ZC(R)||!yi(R.error)
+
+error: Unknown: FileSystem.writeFile (/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd)
+       _tag: "Unknown",
+     module: "FileSystem",
+     method: "writeFile",
+ pathOrDescriptor: "/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd",
+    syscall: "open",
+
+      at j7 (/$bunfs/root/supabase:257:45544)
+      at <anonymous> (/$bunfs/root/supabase:264:16473)
+
+EPERM: operation not permitted, open '/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd'
+    path: "/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd",
+ syscall: "open",
+   errno: -1,
+    code: "EPERM"
+
+
+EPERM: operation not permitted, open '/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd'
+    path: "/Users/fernandoliernur/.supabase/telemetry.json.tmp.65821067-903c-4520-9cff-2c4e1a6170bd",
+ syscall: "open",
+   errno: -1,
+    code: "EPERM"
+
+
+Bun v1.3.13 (macOS arm64)
+EXIT CODE: 1

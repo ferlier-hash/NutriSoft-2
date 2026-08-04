@@ -1,0 +1,13 @@
+=== ENVIRONMENT PREREQUISITES (ENV-01) ===
+Date: Tue Aug  4 17:33:41 -03 2026
+OS: Darwin Mac-mini-de-Fernando.local 25.2.0 Darwin Kernel Version 25.2.0: Tue Nov 18 21:08:48 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T8132 arm64
+Node: v24.13.0
+npm: 11.6.2
+Git: git version 2.50.1 (Apple Git-155)
+Memory: 17179869184
+Disk: Filesystem        Size    Used   Avail Capacity iused ifree %iused  Mounted on
+/dev/disk3s1s1   460Gi    11Gi   184Gi     6%    453k  1.9G    0%   /
+Docker status:
+zsh:1: command not found: docker
+DOCKER NOT INSTALLED/RUNNING
+EXIT CODE: 0

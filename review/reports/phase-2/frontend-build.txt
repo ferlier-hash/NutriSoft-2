@@ -1,0 +1,6 @@
+
+> nutrisoft@0.1.0 build
+> tsc -b && vite build
+
+error TS18003: No inputs were found in config file '/Users/fernandoliernur/Projects/nutrisoft/tsconfig.app.json'. Specified 'include' paths were '["src"]' and 'exclude' paths were '[]'.
+EXIT CODE: 2
