@@ -40,7 +40,7 @@ export const NutritionistDetailPage: React.FC = () => {
       {/* Cabecera Nutricionista */}
       <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" highlighted>
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-white flex items-center justify-center font-bold text-xl shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xl shadow-sm">
             <Stethoscope className="w-7 h-7" />
           </div>
           <div>
@@ -57,10 +57,14 @@ export const NutritionistDetailPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Pestañas de Navegación del Perfil */}
-      <div className="flex items-center gap-2 border-b border-[#E2E9EC] overflow-x-auto">
+      {/* Pestañas de Navegación del Perfil con ARIA Tablist */}
+      <div role="tablist" aria-label="Secciones del perfil del nutricionista" className="flex items-center gap-2 border-b border-[#E2E9EC] overflow-x-auto">
         <button
+          id="tab-nutri-summary"
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'summary'}
+          aria-controls="panel-nutri-summary"
           onClick={() => setActiveTab('summary')}
           className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
             activeTab === 'summary' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
@@ -69,7 +73,11 @@ export const NutritionistDetailPage: React.FC = () => {
           1. Resumen
         </button>
         <button
+          id="tab-nutri-orgs"
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'orgs'}
+          aria-controls="panel-nutri-orgs"
           onClick={() => setActiveTab('orgs')}
           className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
             activeTab === 'orgs' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
@@ -78,7 +86,11 @@ export const NutritionistDetailPage: React.FC = () => {
           2. Organizaciones
         </button>
         <button
+          id="tab-nutri-patients"
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'patients'}
+          aria-controls="panel-nutri-patients"
           onClick={() => setActiveTab('patients')}
           className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
             activeTab === 'patients' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
@@ -87,7 +99,11 @@ export const NutritionistDetailPage: React.FC = () => {
           3. Pacientes asignados ({assignedPatients.length})
         </button>
         <button
+          id="tab-nutri-activity"
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'activity'}
+          aria-controls="panel-nutri-activity"
           onClick={() => setActiveTab('activity')}
           className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
             activeTab === 'activity' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
@@ -96,7 +112,11 @@ export const NutritionistDetailPage: React.FC = () => {
           4. Actividad operativa
         </button>
         <button
+          id="tab-nutri-billing"
           type="button"
+          role="tab"
+          aria-selected={activeTab === 'billing'}
+          aria-controls="panel-nutri-billing"
           onClick={() => setActiveTab('billing')}
           className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
             activeTab === 'billing' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
@@ -106,87 +126,96 @@ export const NutritionistDetailPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Pestaña 3: Pacientes Asignados (Jerarquía Admin Obligatoria) */}
+      {/* Pestaña 3: Pacientes Asignados */}
       {activeTab === 'patients' && (
-        <Card className="space-y-4">
-          <div className="flex items-center justify-between border-b border-[#E2E9EC] pb-3">
-            <h3 className="text-sm font-bold text-[#151B22]">
-              Pacientes asignados a {nutritionist.name}
-            </h3>
-            <span className="text-xs text-[#66727D]">
-              Total: {assignedPatients.length} pacientes
-            </span>
-          </div>
+        <div id="panel-nutri-patients" role="tabpanel" aria-labelledby="tab-nutri-patients">
+          <Card className="space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E2E9EC] pb-3">
+              <h3 className="text-sm font-bold text-[#151B22]">
+                Pacientes asignados a {nutritionist.name}
+              </h3>
+              <span className="text-xs text-[#66727D]">
+                Total: {assignedPatients.length} pacientes
+              </span>
+            </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
-                  <th className="py-2.5 px-3">Nombre</th>
-                  <th className="py-2.5 px-3">Organización</th>
-                  <th className="py-2.5 px-3">Estado</th>
-                  <th className="py-2.5 px-3">Fecha de Asignación</th>
-                  <th className="py-2.5 px-3">Última Actividad</th>
-                  <th className="py-2.5 px-3 text-right">Acción</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#E2E9EC] text-xs">
-                {assignedPatients.map(p => (
-                  <tr key={p.id} className="hover:bg-[#F2F7F8] transition-colors">
-                    <td className="py-3 px-3 font-semibold text-[#151B22]">
-                      {p.firstName} {p.lastName}
-                    </td>
-                    <td className="py-3 px-3 text-[#357984] font-medium">{nutritionist.organizationName}</td>
-                    <td className="py-3 px-3">
-                      <Badge variant={p.status === 'active' ? 'active' : 'suspended'}>
-                        {p.status === 'active' ? 'Activo' : 'Archivado'}
-                      </Badge>
-                    </td>
-                    <td className="py-3 px-3 text-[#66727D]">{formatShortDate(p.createdAt)}</td>
-                    <td className="py-3 px-3 text-[#66727D]">{formatDateTime(p.lastActiveAt)}</td>
-                    <td className="py-3 px-3 text-right">
-                      <Link to={`/admin/nutritionists/${nutritionist.id}/patients/${p.id}`}>
-                        <Button variant="secondary" size="sm" className="text-xs inline-flex items-center gap-1">
-                          <span>Ver</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Button>
-                      </Link>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
+                    <th scope="col" className="py-2.5 px-3">Nombre</th>
+                    <th scope="col" className="py-2.5 px-3">Organización</th>
+                    <th scope="col" className="py-2.5 px-3">Estado</th>
+                    <th scope="col" className="py-2.5 px-3">Fecha de Asignación</th>
+                    <th scope="col" className="py-2.5 px-3">Última Actividad</th>
+                    <th scope="col" className="py-2.5 px-3 text-right">Acción</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+                </thead>
+                <tbody className="divide-y divide-[#E2E9EC] text-xs">
+                  {assignedPatients.map(p => (
+                    <tr key={p.id} className="hover:bg-[#F2F7F8] transition-colors">
+                      <td className="py-3 px-3 font-semibold text-[#151B22]">
+                        {p.firstName} {p.lastName}
+                      </td>
+                      <td className="py-3 px-3 text-[#357984] font-medium">{nutritionist.organizationName}</td>
+                      <td className="py-3 px-3">
+                        <Badge variant={p.status === 'active' ? 'active' : 'suspended'}>
+                          {p.status === 'active' ? 'Activo' : 'Archivado'}
+                        </Badge>
+                      </td>
+                      <td className="py-3 px-3 text-[#66727D]">{formatShortDate(p.createdAt)}</td>
+                      <td className="py-3 px-3 text-[#66727D]">{formatDateTime(p.lastActiveAt)}</td>
+                      <td className="py-3 px-3 text-right">
+                        <Button asChild variant="secondary" size="sm">
+                          <Link to={`/admin/nutritionists/${nutritionist.id}/patients/${p.id}`} className="text-xs inline-flex items-center gap-1">
+                            <span>Ver</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
       )}
 
-      {/* Otras pestañas demostrativas */}
       {activeTab === 'summary' && (
-        <Card className="space-y-3 text-xs">
-          <h3 className="font-bold text-sm text-[#151B22]">Resumen operativo</h3>
-          <p className="text-[#66727D]">Nutricionista activo desde {formatShortDate(nutritionist.joinedAt)} con {nutritionist.assignedPatientsCount} pacientes a cargo.</p>
-        </Card>
+        <div id="panel-nutri-summary" role="tabpanel" aria-labelledby="tab-nutri-summary">
+          <Card className="space-y-3 text-xs">
+            <h3 className="font-bold text-sm text-[#151B22]">Resumen operativo</h3>
+            <p className="text-[#66727D]">Nutricionista activo desde {formatShortDate(nutritionist.joinedAt)} con {assignedPatients.length} pacientes a cargo.</p>
+          </Card>
+        </div>
       )}
 
       {activeTab === 'orgs' && (
-        <Card className="space-y-3 text-xs">
-          <h3 className="font-bold text-sm text-[#151B22]">Organizaciones vinculadas</h3>
-          <p className="text-[#357984] font-semibold">{nutritionist.organizationName} (Organización principal)</p>
-        </Card>
+        <div id="panel-nutri-orgs" role="tabpanel" aria-labelledby="tab-nutri-orgs">
+          <Card className="space-y-3 text-xs">
+            <h3 className="font-bold text-sm text-[#151B22]">Organizaciones vinculadas</h3>
+            <p className="text-[#357984] font-semibold">{nutritionist.organizationName} (Organización principal)</p>
+          </Card>
+        </div>
       )}
 
       {activeTab === 'activity' && (
-        <Card className="space-y-3 text-xs">
-          <h3 className="font-bold text-sm text-[#151B22]">Actividad operativa reciente</h3>
-          <p className="text-[#66727D]">Última actividad registrada en la plataforma: {formatDateTime(nutritionist.lastActiveAt)}.</p>
-        </Card>
+        <div id="panel-nutri-activity" role="tabpanel" aria-labelledby="tab-nutri-activity">
+          <Card className="space-y-3 text-xs">
+            <h3 className="font-bold text-sm text-[#151B22]">Actividad operativa reciente</h3>
+            <p className="text-[#66727D]">Última actividad registrada en la plataforma: {formatDateTime(nutritionist.lastActiveAt)}.</p>
+          </Card>
+        </div>
       )}
 
       {activeTab === 'billing' && (
-        <Card className="space-y-3 text-xs">
-          <h3 className="font-bold text-sm text-[#151B22]">Estado de cuenta</h3>
-          <Badge variant="active">Plan Pro Activo</Badge>
-        </Card>
+        <div id="panel-nutri-billing" role="tabpanel" aria-labelledby="tab-nutri-billing">
+          <Card className="space-y-3 text-xs">
+            <h3 className="font-bold text-sm text-[#151B22]">Estado de cuenta</h3>
+            <Badge variant="active">Plan Pro Activo</Badge>
+          </Card>
+        </div>
       )}
     </div>
   );

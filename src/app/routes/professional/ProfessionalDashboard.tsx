@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,20 +10,21 @@ import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { Dialog } from '../../../components/ui/Dialog';
 import { PriorityInboxCard } from '../../../components/domain/PriorityInboxCard';
+import { formatRelativeTime } from '../../../lib/dateUtils';
 import { UserPlus, Send, ArrowRight, UserCheck } from 'lucide-react';
 
 const newPatientSchema = z.object({
-  firstName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  lastName: z.string().min(2, 'El apellido debe tener al menos 2 caracteres'),
-  email: z.string().email('Ingresa un correo electrónico válido'),
-  phone: z.string().optional(),
-  objective: z.string().optional(),
+  firstName: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'Máximo 50 caracteres'),
+  lastName: z.string().trim().min(2, 'El apellido debe tener al menos 2 caracteres').max(50, 'Máximo 50 caracteres'),
+  email: z.string().trim().email('Ingresa un correo electrónico válido'),
+  phone: z.string().trim().max(30, 'Máximo 30 caracteres').optional(),
+  objective: z.string().trim().max(150, 'Máximo 150 caracteres').optional(),
 });
 
 type NewPatientFormData = z.infer<typeof newPatientSchema>;
 
 export const ProfessionalDashboard: React.FC = () => {
-  const { patients, alerts, resolveAlert, addPatient, createCheckInAssignment } = useMock();
+  const { patients, alerts, resolveAlert, addPatient, createCheckInAssignment, checkInResponses, checkInAssignments } = useMock();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -45,29 +46,36 @@ export const ProfessionalDashboard: React.FC = () => {
   });
 
   const onAddPatientSubmit = (data: NewPatientFormData) => {
-    const created = addPatient({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phone: data.phone || '+52 55 0000 0000',
-      age: 30,
-      city: 'Ciudad de México',
-      status: 'active',
-      objective: data.objective || 'Plan personalizado',
-      currentPlan: 'Plan inicio 12 semanas',
-    });
+    try {
+      const created = addPatient({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone || '',
+        objective: data.objective || 'Plan personalizado',
+        currentPlan: 'Plan inicio 12 semanas',
+      });
 
-    setIsAddPatientOpen(false);
-    reset();
-    showToast('Paciente creado exitosamente', `Ficha creada para ${created.firstName} ${created.lastName}`);
-    navigate(`/professional/patients/${created.id}`);
+      setIsAddPatientOpen(false);
+      reset();
+      showToast('Paciente creado exitosamente', `Ficha creada para ${created.firstName} ${created.lastName}`);
+      navigate(`/professional/patients/${created.id}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Error al crear paciente';
+      showToast('Error', msg, 'error');
+    }
   };
 
   const handleSendCheckInSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createCheckInAssignment(selectedForCheckIn);
-    setIsSendCheckInOpen(false);
-    showToast('Check-in asignado', 'El paciente ya puede responderlo desde su portal');
+    try {
+      createCheckInAssignment(selectedForCheckIn);
+      setIsSendCheckInOpen(false);
+      showToast('Check-in asignado', 'El paciente ya puede responderlo desde su portal');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Error al asignar check-in';
+      showToast('Error', msg, 'error');
+    }
   };
 
   return (
@@ -80,28 +88,30 @@ export const ProfessionalDashboard: React.FC = () => {
               <h3 className="font-bold text-base text-[#151B22]">Bandeja de atención</h3>
               <Badge variant="high">{unresolvedAlerts.length}</Badge>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate('/professional/inbox')}
-              className="text-xs text-[#357984] font-semibold hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              <span>Ver todas</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/professional/inbox" className="text-xs text-[#357984] font-semibold flex items-center gap-1">
+                <span>Ver todas</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </Button>
           </div>
 
           <div className="space-y-3">
-            {unresolvedAlerts.map(alert => (
-              <PriorityInboxCard
-                key={alert.id}
-                alert={alert}
-                onSelectPatient={id => navigate(`/professional/patients/${id}`)}
-                onResolveAlert={alertId => {
-                  resolveAlert(alertId);
-                  showToast('Alerta resuelta', 'Se ha marcado la atención como completada');
-                }}
-              />
-            ))}
+            {unresolvedAlerts.length === 0 ? (
+              <p className="text-xs text-[#66727D] py-4 text-center">No hay alertas pendientes en la bandeja.</p>
+            ) : (
+              unresolvedAlerts.map(alert => (
+                <PriorityInboxCard
+                  key={alert.id}
+                  alert={alert}
+                  onSelectPatient={id => navigate(`/professional/patients/${id}`)}
+                  onResolveAlert={alertId => {
+                    resolveAlert(alertId);
+                    showToast('Alerta resuelta', 'Se ha marcado la atención como completada');
+                  }}
+                />
+              ))
+            )}
           </div>
         </Card>
 
@@ -115,7 +125,7 @@ export const ProfessionalDashboard: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsAddPatientOpen(true)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group"
+              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#357984]"
             >
               <div className="w-10 h-10 rounded-xl bg-[#EDF8F7] text-[#357984] flex items-center justify-center group-hover:scale-105 transition-transform">
                 <UserPlus className="w-5 h-5" />
@@ -129,9 +139,9 @@ export const ProfessionalDashboard: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsSendCheckInOpen(true)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group"
+              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#357984]"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#EAEFFC] text-[#5267C7] flex items-center justify-center group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-[#EAEFFC] text-[#2D3F99] flex items-center justify-center group-hover:scale-105 transition-transform">
                 <Send className="w-5 h-5" />
               </div>
               <div>
@@ -143,7 +153,7 @@ export const ProfessionalDashboard: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/professional/patients')}
-              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group"
+              className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#357984]"
             >
               <div className="w-10 h-10 rounded-xl bg-[#EDF8F7] text-[#357984] flex items-center justify-center group-hover:scale-105 transition-transform">
                 <UserCheck className="w-5 h-5" />
@@ -157,39 +167,48 @@ export const ProfessionalDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Tabla Mis Pacientes + Ficha lateral */}
+      {/* Tabla Mis Pacientes con Datos Derivados Realmente del Mock */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E2E9EC]">
             <h3 className="font-bold text-base text-[#151B22]">Mis pacientes</h3>
-            <button
-              type="button"
-              onClick={() => navigate('/professional/patients')}
-              className="text-xs text-[#357984] font-semibold hover:underline cursor-pointer"
-            >
-              Ver todos mis pacientes →
-            </button>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/professional/patients" className="text-xs text-[#357984] font-semibold">
+                Ver todos mis pacientes →
+              </Link>
+            </Button>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
-                  <th className="py-2.5 px-3">Paciente</th>
-                  <th className="py-2.5 px-3">Último check-in</th>
-                  <th className="py-2.5 px-3">Energía</th>
-                  <th className="py-2.5 px-3">Adherencia</th>
-                  <th className="py-2.5 px-3">Estado</th>
+                  <th scope="col" className="py-2.5 px-3">Paciente</th>
+                  <th scope="col" className="py-2.5 px-3">Último check-in</th>
+                  <th scope="col" className="py-2.5 px-3">Energía</th>
+                  <th scope="col" className="py-2.5 px-3">Adherencia</th>
+                  <th scope="col" className="py-2.5 px-3">Estado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E2E9EC] text-xs">
                 {patients.map(p => {
                   const isSelected = p.id === selectedPatientId;
+
+                  // Derivar último check-in y scores reales
+                  const pResponses = checkInResponses.filter(r => r.patientId === p.id);
+                  const lastResp = pResponses.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())[0];
+                  
+                  const pPendingAssign = checkInAssignments.find(a => a.patientId === p.id && a.status === 'pending');
+                  const pAlert = alerts.find(a => a.patientId === p.id && a.status === 'unresolved');
+
                   return (
                     <tr
                       key={p.id}
                       onClick={() => setSelectedPatientId(p.id)}
-                      className={`cursor-pointer transition-colors ${
+                      onKeyDown={e => e.key === 'Enter' && setSelectedPatientId(p.id)}
+                      tabIndex={0}
+                      role="button"
+                      className={`cursor-pointer transition-colors outline-none focus-visible:bg-[#F2F7F8] ${
                         isSelected ? 'bg-[#EDF8F7] font-semibold' : 'hover:bg-[#F2F7F8]'
                       }`}
                     >
@@ -202,12 +221,18 @@ export const ProfessionalDashboard: React.FC = () => {
                           {p.firstName} {p.lastName}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-[#66727D]">Hoy, 09:15</td>
-                      <td className="py-3 px-3 text-[#151B22]">3/5 🟠</td>
-                      <td className="py-3 px-3 text-[#151B22]">2/5 🔴</td>
+                      <td className="py-3 px-3 text-[#66727D]">
+                        {lastResp ? formatRelativeTime(lastResp.submittedAt) : 'Sin check-in'}
+                      </td>
+                      <td className="py-3 px-3 text-[#151B22]">
+                        {lastResp ? `${lastResp.energyScore}/5` : 'Sin datos'}
+                      </td>
+                      <td className="py-3 px-3 text-[#151B22]">
+                        {lastResp ? `${lastResp.adherenceScore}/5` : 'Sin datos'}
+                      </td>
                       <td className="py-3 px-3">
-                        <Badge variant={p.id === 'pat-1' ? 'high' : 'active'}>
-                          {p.id === 'pat-1' ? 'Atención' : 'Estable'}
+                        <Badge variant={pAlert ? 'high' : pPendingAssign ? 'pending' : 'active'}>
+                          {pAlert ? 'Atención' : pPendingAssign ? 'Pendiente' : 'Estable'}
                         </Badge>
                       </td>
                     </tr>
@@ -221,7 +246,7 @@ export const ProfessionalDashboard: React.FC = () => {
         {selectedPatient && (
           <Card className="space-y-4" highlighted>
             <div className="flex items-center gap-3 pb-3 border-b border-[#BDE9EA]">
-              <div className="w-12 h-12 rounded-full bg-[#55AEB8] text-white flex items-center justify-center font-bold text-base shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-base shadow-sm">
                 {selectedPatient.firstName[0]}
                 {selectedPatient.lastName[0]}
               </div>
@@ -230,10 +255,10 @@ export const ProfessionalDashboard: React.FC = () => {
                   {selectedPatient.firstName} {selectedPatient.lastName}
                 </h4>
                 <p className="text-xs text-[#66727D]">
-                  {selectedPatient.age} años • {selectedPatient.city}
+                  {selectedPatient.age > 0 ? `${selectedPatient.age} años` : ''} {selectedPatient.city ? `• ${selectedPatient.city}` : ''}
                 </p>
-                <Badge variant="active" className="mt-1">
-                  Paciente activa
+                <Badge variant={selectedPatient.status === 'active' ? 'active' : 'suspended'} className="mt-1">
+                  {selectedPatient.status === 'active' ? 'Paciente activo' : 'Archivado'}
                 </Badge>
               </div>
             </div>
@@ -268,7 +293,7 @@ export const ProfessionalDashboard: React.FC = () => {
         title="Agregar nuevo paciente"
         description="Ingresa los datos básicos para dar de alta al paciente en el consultorio."
       >
-        <form onSubmit={handleSubmit(onAddPatientSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onAddPatientSubmit)} className="space-y-4" noValidate>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="new-firstname" className="block text-xs font-medium text-[#151B22] mb-1">
@@ -278,11 +303,15 @@ export const ProfessionalDashboard: React.FC = () => {
                 id="new-firstname"
                 type="text"
                 {...register('firstName')}
+                aria-invalid={!!errors.firstName}
+                aria-describedby={errors.firstName ? 'firstname-error' : undefined}
                 placeholder="Ej. Ana"
-                className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+                className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
               />
               {errors.firstName && (
-                <p className="text-xs text-[#C95F59] mt-1">{errors.firstName.message}</p>
+                <p id="firstname-error" className="text-xs text-[#902A24] font-semibold mt-1">
+                  {errors.firstName.message}
+                </p>
               )}
             </div>
 
@@ -294,11 +323,15 @@ export const ProfessionalDashboard: React.FC = () => {
                 id="new-lastname"
                 type="text"
                 {...register('lastName')}
+                aria-invalid={!!errors.lastName}
+                aria-describedby={errors.lastName ? 'lastname-error' : undefined}
                 placeholder="Ej. Martínez"
-                className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+                className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
               />
               {errors.lastName && (
-                <p className="text-xs text-[#C95F59] mt-1">{errors.lastName.message}</p>
+                <p id="lastname-error" className="text-xs text-[#902A24] font-semibold mt-1">
+                  {errors.lastName.message}
+                </p>
               )}
             </div>
           </div>
@@ -311,24 +344,28 @@ export const ProfessionalDashboard: React.FC = () => {
               id="new-email"
               type="email"
               {...register('email')}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
               placeholder="ana.martinez@example.com"
-              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
             />
             {errors.email && (
-              <p className="text-xs text-[#C95F59] mt-1">{errors.email.message}</p>
+              <p id="email-error" className="text-xs text-[#902A24] font-semibold mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
             <label htmlFor="new-phone" className="block text-xs font-medium text-[#151B22] mb-1">
-              Teléfono
+              Teléfono (opcional)
             </label>
             <input
               id="new-phone"
               type="tel"
               {...register('phone')}
               placeholder="+52 55 1234 5678"
-              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
             />
           </div>
 
@@ -341,12 +378,12 @@ export const ProfessionalDashboard: React.FC = () => {
               type="text"
               {...register('objective')}
               placeholder="Ej. Reeducación alimentaria y energía"
-              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
             />
           </div>
 
           <div className="flex justify-end gap-2 pt-2 border-t border-[#E2E9EC]">
-            <Button variant="secondary" onClick={() => setIsAddPatientOpen(false)}>
+            <Button variant="secondary" type="button" onClick={() => setIsAddPatientOpen(false)}>
               Cancelar
             </Button>
             <Button variant="primary" type="submit">
@@ -361,6 +398,7 @@ export const ProfessionalDashboard: React.FC = () => {
         isOpen={isSendCheckInOpen}
         onClose={() => setIsSendCheckInOpen(false)}
         title="Enviar check-in a paciente"
+        description="Selecciona el paciente al que deseas asignar un reporte de seguimiento."
       >
         <form onSubmit={handleSendCheckInSubmit} className="space-y-4">
           <div>
@@ -371,7 +409,7 @@ export const ProfessionalDashboard: React.FC = () => {
               id="select-patient-checkin"
               value={selectedForCheckIn}
               onChange={e => setSelectedForCheckIn(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
+              className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984] text-[#151B22]"
             >
               {patients.map(p => (
                 <option key={p.id} value={p.id}>
@@ -386,7 +424,7 @@ export const ProfessionalDashboard: React.FC = () => {
           </p>
 
           <div className="flex justify-end gap-2 pt-2 border-t border-[#E2E9EC]">
-            <Button variant="secondary" onClick={() => setIsSendCheckInOpen(false)}>
+            <Button variant="secondary" type="button" onClick={() => setIsSendCheckInOpen(false)}>
               Cancelar
             </Button>
             <Button variant="primary" type="submit">

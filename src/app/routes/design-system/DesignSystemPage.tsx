@@ -8,6 +8,11 @@ import { RatingScale } from '../../../components/domain/RatingScale';
 import { useToast } from '../../../components/ui/Toast';
 
 export const DesignSystemPage: React.FC = () => {
+  const { showToast } = useToast();
+  const [ratingVal, setRatingVal] = useState<number | null>(3);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [switchVal, setSwitchVal] = useState<boolean>(true);
+
   if (!import.meta.env.DEV) {
     return (
       <div className="p-8 text-center text-xs text-[#66727D]">
@@ -15,11 +20,6 @@ export const DesignSystemPage: React.FC = () => {
       </div>
     );
   }
-
-  const { showToast } = useToast();
-  const [ratingVal, setRatingVal] = useState<number | null>(3);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [switchVal, setSwitchVal] = useState<boolean>(true);
 
   return (
     <div className="p-8 space-y-10 max-w-6xl mx-auto bg-[#F7F9FA] text-[#151B22]">
@@ -34,12 +34,12 @@ export const DesignSystemPage: React.FC = () => {
       <section className="space-y-3">
         <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">1. Paleta de Colores & Tokens</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 text-xs font-semibold">
-          <div className="p-4 rounded-xl bg-[#55AEB8] text-white">Brand Primary<br/>#55AEB8</div>
+          <div className="p-4 rounded-xl bg-[#55AEB8] text-[#151B22]">Brand Primary<br/>#55AEB8</div>
           <div className="p-4 rounded-xl bg-[#357984] text-white">Brand Strong<br/>#357984</div>
           <div className="p-4 rounded-xl bg-[#DDF3F2] text-[#357984] border border-[#BDE9EA]">Brand Soft<br/>#DDF3F2</div>
           <div className="p-4 rounded-xl bg-[#F5E8A9] text-[#151B22]">Butter Soft<br/>#F5E8A9</div>
-          <div className="p-4 rounded-xl bg-[#E8F5EE] text-[#39835A] border border-[#BDE3CC]">Success<br/>#39835A</div>
-          <div className="p-4 rounded-xl bg-[#FCEBEA] text-[#C95F59] border border-[#F8C4C1]">Critical<br/>#C95F59</div>
+          <div className="p-4 rounded-xl bg-[#E8F5EE] text-[#1E5235] border border-[#BDE3CC]">Success<br/>#1E5235</div>
+          <div className="p-4 rounded-xl bg-[#FCEBEA] text-[#902A24] border border-[#F8C4C1]">Critical<br/>#902A24</div>
         </div>
       </section>
 

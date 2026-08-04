@@ -1,52 +1,48 @@
 import React from 'react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { Slot } from '@radix-ui/react-slot';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'brand';
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'brand' | 'outline' | 'ghost' | 'destructive';
   size?: 'sm' | 'md' | 'lg';
+  asChild?: boolean;
+  children: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  children,
-  className,
   variant = 'primary',
   size = 'md',
-  type = 'button',
+  asChild = false,
+  className = '',
+  children,
   ...props
 }) => {
-  const baseStyles =
-    'inline-flex items-center justify-center font-medium transition-all rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#357984] focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer min-h-[44px] px-4 py-2 text-sm';
+  const Component = asChild ? Slot : 'button';
 
-  const variants = {
-    // Primary usa el gradiente claro autorizado con texto oscuro #151B22
+  const baseStyles =
+    'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none outline-none focus-visible:ring-2 focus-visible:ring-[#357984] focus-visible:ring-offset-2 min-h-[44px] min-w-[44px] px-4';
+
+  const variantStyles = {
     primary:
-      'bg-[linear-gradient(90deg,#AEE5E8_0%,#CDEAF5_52%,#F5E6A4_100%)] text-[#151B22] font-semibold hover:opacity-95 shadow-sm active:scale-[0.98]',
-    brand:
-      'bg-[#55AEB8] text-[#151B22] font-semibold hover:bg-[#357984] hover:text-white shadow-sm active:scale-[0.98]',
-    secondary:
-      'bg-[#F2F7F8] text-[#151B22] border border-[#E2E9EC] hover:bg-[#EDF8F7] hover:border-[#CCD9DE]',
-    outline:
-      'bg-transparent text-[#151B22] border border-[#E2E9EC] hover:bg-[#F2F7F8] hover:border-[#CCD9DE]',
-    ghost:
-      'bg-transparent text-[#66727D] hover:text-[#151B22] hover:bg-[#F2F7F8]',
-    destructive:
-      'bg-[#FCEBEA] text-[#C95F59] border border-[#F8C4C1] hover:bg-[#C95F59] hover:text-white',
+      'bg-[linear-gradient(90deg,#AEE5E8_0%,#CDEAF5_52%,#F5E6A4_100%)] text-[#151B22] font-semibold hover:opacity-95 shadow-xs',
+    brand: 'bg-[#55AEB8] text-[#151B22] font-semibold hover:bg-[#357984] hover:text-white shadow-xs',
+    secondary: 'bg-[#F2F7F8] text-[#151B22] hover:bg-[#E2E9EC] border border-[#E2E9EC]',
+    outline: 'border border-[#CCD9DE] text-[#151B22] hover:bg-[#F2F7F8]',
+    ghost: 'text-[#66727D] hover:text-[#151B22] hover:bg-[#F2F7F8]',
+    destructive: 'bg-[#FCEBEA] text-[#C95F59] hover:bg-[#F8C4C1] border border-[#F8C4C1]',
   };
 
-  const sizes = {
-    sm: 'text-xs min-h-[36px] px-3 py-1.5 rounded-lg',
-    md: 'text-sm min-h-[44px] px-4 py-2.5 rounded-xl',
-    lg: 'text-base min-h-[50px] px-6 py-3 rounded-xl',
+  const sizeStyles = {
+    sm: 'text-xs py-1.5 px-3 min-h-[36px]',
+    md: 'text-xs py-2 px-4 min-h-[44px]',
+    lg: 'text-sm py-2.5 px-5 min-h-[48px]',
   };
 
   return (
-    <button
-      type={type}
-      className={twMerge(clsx(baseStyles, variants[variant], sizes[size], className))}
+    <Component
+      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}
     >
       {children}
-    </button>
+    </Component>
   );
 };

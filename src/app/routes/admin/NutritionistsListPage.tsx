@@ -34,13 +34,17 @@ export const NutritionistsListPage: React.FC = () => {
 
       <Card className="space-y-4">
         <div className="relative w-full sm:w-80">
+          <label htmlFor="search-nutritionists-input" className="sr-only">
+            Buscar nutricionista u organización
+          </label>
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#8A959D]" />
           <input
+            id="search-nutritionists-input"
             type="text"
             placeholder="Buscar nutricionista u organización..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984]"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984] text-[#151B22]"
           />
         </div>
 
@@ -48,12 +52,12 @@ export const NutritionistsListPage: React.FC = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
-                <th className="py-3 px-4">Nutricionista</th>
-                <th className="py-3 px-4">Organización</th>
-                <th className="py-3 px-4">Pacientes Asignados</th>
-                <th className="py-3 px-4">Fecha de Alta</th>
-                <th className="py-3 px-4">Estado</th>
-                <th className="py-3 px-4 text-right">Acciones</th>
+                <th scope="col" className="py-3 px-4">Nutricionista</th>
+                <th scope="col" className="py-3 px-4">Organización</th>
+                <th scope="col" className="py-3 px-4">Pacientes Asignados</th>
+                <th scope="col" className="py-3 px-4">Fecha de Alta</th>
+                <th scope="col" className="py-3 px-4">Estado</th>
+                <th scope="col" className="py-3 px-4 text-right">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E2E9EC] text-xs">
@@ -72,12 +76,12 @@ export const NutritionistsListPage: React.FC = () => {
                     </Badge>
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <Link to={`/admin/nutritionists/${n.id}`}>
-                      <Button variant="secondary" size="sm" className="text-xs inline-flex items-center gap-1">
+                    <Button asChild variant="secondary" size="sm">
+                      <Link to={`/admin/nutritionists/${n.id}`} className="text-xs inline-flex items-center gap-1">
                         <span>Ver perfil</span>
                         <ChevronRight className="w-3.5 h-3.5" />
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </td>
                 </tr>
               ))}

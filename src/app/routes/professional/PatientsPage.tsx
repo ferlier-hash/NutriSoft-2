@@ -40,13 +40,17 @@ export const PatientsPage: React.FC = () => {
 
       <Card className="space-y-4">
         <div className="relative w-full sm:w-80">
+          <label htmlFor="search-patients-input" className="sr-only">
+            Buscar paciente por nombre o correo
+          </label>
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#8A959D]" />
           <input
+            id="search-patients-input"
             type="text"
             placeholder="Buscar por nombre o correo..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984]"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984] text-[#151B22]"
           />
         </div>
 
@@ -54,12 +58,12 @@ export const PatientsPage: React.FC = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
-                <th className="py-3 px-4">Paciente</th>
-                <th className="py-3 px-4">Correo</th>
-                <th className="py-3 px-4">Teléfono</th>
-                <th className="py-3 px-4">Objetivo</th>
-                <th className="py-3 px-4">Estado</th>
-                <th className="py-3 px-4 text-right">Acciones</th>
+                <th scope="col" className="py-3 px-4">Paciente</th>
+                <th scope="col" className="py-3 px-4">Correo</th>
+                <th scope="col" className="py-3 px-4">Teléfono</th>
+                <th scope="col" className="py-3 px-4">Objetivo</th>
+                <th scope="col" className="py-3 px-4">Estado</th>
+                <th scope="col" className="py-3 px-4 text-right">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E2E9EC] text-xs">
@@ -75,12 +79,12 @@ export const PatientsPage: React.FC = () => {
                         {p.firstName} {p.lastName}
                       </span>
                       <span className="block text-[11px] font-normal text-[#8A959D]">
-                        {p.age} años • {p.city}
+                        {p.age > 0 ? `${p.age} años • ` : ''}{p.city || 'Consultorio'}
                       </span>
                     </div>
                   </td>
                   <td className="py-3.5 px-4 text-[#66727D]">{p.email}</td>
-                  <td className="py-3.5 px-4 text-[#66727D]">{p.phone}</td>
+                  <td className="py-3.5 px-4 text-[#66727D]">{p.phone || 'Sin registro'}</td>
                   <td className="py-3.5 px-4 text-[#151B22] font-medium max-w-xs truncate">
                     {p.objective}
                   </td>
@@ -90,16 +94,12 @@ export const PatientsPage: React.FC = () => {
                     </Badge>
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <Link to={`/professional/patients/${p.id}`}>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="text-xs flex items-center gap-1 ml-auto"
-                      >
+                    <Button asChild variant="secondary" size="sm">
+                      <Link to={`/professional/patients/${p.id}`} className="text-xs inline-flex items-center gap-1">
                         <span>Abrir ficha</span>
                         <ChevronRight className="w-3.5 h-3.5" />
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </td>
                 </tr>
               ))}

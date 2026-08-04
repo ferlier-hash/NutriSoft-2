@@ -8,9 +8,9 @@ export const ProfessionalLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F7F9FA] flex flex-col md:flex-row">
       <DevRoleSwitcher />
-      <Sidebar />
+      <Sidebar portal="professional" />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header />
+        <Header portal="professional" />
         <main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>

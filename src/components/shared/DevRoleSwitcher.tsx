@@ -1,28 +1,27 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useMock } from '../../app/provider';
-import type { UserRole } from '../../types';
 import { Shield, UserCheck, User, RefreshCw } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 export const DevRoleSwitcher: React.FC = () => {
-  if (!import.meta.env.DEV) {
-    return null;
-  }
-
   const {
-    currentRole,
-    setCurrentRole,
     patients,
     currentDemoPatientId,
     setCurrentDemoPatientId,
     resetToInitialMockData,
   } = useMock();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleRoleChange = (role: UserRole, targetPath: string) => {
-    setCurrentRole(role);
-    navigate(targetPath);
-  };
+  if (!import.meta.env.DEV) {
+    return null;
+  }
+
+  const activePortal = location.pathname.startsWith('/admin')
+    ? 'admin'
+    : location.pathname.startsWith('/patient')
+    ? 'patient'
+    : 'professional';
 
   return (
     <div
@@ -35,13 +34,13 @@ export const DevRoleSwitcher: React.FC = () => {
         Modo demostración — datos ficticios
       </span>
 
-      {/* Selector de Roles */}
+      {/* Selector de Portales mediante Navegación */}
       <div className="flex items-center gap-1 bg-white/10 p-0.5 rounded-full">
         <button
           type="button"
-          onClick={() => handleRoleChange('admin', '/admin')}
+          onClick={() => navigate('/admin')}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-full font-medium transition-all min-h-[32px] cursor-pointer ${
-            currentRole === 'admin'
+            activePortal === 'admin'
               ? 'bg-[#55AEB8] text-[#151B22] shadow-sm font-semibold'
               : 'text-gray-300 hover:text-white hover:bg-white/10'
           }`}
@@ -52,9 +51,9 @@ export const DevRoleSwitcher: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => handleRoleChange('nutritionist', '/professional')}
+          onClick={() => navigate('/professional')}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-full font-medium transition-all min-h-[32px] cursor-pointer ${
-            currentRole === 'nutritionist'
+            activePortal === 'professional'
               ? 'bg-[#55AEB8] text-[#151B22] shadow-sm font-semibold'
               : 'text-gray-300 hover:text-white hover:bg-white/10'
           }`}
@@ -65,9 +64,9 @@ export const DevRoleSwitcher: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => handleRoleChange('patient', '/patient')}
+          onClick={() => navigate('/patient')}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-full font-medium transition-all min-h-[32px] cursor-pointer ${
-            currentRole === 'patient'
+            activePortal === 'patient'
               ? 'bg-[#55AEB8] text-[#151B22] shadow-sm font-semibold'
               : 'text-gray-300 hover:text-white hover:bg-white/10'
           }`}
@@ -78,7 +77,7 @@ export const DevRoleSwitcher: React.FC = () => {
       </div>
 
       {/* Selector de Paciente Simulado en Portal Patient */}
-      {currentRole === 'patient' && (
+      {activePortal === 'patient' && (
         <div className="flex items-center gap-1 pl-2 border-l border-white/20">
           <label htmlFor="demo-patient-select" className="text-[11px] text-gray-300 font-medium">
             Simulando:
@@ -101,7 +100,7 @@ export const DevRoleSwitcher: React.FC = () => {
       <button
         type="button"
         onClick={() => navigate('/design-system')}
-        className="px-2 py-1 text-gray-300 hover:text-white underline text-[11px] font-medium"
+        className="px-2 py-1 text-gray-300 hover:text-white underline text-[11px] font-medium cursor-pointer"
       >
         /design-system
       </button>

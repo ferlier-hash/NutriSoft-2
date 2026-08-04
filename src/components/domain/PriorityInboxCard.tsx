@@ -1,8 +1,10 @@
 import React from 'react';
 import type { Alert } from '../../types';
+import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
+import { formatRelativeTime } from '../../lib/dateUtils';
+import { AlertTriangle, Info, CheckCircle2, User } from 'lucide-react';
 
 interface PriorityInboxCardProps {
   alert: Alert;
@@ -15,87 +17,79 @@ export const PriorityInboxCard: React.FC<PriorityInboxCardProps> = ({
   onSelectPatient,
   onResolveAlert,
 }) => {
+  const isHigh = alert.priority === 'high';
   const isResolved = alert.status === 'resolved';
 
   return (
-    <div
-      className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border transition-all gap-4 ${
-        alert.priority === 'high' && !isResolved
-          ? 'bg-[#FCEBEA]/40 border-[#F8C4C1]'
-          : alert.priority === 'medium' && !isResolved
-          ? 'bg-[#FDF6E2]/40 border-[#F6E5B3]'
+    <Card
+      className={`space-y-3 transition-all ${
+        isResolved
+          ? 'opacity-60 bg-[#F2F7F8] border-[#E2E9EC]'
+          : isHigh
+          ? 'bg-[linear-gradient(135deg,#FCEBEA_0%,#FFFFFF_100%)] border-[#F8C4C1] shadow-xs'
           : 'bg-[#FFFFFF] border-[#E2E9EC]'
       }`}
     >
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-[#EDF8F7] flex items-center justify-center font-semibold text-[#357984] text-sm border border-[#BDE9EA]">
-          {alert.patientName.substring(0, 2).toUpperCase()}
-        </div>
-
-        <div>
-          <div className="flex items-center gap-2">
-            <h4 className="font-semibold text-[#151B22] text-sm">{alert.patientName}</h4>
-            <Badge
-              variant={
-                isResolved
-                  ? 'active'
-                  : alert.priority === 'high'
-                  ? 'high'
-                  : alert.priority === 'medium'
-                  ? 'medium'
-                  : 'normal'
-              }
-            >
-              {isResolved
-                ? 'Resuelta'
-                : alert.priority === 'high'
-                ? 'Alta'
-                : alert.priority === 'medium'
-                ? 'Media'
-                : 'Normal'}
-            </Badge>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#E2E9EC]/60">
+        <div className="flex items-center gap-2">
+          <div
+            className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs ${
+              isHigh ? 'bg-[#FCEBEA] text-[#902A24]' : 'bg-[#EAEFFC] text-[#2D3F99]'
+            }`}
+          >
+            {isHigh ? <AlertTriangle className="w-4 h-4 text-[#902A24]" /> : <Info className="w-4 h-4 text-[#2D3F99]" />}
           </div>
 
-          <p className="text-xs text-[#66727D] mt-0.5">{alert.reasonText}</p>
-
-          {alert.recommendedAction && (
-            <p className="text-[11px] text-[#357984] font-medium mt-1">
-              💡 {alert.recommendedAction}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#E2E9EC]">
-        <div className="flex items-center gap-1 text-[11px] text-[#8A959D]">
-          <Clock className="w-3 h-3" />
-          <span>{alert.createdAt}</span>
+          <div>
+            <h4 className="font-bold text-sm text-[#151B22] flex items-center gap-1.5">
+              <span>{alert.patientName}</span>
+              <span className="text-xs font-normal text-[#66727D]">— {alert.reasonText}</span>
+            </h4>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          {!isResolved && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => onResolveAlert(alert.id)}
-              className="text-xs flex items-center gap-1"
-            >
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#39835A]" />
-              Resolver
-            </Button>
-          )}
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onSelectPatient(alert.patientId)}
-            className="text-xs flex items-center gap-1"
-          >
-            <span>Ver ficha</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Button>
+          <Badge variant={isHigh ? 'high' : 'medium'}>
+            {isHigh ? '🚨 Alta Prioridad' : 'ℹ️ Prioridad Media'}
+          </Badge>
+          <span className="text-[11px] text-[#66727D] font-medium">
+            {formatRelativeTime(alert.createdAt)}
+          </span>
         </div>
       </div>
-    </div>
+
+      <div className="text-xs text-[#151B22] bg-[#FFFFFF]/80 p-3 rounded-xl border border-[#E2E9EC]">
+        <p className="font-semibold text-[#357984] mb-0.5">Acción sugerida:</p>
+        <p className="text-[#151B22] font-medium">{alert.recommendedAction}</p>
+      </div>
+
+      <div className="flex items-center justify-end gap-2 pt-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onSelectPatient(alert.patientId)}
+          className="flex items-center gap-1"
+        >
+          <User className="w-3.5 h-3.5 text-[#357984]" />
+          <span>Ver ficha del paciente</span>
+        </Button>
+
+        {!isResolved ? (
+          <Button
+            variant="brand"
+            size="sm"
+            onClick={() => onResolveAlert(alert.id)}
+            className="flex items-center gap-1"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Marcar atendidada</span>
+          </Button>
+        ) : (
+          <span className="text-xs text-[#1E5235] font-semibold flex items-center gap-1 px-2 py-1 bg-[#E8F5EE] rounded-lg">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#1E5235]" /> Atendida por {alert.resolvedBy}
+          </span>
+        )}
+      </div>
+    </Card>
   );
 };

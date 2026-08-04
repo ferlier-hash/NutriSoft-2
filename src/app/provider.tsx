@@ -1,15 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
-import type { UserRole, Organization, Nutritionist, Patient, CheckInAssignment, CheckInResponse, Alert, Recommendation } from '../types';
-import { initialOrganizations, initialNutritionists, initialPatients, initialAlerts, initialCheckInAssignments, initialRecommendations } from '../mocks/mockData';
+import type { Organization, Nutritionist, Patient, CheckInAssignment, CheckInResponse, Alert, Recommendation } from '../types';
+import { initialOrganizations, initialNutritionists, initialPatients, initialAlerts, initialCheckInAssignments, initialCheckInResponses, initialRecommendations } from '../mocks/mockData';
 import { evaluateCheckInAlerts } from '../mocks/alertEngine';
 
 interface MockContextType {
-  currentRole: UserRole;
-  setCurrentRole: (role: UserRole) => void;
-  
   currentDemoPatientId: string;
   setCurrentDemoPatientId: (id: string) => void;
-  currentDemoPatient: Patient;
+  currentDemoPatient: Patient | null;
 
   organizations: Organization[];
   toggleOrganizationStatus: (id: string) => void;
@@ -17,7 +14,18 @@ interface MockContextType {
   nutritionists: Nutritionist[];
 
   patients: Patient[];
-  addPatient: (patientData: Omit<Patient, 'id' | 'organizationId' | 'assignedNutritionistId' | 'createdAt' | 'lastActiveAt' | 'portalAccessStatus'>) => Patient;
+  addPatient: (patientData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    age?: number;
+    city?: string;
+    objective?: string;
+    currentPlan?: string;
+    assignedNutritionistId?: string;
+    organizationId?: string;
+  }) => Patient;
   
   checkInAssignments: CheckInAssignment[];
   createCheckInAssignment: (patientId: string) => CheckInAssignment;
@@ -32,6 +40,7 @@ interface MockContextType {
   
   submitCheckInResponse: (
     assignmentId: string,
+    patientId: string,
     energyScore: number,
     adherenceScore: number,
     helpRequested: boolean,
@@ -44,34 +53,17 @@ interface MockContextType {
 const MockContext = createContext<MockContextType | undefined>(undefined);
 
 export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentRole, setCurrentRole] = useState<UserRole>('nutritionist');
   const [currentDemoPatientId, setCurrentDemoPatientId] = useState<string>('pat-1');
   const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations);
   const [nutritionists] = useState<Nutritionist[]>(initialNutritionists);
   const [patients, setPatients] = useState<Patient[]>(initialPatients);
   const [checkInAssignments, setCheckInAssignments] = useState<CheckInAssignment[]>(initialCheckInAssignments);
-  const [checkInResponses, setCheckInResponses] = useState<CheckInResponse[]>([]);
+  const [checkInResponses, setCheckInResponses] = useState<CheckInResponse[]>(initialCheckInResponses);
   const [alerts, setAlerts] = useState<Alert[]>(initialAlerts);
   const [recommendations, setRecommendations] = useState<Recommendation[]>(initialRecommendations);
 
-  // Paciente simulado actual (garantizado no nulo)
-  const currentDemoPatient = patients.find(p => p.id === currentDemoPatientId) || patients[0] || {
-    id: 'pat-1',
-    organizationId: 'org-1',
-    firstName: 'María',
-    lastName: 'González',
-    email: 'maria@example.com',
-    phone: '+52 55 1234 5678',
-    age: 28,
-    city: 'Ciudad de México',
-    status: 'active' as const,
-    assignedNutritionistId: 'nutri-1',
-    objective: 'Bienestar general',
-    currentPlan: 'Plan balance 12 semanas',
-    createdAt: new Date().toISOString(),
-    lastActiveAt: new Date().toISOString(),
-    portalAccessStatus: 'active' as const,
-  };
+  // Paciente simulado actual (puede ser nulo si ID no existe)
+  const currentDemoPatient = patients.find(p => p.id === currentDemoPatientId) || null;
 
   // Toggle estado de organización (Admin)
   const toggleOrganizationStatus = (id: string) => {
@@ -86,34 +78,72 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
-  // Crear Paciente (Nutricionista)
-  const addPatient = (
-    patientData: Omit<Patient, 'id' | 'organizationId' | 'assignedNutritionistId' | 'createdAt' | 'lastActiveAt' | 'portalAccessStatus'>
-  ): Patient => {
+  // Crear Paciente (Nutricionista) - Invariantes estrictas
+  const addPatient = (patientData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    age?: number;
+    city?: string;
+    objective?: string;
+    currentPlan?: string;
+    assignedNutritionistId?: string;
+    organizationId?: string;
+  }): Patient => {
+    const assignedNutriId = patientData.assignedNutritionistId || 'nutri-1';
+    const assignedNutri = nutritionists.find(n => n.id === assignedNutriId) || nutritionists[0]!;
+    const orgId = patientData.organizationId || assignedNutri.organizationId;
+
     const newPatient: Patient = {
-      ...patientData,
       id: `pat-${Date.now()}`,
-      organizationId: 'org-1',
-      assignedNutritionistId: 'nutri-1',
+      organizationId: orgId,
+      assignedNutritionistId: assignedNutri.id,
+      firstName: patientData.firstName.trim(),
+      lastName: patientData.lastName.trim(),
+      email: patientData.email.trim(),
+      phone: (patientData.phone || '').trim(),
+      age: patientData.age || 0,
+      city: (patientData.city || '').trim(),
+      status: 'active',
+      objective: (patientData.objective || 'Plan nutricional personalizado').trim(),
+      currentPlan: (patientData.currentPlan || 'Plan inicio 12 semanas').trim(),
       createdAt: new Date().toISOString(),
       lastActiveAt: new Date().toISOString(),
       portalAccessStatus: 'active',
     };
+
     setPatients(prev => [newPatient, ...prev]);
     return newPatient;
   };
 
-  // Asignar Check-in a un paciente
+  // Asignar Check-in a un paciente - Invariantes estrictas
   const createCheckInAssignment = (patientId: string): CheckInAssignment => {
+    const patient = patients.find(p => p.id === patientId);
+    if (!patient) {
+      throw new Error('El paciente indicado no existe.');
+    }
+    if (patient.status === 'archived') {
+      throw new Error('No se puede asignar un check-in a un paciente archivado.');
+    }
+
+    const hasPending = checkInAssignments.some(
+      a => a.patientId === patientId && a.status === 'pending'
+    );
+    if (hasPending) {
+      throw new Error('El paciente ya tiene una asignación de check-in pendiente.');
+    }
+
     const newAssign: CheckInAssignment = {
       id: `assign-${Date.now()}`,
-      organizationId: 'org-1',
-      patientId,
-      createdBy: 'nutri-1',
-      dueDate: new Date(Date.now() + 86400000).toISOString(),
+      organizationId: patient.organizationId,
+      patientId: patient.id,
+      createdBy: patient.assignedNutritionistId,
+      dueDate: new Date(Date.now() + 7 * 86400000).toISOString(),
       status: 'pending',
       createdAt: new Date().toISOString(),
     };
+
     setCheckInAssignments(prev => [newAssign, ...prev]);
     return newAssign;
   };
@@ -126,7 +156,7 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return {
             ...alert,
             status: 'resolved' as const,
-            resolvedBy: 'Andrea (Nutricionista)',
+            resolvedBy: 'Lic. Andrea N.',
             resolvedAt: new Date().toISOString(),
           };
         }
@@ -135,43 +165,61 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
-  // Emitir Recomendación a un paciente
+  // Emitir Recomendación a un paciente - Invariantes estrictas
   const addRecommendation = (patientId: string, text: string): Recommendation => {
+    const patient = patients.find(p => p.id === patientId);
+    if (!patient) {
+      throw new Error('El paciente indicado no existe.');
+    }
+
+    const trimmedText = text.trim();
+    if (!trimmedText) {
+      throw new Error('La recomendación no puede estar vacía o compuesta solo por espacios.');
+    }
+
     const newRec: Recommendation = {
       id: `rec-${Date.now()}`,
-      organizationId: 'org-1',
-      patientId,
-      createdBy: 'nutri-1',
-      recommendationText: text,
+      organizationId: patient.organizationId,
+      patientId: patient.id,
+      createdBy: patient.assignedNutritionistId,
+      recommendationText: trimmedText,
       createdAt: new Date().toISOString(),
     };
+
     setRecommendations(prev => [newRec, ...prev]);
     return newRec;
   };
 
-  // Responder Check-in (Paciente)
+  // Responder Check-in (Paciente) - Invariantes estrictas
   const submitCheckInResponse = (
     assignmentId: string,
+    patientId: string,
     energyScore: number,
     adherenceScore: number,
     helpRequested: boolean,
     notes?: string
   ) => {
-    // Validar puntuaciones válidas
     if (energyScore < 1 || energyScore > 5 || adherenceScore < 1 || adherenceScore > 5) {
       throw new Error('Las puntuaciones deben estar dentro del rango 1 a 5.');
     }
 
-    // Validar que la asignación exista y no haya sido respondida previamente
     const targetAssign = checkInAssignments.find(a => a.id === assignmentId);
     if (!targetAssign) {
       throw new Error('La asignación de check-in no existe.');
     }
+
+    if (targetAssign.patientId !== patientId) {
+      throw new Error('Esta asignación no pertenece al paciente indicado.');
+    }
+
+    if (new Date(targetAssign.dueDate) < new Date()) {
+      throw new Error('La asignación de check-in ha expirado.');
+    }
+
     if (targetAssign.status === 'completed' || checkInResponses.some(r => r.assignmentId === assignmentId)) {
       throw new Error('Este check-in ya ha sido completado previamente.');
     }
 
-    const patientId = targetAssign.patientId;
     const patient = patients.find(p => p.id === patientId);
     const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Paciente';
 
@@ -179,29 +227,26 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newResponse: CheckInResponse = {
       id: responseId,
       assignmentId,
-      organizationId: 'org-1',
+      organizationId: targetAssign.organizationId,
       patientId,
       energyScore,
       adherenceScore,
       helpRequested,
-      notes,
+      notes: (notes || '').trim(),
       submittedAt: new Date().toISOString(),
     };
 
     setCheckInResponses(prev => [newResponse, ...prev]);
 
-    // Marcar asignación como completada
     setCheckInAssignments(prev =>
       prev.map(a => (a.id === assignmentId ? { ...a, status: 'completed' as const } : a))
     );
 
-    // Evaluar reglas dinámicas de alerta (solo ALTA o NINGUNA)
     const generatedAlerts = evaluateCheckInAlerts(newResponse, patientName);
     if (generatedAlerts.length > 0) {
       setAlerts(prev => [...generatedAlerts, ...prev]);
     }
 
-    // Mensajes de confirmación estrictamente neutrales
     const confirmationMessage = helpRequested
       ? 'Tu solicitud fue registrada y destacada para que tu nutricionista pueda revisarla.'
       : 'Recibimos tu check-in. Tu nutricionista podrá revisar tus respuestas y contactarte si es necesario.';
@@ -216,7 +261,7 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setOrganizations(initialOrganizations);
     setPatients(initialPatients);
     setCheckInAssignments(initialCheckInAssignments);
-    setCheckInResponses([]);
+    setCheckInResponses(initialCheckInResponses);
     setAlerts(initialAlerts);
     setRecommendations(initialRecommendations);
     setCurrentDemoPatientId('pat-1');
@@ -225,8 +270,6 @@ export const MockProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <MockContext.Provider
       value={{
-        currentRole,
-        setCurrentRole,
         currentDemoPatientId,
         setCurrentDemoPatientId,
         currentDemoPatient,

@@ -3,11 +3,24 @@ import { Link } from 'react-router-dom';
 import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
+import { NotFoundPage } from '../NotFoundPage';
 import { formatShortDate } from '../../../lib/dateUtils';
 import { Sparkles, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
 
 export const PatientDashboard: React.FC = () => {
-  const { currentDemoPatient, checkInAssignments, recommendations } = useMock();
+  const { currentDemoPatient, checkInAssignments, recommendations, nutritionists, organizations } = useMock();
+
+  if (!currentDemoPatient) {
+    return (
+      <NotFoundPage
+        title="Paciente no encontrado"
+        message="El paciente simulado seleccionado no existe en la base de datos de demostración."
+      />
+    );
+  }
+
+  const assignedNutri = nutritionists.find(n => n.id === currentDemoPatient.assignedNutritionistId);
+  const assignedOrg = organizations.find(o => o.id === currentDemoPatient.organizationId);
 
   const pendingAssignment = checkInAssignments.find(
     a => a.patientId === currentDemoPatient.id && a.status === 'pending'
@@ -20,13 +33,13 @@ export const PatientDashboard: React.FC = () => {
       {/* Cabecera Dinámica Aislada por Paciente */}
       <div className="pt-2 pb-2">
         <h2 className="text-2xl font-bold text-[#151B22]">¡Hola, {currentDemoPatient.firstName}! 👋</h2>
-        <p className="text-xs text-[#66727D] mt-0.5">Estamos aquí para acompañarte.</p>
+        <p className="text-xs text-[#66727D] mt-0.5">Estamos aquí para acompañarte en tu tratamiento.</p>
       </div>
 
       {/* Tarjeta 1: Check-in pendiente */}
       <Card className="space-y-3 bg-[linear-gradient(135deg,#E9F8F7_0%,#EEF7FB_58%,#FCF9E8_100%)] border-[#BDE9EA]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#55AEB8] text-white flex items-center justify-center font-bold shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold shadow-sm">
             <Clock className="w-5 h-5" />
           </div>
           <div>
@@ -42,14 +55,14 @@ export const PatientDashboard: React.FC = () => {
         </div>
 
         {pendingAssignment ? (
-          <Link to={`/patient/check-in/${pendingAssignment.id}`}>
-            <Button variant="primary" className="w-full justify-between mt-2">
+          <Button asChild variant="primary" className="w-full justify-between mt-2">
+            <Link to={`/patient/check-in/${pendingAssignment.id}`}>
               <span>Realizar check-in</span>
               <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         ) : (
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#39835A] bg-[#E8F5EE] p-2.5 rounded-xl border border-[#BDE3CC]">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#1E5235] bg-[#E8F5EE] p-2.5 rounded-xl border border-[#BDE3CC]">
             <CheckCircle2 className="w-4 h-4" />
             <span>Respuestas registradas hoy</span>
           </div>
@@ -84,9 +97,10 @@ export const PatientDashboard: React.FC = () => {
         )}
       </div>
 
+      {/* Consultorio y Nutricionista derivados dinámicamente */}
       <div className="p-4 bg-[#FFFFFF] border border-[#E2E9EC] rounded-2xl text-xs space-y-1 text-[#66727D]">
         <p className="font-semibold text-[#151B22]">Tu consultorio:</p>
-        <p>Clínica Bienestar • Lic. Andrea N.</p>
+        <p>{assignedOrg?.name || 'Organización'} • {assignedNutri?.name || 'Nutricionista asignado'}</p>
       </div>
     </div>
   );

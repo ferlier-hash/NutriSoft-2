@@ -17,19 +17,28 @@ export const Dialog: React.FC<DialogProps> = ({
   description,
   children,
 }) => {
+  const descriptionId = description ? `dialog-desc-${Date.now()}` : undefined;
+
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[#151B22]/40 backdrop-blur-xs animate-fade-in" />
-        <DialogPrimitive.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg bg-[#FFFFFF] border border-[#E2E9EC] rounded-2xl shadow-xl p-6 outline-none">
+        <DialogPrimitive.Content
+          aria-describedby={descriptionId}
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] sm:w-full max-w-lg max-h-[85vh] overflow-y-auto bg-[#FFFFFF] border border-[#E2E9EC] rounded-2xl shadow-xl p-6 outline-none"
+        >
           <div className="flex items-center justify-between pb-4 border-b border-[#E2E9EC]">
             <div>
               <DialogPrimitive.Title className="text-lg font-bold text-[#151B22]">
                 {title}
               </DialogPrimitive.Title>
-              {description && (
-                <DialogPrimitive.Description className="text-xs text-[#66727D] mt-0.5">
+              {description ? (
+                <DialogPrimitive.Description id={descriptionId} className="text-xs text-[#66727D] mt-0.5">
                   {description}
+                </DialogPrimitive.Description>
+              ) : (
+                <DialogPrimitive.Description className="sr-only">
+                  {title}
                 </DialogPrimitive.Description>
               )}
             </div>

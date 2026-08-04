@@ -14,7 +14,6 @@ export const AdminPatientDetailPage: React.FC = () => {
   const nutritionist = nutritionists.find(n => n.id === nutritionistId);
   const patient = patients.find(p => p.id === patientId);
 
-  // Validación estricta de la relación: si no existe o el paciente no pertenece al nutricionista, 404
   if (!nutritionist || !patient || patient.assignedNutritionistId !== nutritionist.id) {
     return (
       <NotFoundPage
@@ -29,7 +28,7 @@ export const AdminPatientDetailPage: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
-      {/* Breadcrumbs Obligatorios */}
+      {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="text-xs text-[#66727D] flex items-center gap-1.5 font-medium flex-wrap">
         <Link to="/admin" className="hover:text-[#151B22]">Admin</Link>
         <ChevronRight className="w-3 h-3" />
@@ -45,7 +44,7 @@ export const AdminPatientDetailPage: React.FC = () => {
       {/* Cabecera Operativa */}
       <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" highlighted>
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-white flex items-center justify-center font-bold text-xl shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xl shadow-sm">
             <User className="w-7 h-7" />
           </div>
           <div>
@@ -64,11 +63,11 @@ export const AdminPatientDetailPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Cartel de Privacidad Obligatorio */}
+      {/* Cartel de Privacidad Operativa */}
       <div className="p-4 bg-[#EDF8F7] border border-[#BDE9EA] rounded-2xl flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-[#357984] shrink-0 mt-0.5" />
         <div className="text-xs text-[#357984]">
-          <p className="font-semibold">Aviso de Privacidad Operativa (HIPAA / GDPR LatAm):</p>
+          <p className="font-semibold">Privacidad de información clínica:</p>
           <p className="mt-0.5 text-[11px] text-[#66727D]">
             Por privacidad, la información clínica sólo está disponible para los profesionales autorizados de la organización. El administrador visualiza únicamente métricas e identificadores operativos.
           </p>
@@ -93,7 +92,7 @@ export const AdminPatientDetailPage: React.FC = () => {
             <div>
               <span className="text-[#66727D] block">Estado del acceso al portal:</span>
               <Badge variant="active" className="mt-1">
-                {patient.portalAccessStatus === 'active' ? 'Acceso Habilitado' : 'Pendiente'}
+                {patient.portalAccessStatus === 'active' ? 'Acceso Habilitado' : 'Revocado'}
               </Badge>
             </div>
           </div>

@@ -14,6 +14,10 @@ import {
   CreditCard,
 } from 'lucide-react';
 
+interface SidebarProps {
+  portal: 'admin' | 'professional';
+}
+
 interface NavItem {
   label: string;
   icon: React.ReactNode;
@@ -23,13 +27,9 @@ interface NavItem {
   disabled?: boolean;
 }
 
-export const Sidebar: React.FC = () => {
-  const { currentRole, alerts } = useMock();
-  const unresolvedHighAlerts = alerts.filter(a => a.status === 'unresolved').length;
-
-  if (currentRole === 'patient') {
-    return null;
-  }
+export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
+  const { alerts } = useMock();
+  const unresolvedAlertsCount = alerts.filter(a => a.status === 'unresolved').length;
 
   const professionalNav: NavItem[] = [
     { label: 'Inicio', icon: <LayoutDashboard className="w-4 h-4" />, path: '/professional', end: true },
@@ -38,7 +38,7 @@ export const Sidebar: React.FC = () => {
       label: 'Bandeja de atención',
       icon: <Inbox className="w-4 h-4" />,
       path: '/professional/inbox',
-      badge: unresolvedHighAlerts > 0 ? unresolvedHighAlerts : undefined,
+      badge: unresolvedAlertsCount > 0 ? unresolvedAlertsCount : undefined,
     },
     { label: 'Check-ins', icon: <ClipboardCheck className="w-4 h-4" />, path: '/professional/checkins', disabled: true },
     { label: 'Recomendaciones', icon: <Sparkles className="w-4 h-4" />, path: '/professional/recommendations', disabled: true },
@@ -54,7 +54,7 @@ export const Sidebar: React.FC = () => {
     { label: 'Configuración', icon: <Settings className="w-4 h-4" />, path: '/admin/settings', disabled: true },
   ];
 
-  const navItems = currentRole === 'admin' ? adminNav : professionalNav;
+  const navItems = portal === 'admin' ? adminNav : professionalNav;
 
   return (
     <aside className="w-64 bg-[#FFFFFF] border-r border-[#E2E9EC] flex flex-col justify-between p-4 min-h-screen hidden md:flex shrink-0">
@@ -66,12 +66,12 @@ export const Sidebar: React.FC = () => {
           <div>
             <span className="font-bold text-base text-[#151B22] tracking-tight">NutriSoft</span>
             <span className="text-[10px] text-[#66727D] block font-medium">
-              {currentRole === 'admin' ? 'Platform Admin' : 'Clínica Bienestar'}
+              {portal === 'admin' ? 'Platform Admin' : 'Clínica Bienestar'}
             </span>
           </div>
         </div>
 
-        <nav className="space-y-1">
+        <nav aria-label="Menú principal de navegación" className="space-y-1">
           {navItems.map(item => {
             if (item.disabled) {
               return (
@@ -109,7 +109,7 @@ export const Sidebar: React.FC = () => {
                 </div>
 
                 {item.badge !== undefined && (
-                  <span className="px-2 py-0.5 text-xs font-bold bg-[#FCEBEA] text-[#C95F59] rounded-full border border-[#F8C4C1]">
+                  <span className="px-2 py-0.5 text-xs font-bold bg-[#FCEBEA] text-[#902A24] rounded-full border border-[#F8C4C1]">
                     {item.badge}
                   </span>
                 )}
@@ -121,15 +121,15 @@ export const Sidebar: React.FC = () => {
 
       <div className="pt-4 border-t border-[#E2E9EC]">
         <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#F2F7F8]">
-          <div className="w-8 h-8 rounded-full bg-[#55AEB8] text-white flex items-center justify-center font-bold text-xs">
-            {currentRole === 'admin' ? 'AD' : 'AN'}
+          <div className="w-8 h-8 rounded-full bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xs">
+            {portal === 'admin' ? 'AD' : 'AN'}
           </div>
           <div className="overflow-hidden">
             <p className="text-xs font-semibold text-[#151B22] truncate">
-              {currentRole === 'admin' ? 'Platform Admin' : 'Lic. Andrea N.'}
+              {portal === 'admin' ? 'Platform Admin' : 'Lic. Andrea N.'}
             </p>
             <p className="text-[10px] text-[#66727D] truncate">
-              {currentRole === 'admin' ? 'admin@nutrisoft.app' : 'andrea@clinicabienestar.com'}
+              {portal === 'admin' ? 'admin@nutrisoft.app' : 'andrea@clinicabienestar.com'}
             </p>
           </div>
         </div>

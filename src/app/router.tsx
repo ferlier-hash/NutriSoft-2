@@ -4,7 +4,9 @@ import { ProfessionalLayout } from './layouts/ProfessionalLayout';
 import { PatientLayout } from './layouts/PatientLayout';
 
 // Componentes de Ruta
-import { AdminDashboard } from './routes/admin/AdminDashboard';
+import { AdminOverviewPage } from './routes/admin/AdminOverviewPage';
+import { OrganizationsPage } from './routes/admin/OrganizationsPage';
+import { OrganizationDetailPage } from './routes/admin/OrganizationDetailPage';
 import { NutritionistsListPage } from './routes/admin/NutritionistsListPage';
 import { NutritionistDetailPage } from './routes/admin/NutritionistDetailPage';
 import { AdminPatientDetailPage } from './routes/admin/AdminPatientDetailPage';
@@ -29,9 +31,9 @@ export const router = createHashRouter([
     path: '/admin',
     element: <AdminLayout />,
     children: [
-      { index: true, element: <AdminDashboard /> },
-      { path: 'organizations', element: <AdminDashboard /> },
-      { path: 'organizations/:organizationId', element: <AdminDashboard /> },
+      { index: true, element: <AdminOverviewPage /> },
+      { path: 'organizations', element: <OrganizationsPage /> },
+      { path: 'organizations/:organizationId', element: <OrganizationDetailPage /> },
       { path: 'nutritionists', element: <NutritionistsListPage /> },
       { path: 'nutritionists/:nutritionistId', element: <NutritionistDetailPage /> },
       { path: 'nutritionists/:nutritionistId/patients/:patientId', element: <AdminPatientDetailPage /> },
@@ -66,7 +68,11 @@ export const router = createHashRouter([
   },
   {
     path: '/design-system',
-    element: <DesignSystemPage />,
+    element: import.meta.env.DEV ? (
+      <DesignSystemPage />
+    ) : (
+      <NotFoundPage title="Página no encontrada (404)" message="La ruta solicitada no existe o no está disponible." />
+    ),
   },
   {
     path: '*',

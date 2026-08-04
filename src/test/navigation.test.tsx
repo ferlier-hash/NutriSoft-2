@@ -8,21 +8,21 @@ import { AdminLayout } from '../app/layouts/AdminLayout';
 import { ProfessionalLayout } from '../app/layouts/ProfessionalLayout';
 import { PatientLayout } from '../app/layouts/PatientLayout';
 
-import { AdminDashboard } from '../app/routes/admin/AdminDashboard';
-import { NutritionistsListPage } from '../app/routes/admin/NutritionistsListPage';
+import { AdminOverviewPage } from '../app/routes/admin/AdminOverviewPage';
+import { OrganizationsPage } from '../app/routes/admin/OrganizationsPage';
 import { ProfessionalDashboard } from '../app/routes/professional/ProfessionalDashboard';
 import { PatientDashboard } from '../app/routes/patient/PatientDashboard';
 
-describe('Navegación y Layouts con React Router', () => {
-  it('renderiza AdminLayout correctamente al navegar a /admin y activa únicamente "Resumen"', () => {
+describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
+  it('1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
           path: '/admin',
           element: <AdminLayout />,
           children: [
-            { index: true, element: <AdminDashboard /> },
-            { path: 'nutritionists', element: <NutritionistsListPage /> },
+            { index: true, element: <AdminOverviewPage /> },
+            { path: 'organizations', element: <OrganizationsPage /> },
           ],
         },
       ],
@@ -37,10 +37,10 @@ describe('Navegación y Layouts con React Router', () => {
       </MockProvider>
     );
 
-    expect(screen.getByRole('heading', { name: 'Organizaciones' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Resumen General de Plataforma' })).toBeInTheDocument();
   });
 
-  it('renderiza ProfessionalLayout al navegar a /professional', () => {
+  it('2. Carga directa de /professional renderiza ProfessionalLayout', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
@@ -60,10 +60,10 @@ describe('Navegación y Layouts con React Router', () => {
       </MockProvider>
     );
 
-    expect(screen.getAllByText('Bandeja de atención').length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: 'Consultorio Nutricional' })).toBeInTheDocument();
   });
 
-  it('renderiza MobileBottomNav únicamente dentro de PatientLayout', () => {
+  it('3. Carga directa de /patient renderiza PatientLayout', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
@@ -85,5 +85,56 @@ describe('Navegación y Layouts con React Router', () => {
 
     const bottomNav = screen.getByRole('navigation', { name: /Navegación inferior del portal del paciente/i });
     expect(bottomNav).toBeInTheDocument();
+  });
+
+  it('6. Resumen y Organizaciones son pantallas distintas', () => {
+    const memoryRouter = createMemoryRouter(
+      [
+        {
+          path: '/admin',
+          element: <AdminLayout />,
+          children: [
+            { index: true, element: <AdminOverviewPage /> },
+            { path: 'organizations', element: <OrganizationsPage /> },
+          ],
+        },
+      ],
+      { initialEntries: ['/admin/organizations'] }
+    );
+
+    render(
+      <MockProvider>
+        <ToastProvider>
+          <RouterProvider router={memoryRouter} />
+        </ToastProvider>
+      </MockProvider>
+    );
+
+    expect(screen.getByRole('heading', { name: 'Organizaciones Registradas' })).toBeInTheDocument();
+    expect(screen.queryByText('Resumen General de Plataforma')).not.toBeInTheDocument();
+  });
+
+  it('8. Sólo Inicio aparece activo en /patient dentro de MobileBottomNav', () => {
+    const memoryRouter = createMemoryRouter(
+      [
+        {
+          path: '/patient',
+          element: <PatientLayout />,
+          children: [{ index: true, element: <PatientDashboard /> }],
+        },
+      ],
+      { initialEntries: ['/patient'] }
+    );
+
+    render(
+      <MockProvider>
+        <ToastProvider>
+          <RouterProvider router={memoryRouter} />
+        </ToastProvider>
+      </MockProvider>
+    );
+
+    const activeLink = screen.getByRole('link', { name: /Inicio/i });
+    expect(activeLink).toHaveClass('text-[#357984]');
   });
 });

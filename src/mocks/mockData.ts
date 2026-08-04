@@ -1,4 +1,4 @@
-import type { Organization, Nutritionist, Patient, Alert, CheckInAssignment, Recommendation } from '../types';
+import type { Organization, Nutritionist, Patient, Alert, CheckInAssignment, CheckInResponse, Recommendation } from '../types';
 
 export const initialOrganizations: Organization[] = [
   {
@@ -6,8 +6,8 @@ export const initialOrganizations: Organization[] = [
     name: 'Clínica Bienestar',
     location: 'Ciudad de México, MX',
     status: 'active',
-    nutritionistsCount: 12,
-    patientsCount: 234,
+    nutritionistsCount: 2,
+    patientsCount: 3,
     plan: 'Pro',
     createdAt: '2026-01-15T10:00:00Z',
   },
@@ -16,8 +16,8 @@ export const initialOrganizations: Organization[] = [
     name: 'NutriVida',
     location: 'Guadalajara, MX',
     status: 'active',
-    nutritionistsCount: 8,
-    patientsCount: 156,
+    nutritionistsCount: 1,
+    patientsCount: 2,
     plan: 'Pro',
     createdAt: '2026-02-10T11:30:00Z',
   },
@@ -26,20 +26,10 @@ export const initialOrganizations: Organization[] = [
     name: 'Centro Integral Salud',
     location: 'Santiago, CL',
     status: 'suspended',
-    nutritionistsCount: 5,
-    patientsCount: 78,
+    nutritionistsCount: 0,
+    patientsCount: 0,
     plan: 'Básico',
     createdAt: '2026-03-01T09:15:00Z',
-  },
-  {
-    id: 'org-4',
-    name: 'Nutrición Avanzada',
-    location: 'Medellín, CO',
-    status: 'active',
-    nutritionistsCount: 15,
-    patientsCount: 312,
-    plan: 'Pro',
-    createdAt: '2026-03-20T14:45:00Z',
   },
 ];
 
@@ -51,7 +41,7 @@ export const initialNutritionists: Nutritionist[] = [
     name: 'Lic. Andrea N.',
     email: 'andrea@clinicabienestar.com',
     phone: '+52 55 1111 2222',
-    assignedPatientsCount: 5,
+    assignedPatientsCount: 3,
     status: 'active',
     joinedAt: '2026-01-20T09:00:00Z',
     lastActiveAt: '2026-08-03T18:30:00Z',
@@ -63,10 +53,22 @@ export const initialNutritionists: Nutritionist[] = [
     name: 'Lic. Carlos M.',
     email: 'carlos@clinicabienestar.com',
     phone: '+52 55 3333 4444',
-    assignedPatientsCount: 3,
+    assignedPatientsCount: 0,
     status: 'active',
     joinedAt: '2026-02-15T10:00:00Z',
     lastActiveAt: '2026-08-03T16:00:00Z',
+  },
+  {
+    id: 'nutri-3',
+    organizationId: 'org-2',
+    organizationName: 'NutriVida',
+    name: 'Lic. Sofía R.',
+    email: 'sofia@nutrivida.com',
+    phone: '+52 33 4444 5555',
+    assignedPatientsCount: 2,
+    status: 'active',
+    joinedAt: '2026-03-01T10:00:00Z',
+    lastActiveAt: '2026-08-03T17:00:00Z',
   },
 ];
 
@@ -124,15 +126,15 @@ export const initialPatients: Patient[] = [
   },
   {
     id: 'pat-4',
-    organizationId: 'org-1',
+    organizationId: 'org-2',
     firstName: 'Diego',
     lastName: 'Ramírez',
     email: 'diego.ramirez@example.com',
-    phone: '+52 55 4444 8888',
+    phone: '+52 33 4444 8888',
     age: 31,
-    city: 'Ciudad de México',
+    city: 'Guadalajara',
     status: 'active',
-    assignedNutritionistId: 'nutri-2',
+    assignedNutritionistId: 'nutri-3',
     objective: 'Mantenimiento y hábitos sostenibles',
     currentPlan: 'Plan mantenimiento 6 meses',
     createdAt: '2026-06-01T11:00:00Z',
@@ -141,48 +143,20 @@ export const initialPatients: Patient[] = [
   },
   {
     id: 'pat-5',
-    organizationId: 'org-1',
+    organizationId: 'org-2',
     firstName: 'Sofía',
     lastName: 'Herrera',
     email: 'sofia.herrera@example.com',
-    phone: '+52 55 9999 1111',
+    phone: '+52 33 9999 1111',
     age: 26,
-    city: 'Ciudad de México',
+    city: 'Guadalajara',
     status: 'active',
-    assignedNutritionistId: 'nutri-2',
+    assignedNutritionistId: 'nutri-3',
     objective: 'Nutrición consciente e hidratación',
     currentPlan: 'Plan inicio saludable',
     createdAt: '2026-06-12T15:00:00Z',
     lastActiveAt: '2026-07-28T16:45:00Z',
     portalAccessStatus: 'active',
-  },
-];
-
-export const initialAlerts: Alert[] = [
-  {
-    id: 'alert-init-1',
-    organizationId: 'org-1',
-    patientId: 'pat-1',
-    responseId: 'resp-1',
-    ruleCode: 'HELP_REQUESTED',
-    priority: 'high',
-    patientName: 'María González',
-    reasonText: 'solicitó ayuda explícita en su check-in',
-    recommendedAction: 'Contactar al paciente para consulta o seguimiento',
-    status: 'unresolved',
-    createdAt: '2026-08-03T20:35:00Z',
-  },
-  {
-    id: 'alert-init-2',
-    organizationId: 'org-1',
-    patientId: 'pat-2',
-    ruleCode: 'DELAYED_CHECKIN',
-    priority: 'medium', // Demostración estática razonable (Check-in atrasado 24h)
-    patientName: 'Pablo Acosta',
-    reasonText: 'Check-in atrasado 24h',
-    recommendedAction: 'Enviar recordatorio de seguimiento',
-    status: 'unresolved',
-    createdAt: '2026-08-03T19:00:00Z',
   },
 ];
 
@@ -192,7 +166,7 @@ export const initialCheckInAssignments: CheckInAssignment[] = [
     organizationId: 'org-1',
     patientId: 'pat-1',
     createdBy: 'nutri-1',
-    dueDate: '2026-08-04T23:59:59Z',
+    dueDate: '2026-08-10T23:59:59Z',
     status: 'pending',
     createdAt: '2026-08-03T08:00:00Z',
   },
@@ -201,9 +175,39 @@ export const initialCheckInAssignments: CheckInAssignment[] = [
     organizationId: 'org-1',
     patientId: 'pat-2',
     createdBy: 'nutri-1',
-    dueDate: '2026-08-04T23:59:59Z',
-    status: 'pending',
-    createdAt: '2026-08-03T08:00:00Z',
+    dueDate: '2026-08-10T23:59:59Z',
+    status: 'completed',
+    createdAt: '2026-08-02T08:00:00Z',
+  },
+];
+
+export const initialCheckInResponses: CheckInResponse[] = [
+  {
+    id: 'resp-1',
+    assignmentId: 'assign-2',
+    organizationId: 'org-1',
+    patientId: 'pat-2',
+    energyScore: 2,
+    adherenceScore: 4,
+    helpRequested: true,
+    notes: 'Mucho cansancio esta semana',
+    submittedAt: '2026-08-03T19:00:00Z',
+  },
+];
+
+export const initialAlerts: Alert[] = [
+  {
+    id: 'alert-init-1',
+    organizationId: 'org-1',
+    patientId: 'pat-2',
+    responseId: 'resp-1',
+    ruleCode: 'HELP_REQUESTED',
+    priority: 'high',
+    patientName: 'Pablo Acosta',
+    reasonText: 'solicitó ayuda explícita en su check-in',
+    recommendedAction: 'Contactar al paciente de manera prioritaria.',
+    status: 'unresolved',
+    createdAt: '2026-08-03T19:05:00Z',
   },
 ];
 
