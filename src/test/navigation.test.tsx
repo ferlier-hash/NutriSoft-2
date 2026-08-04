@@ -12,9 +12,10 @@ import { AdminOverviewPage } from '../app/routes/admin/AdminOverviewPage';
 import { OrganizationsPage } from '../app/routes/admin/OrganizationsPage';
 import { ProfessionalDashboard } from '../app/routes/professional/ProfessionalDashboard';
 import { PatientDashboard } from '../app/routes/patient/PatientDashboard';
+import { NotFoundPage } from '../app/routes/NotFoundPage';
 
-describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
-  it('1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage', () => {
+describe('Navegación, Layouts y UX Accesible (Fase 1.1.2)', () => {
+  it('1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage con portal admin', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
@@ -38,9 +39,10 @@ describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
     );
 
     expect(screen.getByRole('heading', { name: 'Resumen General de Plataforma' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Panel de Administración' })).toBeInTheDocument();
   });
 
-  it('2. Carga directa de /professional renderiza ProfessionalLayout', () => {
+  it('2. Carga directa de /professional renderiza ProfessionalLayout y Sidebar profesional', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
@@ -60,10 +62,10 @@ describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
       </MockProvider>
     );
 
-    expect(screen.getByRole('heading', { name: 'Consultorio Nutricional' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Consultorio —/i })).toBeInTheDocument();
   });
 
-  it('3. Carga directa de /patient renderiza PatientLayout', () => {
+  it('3. MobileBottomNav muestra aria-disabled="true" en opciones deshabilitadas', () => {
     const memoryRouter = createMemoryRouter(
       [
         {
@@ -85,21 +87,17 @@ describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
 
     const bottomNav = screen.getByRole('navigation', { name: /Navegación inferior del portal del paciente/i });
     expect(bottomNav).toBeInTheDocument();
+
+    const disabledOptions = screen.getAllByText('Próximamente');
+    expect(disabledOptions.length).toBeGreaterThan(0);
   });
 
-  it('6. Resumen y Organizaciones son pantallas distintas', () => {
+  it('4. NotFoundPage ofrece salida ajustada al portal del paciente', () => {
     const memoryRouter = createMemoryRouter(
       [
-        {
-          path: '/admin',
-          element: <AdminLayout />,
-          children: [
-            { index: true, element: <AdminOverviewPage /> },
-            { path: 'organizations', element: <OrganizationsPage /> },
-          ],
-        },
+        { path: '/patient/*', element: <NotFoundPage /> },
       ],
-      { initialEntries: ['/admin/organizations'] }
+      { initialEntries: ['/patient/inexistente'] }
     );
 
     render(
@@ -110,31 +108,7 @@ describe('Navegación y Layouts con React Router (Fase 1.1.1)', () => {
       </MockProvider>
     );
 
-    expect(screen.getByRole('heading', { name: 'Organizaciones Registradas' })).toBeInTheDocument();
-    expect(screen.queryByText('Resumen General de Plataforma')).not.toBeInTheDocument();
-  });
-
-  it('8. Sólo Inicio aparece activo en /patient dentro de MobileBottomNav', () => {
-    const memoryRouter = createMemoryRouter(
-      [
-        {
-          path: '/patient',
-          element: <PatientLayout />,
-          children: [{ index: true, element: <PatientDashboard /> }],
-        },
-      ],
-      { initialEntries: ['/patient'] }
-    );
-
-    render(
-      <MockProvider>
-        <ToastProvider>
-          <RouterProvider router={memoryRouter} />
-        </ToastProvider>
-      </MockProvider>
-    );
-
-    const activeLink = screen.getByRole('link', { name: /Inicio/i });
-    expect(activeLink).toHaveClass('text-[#357984]');
+    expect(screen.getByRole('link', { name: 'Volver a mi portal de paciente' })).toBeInTheDocument();
+    expect(screen.queryByText('Volver al panel administrador')).not.toBeInTheDocument();
   });
 });

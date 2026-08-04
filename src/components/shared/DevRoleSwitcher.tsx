@@ -1,13 +1,16 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMock } from '../../app/provider';
-import { Shield, UserCheck, User, RefreshCw } from 'lucide-react';
+import { Shield, UserCheck, User, RefreshCw, Stethoscope } from 'lucide-react';
 
 export const DevRoleSwitcher: React.FC = () => {
   const {
     patients,
     currentDemoPatientId,
     setCurrentDemoPatientId,
+    nutritionists,
+    currentDemoNutritionistId,
+    setCurrentDemoNutritionistId,
     resetToInitialMockData,
   } = useMock();
   const navigate = useNavigate();
@@ -75,6 +78,28 @@ export const DevRoleSwitcher: React.FC = () => {
           <span>Paciente</span>
         </button>
       </div>
+
+      {/* SCOPE-01: Selector de Nutricionista Simulado en Portal Profesional */}
+      {activePortal === 'professional' && (
+        <div className="flex items-center gap-1 pl-2 border-l border-white/20">
+          <Stethoscope className="w-3.5 h-3.5 text-[#55AEB8]" />
+          <label htmlFor="demo-nutri-select" className="text-[11px] text-gray-300 font-medium">
+            Profesional:
+          </label>
+          <select
+            id="demo-nutri-select"
+            value={currentDemoNutritionistId}
+            onChange={e => setCurrentDemoNutritionistId(e.target.value)}
+            className="bg-[#151B22] text-white border border-white/20 text-xs rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#55AEB8]"
+          >
+            {nutritionists.map(n => (
+              <option key={n.id} value={n.id}>
+                {n.name} ({n.organizationName})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Selector de Paciente Simulado en Portal Patient */}
       {activePortal === 'patient' && (

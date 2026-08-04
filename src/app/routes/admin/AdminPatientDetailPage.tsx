@@ -29,46 +29,46 @@ export const AdminPatientDetailPage: React.FC = () => {
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
       {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="text-xs text-[#66727D] flex items-center gap-1.5 font-medium flex-wrap">
-        <Link to="/admin" className="hover:text-[#151B22]">Admin</Link>
+      <nav aria-label="Breadcrumb" className="text-xs text-text-secondary flex items-center gap-1.5 font-medium flex-wrap">
+        <Link to="/admin" className="hover:text-text-primary">Admin</Link>
         <ChevronRight className="w-3 h-3" />
-        <Link to="/admin/nutritionists" className="hover:text-[#151B22]">Nutricionistas</Link>
+        <Link to="/admin/nutritionists" className="hover:text-text-primary">Nutricionistas</Link>
         <ChevronRight className="w-3 h-3" />
-        <Link to={`/admin/nutritionists/${nutritionist.id}`} className="hover:text-[#151B22]">{nutritionist.name}</Link>
+        <Link to={`/admin/nutritionists/${nutritionist.id}`} className="hover:text-text-primary">{nutritionist.name}</Link>
         <ChevronRight className="w-3 h-3" />
         <span>Pacientes</span>
         <ChevronRight className="w-3 h-3" />
-        <span className="text-[#151B22] font-semibold">{patient.firstName} {patient.lastName}</span>
+        <span className="text-text-primary font-semibold">{patient.firstName} {patient.lastName}</span>
       </nav>
 
       {/* Cabecera Operativa */}
       <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" highlighted>
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xl shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-brand-primary text-text-primary flex items-center justify-center font-bold text-xl shadow-xs">
             <User className="w-7 h-7" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-2xl font-bold text-[#151B22]">
+              <h2 className="text-2xl font-bold text-text-primary">
                 {patient.firstName} {patient.lastName}
               </h2>
               <Badge variant={patient.status === 'active' ? 'active' : 'suspended'}>
                 {patient.status === 'active' ? 'Cuenta Activa' : 'Archivada'}
               </Badge>
             </div>
-            <p className="text-xs text-[#66727D] mt-0.5">
-              ID Interno Operativo: <code className="bg-[#E2E9EC] px-1.5 py-0.5 rounded text-[#151B22] font-mono">{patient.id}</code>
+            <p className="text-xs text-text-secondary mt-0.5">
+              ID Interno Operativo: <code className="bg-border-subtle px-1.5 py-0.5 rounded text-text-primary font-mono">{patient.id}</code>
             </p>
           </div>
         </div>
       </Card>
 
       {/* Cartel de Privacidad Operativa */}
-      <div className="p-4 bg-[#EDF8F7] border border-[#BDE9EA] rounded-2xl flex items-start gap-3">
-        <ShieldCheck className="w-5 h-5 text-[#357984] shrink-0 mt-0.5" />
-        <div className="text-xs text-[#357984]">
+      <div className="p-4 bg-surface-tinted border border-border-subtle rounded-2xl flex items-start gap-3">
+        <ShieldCheck className="w-5 h-5 text-brand-strong shrink-0 mt-0.5" />
+        <div className="text-xs text-brand-strong">
           <p className="font-semibold">Privacidad de información clínica:</p>
-          <p className="mt-0.5 text-[11px] text-[#66727D]">
+          <p className="mt-0.5 text-[11px] text-text-secondary">
             Por privacidad, la información clínica sólo está disponible para los profesionales autorizados de la organización. El administrador visualiza únicamente métricas e identificadores operativos.
           </p>
         </div>
@@ -77,48 +77,62 @@ export const AdminPatientDetailPage: React.FC = () => {
       {/* Información Operativa Mínima Permitida */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="space-y-3">
-          <h3 className="text-sm font-bold text-[#151B22] border-b border-[#E2E9EC] pb-2">
+          <h3 className="text-sm font-bold text-text-primary border-b border-border-subtle pb-2">
             Datos de Organización & Vinculación
           </h3>
           <div className="space-y-2 text-xs">
             <div>
-              <span className="text-[#66727D] block">Organización perteneciente:</span>
-              <span className="font-semibold text-[#357984]">{nutritionist.organizationName}</span>
+              <span className="text-text-secondary block">Organización perteneciente:</span>
+              <span className="font-semibold text-brand-strong">{nutritionist.organizationName}</span>
             </div>
             <div>
-              <span className="text-[#66727D] block">Nutricionista responsable:</span>
-              <span className="font-semibold text-[#151B22]">{nutritionist.name}</span>
+              <span className="text-text-secondary block">Nutricionista responsable:</span>
+              <span className="font-semibold text-text-primary">{nutritionist.name}</span>
             </div>
             <div>
-              <span className="text-[#66727D] block">Estado del acceso al portal:</span>
-              <Badge variant="active" className="mt-1">
-                {patient.portalAccessStatus === 'active' ? 'Acceso Habilitado' : 'Revocado'}
+              <span className="text-text-secondary block">Estado del acceso al portal:</span>
+              {/* STATUS-01: Mapeo de estados exacto */}
+              <Badge
+                variant={
+                  patient.portalAccessStatus === 'active'
+                    ? 'active'
+                    : patient.portalAccessStatus === 'pending'
+                    ? 'pending'
+                    : 'suspended'
+                }
+                className="mt-1"
+              >
+                {patient.portalAccessStatus === 'active'
+                  ? 'Acceso Habilitado'
+                  : patient.portalAccessStatus === 'pending'
+                  ? 'Pendiente de registro'
+                  : 'Acceso Revocado'}
               </Badge>
             </div>
           </div>
         </Card>
 
         <Card className="space-y-3">
-          <h3 className="text-sm font-bold text-[#151B22] border-b border-[#E2E9EC] pb-2">
+          <h3 className="text-sm font-bold text-text-primary border-b border-border-subtle pb-2">
             Métricas de Uso Agregadas
           </h3>
           <div className="space-y-2 text-xs">
             <div>
-              <span className="text-[#66727D] block">Fecha de alta en la plataforma:</span>
-              <span className="font-semibold text-[#151B22]">{formatShortDate(patient.createdAt)}</span>
+              <span className="text-text-secondary block">Fecha de alta en la plataforma:</span>
+              <span className="font-semibold text-text-primary">{formatShortDate(patient.createdAt)}</span>
             </div>
             <div>
-              <span className="text-[#66727D] block">Última actividad en el portal:</span>
-              <span className="font-semibold text-[#151B22]">{formatDateTime(patient.lastActiveAt)}</span>
+              <span className="text-text-secondary block">Última actividad en el portal:</span>
+              <span className="font-semibold text-text-primary">{formatDateTime(patient.lastActiveAt)}</span>
             </div>
-            <div className="pt-2 border-t border-[#E2E9EC] flex justify-between">
+            <div className="pt-2 border-t border-border-subtle flex justify-between">
               <div>
-                <span className="text-[#66727D] block">Check-ins asignados:</span>
-                <span className="font-bold text-base text-[#151B22]">{checkInsCount}</span>
+                <span className="text-text-secondary block">Check-ins asignados:</span>
+                <span className="font-bold text-base text-text-primary">{checkInsCount}</span>
               </div>
               <div>
-                <span className="text-[#66727D] block">Recomendaciones:</span>
-                <span className="font-bold text-base text-[#151B22]">{recommendationsCount}</span>
+                <span className="text-text-secondary block">Recomendaciones:</span>
+                <span className="font-bold text-base text-text-primary">{recommendationsCount}</span>
               </div>
             </div>
           </div>

@@ -28,8 +28,8 @@ interface NavItem {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
-  const { alerts } = useMock();
-  const unresolvedAlertsCount = alerts.filter(a => a.status === 'unresolved').length;
+  const { professionalAlerts, currentDemoNutritionist } = useMock();
+  const unresolvedAlertsCount = professionalAlerts.filter(a => a.status === 'unresolved').length;
 
   const professionalNav: NavItem[] = [
     { label: 'Inicio', icon: <LayoutDashboard className="w-4 h-4" />, path: '/professional', end: true },
@@ -57,16 +57,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
   const navItems = portal === 'admin' ? adminNav : professionalNav;
 
   return (
-    <aside className="w-64 bg-[#FFFFFF] border-r border-[#E2E9EC] flex flex-col justify-between p-4 min-h-screen hidden md:flex shrink-0">
+    <aside className="w-64 bg-surface border-r border-border-subtle flex flex-col justify-between p-4 min-h-screen hidden md:flex shrink-0">
       <div>
         <div className="flex items-center gap-2 px-3 py-4 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-[linear-gradient(135deg,#8EDADD_0%,#A9DFF3_55%,#EDE196_100%)] flex items-center justify-center text-[#151B22] font-bold text-lg shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-[linear-gradient(135deg,#8EDADD_0%,#A9DFF3_55%,#EDE196_100%)] flex items-center justify-center text-text-primary font-bold text-lg shadow-xs">
             N
           </div>
           <div>
-            <span className="font-bold text-base text-[#151B22] tracking-tight">NutriSoft</span>
-            <span className="text-[10px] text-[#66727D] block font-medium">
-              {portal === 'admin' ? 'Platform Admin' : 'Clínica Bienestar'}
+            <span className="font-bold text-base text-text-primary tracking-tight">NutriSoft</span>
+            <span className="text-[10px] text-text-secondary block font-medium">
+              {portal === 'admin'
+                ? 'Platform Admin'
+                : currentDemoNutritionist
+                ? currentDemoNutritionist.organizationName
+                : 'Consultorio Nutricional'}
             </span>
           </div>
         </div>
@@ -77,13 +81,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
               return (
                 <div
                   key={item.label}
-                  className="flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm text-[#8A959D] opacity-60 cursor-not-allowed select-none min-h-[44px]"
+                  aria-disabled="true"
+                  className="flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm text-text-tertiary opacity-60 cursor-not-allowed select-none min-h-[44px]"
                 >
                   <div className="flex items-center gap-3">
                     {item.icon}
                     <span>{item.label}</span>
                   </div>
-                  <span className="text-[10px] font-semibold bg-[#F2F7F8] text-[#8A959D] px-2 py-0.5 rounded-full border border-[#E2E9EC]">
+                  <span className="text-[10px] font-semibold bg-surface-subtle text-text-tertiary px-2 py-0.5 rounded-full border border-border-subtle">
                     Próximamente
                   </span>
                 </div>
@@ -98,8 +103,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm transition-all min-h-[44px] ${
                     isActive
-                      ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-[#357984] font-semibold shadow-xs'
-                      : 'text-[#66727D] hover:text-[#151B22] hover:bg-[#F2F7F8]'
+                      ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold shadow-xs'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
                   }`
                 }
               >
@@ -119,17 +124,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
         </nav>
       </div>
 
-      <div className="pt-4 border-t border-[#E2E9EC]">
-        <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#F2F7F8]">
-          <div className="w-8 h-8 rounded-full bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xs">
-            {portal === 'admin' ? 'AD' : 'AN'}
+      <div className="pt-4 border-t border-border-subtle">
+        <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-surface-subtle">
+          <div className="w-8 h-8 rounded-full bg-brand-primary text-text-primary flex items-center justify-center font-bold text-xs">
+            {portal === 'admin' ? 'AD' : currentDemoNutritionist ? currentDemoNutritionist.name.split(' ').map(n => n[0]).join('') : 'AN'}
           </div>
           <div className="overflow-hidden">
-            <p className="text-xs font-semibold text-[#151B22] truncate">
-              {portal === 'admin' ? 'Platform Admin' : 'Lic. Andrea N.'}
+            <p className="text-xs font-semibold text-text-primary truncate">
+              {portal === 'admin' ? 'Platform Admin' : currentDemoNutritionist ? currentDemoNutritionist.name : 'Lic. Andrea N.'}
             </p>
-            <p className="text-[10px] text-[#66727D] truncate">
-              {portal === 'admin' ? 'admin@nutrisoft.app' : 'andrea@clinicabienestar.com'}
+            <p className="text-[10px] text-text-secondary truncate">
+              {portal === 'admin' ? 'admin@nutrisoft.app' : currentDemoNutritionist ? currentDemoNutritionist.email : 'andrea@clinicabienestar.com'}
             </p>
           </div>
         </div>

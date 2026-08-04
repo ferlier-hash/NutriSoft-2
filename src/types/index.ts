@@ -32,14 +32,14 @@ export interface Patient {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phone?: string;
   birthDate?: string;
-  age: number;
-  city: string;
+  age?: number;
+  city?: string;
   status: 'active' | 'archived';
   assignedNutritionistId: string;
   objective: string;
-  currentPlan: string;
+  currentPlan?: string | null;
   createdAt: string;
   lastActiveAt: string;
   portalAccessStatus: 'active' | 'pending' | 'revoked';
@@ -84,7 +84,7 @@ export interface Alert {
   status: AlertStatus;
   resolvedBy?: string;
   resolvedAt?: string;
-  createdAt: string; // Fecha ISO
+  createdAt: string; // ISO date string
 }
 
 export interface Recommendation {

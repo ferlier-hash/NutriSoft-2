@@ -1,0 +1,29 @@
+
+> nutrisoft@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/fernandoliernur/Projects/nutrisoft
+
+ ✓ src/test/alertEngine.test.ts (4 tests) 8ms
+ ✓ src/test/userFlowIntegration.test.tsx (1 test) 12ms
+ ✓ src/test/domainInvariants.test.tsx (4 tests) 18ms
+stderr | src/test/adminPrivacy.test.tsx > Barrera de Privacidad del Portal Administrador > muestra únicamente información operativa y OCURRE aviso de privacidad al consultar el perfil administrativo de un paciente
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+stderr | src/test/patientIsolation.test.tsx > Aislamiento del Portal del Paciente por currentDemoPatientId > filtra aisladamente el saludo y las recomendaciones según el paciente seleccionado
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+ ✓ src/test/patientIsolation.test.tsx (1 test) 49ms
+ ✓ src/test/adminPrivacy.test.tsx (3 tests) 61ms
+stderr | src/test/navigation.test.tsx > Navegación, Layouts y UX Accesible (Fase 1.1.2) > 1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage con portal admin
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+ ✓ src/test/navigation.test.tsx (4 tests) 103ms
+
+ Test Files  6 passed (6)
+      Tests  17 passed (17)
+   Start at  10:44:08
+   Duration  965ms (transform 260ms, setup 345ms, collect 935ms, tests 251ms, environment 1.83s, prepare 362ms)
+
+EXIT CODE: 0

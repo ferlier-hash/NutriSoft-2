@@ -39,15 +39,16 @@ npm run build
 La aplicación utiliza `React Router` (`createHashRouter`) con layouts diferenciados por experiencia:
 
 - **Portal Platform Admin (`/admin` - AdminLayout):**
-  - `/admin`: Dashboard de métricas agregadas desidentificadas.
-  - `/admin/organizations`: Gestión de organizaciones de la plataforma.
+  - `/admin`: Dashboard ejecutivo de métricas agregadas desidentificadas.
+  - `/admin/organizations`: Gestión de organizaciones de la plataforma con flujo de altas y suspensiones.
+  - `/admin/organizations/:organizationId`: Detalle operativo de la organización.
   - `/admin/nutritionists`: Directorio de nutricionistas registrados.
   - `/admin/nutritionists/:nutritionistId`: Perfil operativo del nutricionista con pacientes asignados.
-  - `/admin/nutritionists/:nutritionistId/patients/:patientId`: Vista operativa del paciente **con barreras de privacidad clínica estrictas**.
+  - `/admin/nutritionists/:nutritionistId/patients/:patientId`: Vista operativa del paciente **con barreras de privacidad clínica**.
 - **Portal Nutricionista (`/professional` - ProfessionalLayout):**
-  - `/professional`: Dashboard con bandeja reducida y acciones rápidas.
-  - `/professional/inbox`: Bandeja de atención prioritaria (diferencial del producto).
-  - `/professional/patients`: Lista de pacientes del consultorio.
+  - `/professional`: Dashboard con bandeja de atención del profesional actual y acciones rápidas.
+  - `/professional/inbox`: Bandeja de atención prioritaria del profesional actual.
+  - `/professional/patients`: Lista de pacientes asignados al profesional actual.
   - `/professional/patients/:patientId`: Ficha clínica completa del paciente.
 - **Portal Paciente (`/patient` - PatientLayout):**
   - `/patient`: Dashboard móvil del paciente aislado por `currentDemoPatientId`.
@@ -57,7 +58,11 @@ La aplicación utiliza `React Router` (`createHashRouter`) con layouts diferenci
 
 ---
 
-## 🛡️ Aislamiento y Límites de Privacidad en la Fase 1.1
+## 🛡️ Aislamiento y Límites de Privacidad (Fase 1.1.2)
 
-1. **Privacidad del Administrador:** El panel de administración prohíbe el acceso directo a una lista global de pacientes. El acceso administrativo a un paciente solo es posible desde la jerarquía `Admin -> Nutricionistas -> [Nutricionista] -> Pacientes asignados -> [Paciente Operativo]`. La vista no renderiza respuestas de check-ins, energía, adherencia, solicitudes de ayuda, contenido de recomendaciones o historial clínico.
-2. **Aislamiento por Paciente Simulada:** El selector de desarrollo `DevRoleSwitcher` permite alternar el paciente simulado (`currentDemoPatientId`). El portal del paciente filtra aisladamente las asignaciones, respuestas, recomendaciones y saludos.
+1. **Aislamiento del Profesional:** El selector de desarrollo `DevRoleSwitcher` permite alternar el nutricionista simulado (`currentDemoNutritionistId`). El portal del profesional filtra aisladamente las alertas, asignaciones, recomendaciones y lista de pacientes permitiendo operar únicamente sobre los asignados al profesional actual.
+2. **Aislamiento del Paciente:** El selector de desarrollo permite alternar el paciente simulado (`currentDemoPatientId`). El portal del paciente filtra aisladamente las asignaciones, respuestas, recomendaciones y saludos.
+3. **Privacidad del Administrador:** El panel de administración prohíbe el acceso directo a una lista global de pacientes. La vista administrativa del paciente no renderiza información clínica ni respuestas de check-ins.
+
+> ⚠️ **AVISO IMPORTANTE DE PRIVACIDAD EN EL PROTOTIPO:**  
+> Las restricciones actuales de privacidad, aislamiento de portales y filtros de datos son **restricciones de la capa de presentación e interfaz del prototipo** para validar la experiencia de usuario y las reglas de negocio en la UI. No constituyen un sistema de seguridad de producción ni un control de acceso de backend (RBAC/RLS), los cuales serán implementados a nivel de base de datos en la Fase 2 con Supabase RLS.

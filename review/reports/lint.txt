@@ -1,0 +1,5 @@
+
+> nutrisoft@0.1.0 lint
+> eslint .
+
+EXIT CODE: 0

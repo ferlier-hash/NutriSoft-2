@@ -12,8 +12,8 @@ export const RatingScale: React.FC<RatingScaleProps> = ({ name, legend, value, o
   const options = [1, 2, 3, 4, 5];
 
   return (
-    <fieldset className="space-y-2 border-0 p-0 m-0">
-      <legend className="text-sm font-medium text-[#151B22] mb-1">{legend}</legend>
+    <fieldset aria-invalid={!!error} className="space-y-2 border-0 p-0 m-0">
+      <legend className="text-sm font-semibold text-text-primary mb-1">{legend}</legend>
 
       <div className="flex items-center justify-between gap-2 max-w-sm">
         {options.map(num => {
@@ -24,10 +24,10 @@ export const RatingScale: React.FC<RatingScaleProps> = ({ name, legend, value, o
             <label
               key={num}
               htmlFor={inputId}
-              className={`flex-1 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-2xl font-bold text-base border transition-all cursor-pointer select-none focus-within:ring-2 focus-within:ring-[#357984] focus-within:ring-offset-2 ${
+              className={`flex-1 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-2xl font-bold text-base border transition-all cursor-pointer select-none focus-within:ring-2 focus-within:ring-brand-strong focus-within:ring-offset-2 ${
                 isSelected
-                  ? 'bg-[linear-gradient(135deg,#55AEB8_0%,#357984_100%)] text-white border-[#357984] shadow-md scale-105'
-                  : 'bg-[#FFFFFF] text-[#151B22] border-[#E2E9EC] hover:bg-[#F2F7F8] hover:border-[#CCD9DE]'
+                  ? 'bg-brand-strong text-white border-brand-strong shadow-md scale-105'
+                  : 'bg-surface text-text-primary border-border-subtle hover:bg-surface-subtle hover:border-border-hover'
               }`}
             >
               <input
@@ -47,7 +47,7 @@ export const RatingScale: React.FC<RatingScaleProps> = ({ name, legend, value, o
       </div>
 
       {error && (
-        <p id={`${name}-error`} className="text-xs text-[#C95F59] font-semibold mt-1">
+        <p id={`${name}-error`} className="text-xs text-[#902A24] font-semibold mt-1">
           {error}
         </p>
       )}

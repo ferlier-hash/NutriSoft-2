@@ -1,6 +1,22 @@
 /**
- * UTILIDADES DE FORMATEO Y MANEJO DE FECHAS ISO
+ * UTILIDADES DE FORMATEO Y FABRICA DE FECHAS DINÁMICAS
  */
+
+export function minutesAgo(mins: number): string {
+  return new Date(Date.now() - mins * 60 * 1000).toISOString();
+}
+
+export function hoursAgo(hrs: number): string {
+  return new Date(Date.now() - hrs * 3600 * 1000).toISOString();
+}
+
+export function daysAgo(days: number): string {
+  return new Date(Date.now() - days * 86400 * 1000).toISOString();
+}
+
+export function daysInFuture(days: number): string {
+  return new Date(Date.now() + days * 86400 * 1000).toISOString();
+}
 
 export function formatShortDate(isoString: string): string {
   try {
