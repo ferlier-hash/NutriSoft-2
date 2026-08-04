@@ -1,100 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { useMock } from './provider';
-import { Sidebar } from '../components/shared/Sidebar';
-import { Header } from '../components/shared/Header';
-import { MobileBottomNav } from '../components/shared/MobileBottomNav';
-import { DevRoleSwitcher } from '../components/shared/DevRoleSwitcher';
+import { createHashRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { AdminLayout } from './layouts/AdminLayout';
+import { ProfessionalLayout } from './layouts/ProfessionalLayout';
+import { PatientLayout } from './layouts/PatientLayout';
 
-// Rutas
+// Componentes de Ruta
 import { AdminDashboard } from './routes/admin/AdminDashboard';
+import { NutritionistsListPage } from './routes/admin/NutritionistsListPage';
+import { NutritionistDetailPage } from './routes/admin/NutritionistDetailPage';
+import { AdminPatientDetailPage } from './routes/admin/AdminPatientDetailPage';
+
 import { ProfessionalDashboard } from './routes/professional/ProfessionalDashboard';
 import { InboxPage } from './routes/professional/InboxPage';
 import { PatientsPage } from './routes/professional/PatientsPage';
 import { PatientDetailPage } from './routes/professional/PatientDetailPage';
+
 import { PatientDashboard } from './routes/patient/PatientDashboard';
 import { CheckInPage } from './routes/patient/CheckInPage';
+
 import { DesignSystemPage } from './routes/design-system/DesignSystemPage';
+import { NotFoundPage } from './routes/NotFoundPage';
 
-export const AppRouter: React.FC = () => {
-  const { currentRole, setCurrentRole } = useMock();
-  const [currentHash, setCurrentHash] = useState(window.location.hash || '#/professional');
+export const router = createHashRouter([
+  {
+    path: '/',
+    element: <Navigate to="/professional" replace />,
+  },
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <AdminDashboard /> },
+      { path: 'organizations', element: <AdminDashboard /> },
+      { path: 'organizations/:organizationId', element: <AdminDashboard /> },
+      { path: 'nutritionists', element: <NutritionistsListPage /> },
+      { path: 'nutritionists/:nutritionistId', element: <NutritionistDetailPage /> },
+      { path: 'nutritionists/:nutritionistId/patients/:patientId', element: <AdminPatientDetailPage /> },
+      {
+        path: 'patients',
+        element: (
+          <NotFoundPage
+            title="Acceso directo no permitido"
+            message="El acceso a pacientes en el portal Administrador se realiza exclusivamente desde el perfil del nutricionista responsable."
+          />
+        ),
+      },
+    ],
+  },
+  {
+    path: '/professional',
+    element: <ProfessionalLayout />,
+    children: [
+      { index: true, element: <ProfessionalDashboard /> },
+      { path: 'inbox', element: <InboxPage /> },
+      { path: 'patients', element: <PatientsPage /> },
+      { path: 'patients/:patientId', element: <PatientDetailPage /> },
+    ],
+  },
+  {
+    path: '/patient',
+    element: <PatientLayout />,
+    children: [
+      { index: true, element: <PatientDashboard /> },
+      { path: 'check-in/:assignmentId', element: <CheckInPage /> },
+    ],
+  },
+  {
+    path: '/design-system',
+    element: <DesignSystemPage />,
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
+  },
+]);
 
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash || '#/professional';
-      setCurrentHash(hash);
-
-      // Sincronizar rol automáticamente según la ruta
-      if (hash.startsWith('#/admin') && currentRole !== 'admin') {
-        setCurrentRole('admin');
-      } else if (hash.startsWith('#/professional') && currentRole !== 'nutritionist') {
-        setCurrentRole('nutritionist');
-      } else if (hash.startsWith('#/patient') && currentRole !== 'patient') {
-        setCurrentRole('patient');
-      }
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [currentRole, setCurrentRole]);
-
-  // Renderizador de componentes de ruta
-  const renderRouteContent = () => {
-    if (currentHash === '#/design-system') {
-      return <DesignSystemPage />;
-    }
-
-    if (currentHash.startsWith('#/admin')) {
-      return <AdminDashboard />;
-    }
-
-    if (currentHash === '#/professional/inbox') {
-      return <InboxPage />;
-    }
-
-    if (currentHash === '#/professional/patients') {
-      return <PatientsPage />;
-    }
-
-    if (currentHash.startsWith('#/professional/patients/')) {
-      return <PatientDetailPage />;
-    }
-
-    if (currentHash.startsWith('#/professional')) {
-      return <ProfessionalDashboard />;
-    }
-
-    if (currentHash.startsWith('#/patient/check-in/')) {
-      return <CheckInPage />;
-    }
-
-    if (currentHash.startsWith('#/patient')) {
-      return <PatientDashboard />;
-    }
-
-    // Ruta por defecto
-    return <ProfessionalDashboard />;
-  };
-
-  return (
-    <div className="min-h-screen bg-[#F7F9FA] flex flex-col md:flex-row">
-      <DevRoleSwitcher />
-
-      {/* Sidebar para Admin y Nutricionista */}
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Cabecera para Admin y Nutricionista */}
-        <Header />
-
-        {/* Área de contenido principal */}
-        <main className="flex-1 overflow-y-auto">
-          {renderRouteContent()}
-        </main>
-      </div>
-
-      {/* Navegación inferior móvil para Pacientes */}
-      <MobileBottomNav />
-    </div>
-  );
-};
+export function AppRouter() {
+  return <RouterProvider router={router} />;
+}

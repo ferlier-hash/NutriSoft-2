@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
@@ -7,6 +8,7 @@ import { Search, UserPlus, ChevronRight } from 'lucide-react';
 
 export const PatientsPage: React.FC = () => {
   const { patients } = useMock();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredPatients = patients.filter(
@@ -28,7 +30,7 @@ export const PatientsPage: React.FC = () => {
 
         <Button
           variant="primary"
-          onClick={() => (window.location.hash = '#/professional')}
+          onClick={() => navigate('/professional')}
           className="flex items-center gap-2"
         >
           <UserPlus className="w-4 h-4" />
@@ -88,15 +90,16 @@ export const PatientsPage: React.FC = () => {
                     </Badge>
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => (window.location.hash = `#/professional/patients/${p.id}`)}
-                      className="text-xs flex items-center gap-1 ml-auto"
-                    >
-                      <span>Abrir ficha</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </Button>
+                    <Link to={`/professional/patients/${p.id}`}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="text-xs flex items-center gap-1 ml-auto"
+                      >
+                        <span>Abrir ficha</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

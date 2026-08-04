@@ -1,37 +1,97 @@
 import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { useMock } from '../../provider';
 import { RatingScale } from '../../../components/domain/RatingScale';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
+import { Switch } from '../../../components/ui/Switch';
+import { NotFoundPage } from '../NotFoundPage';
 import { ArrowLeft, CheckCircle2, HeartHandshake } from 'lucide-react';
 
 export const CheckInPage: React.FC = () => {
+  const { assignmentId } = useParams<{ assignmentId: string }>();
   const { checkInAssignments, submitCheckInResponse } = useMock();
-  const [energyScore, setEnergyScore] = useState<number>(3);
-  const [adherenceScore, setAdherenceScore] = useState<number>(3);
+
+  const [energyScore, setEnergyScore] = useState<number | null>(null);
+  const [adherenceScore, setAdherenceScore] = useState<number | null>(null);
   const [helpRequested, setHelpRequested] = useState<boolean>(false);
   const [notes, setNotes] = useState<string>('');
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
 
-  const hash = window.location.hash;
-  const assignmentId = hash.split('/check-in/')[1] || 'assign-1';
+  const [energyError, setEnergyError] = useState<string | null>(null);
+  const [adherenceError, setAdherenceError] = useState<string | null>(null);
+
   const assignment = checkInAssignments.find(a => a.id === assignmentId);
+
+  // Si la asignación no existe o no es válida
+  if (assignmentId !== 'completed' && !assignment) {
+    return (
+      <NotFoundPage
+        title="Asignación de check-in no encontrada"
+        message="El enlace de check-in consultado no existe o ha expirado."
+      />
+    );
+  }
+
+  // Si ya fue completado
+  if (assignment?.status === 'completed') {
+    return (
+      <div className="pb-20 p-4 space-y-6 max-w-md mx-auto min-h-screen bg-[#F7F9FA] flex flex-col justify-center items-center text-center">
+        <Card className="p-6 space-y-4 max-w-sm w-full bg-[linear-gradient(135deg,#E9F8F7_0%,#EEF7FB_58%,#FCF9E8_100%)] border-[#BDE9EA]">
+          <div className="w-16 h-16 rounded-full bg-[#E8F5EE] border border-[#BDE3CC] text-[#39835A] flex items-center justify-center mx-auto shadow-sm">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+
+          <h3 className="text-xl font-bold text-[#151B22]">Check-in ya completado</h3>
+          <p className="text-xs text-[#151B22] leading-relaxed font-medium">
+            Ya respondiste previamente este reporte. Tu nutricionista tiene registrada tu respuesta.
+          </p>
+
+          <Link to="/patient">
+            <Button variant="primary" className="w-full mt-4">
+              Volver a mi portal
+            </Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    let hasError = false;
 
-    const { confirmationMessage } = submitCheckInResponse(
-      assignmentId,
-      energyScore,
-      adherenceScore,
-      helpRequested,
-      notes
-    );
+    if (!energyScore) {
+      setEnergyError('Por favor selecciona tu nivel de energía (1 a 5)');
+      hasError = true;
+    } else {
+      setEnergyError(null);
+    }
 
-    setSubmittedMessage(confirmationMessage);
+    if (!adherenceScore) {
+      setAdherenceError('Por favor selecciona tu nivel de adherencia (1 a 5)');
+      hasError = true;
+    } else {
+      setAdherenceError(null);
+    }
+
+    if (hasError || !energyScore || !adherenceScore || !assignment) return;
+
+    try {
+      const { confirmationMessage } = submitCheckInResponse(
+        assignment.id,
+        energyScore,
+        adherenceScore,
+        helpRequested,
+        notes
+      );
+      setSubmittedMessage(confirmationMessage);
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : 'Ocurrió un error al enviar el check-in.';
+      alert(errorMsg);
+    }
   };
 
-  // Pantalla de Confirmación Neutral (sin diagnósticos automáticos)
   if (submittedMessage) {
     return (
       <div className="pb-20 p-4 space-y-6 max-w-md mx-auto min-h-screen bg-[#F7F9FA] flex flex-col justify-center items-center text-center">
@@ -41,18 +101,15 @@ export const CheckInPage: React.FC = () => {
           </div>
 
           <h3 className="text-xl font-bold text-[#151B22]">¡Check-in recibido!</h3>
-
           <p className="text-xs text-[#151B22] leading-relaxed font-medium">
             {submittedMessage}
           </p>
 
-          <Button
-            variant="primary"
-            className="w-full mt-4"
-            onClick={() => (window.location.hash = '#/patient')}
-          >
-            Volver a inicio
-          </Button>
+          <Link to="/patient">
+            <Button variant="primary" className="w-full mt-4">
+              Volver a inicio
+            </Button>
+          </Link>
         </Card>
       </div>
     );
@@ -60,43 +117,51 @@ export const CheckInPage: React.FC = () => {
 
   return (
     <div className="pb-20 p-4 space-y-5 max-w-md mx-auto min-h-screen bg-[#F7F9FA]">
-      <a
-        href="#/patient"
+      <Link
+        to="/patient"
         className="inline-flex items-center gap-1 text-xs text-[#66727D] hover:text-[#151B22] font-semibold"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Volver al portal</span>
-      </a>
+      </Link>
 
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-[#151B22]">Tu check-in de hoy</h2>
         <p className="text-xs text-[#66727D]">
-          {assignment ? 'Por favor responde estas breves preguntas.' : 'Check-in demostrativo.'}
+          Selecciona tus respuestas para enviar el reporte a tu nutricionista.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card className="space-y-5">
-          {/* Pregunta 1: Energía (1 a 5 con Radio Inputs) */}
+          {/* Pregunta 1: Energía (1 a 5 sin selección inicial) */}
           <RatingScale
             name="energy"
             legend="¿Cómo está tu energía hoy?"
             value={energyScore}
-            onChange={setEnergyScore}
+            onChange={val => {
+              setEnergyScore(val);
+              setEnergyError(null);
+            }}
+            error={energyError || undefined}
           />
 
-          {/* Pregunta 2: Adherencia (1 a 5 con Radio Inputs) */}
+          {/* Pregunta 2: Adherencia (1 a 5 sin selección inicial) */}
           <RatingScale
             name="adherence"
             legend="¿Qué tan adherido/a estuviste a tu plan?"
             value={adherenceScore}
-            onChange={setAdherenceScore}
+            onChange={val => {
+              setAdherenceScore(val);
+              setAdherenceError(null);
+            }}
+            error={adherenceError || undefined}
           />
 
-          {/* Pregunta 3: Pedido de Ayuda (Concepto A Switch) */}
+          {/* Pregunta 3: Pedido de Ayuda con Radix Switch Accesible */}
           <div className="pt-3 border-t border-[#E2E9EC] flex items-center justify-between gap-3">
             <div>
-              <label htmlFor="help-toggle" className="text-sm font-semibold text-[#151B22] flex items-center gap-1.5 cursor-pointer">
+              <label htmlFor="help-switch" className="text-sm font-semibold text-[#151B22] flex items-center gap-1.5 cursor-pointer">
                 <HeartHandshake className="w-4 h-4 text-[#C95F59]" />
                 <span>¿Necesitas ayuda?</span>
               </label>
@@ -105,12 +170,10 @@ export const CheckInPage: React.FC = () => {
               </p>
             </div>
 
-            <input
-              type="checkbox"
-              id="help-toggle"
+            <Switch
+              id="help-switch"
               checked={helpRequested}
-              onChange={e => setHelpRequested(e.target.checked)}
-              className="w-6 h-6 rounded accent-[#55AEB8] cursor-pointer min-h-[44px] min-w-[44px]"
+              onCheckedChange={setHelpRequested}
             />
           </div>
 
@@ -130,7 +193,6 @@ export const CheckInPage: React.FC = () => {
           </div>
         </Card>
 
-        {/* Botón de Confirmación (Concepto A Gradiente) */}
         <Button variant="primary" type="submit" className="w-full font-bold text-sm">
           Confirmar check-in
         </Button>

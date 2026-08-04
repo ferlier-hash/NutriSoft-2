@@ -17,12 +17,12 @@ describe('alertEngine - Reglas de Alerta Dinámicas', () => {
 
     const alerts = evaluateCheckInAlerts(mockResponse, 'María González');
     expect(alerts).toHaveLength(1);
-    expect(alerts[0].priority).toBe('high');
-    expect(alerts[0].ruleCode).toBe('HELP_REQUESTED');
-    expect(alerts[0].patientName).toBe('María González');
+    expect(alerts[0]?.priority).toBe('high');
+    expect(alerts[0]?.ruleCode).toBe('HELP_REQUESTED');
+    expect(alerts[0]?.patientName).toBe('María González');
   });
 
-  it('genera alerta ALTA cuando la energía es <= 2', () => {
+  it('genera alerta ALTA cuando la energía es ≤ 2', () => {
     const mockResponse: CheckInResponse = {
       id: 'resp-test-2',
       assignmentId: 'assign-test-2',
@@ -36,11 +36,11 @@ describe('alertEngine - Reglas de Alerta Dinámicas', () => {
 
     const alerts = evaluateCheckInAlerts(mockResponse, 'Pablo Acosta');
     expect(alerts).toHaveLength(1);
-    expect(alerts[0].priority).toBe('high');
-    expect(alerts[0].ruleCode).toBe('LOW_ENERGY');
+    expect(alerts[0]?.priority).toBe('high');
+    expect(alerts[0]?.ruleCode).toBe('LOW_ENERGY');
   });
 
-  it('genera alerta ALTA cuando la adherencia es <= 2', () => {
+  it('genera alerta ALTA cuando la adherencia es ≤ 2', () => {
     const mockResponse: CheckInResponse = {
       id: 'resp-test-3',
       assignmentId: 'assign-test-3',
@@ -54,11 +54,11 @@ describe('alertEngine - Reglas de Alerta Dinámicas', () => {
 
     const alerts = evaluateCheckInAlerts(mockResponse, 'Lucía Torres');
     expect(alerts).toHaveLength(1);
-    expect(alerts[0].priority).toBe('high');
-    expect(alerts[0].ruleCode).toBe('LOW_ADHERENCE');
+    expect(alerts[0]?.priority).toBe('high');
+    expect(alerts[0]?.ruleCode).toBe('LOW_ADHERENCE');
   });
 
-  it('NO genera alerta cuando todos los indicadores son normales (>= 3) y no solicitó ayuda', () => {
+  it('NO genera alerta cuando todos los indicadores son normales (≥ 3) y no solicitó ayuda', () => {
     const mockResponse: CheckInResponse = {
       id: 'resp-test-4',
       assignmentId: 'assign-test-4',

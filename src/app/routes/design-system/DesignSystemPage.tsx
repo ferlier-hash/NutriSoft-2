@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { Card } from '../../../components/ui/Card';
-import { Modal } from '../../../components/ui/Modal';
+import { Dialog } from '../../../components/ui/Dialog';
+import { Switch } from '../../../components/ui/Switch';
 import { RatingScale } from '../../../components/domain/RatingScale';
+import { useToast } from '../../../components/ui/Toast';
 
 export const DesignSystemPage: React.FC = () => {
-  // Proteger la ruta en producción
   if (!import.meta.env.DEV) {
     return (
       <div className="p-8 text-center text-xs text-[#66727D]">
@@ -15,8 +16,10 @@ export const DesignSystemPage: React.FC = () => {
     );
   }
 
-  const [ratingVal, setRatingVal] = useState<number>(3);
+  const { showToast } = useToast();
+  const [ratingVal, setRatingVal] = useState<number | null>(3);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [switchVal, setSwitchVal] = useState<boolean>(true);
 
   return (
     <div className="p-8 space-y-10 max-w-6xl mx-auto bg-[#F7F9FA] text-[#151B22]">
@@ -53,9 +56,25 @@ export const DesignSystemPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Badges & Estados Semánticos */}
+      {/* 3. Toasts Accesibles */}
       <section className="space-y-3">
-        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">3. Badges Semánticos</h2>
+        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">3. Notificaciones Toast (aria-live)</h2>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="secondary" onClick={() => showToast('Éxito', 'Operación completada con éxito', 'success')}>
+            Probar Toast Éxito
+          </Button>
+          <Button variant="secondary" onClick={() => showToast('Error', 'Ha ocurrido un problema', 'error')}>
+            Probar Toast Error
+          </Button>
+          <Button variant="secondary" onClick={() => showToast('Información', 'Mensaje del sistema', 'info')}>
+            Probar Toast Info
+          </Button>
+        </div>
+      </section>
+
+      {/* 4. Badges & Estados Semánticos */}
+      <section className="space-y-3">
+        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">4. Badges Semánticos</h2>
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="high">🚨 Alerta Alta</Badge>
           <Badge variant="medium">⚠️ Alerta Media</Badge>
@@ -66,50 +85,43 @@ export const DesignSystemPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Escala 1 a 5 Accesible */}
+      {/* 5. Escala 1 a 5 y Switch Radix */}
       <section className="space-y-3">
-        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">4. Escala 1 a 5 (Radio Inputs HTML)</h2>
-        <Card className="max-w-md">
+        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">5. Escala 1-5 y Switch Radix UI</h2>
+        <Card className="max-w-md space-y-4">
           <RatingScale
             name="ds-scale"
             legend="¿Cómo evalúas el nivel de energía? (Navegable por teclado)"
             value={ratingVal}
             onChange={setRatingVal}
           />
-          <p className="text-xs text-[#66727D] mt-2">Valor seleccionado: <strong>{ratingVal}</strong></p>
+
+          <div className="pt-3 border-t border-[#E2E9EC]">
+            <Switch
+              id="ds-switch"
+              checked={switchVal}
+              onCheckedChange={setSwitchVal}
+              label="Interruptor accesibles (Radix Switch)"
+            />
+          </div>
         </Card>
       </section>
 
-      {/* 5. Modales & Tarjetas */}
+      {/* 6. Modales Accesibles Radix UI */}
       <section className="space-y-3">
-        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">5. Modales & Contenedores</h2>
+        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">6. Radix Dialog</h2>
         <Button variant="secondary" onClick={() => setIsModalOpen(true)}>
-          Abrir Modal Demostrativo
+          Abrir Dialog Radix UI
         </Button>
 
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Ejemplo de Modal Accesible">
+        <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Ejemplo de Dialog Accesible">
           <p className="text-xs text-[#66727D] mb-4">
-            Este modal soporta la tecla Escape, trampa de foco y atributos aria-modal.
+            Este modal utiliza Radix UI Dialog con trampa de foco, autofocus inicial, restauración de foco y Escape.
           </p>
           <Button variant="primary" onClick={() => setIsModalOpen(false)}>
-            Cerrar Modal
+            Cerrar Dialog
           </Button>
-        </Modal>
-      </section>
-
-      {/* 6. Skeletons & Estados Vacíos */}
-      <section className="space-y-3">
-        <h2 className="text-lg font-bold border-b border-[#E2E9EC] pb-2">6. Skeletons & Estados Vacíos</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="animate-pulse space-y-3">
-            <div className="h-4 bg-[#E2E9EC] rounded w-3/4"></div>
-            <div className="h-3 bg-[#E2E9EC] rounded w-1/2"></div>
-            <div className="h-8 bg-[#E2E9EC] rounded w-full"></div>
-          </Card>
-          <Card className="text-center py-6 text-xs text-[#66727D]">
-            Estado vacío demostrativo
-          </Card>
-        </div>
+        </Dialog>
       </section>
     </div>
   );

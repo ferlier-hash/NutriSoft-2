@@ -1,22 +1,29 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
+import { formatShortDate } from '../../../lib/dateUtils';
 import { Sparkles, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
 
 export const PatientDashboard: React.FC = () => {
-  const { checkInAssignments, recommendations } = useMock();
-  const pendingAssignment = checkInAssignments.find(a => a.status === 'pending');
+  const { currentDemoPatient, checkInAssignments, recommendations } = useMock();
+
+  const pendingAssignment = checkInAssignments.find(
+    a => a.patientId === currentDemoPatient.id && a.status === 'pending'
+  );
+
+  const patientRecs = recommendations.filter(r => r.patientId === currentDemoPatient.id);
 
   return (
     <div className="pb-20 p-4 space-y-5 max-w-md mx-auto min-h-screen bg-[#F7F9FA]">
-      {/* Cabecera del Portal Paciente (Concepto A) */}
+      {/* Cabecera Dinámica Aislada por Paciente */}
       <div className="pt-2 pb-2">
-        <h2 className="text-2xl font-bold text-[#151B22]">¡Hola, María! 👋</h2>
+        <h2 className="text-2xl font-bold text-[#151B22]">¡Hola, {currentDemoPatient.firstName}! 👋</h2>
         <p className="text-xs text-[#66727D] mt-0.5">Estamos aquí para acompañarte.</p>
       </div>
 
-      {/* Tarjeta 1: Check-in pendiente (Concepto A) */}
+      {/* Tarjeta 1: Check-in pendiente */}
       <Card className="space-y-3 bg-[linear-gradient(135deg,#E9F8F7_0%,#EEF7FB_58%,#FCF9E8_100%)] border-[#BDE9EA]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-[#55AEB8] text-white flex items-center justify-center font-bold shadow-sm">
@@ -35,14 +42,12 @@ export const PatientDashboard: React.FC = () => {
         </div>
 
         {pendingAssignment ? (
-          <Button
-            variant="primary"
-            className="w-full justify-between"
-            onClick={() => (window.location.hash = `#/patient/check-in/${pendingAssignment.id}`)}
-          >
-            <span>Realizar check-in</span>
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <Link to={`/patient/check-in/${pendingAssignment.id}`}>
+            <Button variant="primary" className="w-full justify-between mt-2">
+              <span>Realizar check-in</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         ) : (
           <div className="flex items-center gap-2 text-xs font-semibold text-[#39835A] bg-[#E8F5EE] p-2.5 rounded-xl border border-[#BDE3CC]">
             <CheckCircle2 className="w-4 h-4" />
@@ -51,26 +56,26 @@ export const PatientDashboard: React.FC = () => {
         )}
       </Card>
 
-      {/* Tarjeta 2: Recomendación de hoy (Concepto A) */}
+      {/* Tarjeta 2: Recomendaciones aisladas por paciente */}
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-[#151B22] flex items-center gap-1.5">
           <Sparkles className="w-4 h-4 text-[#357984]" />
           <span>Recomendación de tu nutricionista</span>
         </h3>
 
-        {recommendations.length === 0 ? (
+        {patientRecs.length === 0 ? (
           <Card className="text-center py-6 text-xs text-[#66727D]">
             Aún no tienes recomendaciones asignadas.
           </Card>
         ) : (
-          recommendations.map(rec => (
+          patientRecs.map(rec => (
             <Card key={rec.id} className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-[#357984] uppercase tracking-wider">
                   Recomendación activa
                 </span>
                 <span className="text-[10px] text-[#8A959D]">
-                  {new Date(rec.createdAt).toLocaleDateString()}
+                  {formatShortDate(rec.createdAt)}
                 </span>
               </div>
               <p className="text-sm font-semibold text-[#151B22]">"{rec.recommendationText}"</p>

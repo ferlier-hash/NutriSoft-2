@@ -1,10 +1,13 @@
 import { MockProvider } from './app/provider';
+import { ToastProvider } from './components/ui/Toast';
 import { AppRouter } from './app/router';
 
 export function App() {
   return (
     <MockProvider>
-      <AppRouter />
+      <ToastProvider>
+        <AppRouter />
+      </ToastProvider>
     </MockProvider>
   );
 }

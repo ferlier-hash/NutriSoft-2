@@ -1,80 +1,93 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useMock } from '../../provider';
+import { useToast } from '../../../components/ui/Toast';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
-import { Modal } from '../../../components/ui/Modal';
+import { Dialog } from '../../../components/ui/Dialog';
 import { PriorityInboxCard } from '../../../components/domain/PriorityInboxCard';
 import { UserPlus, Send, ArrowRight, UserCheck } from 'lucide-react';
 
+const newPatientSchema = z.object({
+  firstName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  lastName: z.string().min(2, 'El apellido debe tener al menos 2 caracteres'),
+  email: z.string().email('Ingresa un correo electrónico válido'),
+  phone: z.string().optional(),
+  objective: z.string().optional(),
+});
+
+type NewPatientFormData = z.infer<typeof newPatientSchema>;
+
 export const ProfessionalDashboard: React.FC = () => {
   const { patients, alerts, resolveAlert, addPatient, createCheckInAssignment } = useMock();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
   const [selectedPatientId, setSelectedPatientId] = useState<string>(patients[0]?.id || 'pat-1');
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
   const [isSendCheckInOpen, setIsSendCheckInOpen] = useState(false);
   const [selectedForCheckIn, setSelectedForCheckIn] = useState<string>(patients[0]?.id || 'pat-1');
 
-  // Form states
-  const [newFirstName, setNewFirstName] = useState('');
-  const [newLastName, setNewLastName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newPhone, setNewPhone] = useState('');
-  const [newObjective, setNewObjective] = useState('');
-
   const selectedPatient = patients.find(p => p.id === selectedPatientId) || patients[0];
   const unresolvedAlerts = alerts.filter(a => a.status === 'unresolved').slice(0, 3);
 
-  const handleCreatePatientSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newFirstName || !newLastName || !newEmail) return;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<NewPatientFormData>({
+    resolver: zodResolver(newPatientSchema),
+  });
 
+  const onAddPatientSubmit = (data: NewPatientFormData) => {
     const created = addPatient({
-      firstName: newFirstName,
-      lastName: newLastName,
-      email: newEmail,
-      phone: newPhone || '+52 55 0000 0000',
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone || '+52 55 0000 0000',
       age: 30,
       city: 'Ciudad de México',
       status: 'active',
-      objective: newObjective || 'Plan personalizado',
+      objective: data.objective || 'Plan personalizado',
       currentPlan: 'Plan inicio 12 semanas',
     });
 
     setIsAddPatientOpen(false);
-    setNewFirstName('');
-    setNewLastName('');
-    setNewEmail('');
-    setNewPhone('');
-    setNewObjective('');
-
-    window.location.hash = `#/professional/patients/${created.id}`;
+    reset();
+    showToast('Paciente creado exitosamente', `Ficha creada para ${created.firstName} ${created.lastName}`);
+    navigate(`/professional/patients/${created.id}`);
   };
 
   const handleSendCheckInSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createCheckInAssignment(selectedForCheckIn);
     setIsSendCheckInOpen(false);
-    alert('¡Check-in asignado exitosamente! El paciente ya puede responderlo.');
+    showToast('Check-in asignado', 'El paciente ya puede responderlo desde su portal');
   };
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      {/* Sección Superior: Bandeja de Atención + Acciones Rápidas (Concepto A) */}
+      {/* Sección Superior: Bandeja de Atención + Acciones Rápidas */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Vista previa de Bandeja de atención (2 cols en LG) */}
         <Card className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E2E9EC]">
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-base text-[#151B22]">Bandeja de atención</h3>
               <Badge variant="high">{unresolvedAlerts.length}</Badge>
             </div>
-            <a
-              href="#/professional/inbox"
-              className="text-xs text-[#357984] font-semibold hover:underline flex items-center gap-1"
+            <button
+              type="button"
+              onClick={() => navigate('/professional/inbox')}
+              className="text-xs text-[#357984] font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>Ver todas</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </a>
+            </button>
           </div>
 
           <div className="space-y-3">
@@ -82,14 +95,17 @@ export const ProfessionalDashboard: React.FC = () => {
               <PriorityInboxCard
                 key={alert.id}
                 alert={alert}
-                onSelectPatient={id => (window.location.hash = `#/professional/patients/${id}`)}
-                onResolveAlert={resolveAlert}
+                onSelectPatient={id => navigate(`/professional/patients/${id}`)}
+                onResolveAlert={alertId => {
+                  resolveAlert(alertId);
+                  showToast('Alerta resuelta', 'Se ha marcado la atención como completada');
+                }}
               />
             ))}
           </div>
         </Card>
 
-        {/* Acciones Rápidas (Concepto A) */}
+        {/* Acciones Rápidas */}
         <Card className="space-y-4">
           <h3 className="font-bold text-base text-[#151B22] pb-2 border-b border-[#E2E9EC]">
             Acciones rápidas
@@ -124,8 +140,9 @@ export const ProfessionalDashboard: React.FC = () => {
               </div>
             </button>
 
-            <a
-              href="#/professional/patients"
+            <button
+              type="button"
+              onClick={() => navigate('/professional/patients')}
               className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#E2E9EC] bg-[#FFFFFF] hover:bg-[#F2F7F8] hover:border-[#CCD9DE] transition-all text-left cursor-pointer group"
             >
               <div className="w-10 h-10 rounded-xl bg-[#EDF8F7] text-[#357984] flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -135,23 +152,23 @@ export const ProfessionalDashboard: React.FC = () => {
                 <p className="font-semibold text-xs text-[#151B22]">Ver pacientes</p>
                 <p className="text-[11px] text-[#66727D]">Buscar y abrir fichas clínicas</p>
               </div>
-            </a>
+            </button>
           </div>
         </Card>
       </div>
 
-      {/* Sección Inferior: Lista Mis Pacientes + Vista previa Ficha del Paciente (Concepto A) */}
+      {/* Tabla Mis Pacientes + Ficha lateral */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Tabla Mis Pacientes (2 cols) */}
         <Card className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E2E9EC]">
             <h3 className="font-bold text-base text-[#151B22]">Mis pacientes</h3>
-            <a
-              href="#/professional/patients"
-              className="text-xs text-[#357984] font-semibold hover:underline"
+            <button
+              type="button"
+              onClick={() => navigate('/professional/patients')}
+              className="text-xs text-[#357984] font-semibold hover:underline cursor-pointer"
             >
               Ver todos mis pacientes →
-            </a>
+            </button>
           </div>
 
           <div className="overflow-x-auto">
@@ -201,7 +218,6 @@ export const ProfessionalDashboard: React.FC = () => {
           </div>
         </Card>
 
-        {/* Tarjeta Lateral de Vista Previa del Paciente Seleccionado (Concepto A) */}
         {selectedPatient && (
           <Card className="space-y-4" highlighted>
             <div className="flex items-center gap-3 pb-3 border-b border-[#BDE9EA]">
@@ -237,7 +253,7 @@ export const ProfessionalDashboard: React.FC = () => {
             <Button
               variant="primary"
               className="w-full mt-4"
-              onClick={() => (window.location.hash = `#/professional/patients/${selectedPatient.id}`)}
+              onClick={() => navigate(`/professional/patients/${selectedPatient.id}`)}
             >
               Ver ficha completa
             </Button>
@@ -245,13 +261,14 @@ export const ProfessionalDashboard: React.FC = () => {
         )}
       </div>
 
-      {/* Modal Simulado: Nuevo Paciente */}
-      <Modal
+      {/* Dialog Accesible Radix UI: Nuevo Paciente */}
+      <Dialog
         isOpen={isAddPatientOpen}
         onClose={() => setIsAddPatientOpen(false)}
         title="Agregar nuevo paciente"
+        description="Ingresa los datos básicos para dar de alta al paciente en el consultorio."
       >
-        <form onSubmit={handleCreatePatientSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onAddPatientSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="new-firstname" className="block text-xs font-medium text-[#151B22] mb-1">
@@ -260,13 +277,15 @@ export const ProfessionalDashboard: React.FC = () => {
               <input
                 id="new-firstname"
                 type="text"
-                required
-                value={newFirstName}
-                onChange={e => setNewFirstName(e.target.value)}
+                {...register('firstName')}
                 placeholder="Ej. Ana"
                 className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
               />
+              {errors.firstName && (
+                <p className="text-xs text-[#C95F59] mt-1">{errors.firstName.message}</p>
+              )}
             </div>
+
             <div>
               <label htmlFor="new-lastname" className="block text-xs font-medium text-[#151B22] mb-1">
                 Apellido *
@@ -274,12 +293,13 @@ export const ProfessionalDashboard: React.FC = () => {
               <input
                 id="new-lastname"
                 type="text"
-                required
-                value={newLastName}
-                onChange={e => setNewLastName(e.target.value)}
+                {...register('lastName')}
                 placeholder="Ej. Martínez"
                 className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
               />
+              {errors.lastName && (
+                <p className="text-xs text-[#C95F59] mt-1">{errors.lastName.message}</p>
+              )}
             </div>
           </div>
 
@@ -290,12 +310,13 @@ export const ProfessionalDashboard: React.FC = () => {
             <input
               id="new-email"
               type="email"
-              required
-              value={newEmail}
-              onChange={e => setNewEmail(e.target.value)}
+              {...register('email')}
               placeholder="ana.martinez@example.com"
               className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
             />
+            {errors.email && (
+              <p className="text-xs text-[#C95F59] mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -305,8 +326,7 @@ export const ProfessionalDashboard: React.FC = () => {
             <input
               id="new-phone"
               type="tel"
-              value={newPhone}
-              onChange={e => setNewPhone(e.target.value)}
+              {...register('phone')}
               placeholder="+52 55 1234 5678"
               className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
             />
@@ -319,8 +339,7 @@ export const ProfessionalDashboard: React.FC = () => {
             <input
               id="new-objective"
               type="text"
-              value={newObjective}
-              onChange={e => setNewObjective(e.target.value)}
+              {...register('objective')}
               placeholder="Ej. Reeducación alimentaria y energía"
               className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
             />
@@ -335,10 +354,10 @@ export const ProfessionalDashboard: React.FC = () => {
             </Button>
           </div>
         </form>
-      </Modal>
+      </Dialog>
 
-      {/* Modal Simulado: Enviar Check-in */}
-      <Modal
+      {/* Dialog Accesible Radix UI: Enviar Check-in */}
+      <Dialog
         isOpen={isSendCheckInOpen}
         onClose={() => setIsSendCheckInOpen(false)}
         title="Enviar check-in a paciente"
@@ -363,7 +382,7 @@ export const ProfessionalDashboard: React.FC = () => {
           </div>
 
           <p className="text-xs text-[#66727D]">
-            Se enviará una notificación simulada y se habilitará el formulario de check-in en el portal del paciente.
+            Se habilitará la asignación para que el paciente la complete desde su portal.
           </p>
 
           <div className="flex justify-end gap-2 pt-2 border-t border-[#E2E9EC]">
@@ -375,7 +394,7 @@ export const ProfessionalDashboard: React.FC = () => {
             </Button>
           </div>
         </form>
-      </Modal>
+      </Dialog>
     </div>
   );
 };

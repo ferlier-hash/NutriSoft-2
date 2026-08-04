@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMock } from '../../provider';
+import { useToast } from '../../../components/ui/Toast';
 import { Card } from '../../../components/ui/Card';
 import { PriorityInboxCard } from '../../../components/domain/PriorityInboxCard';
 import { Inbox, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 export const InboxPage: React.FC = () => {
   const { alerts, resolveAlert } = useMock();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'unresolved' | 'high'>('unresolved');
 
   const filteredAlerts = alerts.filter(a => {
@@ -15,7 +19,7 @@ export const InboxPage: React.FC = () => {
   });
 
   const handleSelectPatient = (patientId: string) => {
-    window.location.hash = `#/professional/patients/${patientId}`;
+    navigate(`/professional/patients/${patientId}`);
   };
 
   return (
@@ -88,7 +92,10 @@ export const InboxPage: React.FC = () => {
               key={alert.id}
               alert={alert}
               onSelectPatient={handleSelectPatient}
-              onResolveAlert={resolveAlert}
+              onResolveAlert={alertId => {
+                resolveAlert(alertId);
+                showToast('Alerta resuelta', 'La alerta ha sido marcada como atendidada');
+              }}
             />
           ))}
         </div>
@@ -99,8 +106,8 @@ export const InboxPage: React.FC = () => {
         <div className="text-xs text-[#357984]">
           <p className="font-semibold">Reglas dinámicas de atención activas:</p>
           <ul className="list-disc list-inside mt-1 space-y-0.5 text-[11px] text-[#66727D]">
-            <li><strong>🚨 Alta:</strong> Paciente solicita ayuda explícita, energía $\le 2$ o adherencia $\le 2$.</li>
-            <li><strong>ℹ️ Ninguna:</strong> Respuesta con indicadores normales ($\ge 3$) sin pedido de ayuda.</li>
+            <li><strong>🚨 Alta:</strong> Paciente solicita ayuda explícita, energía ≤ 2 o adherencia ≤ 2.</li>
+            <li><strong>ℹ️ Ninguna:</strong> Respuesta con indicadores normales (≥ 3) sin pedido de ayuda.</li>
           </ul>
         </div>
       </div>

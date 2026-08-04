@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
@@ -7,6 +8,7 @@ import { Building2, Stethoscope, Users, TrendingUp, Search, Plus } from 'lucide-
 
 export const AdminDashboard: React.FC = () => {
   const { organizations, toggleOrganizationStatus } = useMock();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -29,14 +31,23 @@ export const AdminDashboard: React.FC = () => {
         <div>
           <h2 className="text-2xl font-bold text-[#151B22]">Organizaciones</h2>
           <p className="text-xs text-[#66727D] mt-0.5">
-            Gestiona las organizaciones de la plataforma y supervisa el uso global.
+            Gestiona las organizaciones de la plataforma y supervisa métricas de uso agregadas.
           </p>
         </div>
 
-        <Button variant="primary" className="flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          <span>Nueva organización</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link to="/admin/nutritionists">
+            <Button variant="secondary" className="flex items-center gap-2">
+              <Stethoscope className="w-4 h-4" />
+              <span>Ver nutricionistas</span>
+            </Button>
+          </Link>
+
+          <Button variant="primary" className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            <span>Nueva organización</span>
+          </Button>
+        </div>
       </div>
 
       {/* Tarjetas de Métricas Consolidadas (Concepto A) */}
@@ -54,7 +65,10 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </Card>
 
-        <Card className="flex items-center gap-4">
+        <Card
+          className="flex items-center gap-4 cursor-pointer hover:border-[#55AEB8] transition-colors"
+          onClick={() => navigate('/admin/nutritionists')}
+        >
           <div className="w-12 h-12 rounded-2xl bg-[#EAEFFC] border border-[#C6D4F8] flex items-center justify-center text-[#5267C7]">
             <Stethoscope className="w-6 h-6" />
           </div>
@@ -67,12 +81,13 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </Card>
 
+        {/* Métrica Informativa Agregada No Interactiva a lista global */}
         <Card className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-[#EDF8F7] border border-[#BDE9EA] flex items-center justify-center text-[#357984]">
             <Users className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-[#66727D] font-medium">Pacientes activos</p>
+            <p className="text-xs text-[#66727D] font-medium">Pacientes activos (Métrica)</p>
             <h3 className="text-2xl font-bold text-[#151B22]">{totalPatients.toLocaleString()}</h3>
             <span className="text-[11px] text-[#39835A] font-semibold flex items-center gap-0.5">
               <TrendingUp className="w-3 h-3" /> +196 este mes
@@ -126,7 +141,6 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Listado / Tabla */}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>

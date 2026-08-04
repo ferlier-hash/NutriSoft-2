@@ -1,49 +1,73 @@
 import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useMock } from '../../provider';
+import { useToast } from '../../../components/ui/Toast';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
-import { Modal } from '../../../components/ui/Modal';
+import { Dialog } from '../../../components/ui/Dialog';
+import { NotFoundPage } from '../NotFoundPage';
+import { formatShortDate, formatDateTime } from '../../../lib/dateUtils';
 import { ArrowLeft, Sparkles, Send, Calendar, CheckCircle2 } from 'lucide-react';
 
-export const PatientDetailPage: React.FC = () => {
-  const { patients, checkInAssignments, checkInResponses, recommendations, addRecommendation, createCheckInAssignment } = useMock();
-  const [activeTab, setActiveTab] = useState<'info' | 'checkins' | 'recommendations'>('info');
+const recommendationSchema = z.object({
+  recommendationText: z.string().min(5, 'La recomendación debe tener al menos 5 caracteres'),
+});
 
-  // Extract ID from hash
-  const hash = window.location.hash;
-  const patientId = hash.split('/patients/')[1] || 'pat-1';
-  const patient = patients.find(p => p.id === patientId) || patients[0];
+type RecommendationFormData = z.infer<typeof recommendationSchema>;
+
+export const PatientDetailPage: React.FC = () => {
+  const { patientId } = useParams<{ patientId: string }>();
+  const { patients, checkInAssignments, checkInResponses, recommendations, addRecommendation, createCheckInAssignment } = useMock();
+  const { showToast } = useToast();
+
+  const [activeTab, setActiveTab] = useState<'info' | 'checkins' | 'recommendations'>('info');
+  const [isRecModalOpen, setIsRecModalOpen] = useState(false);
+
+  const patient = patients.find(p => p.id === patientId);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<RecommendationFormData>({
+    resolver: zodResolver(recommendationSchema),
+  });
+
+  if (!patient) {
+    return (
+      <NotFoundPage
+        title="Paciente no encontrado"
+        message="La ficha del paciente consultado no existe en la base de datos."
+      />
+    );
+  }
 
   const patientAssignments = checkInAssignments.filter(a => a.patientId === patient.id);
   const patientResponses = checkInResponses.filter(r => r.patientId === patient.id);
   const patientRecs = recommendations.filter(r => r.patientId === patient.id);
 
-  const [isRecModalOpen, setIsRecModalOpen] = useState(false);
-  const [recText, setRecText] = useState('');
-
-  const handleCreateRecommendation = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!recText.trim()) return;
-
-    addRecommendation(patient.id, recText);
-    setRecText('');
+  const onCreateRecommendation = (data: RecommendationFormData) => {
+    addRecommendation(patient.id, data.recommendationText);
+    reset();
     setIsRecModalOpen(false);
-    alert('¡Recomendación emitida! El paciente la visualizará en su portal.');
+    showToast('Recomendación emitida', `La recomendación fue enviada a ${patient.firstName}`);
   };
 
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
-      {/* Botón de regreso */}
-      <a
-        href="#/professional/patients"
+      <Link
+        to="/professional/patients"
         className="inline-flex items-center gap-1.5 text-xs text-[#66727D] hover:text-[#151B22] font-semibold"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Volver a la lista de pacientes</span>
-      </a>
+      </Link>
 
-      {/* Cabecera del Paciente */}
       <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" highlighted>
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-white flex items-center justify-center font-bold text-xl shadow-sm">
@@ -69,7 +93,7 @@ export const PatientDetailPage: React.FC = () => {
             size="sm"
             onClick={() => {
               createCheckInAssignment(patient.id);
-              alert('Check-in asignado a este paciente.');
+              showToast('Check-in asignado', `Se habilitó asignación para ${patient.firstName}`);
             }}
             className="flex items-center gap-1.5"
           >
@@ -89,7 +113,6 @@ export const PatientDetailPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Pestañas de Navegación Ficha */}
       <div className="flex items-center gap-2 border-b border-[#E2E9EC]">
         <button
           type="button"
@@ -126,7 +149,6 @@ export const PatientDetailPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Contenido Pestaña Info */}
       {activeTab === 'info' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Card className="space-y-3">
@@ -153,15 +175,12 @@ export const PatientDetailPage: React.FC = () => {
             </div>
             <div>
               <span className="text-xs text-[#66727D] block">Fecha de ingreso:</span>
-              <p className="text-sm font-semibold text-[#151B22]">
-                {new Date(patient.createdAt).toLocaleDateString()}
-              </p>
+              <p className="text-sm font-semibold text-[#151B22]">{formatShortDate(patient.createdAt)}</p>
             </div>
           </Card>
         </div>
       )}
 
-      {/* Contenido Pestaña Check-ins */}
       {activeTab === 'checkins' && (
         <Card className="space-y-4">
           <h3 className="text-sm font-bold text-[#151B22] border-b border-[#E2E9EC] pb-2">
@@ -179,7 +198,7 @@ export const PatientDetailPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-[#151B22] flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5 text-[#357984]" />
-                        Vencimiento: {new Date(assign.dueDate).toLocaleDateString()}
+                        Vencimiento: {formatShortDate(assign.dueDate)}
                       </span>
                       <Badge variant={assign.status === 'completed' ? 'active' : 'pending'}>
                         {assign.status === 'completed' ? 'Completado' : 'Pendiente'}
@@ -202,7 +221,6 @@ export const PatientDetailPage: React.FC = () => {
         </Card>
       )}
 
-      {/* Contenido Pestaña Recomendaciones */}
       {activeTab === 'recommendations' && (
         <Card className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E2E9EC]">
@@ -222,9 +240,7 @@ export const PatientDetailPage: React.FC = () => {
                     <span className="flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#39835A]" /> Recomendación emitida
                     </span>
-                    <span className="text-[11px] text-[#8A959D]">
-                      {new Date(rec.createdAt).toLocaleDateString()}
-                    </span>
+                    <span className="text-[11px] text-[#8A959D]">{formatDateTime(rec.createdAt)}</span>
                   </div>
                   <p className="text-[#151B22] font-medium text-sm pt-1">"{rec.recommendationText}"</p>
                 </div>
@@ -234,26 +250,27 @@ export const PatientDetailPage: React.FC = () => {
         </Card>
       )}
 
-      {/* Modal Emitir Recomendación */}
-      <Modal
+      {/* Dialog Accesible Radix UI */}
+      <Dialog
         isOpen={isRecModalOpen}
         onClose={() => setIsRecModalOpen(false)}
         title={`Emitir recomendación para ${patient.firstName}`}
       >
-        <form onSubmit={handleCreateRecommendation} className="space-y-4">
+        <form onSubmit={handleSubmit(onCreateRecommendation)} className="space-y-4">
           <div>
             <label htmlFor="rec-text" className="block text-xs font-medium text-[#151B22] mb-1">
               Texto de la recomendación *
             </label>
             <textarea
               id="rec-text"
-              required
               rows={3}
-              value={recText}
-              onChange={e => setRecText(e.target.value)}
+              {...register('recommendationText')}
               placeholder="Ej. Pequeños hábitos, grandes cambios. Mantén un vaso de agua al despertar..."
               className="w-full px-3 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:ring-2 focus:ring-[#357984]"
             />
+            {errors.recommendationText && (
+              <p className="text-xs text-[#C95F59] mt-1">{errors.recommendationText.message}</p>
+            )}
           </div>
 
           <div className="flex justify-end gap-2 pt-2 border-t border-[#E2E9EC]">
@@ -265,7 +282,7 @@ export const PatientDetailPage: React.FC = () => {
             </Button>
           </div>
         </form>
-      </Modal>
+      </Dialog>
     </div>
   );
 };
