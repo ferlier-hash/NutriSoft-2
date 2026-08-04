@@ -2,19 +2,19 @@
 BEGIN;
 SELECT plan(10);
 
--- Existencia de esquemas requeridos
-SELECT has_schema('app');
-SELECT has_schema('security');
-SELECT has_schema('api');
+-- Existencia de esquemas requeridos (2 argumentos: schema, description)
+SELECT has_schema('app', 'Esquema app existe');
+SELECT has_schema('security', 'Esquema security existe');
+SELECT has_schema('api', 'Esquema api existe');
 
--- Existencia de tablas principales
-SELECT has_table('app', 'organizations');
-SELECT has_table('app', 'profiles');
-SELECT has_table('app', 'user_platform_roles');
-SELECT has_table('app', 'organization_members');
-SELECT has_table('app', 'patients');
-SELECT has_table('app', 'check_in_responses');
-SELECT has_table('app', 'audit_logs');
+-- Existencia de tablas principales en esquema app (3 argumentos: schema, table, description)
+SELECT has_table('app', 'organizations', 'Tabla app.organizations existe');
+SELECT has_table('app', 'profiles', 'Tabla app.profiles existe');
+SELECT has_table('app', 'user_platform_roles', 'Tabla app.user_platform_roles existe');
+SELECT has_table('app', 'organization_members', 'Tabla app.organization_members existe');
+SELECT has_table('app', 'patients', 'Tabla app.patients existe');
+SELECT has_table('app', 'check_in_responses', 'Tabla app.check_in_responses existe');
+SELECT has_table('app', 'audit_logs', 'Tabla app.audit_logs existe');
 
 SELECT * FROM finish();
 ROLLBACK;

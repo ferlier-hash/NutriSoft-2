@@ -2,11 +2,11 @@
 BEGIN;
 SELECT plan(4);
 
--- Verificar que el esquema api contenga las vistas requeridas
-SELECT has_table('api', 'current_profile');
-SELECT has_table('api', 'current_organizations');
-SELECT has_table('api', 'patient_directory');
-SELECT has_table('api', 'attention_inbox');
+-- Verificar que el esquema api contenga las vistas requeridas (3 argumentos: schema, view, description)
+SELECT has_view('api', 'current_profile', 'Vista api.current_profile existe');
+SELECT has_view('api', 'current_organizations', 'Vista api.current_organizations existe');
+SELECT has_view('api', 'patient_directory', 'Vista api.patient_directory existe');
+SELECT has_view('api', 'attention_inbox', 'Vista api.attention_inbox existe');
 
 SELECT * FROM finish();
 ROLLBACK;
