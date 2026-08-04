@@ -3,12 +3,13 @@ BEGIN;
 SELECT plan(4);
 
 -- Autenticar como María González (d1111111-1111-4111-8111-111111111111)
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub": "d1111111-1111-4111-8111-111111111111", "role": "authenticated"}', true);
 
--- 1. María envía su respuesta de check-in (energía=1, adherencia=1, help_requested=true) -> genera 3 alertas
+-- 1. Verificar definidor de función api.submit_check_in
 SELECT is_definer('api', 'submit_check_in', ARRAY['uuid', 'smallint', 'smallint', 'boolean', 'text']);
 
--- 2. Ejecutar la función RPC
+-- 2. Ejecutar la función RPC de respuesta
 SELECT lives_ok(
   $$ SELECT api.submit_check_in('c1111111-1111-4111-8111-111111111111'::uuid, 1::smallint, 1::smallint, true, 'Notas de prueba') $$
 );

@@ -2,7 +2,8 @@
 BEGIN;
 SELECT plan(3);
 
--- Simular autenticación como Owner de Centro NutriVida (c1111111-1111-4111-8111-111111111111)
+-- Simular rol authenticated y JWT del Owner de Centro NutriVida
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub": "c1111111-1111-4111-8111-111111111111", "role": "authenticated"}', true);
 
 -- 1. Ve únicamente su organización (Centro NutriVida)

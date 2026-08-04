@@ -3,9 +3,10 @@ BEGIN;
 SELECT plan(4);
 
 -- Autenticar como Carlos Asistente (b4444444-4444-4444-8444-444444444444)
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub": "b4444444-4444-4444-8444-444444444444", "role": "authenticated"}', true);
 
--- 1. Asistente PUEDE ver el directorio administrativo de pacientes
+-- 1. Asistente PUEDE ver el directorio administrativo de pacientes de su organización (3 pacientes en Bienestar)
 SELECT results_eq('SELECT COUNT(*)::integer FROM api.patient_directory', ARRAY[3]);
 
 -- 2. Asistente PUEDE ver los estados de asignación de check-ins

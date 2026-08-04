@@ -100,7 +100,6 @@ CREATE TABLE app.patient_assignments (
   ended_at timestamptz NULL,
   CONSTRAINT fk_patient_assignments_patient FOREIGN KEY (organization_id, patient_id) REFERENCES app.patients(organization_id, id) ON DELETE CASCADE
 );
--- Máximo una asignación primaria activa por paciente
 CREATE UNIQUE INDEX idx_patient_assignments_primary_active ON app.patient_assignments(organization_id, patient_id) WHERE is_primary = true AND status = 'active';
 
 -- 8. app.check_in_assignments (DATA-09)
@@ -135,7 +134,7 @@ CREATE TABLE app.check_in_responses (
   CONSTRAINT fk_checkin_responses_assignment FOREIGN KEY (organization_id, patient_id, assignment_id) REFERENCES app.check_in_assignments(organization_id, patient_id, id) ON DELETE CASCADE
 );
 
--- Inmutabilidad de check_in_responses (DATA-10: no update, no delete)
+-- Inmutabilidad de check_in_responses (DATA-10: no update, no delete - FOR EACH STATEMENT)
 CREATE OR REPLACE FUNCTION app.prevent_mutation_checkin_responses()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -143,8 +142,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_checkin_responses_no_update BEFORE UPDATE ON app.check_in_responses FOR EACH ROW EXECUTE FUNCTION app.prevent_mutation_checkin_responses();
-CREATE TRIGGER trg_checkin_responses_no_delete BEFORE DELETE ON app.check_in_responses FOR EACH ROW EXECUTE FUNCTION app.prevent_mutation_checkin_responses();
+CREATE TRIGGER trg_checkin_responses_no_update BEFORE UPDATE OR DELETE ON app.check_in_responses FOR EACH STATEMENT EXECUTE FUNCTION app.prevent_mutation_checkin_responses();
 
 -- 10. app.alerts (DATA-11)
 CREATE TABLE app.alerts (
@@ -195,7 +193,7 @@ CREATE TABLE app.audit_logs (
   created_at timestamptz NOT NULL DEFAULT NOW()
 );
 
--- Inmutabilidad de audit_logs (DATA-13: no update, no delete)
+-- Inmutabilidad de audit_logs (DATA-13: no update, no delete - FOR EACH STATEMENT)
 CREATE OR REPLACE FUNCTION app.prevent_mutation_audit_logs()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -203,8 +201,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_audit_logs_no_update BEFORE UPDATE ON app.audit_logs FOR EACH ROW EXECUTE FUNCTION app.prevent_mutation_audit_logs();
-CREATE TRIGGER trg_audit_logs_no_delete BEFORE DELETE ON app.audit_logs FOR EACH ROW EXECUTE FUNCTION app.prevent_mutation_audit_logs();
+CREATE TRIGGER trg_audit_logs_no_update BEFORE UPDATE OR DELETE ON app.audit_logs FOR EACH STATEMENT EXECUTE FUNCTION app.prevent_mutation_audit_logs();
 
 -- ÍNDICES COMPLEMENTARIOS DE ALTO RENDIMIENTO (INTEGRITY-05)
 CREATE INDEX idx_org_members_org ON app.organization_members(organization_id);

@@ -2,7 +2,8 @@
 BEGIN;
 SELECT plan(6);
 
--- Simular autenticación como Platform Admin (a0000000-0000-4000-8000-000000000000)
+-- Simular rol authenticated y JWT de Platform Admin
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub": "a0000000-0000-4000-8000-000000000000", "role": "authenticated"}', true);
 
 -- Platform Admin PUEDE ver organizaciones
