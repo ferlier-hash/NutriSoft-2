@@ -25,13 +25,14 @@ function runCommand(command, args = [], allowFail = false) {
   const endTime = new Date();
   const durationMs = endTime.getTime() - startTime.getTime();
 
+  const reportData = { command, args, stdout, stderr, exitCode, startTime, endTime, durationMs };
+
   if (exitCode !== 0 && !allowFail) {
     console.error(`[ERROR] Command '${command} ${args.join(' ')}' failed with exit code ${exitCode}`);
     console.error(stderr || stdout);
-    process.exit(1);
   }
 
-  return { stdout, stderr, exitCode, startTime, endTime, durationMs };
+  return reportData;
 }
 
 function logReport(filename, cmdStr, result) {
@@ -51,30 +52,86 @@ function logReport(filename, cmdStr, result) {
   writeFileSync(resolve(reportsDir, filename), reportContent, 'utf-8');
 }
 
-// 00. Git Status Before
+// 00. Git status before
 const r00 = runCommand('git', ['status', '--porcelain=v1', '--branch']);
 logReport('00-git-status-before.txt', 'git status --porcelain=v1 --branch', r00);
 
 // 01. Environment
-const r01 = runCommand('node', ['-v']);
+const r01_node = runCommand('node', ['-v']);
 const r01_npm = runCommand('npm', ['-v']);
 const r01_git = runCommand('git', ['--version']);
-const envOutput = `node: ${r01.stdout.trim()}\nnpm: ${r01_npm.stdout.trim()}\ngit: ${r01_git.stdout.trim()}\n`;
-writeFileSync(resolve(reportsDir, '01-environment.txt'), `COMMAND: environment check\nCWD: ${cwd}\nEXIT_CODE: 0\n--- STDOUT ---\n${envOutput}`, 'utf-8');
+const envOut = `node: ${r01_node.stdout.trim()}\nnpm: ${r01_npm.stdout.trim()}\ngit: ${r01_git.stdout.trim()}\n`;
+writeFileSync(resolve(reportsDir, '01-environment.txt'), `COMMAND: environment check\nCWD: ${cwd}\nEXIT_CODE: 0\n--- STDOUT ---\n${envOut}`, 'utf-8');
 
-// 02. NPM CI (VALID-02)
+// 02. npm ci
 const r02 = runCommand('npm', ['ci']);
 logReport('02-npm-ci.txt', 'npm ci', r02);
 
-// 03. NPM LS (VALID-03)
+// 03. npm ls
 const r03 = runCommand('npm', ['ls', '--depth=0']);
 logReport('03-npm-ls.txt', 'npm ls --depth=0', r03);
 
-// 04. Secret Scan (SECRET-01)
-const r16 = runCommand('git', ['grep', '-i', '-E', 'service_role|private_key|secret_key'], true);
-logReport('16-secret-scan.txt', 'git grep -i -E "service_role|private_key|secret_key"', r16);
+// 04. supabase stop before
+const r04 = runCommand('npx', ['supabase', 'stop'], true);
+logReport('04-supabase-stop-before.txt', 'npx supabase stop', r04);
 
-// 18. File Inventory
+// 05. supabase start
+const r05 = runCommand('npx', ['supabase', 'start']);
+logReport('05-supabase-start.txt', 'npx supabase start', r05);
+
+// 06. db reset 1
+const r06 = runCommand('npm', ['run', 'db:reset']);
+logReport('06-db-reset-first.txt', 'npm run db:reset', r06);
+
+// 07. db reset 2
+const r07 = runCommand('npm', ['run', 'db:reset']);
+logReport('07-db-reset-second.txt', 'npm run db:reset', r07);
+
+// 08. db test
+const r08 = runCommand('npm', ['run', 'db:test']);
+logReport('08-db-test.txt', 'npm run db:test', r08);
+
+// 09. db lint
+const r09 = runCommand('npm', ['run', 'db:lint']);
+logReport('09-db-lint.txt', 'npm run db:lint', r09);
+
+// 10. db types
+const r10 = runCommand('npm', ['run', 'db:types']);
+logReport('10-db-types.txt', 'npm run db:types', r10);
+
+// 11. db verify-types
+const r11 = runCommand('npm', ['run', 'db:verify-types']);
+logReport('11-db-verify-types.txt', 'npm run db:verify-types', r11);
+
+// 12. frontend lint
+const r12 = runCommand('npm', ['run', 'lint']);
+logReport('12-frontend-lint.txt', 'npm run lint', r12);
+
+// 13. frontend typecheck
+const r13 = runCommand('npm', ['run', 'typecheck']);
+logReport('13-frontend-typecheck.txt', 'npm run typecheck', r13);
+
+// 14. frontend tests
+const r14 = runCommand('npm', ['run', 'test']);
+logReport('14-frontend-tests.txt', 'npm run test', r14);
+
+// 15. frontend build
+const r15 = runCommand('npm', ['run', 'build']);
+logReport('15-frontend-build.txt', 'npm run build', r15);
+
+// 16. verify all
+const r16 = runCommand('npm', ['run', 'verify:all']);
+logReport('16-verify-all.txt', 'npm run verify:all', r16);
+
+// 17. secret scan
+const r17 = runCommand('git', ['grep', '-i', '-E', 'service_role|private_key|secret_key'], true);
+logReport('17-secret-scan.txt', 'git grep -i -E "service_role|private_key|secret_key"', r17);
+
+// 18. git diff stat
+const r18 = runCommand('git', ['diff', '--stat', 'phase-2.1-security-hardening...HEAD']);
+logReport('18-git-diff-stat.txt', 'git diff --stat phase-2.1-security-hardening...HEAD', r18);
+
+// 19. file inventory
 function getFileInventory(dir, baseDir = dir) {
   let results = [];
   const list = readdirSync(dir);
@@ -92,6 +149,14 @@ function getFileInventory(dir, baseDir = dir) {
 }
 
 const fileList = getFileInventory(cwd).sort().join('\n');
-writeFileSync(resolve(reportsDir, '18-file-inventory.txt'), `FILE INVENTORY:\n${fileList}\n`, 'utf-8');
+writeFileSync(resolve(reportsDir, '19-file-inventory.txt'), `FILE INVENTORY:\n${fileList}\n`, 'utf-8');
 
-console.log('✅ Base evidence collector script 2.1.1 completed cleanly.');
+// 20. supabase stop after
+const r20 = runCommand('npx', ['supabase', 'stop'], true);
+logReport('20-supabase-stop-after.txt', 'npx supabase stop', r20);
+
+// 21. git status after
+const r21 = runCommand('git', ['status', '--porcelain=v1', '--branch']);
+logReport('21-git-status-after.txt', 'git status --porcelain=v1 --branch', r21);
+
+console.log('✅ Evidence collector script 2.1.1 sequence execution completed.');

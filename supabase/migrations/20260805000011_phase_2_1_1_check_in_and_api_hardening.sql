@@ -58,14 +58,18 @@ END;
 $$;
 
 -- 3. Reducción de campos en vistas API (API-02, API-03, API-04)
-CREATE OR REPLACE VIEW api.check_in_assignments
+DROP VIEW IF EXISTS api.check_in_assignments CASCADE;
+
+CREATE VIEW api.check_in_assignments
 WITH (security_invoker = true) AS
 SELECT id, organization_id, patient_id, status, due_date, created_at, completed_at
 FROM app.check_in_assignments;
 
 GRANT SELECT ON api.check_in_assignments TO authenticated;
 
-CREATE OR REPLACE VIEW api.patient_recommendations
+DROP VIEW IF EXISTS api.patient_recommendations CASCADE;
+
+CREATE VIEW api.patient_recommendations
 WITH (security_invoker = true) AS
 SELECT id, organization_id, patient_id, response_id, recommendation_text, status, created_at
 FROM app.patient_recommendations;
