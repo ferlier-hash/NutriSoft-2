@@ -9,11 +9,11 @@ SELECT throws_ok(
   'El profesional asignado debe tener un rol activo de nutricionista u owner'
 );
 
--- 2. Intentar asignar un usuario de otra organización
+-- 2. Intentar asignar un usuario de otra organización (interceptado deterministamente por el trigger app.verify_patient_assignment_member)
 SELECT throws_ok(
   $$ INSERT INTO app.patient_assignments (organization_id, patient_id, nutritionist_user_id, is_primary, status)
      VALUES ('11111111-1111-4111-8111-111111111111', 'f1111111-1111-4111-8111-111111111111', 'c1111111-1111-4111-8111-111111111111', false, 'active') $$,
-  'foreign key constraint "fk_patient_assignments_member_composite"'
+  'El usuario no es miembro de la organización indicada'
 );
 
 -- 3. Intentar desactivar a un nutricionista con asignaciones clínicas activas (Andrea b2222222)
