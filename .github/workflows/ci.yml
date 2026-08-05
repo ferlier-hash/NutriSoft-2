@@ -2,9 +2,13 @@ name: NutriSoft CI Pipeline
 
 on:
   push:
-    branches: [ main, phase-2-backend-foundation, phase-1.1-stabilization ]
+    branches: [ 'main', 'phase-*' ]
   pull_request:
-    branches: [ main, phase-2-backend-foundation ]
+    branches: [ 'main', 'phase-*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   verify:
@@ -31,7 +35,7 @@ jobs:
         run: npm run typecheck
 
       - name: Frontend Vitest Suite
-        run: npm run test
+        run: npm run test:run
 
       - name: Frontend Production Build
         run: npm run build
@@ -50,6 +54,13 @@ jobs:
 
       - name: Database TypeScript Verification
         run: npm run db:verify-types
+
+      - name: Upload Verification Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-2.1-verification-reports
+          path: review/reports/phase-2.1/
 
       - name: Stop Local Supabase
         if: always()
