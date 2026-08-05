@@ -35,7 +35,7 @@ jobs:
         run: npm run typecheck
 
       - name: Frontend Vitest Suite
-        run: npm run test:run
+        run: npm run test
 
       - name: Frontend Production Build
         run: npm run build
@@ -55,12 +55,31 @@ jobs:
       - name: Database TypeScript Verification
         run: npm run db:verify-types
 
+      - name: Generate Workflow Metadata
+        if: always()
+        run: |
+          mkdir -p review/reports/phase-2.1.1
+          node -e "
+          const fs = require('fs');
+          const data = {
+            GITHUB_SHA: process.env.GITHUB_SHA,
+            GITHUB_REF: process.env.GITHUB_REF,
+            GITHUB_RUN_ID: process.env.GITHUB_RUN_ID,
+            GITHUB_RUN_ATTEMPT: process.env.GITHUB_RUN_ATTEMPT,
+            GITHUB_WORKFLOW: process.env.GITHUB_WORKFLOW,
+            GITHUB_EVENT_NAME: process.env.GITHUB_EVENT_NAME,
+            WORKFLOW_URL: process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID,
+            TIMESTAMP_UTC: new Date().toISOString()
+          };
+          fs.writeFileSync('review/reports/phase-2.1.1/00-ci-workflow-metadata.json', JSON.stringify(data, null, 2));
+          "
+
       - name: Upload Verification Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: phase-2.1-verification-reports
-          path: review/reports/phase-2.1/
+          name: phase-2.1.1-verification-reports
+          path: review/reports/phase-2.1.1/
 
       - name: Stop Local Supabase
         if: always()
