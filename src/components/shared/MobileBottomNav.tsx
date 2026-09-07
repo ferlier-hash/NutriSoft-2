@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, ClipboardCheck, Sparkles, MoreHorizontal } from 'lucide-react';
+import { Home, ClipboardCheck, Sparkles, Library } from 'lucide-react';
 import { useMock } from '../../app/provider';
 
 export const MobileBottomNav: React.FC = () => {
@@ -64,17 +64,7 @@ export const MobileBottomNav: React.FC = () => {
         </span>
       </div>
 
-      {/* 4. Más (Próximamente UX-01) */}
-      <div
-        aria-disabled="true"
-        className="flex flex-col items-center justify-center flex-1 py-1.5 min-h-[44px] min-w-[44px] text-text-tertiary opacity-60 cursor-not-allowed select-none relative"
-      >
-        <MoreHorizontal className="w-5 h-5" />
-        <span className="text-[10px] mt-0.5 font-medium">Más</span>
-        <span className="text-[8px] bg-surface-subtle text-text-tertiary px-1 rounded border border-border-subtle absolute top-0">
-          Próximamente
-        </span>
-      </div>
+      <NavLink to="/patient/resources" className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-1.5 min-h-[44px] min-w-[44px] transition-colors ${isActive ? 'text-brand-strong font-bold' : 'text-text-secondary hover:text-text-primary'}`}><Library className="w-5 h-5" /><span className="text-[10px] mt-0.5 font-medium">Recursos</span></NavLink>
     </nav>
   );
 };

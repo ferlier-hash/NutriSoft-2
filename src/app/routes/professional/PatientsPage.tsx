@@ -10,6 +10,7 @@ import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { Dialog } from '../../../components/ui/Dialog';
 import { Search, UserPlus, ChevronRight } from 'lucide-react';
+import { formatShortDate } from '../../../lib/dateUtils';
 
 const newPatientSchema = z.object({
   firstName: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'Máximo 50 caracteres'),
@@ -23,7 +24,7 @@ type NewPatientFormData = z.infer<typeof newPatientSchema>;
 
 export const PatientsPage: React.FC = () => {
   // SCOPE-01: Usar selectores del profesional actual
-  const { professionalPatients, addPatient, currentDemoNutritionist } = useMock();
+  const { professionalPatients, addPatient, revokePatientInvitation, resendPatientInvitation, currentDemoNutritionist } = useMock();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -59,7 +60,7 @@ export const PatientsPage: React.FC = () => {
 
       setIsAddPatientOpen(false);
       reset();
-      showToast('Paciente creado exitosamente', `Ficha creada para ${created.firstName} ${created.lastName}`);
+      showToast('Invitación preparada', `En modo real enviaremos el acceso a ${created.email}.`);
       navigate(`/professional/patients/${created.id}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al crear paciente';
@@ -68,7 +69,7 @@ export const PatientsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-text-primary">Lista de mis pacientes</h2>
@@ -84,7 +85,7 @@ export const PatientsPage: React.FC = () => {
           className="flex items-center gap-2"
         >
           <UserPlus className="w-4 h-4" />
-          <span>Nuevo paciente</span>
+          <span>Invitar paciente</span>
         </Button>
       </div>
 
@@ -100,56 +101,57 @@ export const PatientsPage: React.FC = () => {
             placeholder="Buscar por nombre o correo..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-strong text-text-primary"
+            className="w-full pl-11 pr-4 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-strong text-text-primary"
           />
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto lg:overflow-x-hidden">
+          <table className="w-full min-w-[760px] table-fixed text-left border-collapse">
+            <colgroup>
+              <col className="w-[30%]" />
+              <col className="w-[27%]" />
+              <col className="w-[18%]" />
+              <col className="w-[15%]" />
+              <col className="w-[10%]" />
+            </colgroup>
             <thead>
               <tr className="border-b border-border-subtle text-xs text-text-secondary font-medium">
-                <th scope="col" className="py-3 px-4">Paciente</th>
-                <th scope="col" className="py-3 px-4">Correo</th>
-                <th scope="col" className="py-3 px-4">Teléfono</th>
-                <th scope="col" className="py-3 px-4">Objetivo</th>
-                <th scope="col" className="py-3 px-4">Estado</th>
-                <th scope="col" className="py-3 px-4 text-right">Acciones</th>
+                <th scope="col" className="py-3 px-3">Paciente y contacto</th>
+                <th scope="col" className="py-3 px-3">Objetivo</th>
+                <th scope="col" className="py-3 px-3">Plan actual</th>
+                <th scope="col" className="py-3 px-3">Acceso</th>
+                <th scope="col" className="py-3 px-3 text-right">Ficha</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border-subtle text-xs">
               {filteredPatients.map(p => (
                 <tr key={p.id} className="hover:bg-surface-subtle transition-colors">
-                  <td className="py-3.5 px-4 font-semibold text-text-primary flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-surface-tinted text-brand-strong flex items-center justify-center font-bold text-xs border border-border-subtle">
-                      {p.firstName[0]}
-                      {p.lastName[0]}
-                    </div>
-                    <div>
-                      <span>
-                        {p.firstName} {p.lastName}
-                      </span>
-                      <span className="block text-[11px] font-normal text-text-tertiary">
-                        {p.age ? `${p.age} años • ` : ''}{p.city || 'Consultorio'}
-                      </span>
+                  <td className="py-3 px-3 align-top">
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      <div className="mt-0.5 h-8 w-8 shrink-0 rounded-full bg-surface-tinted text-brand-strong flex items-center justify-center font-bold text-xs border border-border-subtle">
+                        {p.firstName[0]}{p.lastName[0]}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-text-primary leading-4">{p.firstName} {p.lastName}</p>
+                        <p className="mt-0.5 break-all text-[10px] leading-4 text-text-secondary">{p.email}</p>
+                        <p className="text-[10px] leading-4 text-text-tertiary">{p.phone || 'Sin teléfono registrado'}</p>
+                      </div>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-text-secondary">{p.email}</td>
-                  <td className="py-3.5 px-4 text-text-secondary">{p.phone || 'Sin registro'}</td>
-                  <td className="py-3.5 px-4 text-text-primary font-medium max-w-xs truncate">
-                    {p.objective}
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <Badge variant={p.status === 'active' ? 'active' : 'suspended'}>
-                      {p.status === 'active' ? 'Activo' : 'Archivado'}
+                  <td className="py-3 px-3 align-top text-text-primary font-medium leading-5 break-words">{p.objective || 'Sin objetivo registrado'}</td>
+                  <td className="py-3 px-3 align-top text-text-primary font-medium leading-4 break-words">{p.currentPlan || 'Sin plan asignado'}</td>
+                  <td className="py-3 px-3 align-top">
+                    <Badge variant={p.portalAccessStatus === 'active' ? 'active' : p.portalAccessStatus === 'pending' ? 'pending' : 'suspended'}>
+                      {p.portalAccessStatus === 'active' ? 'Activo' : p.portalAccessStatus === 'pending' ? 'Invitación pendiente' : 'Invitación revocada'}
                     </Badge>
+                    {p.portalAccessStatus === 'pending' && <>
+                      {p.invitationExpiresAt && <span className="block text-[10px] text-text-tertiary mt-1">Vence {formatShortDate(p.invitationExpiresAt)}</span>}
+                      <button type="button" onClick={() => { try { revokePatientInvitation(p.id); showToast('Invitación revocada', 'El enlace anterior dejó de ser válido.'); } catch (error) { showToast('Error', error instanceof Error ? error.message : 'No se pudo revocar.', 'error'); } }} className="mt-1 text-[10px] font-semibold text-text-secondary underline-offset-2 hover:text-text-primary hover:underline" aria-label={`Revocar invitación de ${p.firstName}`}>Revocar</button>
+                    </>}
+                    {p.portalAccessStatus === 'revoked' && <button type="button" onClick={() => { try { resendPatientInvitation(p.id); showToast('Invitación renovada', 'El enlace anterior quedó invalidado y se generó uno nuevo por 7 días.'); } catch (error) { showToast('Error', error instanceof Error ? error.message : 'No se pudo reenviar.', 'error'); } }} className="mt-1 text-[10px] font-semibold text-brand-strong underline-offset-2 hover:underline" aria-label={`Reenviar invitación a ${p.firstName}`}>Reenviar</button>}
                   </td>
-                  <td className="py-3.5 px-4 text-right">
-                    <Button asChild variant="secondary" size="sm">
-                      <Link to={`/professional/patients/${p.id}`} className="text-xs inline-flex items-center gap-1">
-                        <span>Abrir ficha</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </Button>
+                  <td className="py-3 px-3 align-top text-right">
+                    <Button asChild variant="secondary" size="sm" className="min-w-0 px-2.5"><Link to={`/professional/patients/${p.id}`} className="text-xs inline-flex items-center gap-1" aria-label={`Abrir ficha de ${p.firstName} ${p.lastName}`}><span>Ficha</span><ChevronRight className="w-3.5 h-3.5" /></Link></Button>
                   </td>
                 </tr>
               ))}
@@ -162,11 +164,11 @@ export const PatientsPage: React.FC = () => {
       <Dialog
         isOpen={isAddPatientOpen}
         onClose={() => setIsAddPatientOpen(false)}
-        title="Agregar nuevo paciente"
-        description="Ingresa los datos básicos para dar de alta al paciente en tu consultorio."
+        title="Invitar paciente"
+        description="Crearemos una invitación pendiente por 7 días. El envío de email real se conectará en una etapa posterior."
       >
         <form onSubmit={handleSubmit(onAddPatientSubmit)} className="space-y-4" noValidate>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label htmlFor="modal-firstname" className="block text-xs font-medium text-text-primary mb-1">
                 Nombre *
@@ -259,7 +261,7 @@ export const PatientsPage: React.FC = () => {
               Cancelar
             </Button>
             <Button variant="primary" type="submit">
-              Guardar paciente
+              Generar invitación
             </Button>
           </div>
         </form>

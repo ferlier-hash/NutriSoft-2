@@ -1,0 +1,86 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Recetas" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- link "Crear nueva receta add":
+  - /url: /recipes
+  - text: Crear nueva receta
+  - generic: add
+- textbox "Buscar recetas por nombre" [disabled]
+- generic: search
+- generic: sort
+- generic: Ordenar por nutriente
+- generic: expand_more
+- generic: Todas las categorías
+- generic: expand_more
+- button "favorite Favoritas 0" [disabled]:
+  - generic: favorite
+  - generic: Favoritas
+  - generic: "0"
+- generic: "Mostrar recetas:"
+- button "chef_hat Mis recetas" [disabled]:
+  - generic: chef_hat
+  - text: Mis recetas
+- button "diversity_4 Recetas Comunidad" [disabled]:
+  - generic: diversity_4
+  - text: Recetas Comunidad
+- button "Recetas Nutrium" [disabled]:
+  - text: Recetas Nutrium
+- iframe
+- button "Open Intercom Messenger":

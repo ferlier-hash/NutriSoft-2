@@ -9,16 +9,19 @@ import { AlertTriangle, Info, CheckCircle2, User } from 'lucide-react';
 interface PriorityInboxCardProps {
   alert: Alert;
   onSelectPatient: (patientId: string) => void;
+  onAcknowledgeAlert: (alertId: string) => void;
   onResolveAlert: (alertId: string) => void;
 }
 
 export const PriorityInboxCard: React.FC<PriorityInboxCardProps> = ({
   alert,
   onSelectPatient,
+  onAcknowledgeAlert,
   onResolveAlert,
 }) => {
   const isHigh = alert.priority === 'high';
   const isResolved = alert.status === 'resolved';
+  const isAcknowledged = alert.status === 'acknowledged';
 
   return (
     <Card
@@ -49,6 +52,7 @@ export const PriorityInboxCard: React.FC<PriorityInboxCardProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {isAcknowledged && <Badge variant="info">En revisión</Badge>}
           <Badge variant={isHigh ? 'high' : 'medium'}>
             {isHigh ? '🚨 Alta Prioridad' : 'ℹ️ Prioridad Media'}
           </Badge>
@@ -75,15 +79,26 @@ export const PriorityInboxCard: React.FC<PriorityInboxCardProps> = ({
         </Button>
 
         {!isResolved ? (
-          <Button
-            variant="brand"
-            size="sm"
-            onClick={() => onResolveAlert(alert.id)}
-            className="flex items-center gap-1"
-          >
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Marcar atendidada</span>
-          </Button>
+          <>
+            {!isAcknowledged && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onAcknowledgeAlert(alert.id)}
+              >
+                Comenzar revisión
+              </Button>
+            )}
+            <Button
+              variant="brand"
+              size="sm"
+              onClick={() => onResolveAlert(alert.id)}
+              className="flex items-center gap-1"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Marcar atendida</span>
+            </Button>
+          </>
         ) : (
           <span className="text-xs text-[#1E5235] font-semibold flex items-center gap-1 px-2 py-1 bg-[#E8F5EE] rounded-lg">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#1E5235]" /> Atendida por {alert.resolvedBy}

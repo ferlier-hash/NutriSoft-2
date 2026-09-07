@@ -1,0 +1,42 @@
+import { render,screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { expect,it,vi } from 'vitest';
+import { RealIncomePage } from '../app/routes/professional/RealIncomePage';
+const {rpc,fixture}=vi.hoisted(()=>({rpc:vi.fn(),fixture:{movements:[] as Record<string,unknown>[]}}));
+vi.mock('../auth/supabase-client',()=>({getSupabaseClient:()=>({schema:()=>({rpc,from:(table:string)=>{const data=table==='appointments'?[{id:'a',patient_id:'p',starts_at:'2026-09-01T12:00:00Z',time_zone:'UTC',quoted_amount:100,currency:'ARS',payment_status:'pending',status:'confirmed',modality:'virtual'}]:table==='patient_directory'?[{id:'p',first_name:'Laura',last_name:'Prueba'}]:fixture.movements;return {select:()=>({data,error:null,order:()=>Promise.resolve({data,error:null})})};}})})}));
+it('mantiene el formulario y el identificador del reintento tras error',async()=>{
+ rpc.mockResolvedValue({error:{message:'Sin conexión'}});
+ render(<RealIncomePage/>);const user=userEvent.setup();
+ await user.click(await screen.findByRole('button',{name:/Laura Prueba/}));
+ await user.click(screen.getByRole('button',{name:'Registrar cobro'}));
+ expect(await screen.findByRole('alert')).toHaveTextContent('Sin conexión');
+ const request=rpc.mock.calls[0]![1].p_request;
+ await user.click(screen.getByRole('button',{name:'Registrar cobro'}));
+ expect(rpc.mock.calls[1]![1].p_request).toBe(request);
+ expect(screen.getByRole('dialog')).toBeInTheDocument();
+});
+it('corrige desde la fila sin motivo, con revisión esperada y RPC independiente',async()=>{
+ rpc.mockClear();rpc.mockResolvedValue({error:null});
+ fixture.movements=[{id:'payment',revision_id:'revision',appointment_id:'a',amount:40,original_amount:30,correction_count:1,currency:'ARS',movement_kind:'payment',method:'cash',note:null,occurred_at:'2026-08-20T12:00:00Z',refunded_payment_id:null}];
+ render(<RealIncomePage/>);const user=userEvent.setup();
+ await user.click(await screen.findByRole('button',{name:/Laura Prueba/}));
+ await user.selectOptions(screen.getByRole('combobox',{name:'Operación'}),'correct:payment');
+ expect(screen.getByRole('spinbutton',{name:'Monto (ARS)'})).toHaveValue(40);
+ expect(screen.getByText(/no registra una devolución/)).toBeInTheDocument();
+ await user.clear(screen.getByRole('spinbutton',{name:'Monto (ARS)'}));
+ await user.type(screen.getByRole('spinbutton',{name:'Monto (ARS)'}),'50');
+ await user.click(screen.getByRole('button',{name:'Guardar corrección'}));
+ expect(rpc).toHaveBeenCalledWith('correct_income_payment',expect.objectContaining({p_payment:'payment',p_expected:'revision',p_amount:50,p_note:'',p_method:'cash',p_date:'2026-08-20'}));
+ fixture.movements=[];
+});
+it('permite guardar un precio mayor desde el popup sin registrar un cobro',async()=>{
+ rpc.mockClear();rpc.mockResolvedValue({error:null});fixture.movements=[];
+ render(<RealIncomePage/>);const user=userEvent.setup();
+ await user.click(await screen.findByRole('button',{name:/Laura Prueba/}));
+ await user.click(screen.getByRole('button',{name:'Editar precio de la cita'}));
+ await user.clear(screen.getByRole('spinbutton',{name:'Precio de la cita (ARS)'}));
+ await user.type(screen.getByRole('spinbutton',{name:'Precio de la cita (ARS)'}),'150');
+ await user.click(screen.getByRole('button',{name:'Guardar precio'}));
+ expect(rpc).toHaveBeenCalledTimes(1);
+ expect(rpc).toHaveBeenCalledWith('update_income_appointment_price',expect.objectContaining({p_appointment:'a',p_amount:150}));
+});

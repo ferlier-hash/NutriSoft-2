@@ -1,0 +1,25 @@
+import { ClipboardList } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
+import { loadMealPlanActivity, loadPatientMealPlans, setMealPlanActivity } from '../../../data/supabase/clinical-meal-plans.repository';
+import type { ClinicalMealPlanDay, ClinicalMealPlanMeal, RealMealPlanActivity, RealPatientMealPlan } from '../../../data/clinical-meal-plans.types';
+
+function Meal({ plan, day, meal, activity, refresh }: { plan: RealPatientMealPlan; day: ClinicalMealPlanDay; meal: ClinicalMealPlanMeal; activity?: RealMealPlanActivity; refresh: () => Promise<void> }) {
+  const [comment, setComment] = useState(activity?.patientComment ?? '');
+  const completed = activity?.adherenceStatus === 'completed';
+  useEffect(() => setComment(activity?.patientComment ?? ''), [activity?.patientComment]);
+  const save = async (nextCompleted: boolean, nextComment = comment) => { await setMealPlanActivity({ mealPlanId: plan.id, dayId: day.id, mealId: meal.id, adherenceStatus: nextCompleted ? 'completed' : undefined, comment: nextComment }); await refresh(); };
+  return <div className={`rounded-xl border p-3 ${completed ? 'border-semantic-success bg-semantic-success-bg' : 'border-border-subtle bg-surface'}`}><label className="flex items-start gap-3"><input className="mt-0.5 h-5 w-5 accent-[#357984]" type="checkbox" checked={completed} onChange={event => void save(event.target.checked)} /><span><strong className={completed ? 'text-text-secondary line-through' : 'text-text-primary'}>{meal.type}</strong>{meal.items.map(item => <span className="mt-1 block text-xs text-text-secondary" key={item.id}>{item.description}{item.quantity ? ` · ${item.quantity}` : ''}</span>)}</span></label>{meal.items.filter(item=>item.recipeId).map(item=><Link key={item.id} className="min-h-11 flex items-center text-sm text-brand-strong" to={`/patient/recipes/${item.recipeId}`}>Ver receta de {item.description}</Link>)}<textarea className="form-control mt-3 min-h-18 text-xs" maxLength={500} value={comment} onChange={event => setComment(event.target.value)} placeholder="Comentario opcional para tu nutricionista" /><Button size="sm" variant="secondary" className="mt-2" onClick={() => void save(completed)} disabled={comment === (activity?.patientComment ?? '')}>Guardar comentario</Button></div>;
+}
+
+export function RealPatientMealPlansPage() {
+  const [plans, setPlans] = useState<RealPatientMealPlan[]>([]); const [activity, setActivity] = useState<RealMealPlanActivity[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState<string | null>(null);
+  const refresh = async () => { setLoading(true); setError(null); try { const nextPlans = await loadPatientMealPlans(); setPlans(nextPlans); setActivity((await Promise.all(nextPlans.map(plan => loadMealPlanActivity(plan.id)))).flat()); } catch { setError('No pudimos cargar tu plan. Intentá nuevamente.'); } finally { setLoading(false); } };
+  useEffect(() => { void refresh(); }, []);
+  const activityFor = (planId: string, dayId: string, mealId: string) => activity.find(item => item.mealPlanId === planId && item.dayId === dayId && item.mealId === mealId);
+  if (loading) return <div className="mx-auto max-w-md p-4"><p role="status" className="text-sm text-text-secondary">Cargando tu plan…</p></div>;
+  if (error) return <div className="mx-auto max-w-md p-4"><Card><p className="text-sm text-semantic-critical">{error}</p><Button className="mt-4" variant="secondary" onClick={() => void refresh()}>Reintentar</Button></Card></div>;
+  return <div className="mx-auto max-w-md space-y-5 p-4 pb-10"><Card><Button asChild><Link to="/patient/check-in/free">Completar check-in</Link></Button><p className="text-sm text-text-secondary mt-2">Cuando lo necesites, sin frecuencia fija.</p></Card><div className="flex items-center gap-2"><ClipboardList className="h-6 w-6 text-brand-strong" /><div><h1 className="text-2xl font-bold">Tu plan alimentario</h1><p className="text-sm text-text-secondary">Marcá cada comida y dejá un comentario si lo necesitás.</p></div></div>{plans.length === 0 ? <Card className="py-12 text-center"><h2 className="text-lg font-bold">Todavía no tenés un plan activo</h2><p className="mt-2 text-sm text-text-secondary">Tu nutricionista te avisará cuando publique uno.</p></Card> : plans.map(plan => <Card key={plan.id} className="space-y-3"><h2 className="text-lg font-bold">{plan.title}</h2>{plan.content.days.map((day, index) => <details key={day.id} open={index === 0} className="rounded-xl border border-border-subtle bg-surface-subtle p-3"><summary className="cursor-pointer text-sm font-bold">Día {index + 1}{day.title ? ` · ${day.title}` : ''}</summary><div className="mt-3 space-y-2">{day.meals.map(meal => <Meal key={meal.id} plan={plan} day={day} meal={meal} activity={activityFor(plan.id, day.id, meal.id)} refresh={refresh} />)}</div></details>)}</Card>)}</div>;
+}
+import { Link } from 'react-router-dom';

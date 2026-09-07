@@ -1,0 +1,197 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Modelos" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- list:
+  - link "list_alt_add Planes de alimentación modelo":
+    - /url: "#templates-content"
+    - generic: list_alt_add
+    - text: Planes de alimentación modelo
+  - link "clinical_notes Recomendaciones / Alimentos a evitar":
+    - /url: "#recommendations-content"
+    - generic: clinical_notes
+    - text: Recomendaciones / Alimentos a evitar
+- link "Crear modelo add":
+  - /url: /meal_plans
+  - text: Crear modelo
+  - generic: add
+- textbox "Buscar plan de alimentación modelo"
+- generic: search
+- combobox:
+  - option "Todos los modelos" [selected]
+  - option "Modelos del sistema"
+  - option "Mis modelos"
+- link "Dieta 1200 kcal (sin restricciones alimenticias) Modelos del sistema 1257 kcal local_fire_department Energía 22 % scatter_plot Grasa 54 % radio_button_unchecked H. Carbono 24 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42784/creation
+  - generic: Dieta 1200 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 1257 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 22 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 54 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 24 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- link "Dieta 1500 kcal (sin restricciones alimenticias) Modelos del sistema 1543 kcal local_fire_department Energía 25 % scatter_plot Grasa 54 % radio_button_unchecked H. Carbono 21 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42779/creation
+  - generic: Dieta 1500 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 1543 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 25 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 54 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 21 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- link "Dieta 1800 kcal (sin restricciones alimenticias) Modelos del sistema 1838 kcal local_fire_department Energía 26 % scatter_plot Grasa 51 % radio_button_unchecked H. Carbono 23 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42780/creation
+  - generic: Dieta 1800 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 1838 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 26 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 51 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 23 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- link "Dieta 2000 kcal (sin restricciones alimenticias) Modelos del sistema 2009 kcal local_fire_department Energía 27 % scatter_plot Grasa 54 % radio_button_unchecked H. Carbono 19 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42781/creation
+  - generic: Dieta 2000 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 2009 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 27 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 54 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 19 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- link "Dieta 2200 kcal (sin restricciones alimenticias) Modelos del sistema 2218 kcal local_fire_department Energía 28 % scatter_plot Grasa 51 % radio_button_unchecked H. Carbono 21 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42782/creation
+  - generic: Dieta 2200 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 2218 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 28 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 51 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 21 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- link "Dieta 2500 kcal (sin restricciones alimenticias) Modelos del sistema 2545 kcal local_fire_department Energía 23 % scatter_plot Grasa 54 % radio_button_unchecked H. Carbono 23 % thermostat_carbon Proteína":
+  - /url: /meal_plans/42783/creation
+  - generic: Dieta 2500 kcal (sin restricciones alimenticias)
+  - generic: Modelos del sistema
+  - generic: 2545 kcal
+  - generic: local_fire_department
+  - text: Energía
+  - generic: 23 %
+  - generic: scatter_plot
+  - text: Grasa
+  - generic: 54 %
+  - generic: radio_button_unchecked
+  - text: H. Carbono
+  - generic: 23 %
+  - generic: thermostat_carbon
+  - text: Proteína
+- list:
+  - link "chevron_left":
+    - /url: "#"
+    - generic: chevron_left
+  - listitem: "1"
+  - link "2":
+    - /url: /remote/partials/professionals/meal_plans/search?_=1786565807925&container=.search-results.search-meal-plans-results&page=2&partial=professionals%2Fmeal_plans%2Ftemplates%2Fsearch%2Fresults&search%5Blimit%5D=6&search%5Bquery%5D=&search%5Btemplate_source_id%5D=
+  - link "3":
+    - /url: /remote/partials/professionals/meal_plans/search?_=1786565807925&container=.search-results.search-meal-plans-results&page=3&partial=professionals%2Fmeal_plans%2Ftemplates%2Fsearch%2Fresults&search%5Blimit%5D=6&search%5Bquery%5D=&search%5Btemplate_source_id%5D=
+  - link "4":
+    - /url: /remote/partials/professionals/meal_plans/search?_=1786565807925&container=.search-results.search-meal-plans-results&page=4&partial=professionals%2Fmeal_plans%2Ftemplates%2Fsearch%2Fresults&search%5Blimit%5D=6&search%5Bquery%5D=&search%5Btemplate_source_id%5D=
+  - link "5":
+    - /url: /remote/partials/professionals/meal_plans/search?_=1786565807925&container=.search-results.search-meal-plans-results&page=5&partial=professionals%2Fmeal_plans%2Ftemplates%2Fsearch%2Fresults&search%5Blimit%5D=6&search%5Bquery%5D=&search%5Btemplate_source_id%5D=
+  - link "...":
+    - /url: "#"
+  - link "chevron_right":
+    - /url: /remote/partials/professionals/meal_plans/search?_=1786565807925&container=.search-results.search-meal-plans-results&page=2&partial=professionals%2Fmeal_plans%2Ftemplates%2Fsearch%2Fresults&search%5Blimit%5D=6&search%5Bquery%5D=&search%5Btemplate_source_id%5D=
+    - generic: chevron_right
+- text: keyboard_arrow_down
+- status
+- iframe
+- button "Open Intercom Messenger":

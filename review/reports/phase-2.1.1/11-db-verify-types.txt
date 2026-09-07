@@ -1,0 +1,16 @@
+COMMAND: npm run db:verify-types
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:12:40.834Z
+END_TIME: 2026-08-06T04:12:43.508Z
+DURATION_MS: 2674
+EXIT_CODE: 0
+--- STDOUT ---
+
+> nutrisoft@0.1.0 db:verify-types
+> node scripts/verify-types.js
+
+Verificando sincronización de tipos TypeScript de Supabase...
+✅ Tipos TypeScript sincronizados con éxito.
+
+--- STDERR ---
+(none)

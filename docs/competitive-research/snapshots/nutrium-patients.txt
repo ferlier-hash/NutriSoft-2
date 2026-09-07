@@ -1,0 +1,98 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Tus clientes" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- button "Registrar cliente add":
+  - text: Registrar cliente
+  - generic: add
+- link "Todos los clientes":
+  - /url: javascript:void(0)
+  - generic: Todos los clientes
+- button "Todos los clientes"
+- text: search
+- combobox:
+  - option "Todos los clientes" [selected]
+  - option "Clientes activos este mes"
+  - option "Clientes sin consulta programada"
+- button "system_update_alt":
+  - generic: system_update_alt
+- text: search
+- textbox "Busca clientes por el nombre, ID, la ocupación, el número de identificación o contacto..."
+- generic: search
+- generic: Clientes (1)
+- generic: Lugar de consulta
+- generic: Contacto
+- generic: Última consulta
+- generic: Próxima consulta
+- generic: Este mes
+- link "Patient exemple Patient exemple APPS remove Hace 12 días No programado Activo Enviar mensaje":
+  - /url: /patients/3286036/ai_summary
+  - img "Patient exemple"
+  - generic "Patient exemple"
+  - generic: APPS
+  - generic: remove
+  - generic: Hace 12 días
+  - generic: No programado
+  - generic: Activo
+  - button "Enviar mensaje":
+    - generic: mail
+- status
+- status
+- iframe
+- button "Open Intercom Messenger":

@@ -12,6 +12,12 @@ import {
   Building2,
   Stethoscope,
   CreditCard,
+  CalendarDays,
+  Library,
+  CookingPot,
+  CircleUserRound,
+  ClipboardList,
+  ListChecks,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -24,15 +30,18 @@ interface NavItem {
   path: string;
   end?: boolean;
   badge?: number;
+  badgeTone?: 'critical' | 'warning';
   disabled?: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
-  const { professionalAlerts, currentDemoNutritionist } = useMock();
-  const unresolvedAlertsCount = professionalAlerts.filter(a => a.status === 'unresolved').length;
+  const { professionalAlerts, currentDemoNutritionist, professionalMealPlanAssignments, mealAdherenceRecords } = useMock();
+  const unresolvedAlertsCount = professionalAlerts.filter(a => a.status !== 'resolved').length;
+  const mealCommentCount = mealAdherenceRecords.filter(record => record.patientComment?.trim() && !record.professionalReviewedAt && professionalMealPlanAssignments.some(assignment => assignment.id === record.assignmentId)).length;
 
   const professionalNav: NavItem[] = [
     { label: 'Inicio', icon: <LayoutDashboard className="w-4 h-4" />, path: '/professional', end: true },
+    { label: 'Mi perfil', icon: <CircleUserRound className="w-4 h-4" />, path: '/professional/profile' },
     { label: 'Pacientes', icon: <Users className="w-4 h-4" />, path: '/professional/patients' },
     {
       label: 'Bandeja de atención',
@@ -40,15 +49,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
       path: '/professional/inbox',
       badge: unresolvedAlertsCount > 0 ? unresolvedAlertsCount : undefined,
     },
-    { label: 'Check-ins', icon: <ClipboardCheck className="w-4 h-4" />, path: '/professional/checkins', disabled: true },
-    { label: 'Recomendaciones', icon: <Sparkles className="w-4 h-4" />, path: '/professional/recommendations', disabled: true },
+    { label: 'Agenda', icon: <CalendarDays className="w-4 h-4" />, path: '/professional/agenda' },
+    { label: 'Citas', icon: <CalendarDays className="w-4 h-4" />, path: '/professional/appointments' },
+    { label: 'Ingresos', icon: <CreditCard className="w-4 h-4" />, path: '/professional/income' },
+    { label: 'Planes alimentarios', icon: <ClipboardList className="w-4 h-4" />, path: '/professional/meal-plans', badge: mealCommentCount || undefined, badgeTone: 'warning' },
+    { label: 'Recetario', icon: <CookingPot className="w-4 h-4" />, path: '/professional/recipes' },
+    { label: 'Próximos pasos', icon: <ListChecks className="w-4 h-4" />, path: '/professional/next-steps' },
+    { label: 'Recursos', icon: <Library className="w-4 h-4" />, path: '/professional/resources' },
+    { label: 'Check-ins', icon: <ClipboardCheck className="w-4 h-4" />, path: '/professional/checkins' },
+    { label: 'Recomendaciones', icon: <Sparkles className="w-4 h-4" />, path: '/professional/recommendations' },
     { label: 'Reportes', icon: <FileText className="w-4 h-4" />, path: '/professional/reports', disabled: true },
-    { label: 'Configuración', icon: <Settings className="w-4 h-4" />, path: '/professional/settings', disabled: true },
+    { label: 'Configuración', icon: <Settings className="w-4 h-4" />, path: '/professional/settings' },
   ];
 
   const adminNav: NavItem[] = [
     { label: 'Resumen', icon: <LayoutDashboard className="w-4 h-4" />, path: '/admin', end: true },
-    { label: 'Organizaciones', icon: <Building2 className="w-4 h-4" />, path: '/admin/organizations' },
+    { label: 'Consultorios', icon: <Building2 className="w-4 h-4" />, path: '/admin/organizations' },
     { label: 'Nutricionistas', icon: <Stethoscope className="w-4 h-4" />, path: '/admin/nutritionists' },
     { label: 'Facturación', icon: <CreditCard className="w-4 h-4" />, path: '/admin/billing', disabled: true },
     { label: 'Configuración', icon: <Settings className="w-4 h-4" />, path: '/admin/settings', disabled: true },
@@ -114,7 +130,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
                 </div>
 
                 {item.badge !== undefined && (
-                  <span className="px-2 py-0.5 text-xs font-bold bg-[#FCEBEA] text-[#902A24] rounded-full border border-[#F8C4C1]">
+                  <span className={`px-2 py-0.5 text-xs font-bold rounded-full border ${item.badgeTone === 'warning' ? 'bg-semantic-warning-bg text-semantic-warning border-semantic-warning' : 'bg-semantic-critical-bg text-semantic-critical border-semantic-critical'}`}>
                     {item.badge}
                   </span>
                 )}

@@ -1,0 +1,182 @@
+- alert
+- complementary:
+  - img "Trofenia"
+  - generic: Trofenia
+  - button:
+  - navigation:
+    - paragraph: Principal
+    - link "Panel Principal":
+      - /url: /es/dashboard
+      - generic: Panel Principal
+    - link "Pacientes":
+      - /url: /es/patients
+      - generic: Pacientes
+    - link "Agenda":
+      - /url: /es/appointments
+      - generic: Agenda
+    - link "Antropometría":
+      - /url: /es/anthropometry
+      - generic: Antropometría
+    - link "Consultas":
+      - /url: /es/consultations
+      - generic: Consultas
+    - link "Plantillas de Planes de Dieta":
+      - /url: /es/meal-plans/templates
+      - generic: Plantillas de Planes de Dieta
+    - link "Templates de Catering":
+      - /url: /es/catering/templates
+      - generic: Templates de Catering
+    - link "Catering":
+      - /url: /es/catering
+      - generic: Catering
+    - paragraph: Reportes
+    - link "Estadísticas de Turnos":
+      - /url: /es/reports/appointments-stats
+      - generic: Estadísticas de Turnos
+    - link "Pagos Fallidos":
+      - /url: /es/reports/failed-payments
+      - generic: Pagos Fallidos
+    - paragraph: Configuración
+    - link "Profesionales":
+      - /url: /es/settings/professionals
+      - generic: Profesionales
+    - link "Consultorios":
+      - /url: /es/settings/offices
+      - generic: Consultorios
+    - link "Tipos de Consulta":
+      - /url: /es/settings/appointment-types
+      - generic: Tipos de Consulta
+    - link "Integración de Pagos":
+      - /url: /es/settings/payments
+      - generic: Integración de Pagos
+    - link "Equipo":
+      - /url: /es/settings/team
+      - generic: Equipo
+    - link "Suscripción":
+      - /url: /es/settings/billing
+      - generic: Suscripción
+    - link "Mis Pagos":
+      - /url: /es/profile/payments
+      - generic: Mis Pagos
+    - link "Ayuda":
+      - /url: /es/help
+      - generic: Ayuda
+  - paragraph: Versión 1.0.0
+- banner:
+  - heading "Bienvenido, Fer" [level=2]
+  - button:
+  - button "F":
+    - generic: F
+- main:
+  - heading "Panel Principal" [level=1]
+  - paragraph: Bienvenido de vuelta, Fer
+  - alert:
+    - heading "Período de Prueba Gratuito" [level=5]
+    - paragraph: Te quedan 14 días en tu período de prueba gratuito.
+    - paragraph: Vence el 26 de agosto, 2026
+    - button "Ver Planes":
+      - text: Ver Planes
+  - generic: Pacientes
+  - generic: "0"
+  - paragraph: 0 activos
+  - generic: Citas Hoy
+  - generic: "0"
+  - paragraph: 0 esta semana
+  - generic: Citas Este Mes
+  - generic: "0"
+  - paragraph:
+    - generic: Sin cambios
+    - text: vs mes anterior
+  - generic: Antropometrías
+  - generic: "0"
+  - paragraph: Mediciones registradas
+  - text: Acciones Rápidas
+  - link "Nuevo Paciente":
+    - /url: /es/patients/new
+    - button "Nuevo Paciente":
+      - text: Nuevo Paciente
+  - link "Nueva Cita":
+    - /url: /es/appointments/new
+    - button "Nueva Cita":
+      - text: Nueva Cita
+  - link "Nueva Consulta":
+    - /url: /es/consultations/new
+    - button "Nueva Consulta":
+      - text: Nueva Consulta
+  - link "Ver Todos":
+    - /url: /es/patients
+    - button "Ver Todos"
+  - text: Nuevos Pacientes Registrados
+  - generic: Evolución de ingresos en los últimos meses
+  - application:
+    - generic: mar 26
+    - generic: abr 26
+    - generic: may 26
+    - generic: jun 26
+    - generic: jul 26
+    - generic: ago 26
+    - generic: "0"
+    - generic: "1"
+    - generic: "2"
+    - generic: "3"
+    - generic: "4"
+  - 'heading "Pacientes: 0" [level=3]':
+    - text: "Pacientes: 0"
+  - paragraph: Distribución demográfica
+  - generic: Mujeres
+  - generic: "0"
+  - generic: 0%
+  - generic: Hombres
+  - generic: "0"
+  - generic: 0%
+  - generic: No Mayores (<60)
+  - generic: "0"
+  - generic: 0%
+  - generic: Mayores (60+)
+  - generic: "0"
+  - generic: 0%
+  - generic: IMC. Mujeres
+  - application
+  - generic: Bajo Peso
+  - generic: "0"
+  - generic: Peso Normal
+  - generic: "0"
+  - generic: Sobrepeso
+  - generic: "0"
+  - generic: Obesidad 1°
+  - generic: "0"
+  - generic: Obesidad 2°
+  - generic: "0"
+  - generic: Obesidad Mórbida
+  - generic: "0"
+  - generic: IMC. Varones
+  - application
+  - generic: Bajo Peso
+  - generic: "0"
+  - generic: Peso Normal
+  - generic: "0"
+  - generic: Sobrepeso
+  - generic: "0"
+  - generic: Obesidad 1°
+  - generic: "0"
+  - generic: Obesidad 2°
+  - generic: "0"
+  - generic: Obesidad Mórbida
+  - generic: "0"
+  - generic: Pacientes según sexo
+  - application
+  - generic: "Femenino:"
+  - generic: "0"
+  - generic: "Masculino:"
+  - generic: "0"
+  - text: Consultas por año
+  - generic: Distribución histórica de consultas realizadas
+  - application
+  - text: Consultas Recientes
+  - paragraph: No hay consultas recientes
+  - text: Próximas Citas
+  - paragraph: No hay citas programadas
+  - text: Pacientes Nuevos
+  - paragraph: No hay pacientes nuevos
+- region "Notifications alt+T"
+- generic: "0"

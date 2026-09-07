@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMock } from '../../app/provider';
 import { Shield, UserCheck, User, RefreshCw, Stethoscope } from 'lucide-react';
+import { publicEnvironment } from '../../config/environment';
 
 export const DevRoleSwitcher: React.FC = () => {
   const {
@@ -16,7 +17,7 @@ export const DevRoleSwitcher: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (!import.meta.env.DEV) {
+  if (!publicEnvironment.demoMode) {
     return null;
   }
 
@@ -30,7 +31,7 @@ export const DevRoleSwitcher: React.FC = () => {
     <div
       role="region"
       aria-label="Selector de demostración para desarrollo"
-      className="fixed top-2 right-2 z-50 flex flex-wrap items-center gap-2 px-3 py-1.5 bg-[#151B22]/95 backdrop-blur-md text-white text-xs rounded-2xl shadow-xl border border-white/10"
+      className="relative md:fixed md:top-2 md:right-2 z-50 flex flex-wrap items-center justify-center md:justify-start gap-2 w-[calc(100%-1rem)] md:w-auto m-2 md:m-0 px-3 py-1.5 bg-[#151B22]/95 backdrop-blur-md text-white text-xs rounded-2xl shadow-xl border border-white/10"
     >
       <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#357984]/50 font-medium text-[11px] text-[#AEE5E8]">
         <span className="w-1.5 h-1.5 rounded-full bg-[#55AEB8] animate-pulse" />

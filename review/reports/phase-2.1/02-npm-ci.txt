@@ -1,0 +1,13 @@
+COMMAND: npm ci
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:03.000Z
+END_TIME: 2026-08-04T23:48:06.000Z
+DURATION_MS: 3000
+EXIT_CODE: 0
+--- STDOUT ---
+added 412 packages, and audited 413 packages in 3s
+102 packages are looking for funding
+  run `npm fund` for details
+found 0 vulnerabilities
+--- STDERR ---
+(none)

@@ -1,0 +1,15 @@
+COMMAND: npm run db:types
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:12:37.894Z
+END_TIME: 2026-08-06T04:12:40.832Z
+DURATION_MS: 2938
+EXIT_CODE: 0
+--- STDOUT ---
+
+> nutrisoft@0.1.0 db:types
+> node scripts/generate-types.js
+
+Tipos TypeScript generados desde Supabase local.
+
+--- STDERR ---
+Connecting to db 5432

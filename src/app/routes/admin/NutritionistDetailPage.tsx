@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+import {
+  Activity,
+  Building2,
+  CalendarDays,
+  ChevronRight,
+  Clock3,
+  Mail,
+  Phone,
+  ShieldCheck,
+  Stethoscope,
+  UserRound,
+  Users,
+} from 'lucide-react';
 import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { NotFoundPage } from '../NotFoundPage';
-import { formatShortDate, formatDateTime } from '../../../lib/dateUtils';
-import { ChevronRight, Stethoscope } from 'lucide-react';
+import { formatFullDateTime, formatRelativeTime, formatShortDate } from '../../../lib/dateUtils';
+import { PLAN_LABELS } from '../../../lib/adminCommercial';
 
 export const NutritionistDetailPage: React.FC = () => {
   const { nutritionistId } = useParams<{ nutritionistId: string }>();
-  const { nutritionists, patients } = useMock();
-  const [activeTab, setActiveTab] = useState<'summary' | 'orgs' | 'patients' | 'activity' | 'billing'>('patients');
-
-  const nutritionist = nutritionists.find(n => n.id === nutritionistId);
+  const { nutritionists, organizations, patients } = useMock();
+  const nutritionist = nutritionists.find(item => item.id === nutritionistId);
 
   if (!nutritionist) {
     return (
@@ -24,199 +35,188 @@ export const NutritionistDetailPage: React.FC = () => {
     );
   }
 
-  const assignedPatients = patients.filter(p => p.assignedNutritionistId === nutritionist.id);
+  const organization = organizations.find(item => item.id === nutritionist.organizationId);
+  const assignedPatients = patients.filter(patient => patient.assignedNutritionistId === nutritionist.id);
+  const statusVariant = nutritionist.status === 'active' ? 'active' : 'suspended';
+  const statusLabel = nutritionist.status === 'active' ? 'Cuenta activa' : 'Cuenta suspendida';
+
+  const summaryCards = [
+    {
+      label: 'Pacientes asignados',
+      value: assignedPatients.length.toString(),
+      detail: assignedPatients.length === 1 ? 'Paciente a cargo' : 'Pacientes a cargo',
+      icon: Users,
+    },
+    {
+      label: 'Fecha de alta',
+      value: formatShortDate(nutritionist.joinedAt),
+      detail: 'Alta en la plataforma',
+      icon: CalendarDays,
+    },
+    {
+      label: 'Última actividad',
+      value: formatRelativeTime(nutritionist.lastActiveAt),
+      detail: formatFullDateTime(nutritionist.lastActiveAt),
+      icon: Clock3,
+    },
+    {
+      label: 'Estado de cuenta',
+      value: nutritionist.status === 'active' ? 'Activa' : 'Suspendida',
+      detail: nutritionist.status === 'active' ? 'Acceso operativo habilitado' : 'Acceso operativo restringido',
+      icon: ShieldCheck,
+    },
+  ];
 
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      {/* Breadcrumbs Obligatorios */}
-      <nav aria-label="Breadcrumb" className="text-xs text-[#66727D] flex items-center gap-1.5 font-medium">
-        <Link to="/admin" className="hover:text-[#151B22]">Admin</Link>
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1180px] mx-auto">
+      <nav aria-label="Breadcrumb" className="text-xs text-text-secondary flex items-center gap-1.5 font-medium">
+        <Link to="/admin" className="hover:text-text-primary">Admin</Link>
         <ChevronRight className="w-3 h-3" />
-        <Link to="/admin/nutritionists" className="hover:text-[#151B22]">Nutricionistas</Link>
+        <Link to="/admin/nutritionists" className="hover:text-text-primary">Nutricionistas</Link>
         <ChevronRight className="w-3 h-3" />
-        <span className="text-[#151B22] font-semibold">{nutritionist.name}</span>
+        <span className="text-text-primary font-semibold">{nutritionist.name}</span>
       </nav>
 
-      {/* Cabecera Nutricionista */}
-      <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" highlighted>
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#55AEB8] text-[#151B22] flex items-center justify-center font-bold text-xl shadow-sm">
-            <Stethoscope className="w-7 h-7" />
+      <section className="rounded-3xl border border-border-subtle bg-[linear-gradient(135deg,#E9F8F7_0%,#EEF7FB_58%,#FCF9E8_100%)] p-6 shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="flex items-center gap-4 min-w-0">
+            <div className="w-14 h-14 rounded-2xl bg-white/80 border border-white flex items-center justify-center text-brand-strong shrink-0">
+              <Stethoscope className="w-7 h-7" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-2xl font-bold text-text-primary">{nutritionist.name}</h2>
+                <Badge variant={statusVariant}>{statusLabel}</Badge>
+              </div>
+              <p className="text-sm text-text-secondary mt-1">
+                Profesional de <strong className="text-brand-strong">{nutritionist.organizationName}</strong>
+              </p>
+            </div>
+          </div>
+          <Button asChild variant="secondary">
+            <Link to="/admin/nutritionists">Volver a nutricionistas</Link>
+          </Button>
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3" aria-label="Resumen del nutricionista">
+        {summaryCards.map(({ label, value, detail, icon: Icon }) => (
+          <div key={label} className="bg-surface border border-border-subtle rounded-2xl p-4 shadow-sm">
+            <Icon className="w-4 h-4 text-brand-strong" />
+            <p className="text-[11px] text-text-secondary mt-3">{label}</p>
+            <p className="text-lg font-bold text-text-primary mt-1">{value}</p>
+            <p className="text-[11px] text-text-tertiary mt-1">{detail}</p>
+          </div>
+        ))}
+      </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <UserRound className="w-4 h-4 text-brand-strong" />
+            <h3 className="font-bold text-text-primary">Datos de contacto</h3>
+          </div>
+          <div className="space-y-3">
+            <a href={`mailto:${nutritionist.email}`} className="flex items-center gap-3 rounded-xl bg-surface-subtle p-3 hover:bg-[#EAF2F4] transition-colors">
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-strong shrink-0"><Mail className="w-4 h-4" /></span>
+              <span className="min-w-0"><span className="block text-[11px] text-text-secondary">Correo electrónico</span><span className="block text-sm font-semibold text-text-primary truncate">{nutritionist.email}</span></span>
+            </a>
+            <a href={`tel:${nutritionist.phone}`} className="flex items-center gap-3 rounded-xl bg-surface-subtle p-3 hover:bg-[#EAF2F4] transition-colors">
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-strong shrink-0"><Phone className="w-4 h-4" /></span>
+              <span><span className="block text-[11px] text-text-secondary">Teléfono</span><span className="block text-sm font-semibold text-text-primary">{nutritionist.phone}</span></span>
+            </a>
+          </div>
+        </Card>
+
+        <Card className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <Building2 className="w-4 h-4 text-brand-strong" />
+            <h3 className="font-bold text-text-primary">Consultorio vinculado</h3>
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-2xl font-bold text-[#151B22]">{nutritionist.name}</h2>
-              <Badge variant={nutritionist.status === 'active' ? 'active' : 'suspended'}>
-                {nutritionist.status === 'active' ? 'Cuenta Activa' : 'Suspendida'}
-              </Badge>
-            </div>
-            <p className="text-xs text-[#66727D] mt-0.5">
-              Organización: <strong className="text-[#357984]">{nutritionist.organizationName}</strong> • {nutritionist.email} • {nutritionist.phone}
+            <p className="text-lg font-bold text-text-primary">{nutritionist.organizationName}</p>
+            <p className="text-xs text-text-secondary mt-1">
+              {organization ? `${organization.location} · Plan ${PLAN_LABELS[organization.plan]}` : 'Organización principal'}
             </p>
           </div>
-        </div>
-      </Card>
-
-      {/* Pestañas de Navegación del Perfil con ARIA Tablist */}
-      <div role="tablist" aria-label="Secciones del perfil del nutricionista" className="flex items-center gap-2 border-b border-[#E2E9EC] overflow-x-auto">
-        <button
-          id="tab-nutri-summary"
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'summary'}
-          aria-controls="panel-nutri-summary"
-          onClick={() => setActiveTab('summary')}
-          className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
-            activeTab === 'summary' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
-          }`}
-        >
-          1. Resumen
-        </button>
-        <button
-          id="tab-nutri-orgs"
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'orgs'}
-          aria-controls="panel-nutri-orgs"
-          onClick={() => setActiveTab('orgs')}
-          className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
-            activeTab === 'orgs' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
-          }`}
-        >
-          2. Organizaciones
-        </button>
-        <button
-          id="tab-nutri-patients"
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'patients'}
-          aria-controls="panel-nutri-patients"
-          onClick={() => setActiveTab('patients')}
-          className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
-            activeTab === 'patients' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
-          }`}
-        >
-          3. Pacientes asignados ({assignedPatients.length})
-        </button>
-        <button
-          id="tab-nutri-activity"
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'activity'}
-          aria-controls="panel-nutri-activity"
-          onClick={() => setActiveTab('activity')}
-          className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
-            activeTab === 'activity' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
-          }`}
-        >
-          4. Actividad operativa
-        </button>
-        <button
-          id="tab-nutri-billing"
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'billing'}
-          aria-controls="panel-nutri-billing"
-          onClick={() => setActiveTab('billing')}
-          className={`pb-3 px-4 text-xs font-semibold border-b-2 transition-all cursor-pointer whitespace-nowrap min-h-[44px] ${
-            activeTab === 'billing' ? 'border-[#357984] text-[#357984]' : 'border-transparent text-[#66727D] hover:text-[#151B22]'
-          }`}
-        >
-          5. Estado de cuenta
-        </button>
+          {organization && (
+            <Button asChild variant="secondary" size="sm" className="gap-1">
+              <Link to={`/admin/organizations/${organization.id}`}>Ver consultorio <ChevronRight className="w-3.5 h-3.5" /></Link>
+            </Button>
+          )}
+        </Card>
       </div>
 
-      {/* Pestaña 3: Pacientes Asignados */}
-      {activeTab === 'patients' && (
-        <div id="panel-nutri-patients" role="tabpanel" aria-labelledby="tab-nutri-patients">
-          <Card className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#E2E9EC] pb-3">
-              <h3 className="text-sm font-bold text-[#151B22]">
-                Pacientes asignados a {nutritionist.name}
-              </h3>
-              <span className="text-xs text-[#66727D]">
-                Total: {assignedPatients.length} pacientes
-              </span>
+      <Card className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border-subtle pb-3">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-brand-strong" />
+            <h3 className="font-bold text-text-primary">Pacientes asignados</h3>
+          </div>
+          {assignedPatients.length > 0 && <Badge variant="info">{assignedPatients.length} en total</Badge>}
+        </div>
+
+        {assignedPatients.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {assignedPatients.map(patient => (
+              <article key={patient.id} className="rounded-2xl border border-border-subtle bg-surface-subtle p-4 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-bold text-text-primary">{patient.firstName} {patient.lastName}</p>
+                    <Badge variant={patient.status === 'active' ? 'active' : 'neutral'}>{patient.status === 'active' ? 'Activo' : 'Archivado'}</Badge>
+                  </div>
+                  <p className="text-[11px] text-text-secondary mt-1">Asignado el {formatShortDate(patient.createdAt)}</p>
+                  <p className="text-[11px] text-text-tertiary mt-0.5">Última actividad: {formatFullDateTime(patient.lastActiveAt)}</p>
+                </div>
+                <Button asChild variant="secondary" size="sm" className="shrink-0">
+                  <Link to={`/admin/nutritionists/${nutritionist.id}/patients/${patient.id}`} aria-label={`Ver perfil de ${patient.firstName} ${patient.lastName}`}>
+                    Ver <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                </Button>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl bg-surface-subtle px-4 py-6 text-center">
+            <Users className="w-6 h-6 text-text-tertiary mx-auto" />
+            <p className="text-sm font-semibold text-text-primary mt-2">Sin pacientes asignados</p>
+            <p className="text-xs text-text-secondary mt-1">Cuando reciba una asignación, aparecerá en esta tarjeta.</p>
+          </div>
+        )}
+      </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <Activity className="w-4 h-4 text-brand-strong" />
+            <h3 className="font-bold text-text-primary">Actividad operativa</h3>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-brand-primary mt-1.5 shrink-0" />
+            <div>
+              <p className="text-sm font-bold text-text-primary">Último inicio de sesión</p>
+              <p className="text-xs text-text-secondary mt-1">{formatFullDateTime(nutritionist.lastActiveAt)}</p>
+              <p className="text-[11px] text-brand-strong font-semibold mt-1">{formatRelativeTime(nutritionist.lastActiveAt)}</p>
             </div>
+          </div>
+        </Card>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
-                    <th scope="col" className="py-2.5 px-3">Nombre</th>
-                    <th scope="col" className="py-2.5 px-3">Organización</th>
-                    <th scope="col" className="py-2.5 px-3">Estado</th>
-                    <th scope="col" className="py-2.5 px-3">Fecha de Asignación</th>
-                    <th scope="col" className="py-2.5 px-3">Última Actividad</th>
-                    <th scope="col" className="py-2.5 px-3 text-right">Acción</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#E2E9EC] text-xs">
-                  {assignedPatients.map(p => (
-                    <tr key={p.id} className="hover:bg-[#F2F7F8] transition-colors">
-                      <td className="py-3 px-3 font-semibold text-[#151B22]">
-                        {p.firstName} {p.lastName}
-                      </td>
-                      <td className="py-3 px-3 text-[#357984] font-medium">{nutritionist.organizationName}</td>
-                      <td className="py-3 px-3">
-                        <Badge variant={p.status === 'active' ? 'active' : 'suspended'}>
-                          {p.status === 'active' ? 'Activo' : 'Archivado'}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-3 text-[#66727D]">{formatShortDate(p.createdAt)}</td>
-                      <td className="py-3 px-3 text-[#66727D]">{formatDateTime(p.lastActiveAt)}</td>
-                      <td className="py-3 px-3 text-right">
-                        <Button asChild variant="secondary" size="sm">
-                          <Link to={`/admin/nutritionists/${nutritionist.id}/patients/${p.id}`} className="text-xs inline-flex items-center gap-1">
-                            <span>Ver</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </Link>
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <Card className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <ShieldCheck className="w-4 h-4 text-brand-strong" />
+            <h3 className="font-bold text-text-primary">Estado de cuenta</h3>
+          </div>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-text-primary">Acceso a la plataforma</p>
+              <p className="text-xs text-text-secondary mt-1">
+                {nutritionist.status === 'active' ? 'Puede operar dentro del consultorio asignado.' : 'El acceso operativo se encuentra restringido.'}
+              </p>
             </div>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === 'summary' && (
-        <div id="panel-nutri-summary" role="tabpanel" aria-labelledby="tab-nutri-summary">
-          <Card className="space-y-3 text-xs">
-            <h3 className="font-bold text-sm text-[#151B22]">Resumen operativo</h3>
-            <p className="text-[#66727D]">Nutricionista activo desde {formatShortDate(nutritionist.joinedAt)} con {assignedPatients.length} pacientes a cargo.</p>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === 'orgs' && (
-        <div id="panel-nutri-orgs" role="tabpanel" aria-labelledby="tab-nutri-orgs">
-          <Card className="space-y-3 text-xs">
-            <h3 className="font-bold text-sm text-[#151B22]">Organizaciones vinculadas</h3>
-            <p className="text-[#357984] font-semibold">{nutritionist.organizationName} (Organización principal)</p>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === 'activity' && (
-        <div id="panel-nutri-activity" role="tabpanel" aria-labelledby="tab-nutri-activity">
-          <Card className="space-y-3 text-xs">
-            <h3 className="font-bold text-sm text-[#151B22]">Actividad operativa reciente</h3>
-            <p className="text-[#66727D]">Última actividad registrada en la plataforma: {formatDateTime(nutritionist.lastActiveAt)}.</p>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === 'billing' && (
-        <div id="panel-nutri-billing" role="tabpanel" aria-labelledby="tab-nutri-billing">
-          <Card className="space-y-3 text-xs">
-            <h3 className="font-bold text-sm text-[#151B22]">Estado de cuenta</h3>
-            <Badge variant="active">Plan Pro Activo</Badge>
-          </Card>
-        </div>
-      )}
+            <Badge variant={statusVariant}>{nutritionist.status === 'active' ? 'Activo' : 'Suspendido'}</Badge>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,37 @@
+COMMAND: npm run test
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:12:46.494Z
+END_TIME: 2026-08-06T04:12:48.930Z
+DURATION_MS: 2436
+EXIT_CODE: 0
+--- STDOUT ---
+
+> nutrisoft@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/fernandoliernur/Projects/nutrisoft
+
+ ✓ src/test/alertEngine.test.ts (4 tests) 10ms
+ ✓ src/test/userFlowIntegration.test.tsx (1 test) 13ms
+ ✓ src/test/domainInvariants.test.tsx (4 tests) 18ms
+ ✓ src/test/patientIsolation.test.tsx (1 test) 51ms
+ ✓ src/test/adminPrivacy.test.tsx (3 tests) 86ms
+ ✓ src/test/navigation.test.tsx (4 tests) 105ms
+
+ Test Files  6 passed (6)
+      Tests  17 passed (17)
+   Start at  01:12:47
+   Duration  1.03s (transform 237ms, setup 363ms, collect 1.15s, tests 283ms, environment 2.09s, prepare 297ms)
+
+
+--- STDERR ---
+stderr | src/test/adminPrivacy.test.tsx > Barrera de Privacidad del Portal Administrador > muestra únicamente información operativa y OCURRE aviso de privacidad al consultar el perfil administrativo de un paciente
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+stderr | src/test/patientIsolation.test.tsx > Aislamiento del Portal del Paciente por currentDemoPatientId > filtra aisladamente el saludo y las recomendaciones según el paciente seleccionado
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+stderr | src/test/navigation.test.tsx > Navegación, Layouts y UX Accesible (Fase 1.1.2) > 1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage con portal admin
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+

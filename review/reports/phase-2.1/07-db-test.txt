@@ -1,0 +1,33 @@
+COMMAND: npm run db:test
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:26.000Z
+END_TIME: 2026-08-04T23:48:28.000Z
+DURATION_MS: 2000
+EXIT_CODE: 0
+--- STDOUT ---
+Connecting to local database...
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/000_schema.test.sql .............. ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/010_constraints.test.sql .......... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/011_privileges.test.sql ........... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/020_platform_admin_rls.test.sql ..... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/021_platform_admin_privacy.test.sql . ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/030_tenant_isolation.test.sql ...... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/031_cross_tenant_integrity.test.sql . ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/040_nutritionist_scope.test.sql ..... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/041_professional_assignment_integrity.test.sql ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/050_patient_access.test.sql ......... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/051_patient_negative_paths.test.sql . ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/060_assistant_permissions.test.sql .. ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/061_suspended_organization.test.sql ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/070_check_in_logic.test.sql ......... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/071_check_in_alert_rules.test.sql ... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/072_rpc_state_transitions.test.sql ... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/080_api_contract.test.sql ......... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/081_api_columns.test.sql ......... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/090_immutability_audit.test.sql ..... ok
+/Users/fernandoliernur/Projects/nutrisoft/supabase/tests/database/091_audit_content.test.sql ........ ok
+All tests successful.
+Files=20, Tests=103, 0 wallclock secs
+Result: PASS
+--- STDERR ---
+(none)

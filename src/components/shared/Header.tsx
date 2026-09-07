@@ -1,18 +1,23 @@
 import React from 'react';
 import { useMock } from '../../app/provider';
 import { useToast } from '../ui/Toast';
-import { Bell, Search } from 'lucide-react';
+import { Bell, Building2, Search } from 'lucide-react';
 
 interface HeaderProps {
   portal: 'admin' | 'professional';
 }
 
 export const Header: React.FC<HeaderProps> = ({ portal }) => {
-  const { professionalAlerts, alerts, currentDemoNutritionist } = useMock();
+  const { professionalAlerts, alerts, currentDemoNutritionist, organizations } = useMock();
   const { showToast } = useToast();
 
+  const organization = currentDemoNutritionist
+    ? organizations.find(item => item.id === currentDemoNutritionist.organizationId)
+    : null;
+  const branding = organization?.plan === 'CUSTOM' ? organization.branding : undefined;
+
   const relevantAlerts = portal === 'professional' ? professionalAlerts : alerts;
-  const unresolvedAlertsCount = relevantAlerts.filter(a => a.status === 'unresolved').length;
+  const unresolvedAlertsCount = relevantAlerts.filter(a => a.status !== 'resolved').length;
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -29,13 +34,18 @@ export const Header: React.FC<HeaderProps> = ({ portal }) => {
   };
 
   return (
-    <header className="h-16 bg-surface border-b border-border-subtle flex items-center justify-between px-6 shrink-0">
+    <header className="min-h-16 bg-surface border-b border-border-subtle flex items-center justify-between px-4 sm:px-6 py-2 shrink-0">
       <div className="flex items-center gap-3">
-        <h1 className="text-lg font-bold text-text-primary tracking-tight">
+        {portal === 'professional' && branding && (
+          branding.logoDataUrl
+            ? <img src={branding.logoDataUrl} alt="" className="w-8 h-8 rounded-lg object-cover border border-border-subtle" />
+            : <span className="w-8 h-8 rounded-lg bg-brand-soft text-brand-strong flex items-center justify-center"><Building2 className="w-4 h-4" /></span>
+        )}
+        <h1 className="text-sm sm:text-lg font-bold text-text-primary tracking-tight line-clamp-2">
           {portal === 'admin'
             ? 'Panel de Administración'
             : currentDemoNutritionist
-            ? `Consultorio — ${currentDemoNutritionist.organizationName}`
+            ? `Consultorio — ${branding?.displayName || currentDemoNutritionist.organizationName}`
             : 'Consultorio Nutricional'}
         </h1>
       </div>
@@ -52,10 +62,10 @@ export const Header: React.FC<HeaderProps> = ({ portal }) => {
             onKeyDown={handleSearchKeyDown}
             placeholder={
               portal === 'admin'
-                ? 'Buscar organización o nutricionista...'
+                ? 'Buscar consultorio o nutricionista...'
                 : 'Buscar paciente o check-in...'
             }
-            className="w-full pl-9 pr-4 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-strong text-text-primary placeholder:text-text-tertiary"
+            className="w-full pl-11 pr-4 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-strong text-text-primary placeholder:text-text-tertiary"
           />
         </div>
 

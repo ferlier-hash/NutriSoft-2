@@ -11,7 +11,7 @@ import { Button } from '../../../components/ui/Button';
 import { Dialog } from '../../../components/ui/Dialog';
 import { PriorityInboxCard } from '../../../components/domain/PriorityInboxCard';
 import { formatRelativeTime } from '../../../lib/dateUtils';
-import { UserPlus, Send, ArrowRight, UserCheck } from 'lucide-react';
+import { UserPlus, Send, ArrowRight, UserCheck, CheckCircle2, Circle, CalendarDays, ClipboardList, CircleUserRound, ClipboardCheck } from 'lucide-react';
 
 const newPatientSchema = z.object({
   firstName: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'Máximo 50 caracteres'),
@@ -28,15 +28,20 @@ export const ProfessionalDashboard: React.FC = () => {
   const {
     professionalPatients,
     professionalAlerts,
+    acknowledgeAlert,
     resolveAlert,
     addPatient,
     createCheckInAssignment,
     checkInResponses,
     professionalAssignments,
+    professionalMealPlans,
     currentDemoNutritionist,
+    organizations,
   } = useMock();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const organization = organizations.find(item => item.id === currentDemoNutritionist?.organizationId);
+  const branding = organization?.plan === 'CUSTOM' ? organization.branding : undefined;
 
   const [selectedPatientId, setSelectedPatientId] = useState<string>(professionalPatients[0]?.id || '');
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
@@ -44,7 +49,7 @@ export const ProfessionalDashboard: React.FC = () => {
   const [selectedForCheckIn, setSelectedForCheckIn] = useState<string>(professionalPatients[0]?.id || '');
 
   const selectedPatient = professionalPatients.find(p => p.id === selectedPatientId) || professionalPatients[0];
-  const unresolvedAlerts = professionalAlerts.filter(a => a.status === 'unresolved').slice(0, 3);
+  const activeAlerts = professionalAlerts.filter(a => a.status !== 'resolved').slice(0, 3);
 
   const {
     register,
@@ -68,7 +73,7 @@ export const ProfessionalDashboard: React.FC = () => {
 
       setIsAddPatientOpen(false);
       reset();
-      showToast('Paciente creado exitosamente', `Ficha creada para ${created.firstName} ${created.lastName}`);
+      showToast('Invitación preparada', `En modo real enviaremos el acceso a ${created.email}.`);
       navigate(`/professional/patients/${created.id}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al crear paciente';
@@ -93,14 +98,52 @@ export const ProfessionalDashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+      {branding?.professionalHeaderImageDataUrl && (
+        <section aria-label="Cabecera del portal Profesional" className="relative h-36 sm:h-48 overflow-hidden rounded-2xl border border-border-subtle bg-brand-soft">
+          <img src={branding.professionalHeaderImageDataUrl} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 text-white">
+            <p className="text-lg sm:text-xl font-bold break-words">{branding.displayName}</p>
+            {branding.tagline && <p className="mt-1 text-sm break-words">{branding.tagline}</p>}
+          </div>
+        </section>
+      )}
+      <Card highlighted className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold text-brand-strong">Tu puesta en marcha</p>
+            <h2 className="text-lg font-bold text-text-primary mt-1">Prepará tu espacio profesional</h2>
+            <p className="text-xs text-text-secondary mt-1">Esta guía no bloquea ninguna función. Podés completarla a tu ritmo.</p>
+          </div>
+          <Badge variant="info">{[
+            Boolean(currentDemoNutritionist?.firstName && currentDemoNutritionist?.lastName && currentDemoNutritionist?.email),
+            professionalPatients.length > 0,
+            professionalMealPlans.length > 0,
+          ].filter(Boolean).length} de 5</Badge>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-2">
+          {[
+            { label: 'Completar perfil', done: Boolean(currentDemoNutritionist?.firstName && currentDemoNutritionist?.lastName && currentDemoNutritionist?.email), path: '/professional/profile', icon: CircleUserRound },
+            { label: 'Configurar horarios', done: false, path: '/professional/settings', icon: CalendarDays },
+            { label: 'Invitar paciente', done: professionalPatients.length > 0, path: '/professional/patients', icon: UserPlus },
+            { label: 'Crear primer plan', done: professionalMealPlans.length > 0, path: '/professional/meal-plans', icon: ClipboardList },
+            { label: 'Compartir reservas', done: false, icon: Send },
+          ].map(step => {
+            const StepIcon = step.icon;
+            const content = <><div className="flex items-center justify-between gap-2"><StepIcon className="w-4 h-4 text-brand-strong" />{step.done ? <CheckCircle2 className="w-4 h-4 text-semantic-success" /> : <Circle className="w-4 h-4 text-text-tertiary" />}</div><p className="text-xs font-semibold text-text-primary mt-3">{step.label}</p><p className="text-[10px] text-text-tertiary mt-1">{step.done ? 'Completado' : step.path ? 'Continuar' : 'Próximamente'}</p></>;
+            return step.path ? <Link key={step.label} to={step.path} className="rounded-xl border border-border-subtle bg-surface p-3 hover:border-border-hover hover:bg-surface-subtle transition-colors focus-visible:ring-2 focus-visible:ring-brand-strong">{content}</Link> : <div key={step.label} className="rounded-xl border border-border-subtle bg-surface-subtle p-3 opacity-70">{content}</div>;
+          })}
+        </div>
+      </Card>
+
       {/* Sección Superior: Bandeja de Atención + Acciones Rápidas */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-base text-text-primary">Bandeja de atención</h3>
-              <Badge variant="high">{unresolvedAlerts.length}</Badge>
+              <Badge variant="high">{activeAlerts.length}</Badge>
             </div>
             <Button asChild variant="ghost" size="sm">
               <Link to="/professional/inbox" className="text-xs text-brand-strong font-semibold flex items-center gap-1">
@@ -111,16 +154,25 @@ export const ProfessionalDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {unresolvedAlerts.length === 0 ? (
+            {activeAlerts.length === 0 ? (
               <p className="text-xs text-text-secondary py-4 text-center">
                 No hay alertas pendientes en tu bandeja ({currentDemoNutritionist?.name || 'Profesional'}).
               </p>
             ) : (
-              unresolvedAlerts.map(alert => (
+              activeAlerts.map(alert => (
                 <PriorityInboxCard
                   key={alert.id}
                   alert={alert}
                   onSelectPatient={id => navigate(`/professional/patients/${id}`)}
+                  onAcknowledgeAlert={alertId => {
+                    try {
+                      acknowledgeAlert(alertId);
+                      showToast('Alerta en revisión', 'La alerta sigue pendiente hasta resolverla.');
+                    } catch (err: unknown) {
+                      const msg = err instanceof Error ? err.message : 'Error al revisar alerta';
+                      showToast('Error', msg, 'error');
+                    }
+                  }}
                   onResolveAlert={alertId => {
                     try {
                       resolveAlert(alertId);
@@ -152,8 +204,8 @@ export const ProfessionalDashboard: React.FC = () => {
                 <UserPlus className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-semibold text-xs text-text-primary">Nuevo paciente</p>
-                <p className="text-[11px] text-text-secondary">Agregar paciente a mi consultorio</p>
+                <p className="font-semibold text-xs text-text-primary">Invitar paciente</p>
+                <p className="text-[11px] text-text-secondary">Generar acceso pendiente por email</p>
               </div>
             </button>
 
@@ -182,6 +234,20 @@ export const ProfessionalDashboard: React.FC = () => {
               <div>
                 <p className="font-semibold text-xs text-text-primary">Ver mis pacientes</p>
                 <p className="text-[11px] text-text-secondary">Buscar y abrir fichas clínicas</p>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/professional/checkins')}
+              className="w-full flex items-center gap-3 p-3 rounded-xl border border-border-subtle bg-surface hover:bg-surface-subtle hover:border-border-hover transition-all text-left cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"
+            >
+              <div className="w-10 h-10 rounded-xl bg-surface-tinted text-brand-strong flex items-center justify-center group-hover:scale-105 transition-transform">
+                <ClipboardCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-semibold text-xs text-text-primary">Revisar check-ins</p>
+                <p className="text-[11px] text-text-secondary">Priorizar respuestas y abrir historiales</p>
               </div>
             </button>
           </div>
@@ -277,9 +343,10 @@ export const ProfessionalDashboard: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => setSelectedPatientId(p.id)}
+                          aria-pressed={selectedPatientId === p.id}
                           className="text-xs"
                         >
-                          Seleccionar
+                          Ver resumen
                         </Button>
                       </td>
                     </tr>
@@ -337,8 +404,8 @@ export const ProfessionalDashboard: React.FC = () => {
       <Dialog
         isOpen={isAddPatientOpen}
         onClose={() => setIsAddPatientOpen(false)}
-        title="Agregar nuevo paciente"
-        description="Ingresa los datos básicos para dar de alta al paciente en tu consultorio."
+        title="Invitar paciente"
+        description="La invitación quedará pendiente por 7 días. El email real todavía no está conectado."
       >
         <form onSubmit={handleSubmit(onAddPatientSubmit)} className="space-y-4" noValidate>
           <div className="grid grid-cols-2 gap-3">
@@ -434,7 +501,7 @@ export const ProfessionalDashboard: React.FC = () => {
               Cancelar
             </Button>
             <Button variant="primary" type="submit">
-              Guardar paciente
+              Generar invitación
             </Button>
           </div>
         </form>

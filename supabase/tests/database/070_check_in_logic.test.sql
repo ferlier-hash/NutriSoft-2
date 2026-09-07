@@ -2,6 +2,12 @@
 BEGIN;
 SELECT plan(4);
 
+-- Evita que un contenedor local persistente convierta esta prueba funcional en
+-- una prueba accidental de vencimiento por el paso del tiempo.
+UPDATE app.check_in_assignments
+SET due_date = now() + interval '1 day'
+WHERE id = 'c1111111-1111-4111-8111-111111111111';
+
 -- Autenticar como María González (d1111111-1111-4111-8111-111111111111)
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub": "d1111111-1111-4111-8111-111111111111", "role": "authenticated"}', true);

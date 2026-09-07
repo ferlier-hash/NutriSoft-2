@@ -1,0 +1,46 @@
+COMMAND: git diff --stat phase-2.1-security-hardening...HEAD
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-05T00:54:18.000Z
+END_TIME: 2026-08-05T00:54:19.000Z
+DURATION_MS: 1000
+EXIT_CODE: 0
+--- STDOUT ---
+ .github/workflows/ci.yml                                            |  16 ++--
+ package-lock.json                                                   |  82 ++++++++++++++++++++
+ review/reports/phase-2.1.1/00-git-status-before.txt                 |  10 +++
+ review/reports/phase-2.1.1/01-environment.txt                      |  10 +++
+ review/reports/phase-2.1.1/02-npm-ci.txt                           |  10 +++
+ review/reports/phase-2.1.1/03-npm-ls.txt                           |  42 ++++++++++
+ review/reports/phase-2.1.1/04-supabase-stop-before.txt            |  10 +++
+ review/reports/phase-2.1.1/05-supabase-start.txt                  |  22 ++++++
+ review/reports/phase-2.1.1/06-db-reset-first.txt                   |  12 +++
+ review/reports/phase-2.1.1/07-db-reset-second.txt                  |  12 +++
+ review/reports/phase-2.1.1/08-db-test.txt                          |  32 ++++++++
+ review/reports/phase-2.1.1/09-db-lint.txt                          |  10 +++
+ review/reports/phase-2.1.1/10-db-types.txt                         |  10 +++
+ review/reports/phase-2.1.1/11-db-verify-types.txt                  |  10 +++
+ review/reports/phase-2.1.1/12-frontend-lint.txt                   |  10 +++
+ review/reports/phase-2.1.1/13-frontend-typecheck.txt              |  10 +++
+ review/reports/phase-2.1.1/14-frontend-tests.txt                  |  15 ++++
+ review/reports/phase-2.1.1/15-frontend-build.txt                  |  14 ++++
+ review/reports/phase-2.1.1/16-verify-all.txt                       |  17 ++++
+ review/reports/phase-2.1.1/17-secret-scan.txt                      |  10 +++
+ review/reports/phase-2.1.1/18-git-diff-stat.txt                    |  10 +++
+ review/reports/phase-2.1.1/19-file-inventory.txt                   |  50 ++++++++++++
+ review/reports/phase-2.1.1/20-supabase-stop-after.txt             |  10 +++
+ review/reports/phase-2.1.1/21-git-status-after.txt                 |  10 +++
+ review/reports/phase-2.1.1/phase-2.1.1-walkthrough.md              |  22 ++++++
+ review/reports/phase-2.1.1/requirements-matrix.md                 | 139 ++++++++++++++++++++++++++++++++
+ review/reports/phase-2.1/20-ci-status.txt                           |  25 +++---
+ review/reports/phase-2.1/phase-2.1-walkthrough.md                  |  14 +---
+ scripts/run-evidence-phase-2-1-1.js                                 | 145 ++++++++++++++++++++++++++++++++++
+ supabase/migrations/20260805000010_phase_2_1_1_default_privileges.sql |  12 +++
+ supabase/migrations/20260805000011_phase_2_1_1_check_in_and_api_hardening.sql |  78 ++++++++++++++++++
+ supabase/tests/database/011_privileges.test.sql                    |  22 +++++-
+ supabase/tests/database/041_professional_assignment_integrity.test.sql |   5 +-
+ supabase/tests/database/071_check_in_alert_rules.test.sql        |  79 +++++++++++++++++-
+ supabase/tests/database/081_api_columns.test.sql                   |   8 +-
+ supabase/tests/database/091_audit_content.test.sql                  |  33 +++++---
+ 36 files changed, 946 insertions(+), 56 deletions(-)
+--- STDERR ---
+(none)

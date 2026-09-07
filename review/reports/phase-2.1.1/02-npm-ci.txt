@@ -1,0 +1,12 @@
+COMMAND: npm ci --no-audit --no-fund
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:10:47.599Z
+END_TIME: 2026-08-06T04:10:51.524Z
+DURATION_MS: 3925
+EXIT_CODE: 0
+--- STDOUT ---
+
+added 441 packages in 4s
+
+--- STDERR ---
+npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation

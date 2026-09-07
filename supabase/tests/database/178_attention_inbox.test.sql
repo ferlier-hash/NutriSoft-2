@@ -1,0 +1,12 @@
+BEGIN;
+SELECT plan(5);
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claims','{"sub":"b1111111-1111-4111-8111-111111111111","role":"authenticated"}',true);
+SELECT is((SELECT count(*)::integer FROM api.attention_inbox),0,'Owner no clínico no lee alertas');
+SELECT throws_ok($$SELECT api.acknowledge_alert('00000000-0000-4000-8000-000000000002')$$,'Alerta no disponible','Owner no reconoce');
+SELECT throws_ok($$SELECT api.resolve_alert('00000000-0000-4000-8000-000000000002')$$,'Alerta no disponible','Owner no resuelve');
+SELECT set_config('request.jwt.claims','{"sub":"d1111111-1111-4111-8111-111111111111","role":"authenticated"}',true);
+SELECT is((SELECT count(*)::integer FROM api.attention_inbox),0,'Paciente no lee alertas');
+SELECT throws_ok($$SELECT api.resolve_alert('00000000-0000-4000-8000-000000000002')$$,'Alerta no disponible','Paciente no resuelve');
+SELECT * FROM finish();
+ROLLBACK;

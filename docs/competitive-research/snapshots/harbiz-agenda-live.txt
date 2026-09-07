@@ -1,0 +1,329 @@
+- text:           
+- menubar "Main":
+  - list:
+    - menuitem "Clientes":
+      - button "Clientes":
+        - generic: Clientes
+    - menuitem "Equipo":
+      - generic: Equipo
+    - menuitem "Librería":
+      - button "Librería":
+        - generic: Librería
+    - menuitem "Agenda":
+      - button "Agenda":
+        - generic: Agenda
+    - menuitem "Negocio":
+      - button "Negocio":
+        - generic: Negocio
+    - menuitem "Marketing":
+      - button "Marketing":
+        - generic: Marketing
+    - menuitem "AI Assistant":
+      - generic: AI Assistant
+- generic: F
+- generic: Librería
+- generic: /
+- link "Actividad Física":
+  - /url: /libreria/ejercicios
+  - generic: Actividad Física
+- link "Vídeos":
+  - /url: /libreria/sesiones-en-video
+  - generic: Vídeos
+- link "Nutrición":
+  - /url: /libreria/nutricion
+  - generic: Nutrición
+- link "Programas":
+  - /url: /libreria/programas
+  - generic: Programas
+- link "Documentos":
+  - /url: /libreria/documentos
+  - generic: Documentos
+- link "Formularios":
+  - /url: /libreria/formulario-inicial
+  - generic: Formularios
+- link "Plantillas":
+  - /url: /libreria/plantillas
+  - generic: Plantillas
+- link "Logros":
+  - /url: /libreria/logros
+  - generic: Logros
+- link "Contenido a validar":
+  - /url: /libreria/contenido-a-validar
+  - generic: Contenido a validar
+- button:
+- paragraph: Plantillas
+- paragraph: "73"
+- paragraph: Usa plantillas creadas por nuestros expertos o adáptalas a tu estilo para empezar a trabajar con tus clientes desde el 1er día, sin crear contenido desde cero.
+- paragraph: Workouts
+- generic: "36"
+- button:
+- img "Gimnasio"
+- generic: "12"
+- paragraph: Gimnasio
+- paragraph: Entrenamientos con equipamiento completo para maximizar los resultados en sala.
+- paragraph: "Rutina 1: Empuje (Intermedia)"
+- paragraph: 9 Ejercicios
+- paragraph: "Rutina 1: Full Body"
+- paragraph: 13 Ejercicios
+- paragraph: "Rutina 2: Empuje (Intermedia)"
+- paragraph: 8 Ejercicios
+- paragraph: "Rutina 2: Full Body"
+- paragraph: 11 Ejercicios
+- paragraph: Rutina de Empuje Hipertrofia (Avanzada)
+- paragraph: 10 Ejercicios
+- paragraph: Rutina de Pierna con Foco en Glúteo
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Tracción (Intermedia)
+- paragraph: 8 Ejercicios
+- paragraph: Rutina de Tracción Hipertrofia (Avanzada)
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Tren Inferior Hipertrofia (Avanzada)
+- paragraph: 13 Ejercicios
+- paragraph: Rutina de Tren Inferior Hipertrofia (Intermedio)
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Tren Superior Hipertrofia (Avanzada)
+- paragraph: 11 Ejercicios
+- paragraph: Rutina de Tren Superior Hipertrofia (Intermedio)
+- paragraph: 10 Ejercicios
+- button "Ver pack":
+  - generic: Ver pack
+- img "En casa con material"
+- generic: "7"
+- paragraph: En casa con material
+- paragraph: Ejercicios con mancuernas y bandas para entrenamientos completos desde casa.
+- paragraph: "Rutina 1: Full Body en Casa"
+- paragraph: 12 Ejercicios
+- paragraph: "Rutina 1: Tren Inferior en Casa"
+- paragraph: 11 Ejercicios
+- paragraph: "Rutina 1: Tren Superior [Con gomas y mancuernas]"
+- paragraph: 10 Ejercicios
+- paragraph: "Rutina 2: Full Body en Casa"
+- paragraph: 14 Ejercicios
+- paragraph: "Rutina 2: Tren Inferior en Casa"
+- paragraph: 7 Ejercicios
+- paragraph: "Rutina 2: Tren Superior en Casa"
+- paragraph: 11 Ejercicios
+- paragraph: Rutina de Cuádriceps en Casa (Principiantes)
+- paragraph: 6 Ejercicios
+- button "Ver pack":
+  - generic: Ver pack
+- img "En casa sin material"
+- generic: "5"
+- paragraph: En casa sin material
+- paragraph: Rutinas diseñadas para aprovechar el peso corporal, sin necesidad de equipamiento.
+- paragraph: "Rutina 1: Tren Superior en Casa [Sin material]"
+- paragraph: 10 Ejercicios
+- paragraph: "Rutina 2: Tren Superior en Casa [Sin material]"
+- paragraph: 8 Ejercicios
+- paragraph: Rutina Full Body en Casa [Sin material] (Intermedia)
+- paragraph: 10 Ejercicios
+- paragraph: Rutina Full Body en Casa [Sin material] (Principiantes)
+- paragraph: 10 Ejercicios
+- paragraph: Rutina de Tren Inferior en Casa con Foco en Isquiotibiales
+- paragraph: 10 Ejercicios
+- button "Ver pack":
+  - generic: Ver pack
+- img "Atleta híbrido"
+- generic: "6"
+- paragraph: Atleta híbrido
+- paragraph: Rutinas combinadas de fuerza y cardio para un rendimiento completo y versátil.
+- paragraph: "Rutina 1: Atleta Híbrido (Intermedia)"
+- paragraph: 10 Ejercicios
+- paragraph: "Rutina 2: Atleta Híbrido (Intermedia)"
+- paragraph: 12 Ejercicios
+- paragraph: Rutina de Atleta Híbrido (Intermedia)
+- paragraph: 13 Ejercicios
+- paragraph: Rutina de Atleta Híbrido (Principiantes)
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Atleta Híbrido Tren Superior
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Atleta híbrído (Avanzada)
+- paragraph: 11 Ejercicios
+- button "Ver pack":
+  - generic: Ver pack
+- img "Movilidad"
+- generic: "6"
+- paragraph: Movilidad
+- paragraph: Ejercicios para mejorar la flexibilidad, el rango de movimiento y prevenir lesiones.
+- paragraph: Rutina Full Body de Movilidad Global
+- paragraph: 8 Ejercicios
+- paragraph: Rutina de Movilidad (Avanzada)
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Movilidad (Principiantes)
+- paragraph: 7 Ejercicios
+- paragraph: Rutina de Movilidad de Cadera e Inferior
+- paragraph: 9 Ejercicios
+- paragraph: Rutina de Movilidad de Hombro y Torácica
+- paragraph: 10 Ejercicios
+- paragraph: Rutina de Movilidad y Recuperación
+- paragraph: 7 Ejercicios
+- button "Ver pack":
+  - generic: Ver pack
+- paragraph: Planes nutricionales
+- generic: "22"
+- button:
+- img "Recetas Fáciles"
+- generic: "4"
+- paragraph: Recetas Fáciles
+- paragraph: Planes con recetas sencillas y rápidas, pensadas para un día a día fácil.
+- paragraph: Comidas fáciles - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Comidas fáciles - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Comidas fáciles - 2300 kcal
+- paragraph: 5 Comidas
+- paragraph: Comidas fáciles 1700 Kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Alto en proteína"
+- generic: "3"
+- paragraph: Alto en proteína
+- paragraph: Un mayor aporte proteico para mejorar la composición corporal y la recuperación.
+- paragraph: Alta en proteína - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Alta en proteína - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Alta en proteína - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Bajo en carbohidratos"
+- generic: "3"
+- paragraph: Bajo en carbohidratos
+- paragraph: Planes con reducción de carbohidratos, orientados a control de peso y definición.
+- paragraph: Baja en carbohidratos - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Baja en carbohidratos - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Baja en carbohidratos - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Bajo en grasa"
+- generic: "3"
+- paragraph: Bajo en grasa
+- paragraph: Con bajo contenido en grasas para objetivos específicos de salud o rendimiento.
+- paragraph: Baja en grasas - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Baja en grasas - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Baja en grasas - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Sin lácteos"
+- generic: "3"
+- paragraph: Sin lácteos
+- paragraph: Sin alimentos de origen lácteo, adecuados para intolerancias o preferencias alimentarias.
+- paragraph: Sin lácteos - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Sin lácteos - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Sin lácteos - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Vegano"
+- generic: "3"
+- paragraph: Vegano
+- paragraph: Planes basados exclusivamente en alimentos de origen vegetal, completos y equilibrados.
+- paragraph: Vegana - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Vegana - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Vegana - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Sin gluten"
+- generic: "3"
+- paragraph: Sin gluten
+- paragraph: Planes adaptados para personas celíacas o que evitan el gluten por elección o recomendación.
+- paragraph: Sin gluten - 1700 kcal
+- paragraph: 5 Comidas
+- paragraph: Sin gluten - 2000 kcal
+- paragraph: 5 Comidas
+- paragraph: Sin gluten - 2300 kcal
+- paragraph: 5 Comidas
+- button "Ver pack":
+  - generic: Ver pack
+- paragraph: Programas
+- generic: "15"
+- button:
+- img "Ganancia muscular"
+- generic: "3"
+- paragraph: Ganancia muscular
+- paragraph: Entrenamientos de fuerza estructurados y progresivos para aumentar masa muscular.
+- paragraph: 4 semanas - Aumento de masa muscular (4 días/semana)
+- paragraph: 4 Semanas
+- paragraph: 6 semanas - Aumento de masa muscular (4 días/semana)
+- paragraph: 6 Semanas
+- paragraph: 8 semanas - Aumento de masa muscular (4 días/semana)
+- paragraph: 8 Semanas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Programa senior"
+- generic: "3"
+- paragraph: Programa senior
+- paragraph: Entrenamientos para mejorar fuerza, movilidad y calidad de vida de personas mayores.
+- paragraph: 4 semanas - Programa Senior (3 días/semana)
+- paragraph: 6 Semanas
+- paragraph: 6 semanas - Programa Senior (3 días/semana)
+- paragraph: 6 Semanas
+- paragraph: 8 semanas - Programa Senior (3 días/semana)
+- paragraph: 8 Semanas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Competición híbrida"
+- generic: "3"
+- paragraph: Competición híbrida
+- paragraph: Preparación de atletas en fuerza y resistencia de cara a competiciones híbridas.
+- paragraph: 4 semanas - Competición Atleta Híbrido
+- paragraph: 4 Semanas
+- paragraph: 6 semanas - Competición Atleta Híbrido
+- paragraph: 6 Semanas
+- paragraph: 8 semanas - Competición Atleta Híbrido
+- paragraph: 8 Semanas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Trabajo de glúteos"
+- generic: "3"
+- paragraph: Trabajo de glúteos
+- paragraph: Programa específico para desarrollar y fortalecer glúteos de manera progresiva.
+- paragraph: 4 semanas - Glúteo (4 días/semana)
+- paragraph: 4 Semanas
+- paragraph: 6 semanas - Glúteo (4 días/semana)
+- paragraph: 6 Semanas
+- paragraph: 8 semanas - Glúteo (4 días/semana)
+- paragraph: 8 Semanas
+- button "Ver pack":
+  - generic: Ver pack
+- img "Programa en casa"
+- generic: "3"
+- paragraph: Programa en casa
+- paragraph: Programa pensado para entrenar desde casa con rutinas efectivas y fáciles de seguir.
+- paragraph: 4 semanas - En casa (3 días/semana)
+- paragraph: 4 Semanas
+- paragraph: 6 semanas - En casa (3 días/semana)
+- paragraph: 6 Semanas
+- paragraph: 8 semanas - En casa (3 días/semana)
+- paragraph: 8 Semanas
+- button "Ver pack":
+  - generic: Ver pack
+- region "Notifications Alt+T"
+- text:   
+- iframe
+- text: 
+- alertdialog:
+  - img "Imagen de plantillas"
+  - button:
+  - paragraph: Ahorra tiempo con las nuevas plantillas profesionales en 1 clic
+  - text: Te mostramos todo lo que necesitas saber para empezar a facturar sin crear contenido, ahorrar tiempo y ofrecer a tus clientes workouts,
+  - strong: planes nutricionales y programas
+  - text: completos creados por nuestros profesionales.
+  - generic: 1/4
+  - button "Ver más tarde":
+    - generic: Ver más tarde
+  - button "Empezar":
+    - generic: Empezar

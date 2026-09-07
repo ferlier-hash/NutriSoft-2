@@ -1,0 +1,356 @@
+- link "Ir al contenido principal":
+  - /url: "#main-content"
+- region "Notifications alt+T"
+- complementary:
+  - button "Colapsar menú":
+  - button "Fernando":
+    - generic: Fernando
+  - button "Notificaciones":
+  - button "Buscar… ⌘K":
+    - generic: Buscar…
+    - generic: ⌘K
+  - navigation:
+    - link "Inicio":
+      - /url: /
+      - generic: Inicio
+    - link "Pacientes Requiere un plan activo":
+      - /url: /patients
+      - generic: Pacientes
+      - img "Requiere un plan activo"
+    - link "Chats Requiere un plan activo":
+      - /url: /chats
+      - generic: Chats
+      - img "Requiere un plan activo"
+    - link "Agenda Requiere un plan activo":
+      - /url: /appointments
+      - generic: Agenda
+      - img "Requiere un plan activo"
+    - link "Planes Requiere un plan activo":
+      - /url: /meal-plans
+      - generic: Planes
+      - img "Requiere un plan activo"
+    - link "Alimentos Requiere un plan activo":
+      - /url: /foods
+      - generic: Alimentos
+      - img "Requiere un plan activo"
+    - link "Recursos Requiere un plan activo":
+      - /url: /education
+      - generic: Recursos
+      - img "Requiere un plan activo"
+    - link "Formularios Requiere un plan activo":
+      - /url: /forms
+      - generic: Formularios
+      - img "Requiere un plan activo"
+    - link "Pagos Requiere un plan activo":
+      - /url: /billing
+      - generic: Pagos
+      - img "Requiere un plan activo"
+    - link "Catálogo Requiere un plan activo":
+      - /url: /store
+      - generic: Catálogo
+      - img "Requiere un plan activo"
+    - link "Página pública":
+      - /url: /presencia
+      - generic: Página pública
+  - link "Novedades":
+    - /url: /changelog
+    - generic: Novedades
+  - link "Academia":
+    - /url: /guides
+    - generic: Academia
+  - link "Configuración":
+    - /url: /settings
+    - generic: Configuración
+  - button "FL Fernando Liernur Propietario/a":
+    - generic: FL
+    - paragraph: Fernando Liernur
+    - paragraph: Propietario/a
+- main:
+  - paragraph: El consultorio completo se habilita con un plan.
+  - link "Ver planes":
+    - /url: /subscribe
+    - text: Ver planes
+  - heading "Página pública" [level=1]
+  - paragraph: Lo que ven tus pacientes cuando te buscan.
+  - link "Ver mi perfil":
+    - /url: https://nutreando.com/fernando-liernur
+    - text: Ver mi perfil
+  - navigation "Página pública":
+    - list:
+      - link "Mi perfil":
+        - /url: /presencia
+      - link "Mi consultorio":
+        - /url: /presencia/consultorio
+  - generic: FL
+  - paragraph: Fernando Liernur
+  - link "Editar en Cuenta":
+    - /url: /settings
+  - heading "Tu actividad" [level=2]
+  - generic: Últimos 30 días
+  - definition: "0"
+  - term: Visitas al perfil
+  - definition: "0"
+  - term: Clicks a WhatsApp
+  - definition: "0"
+  - term: Turnos reservados
+  - paragraph: De dónde llegan
+  - list:
+    - listitem: Google 0
+    - listitem: Redes 0
+    - listitem: Otros sitios 0
+    - listitem: Directo 0
+    - listitem: Directorio 0
+  - generic: Estado de tu perfil
+  - generic: 1 de 7 completado
+  - generic: 14%
+  - progressbar
+  - list:
+    - link "Verificá tu matrícula":
+      - /url: "#matricula"
+      - generic: Verificá tu matrícula
+    - link "Agregá tu foto de perfil":
+      - /url: /settings
+      - generic: Agregá tu foto de perfil
+    - generic: "Listo:"
+    - text: Elegí tu especialidad
+    - link "Escribí tu título profesional":
+      - /url: "#presentacion"
+      - generic: Escribí tu título profesional
+    - link "Contá quién sos en tu biografía":
+      - /url: "#presentacion"
+      - generic: Contá quién sos en tu biografía
+    - link "Describí tu consultorio":
+      - /url: /presencia/consultorio
+      - generic: Describí tu consultorio
+    - link "Sumá tu WhatsApp de contacto":
+      - /url: /presencia/consultorio
+      - generic: Sumá tu WhatsApp de contacto
+  - list:
+    - paragraph: Tu link funciona
+    - paragraph: Cualquiera que abra tu link ve tu perfil. Copialo desde Compartir.
+    - paragraph: Aparecés en el directorio de Nutreando
+    - paragraph: Enviá tu matrícula para que verifiquemos tu perfil y lo publiquemos.
+    - link "Verificar mi matrícula":
+      - /url: "#matricula"
+    - button "¿Por qué?"
+    - paragraph: Habilitado para buscadores
+    - paragraph: "Te falta completar: una sede con ciudad, o atención online, una bio de 100 caracteres o un servicio con precio, una foto de perfil o una bio de 100 caracteres."
+  - heading "Matrícula profesional" [level=2]
+  - paragraph: Verificá tu matrícula para mostrar el sello “Verificado” en tu perfil público. Un moderador revisa el comprobante dentro de las 24 horas hábiles.
+  - text: Profesión
+  - combobox "Profesión":
+    - generic: Elegí tu profesión
+  - text: País
+  - textbox "País": Argentina
+  - text: Jurisdicción
+  - combobox "Jurisdicción":
+    - generic: Elegí tu provincia
+  - text: Matrícula profesional · ingresá al menos una
+  - text: Matrícula Nacional (MN)
+  - textbox "Matrícula Nacional (MN)":
+    - /placeholder: "Ej: 12345"
+    - text: "123456"
+  - text: Matrícula Provincial (MP)
+  - textbox "Matrícula Provincial (MP)":
+    - /placeholder: "Ej: 12345"
+  - text: Vencimiento (opcional)
+  - textbox "Vencimiento (opcional)"
+  - text: Comprobante
+  - button "Elegir archivo":
+    - text: Elegir archivo
+  - paragraph: PDF o foto, hasta 20 MB.
+  - text: Revisión en 24 hs hábiles
+  - button "Enviar para verificación" [disabled]
+  - generic: Visibilidad
+  - paragraph: Esta info se muestra en tus links públicos y en el portal de tus pacientes. Completala para dar contexto sobre quién sos.
+  - text: Mostrar mi perfil público
+  - paragraph: Cuando está activo, tu perfil detallado es visible públicamente. Tu nombre y foto ya aparecen en la reserva aunque esté desactivado.
+  - switch "Mostrar mi perfil público" [checked]
+  - generic: Presentación
+  - text: Tratamiento
+  - combobox "Tratamiento":
+    - generic: Sin especificar
+  - combobox
+  - text: Género
+  - combobox "Género":
+    - generic: Sin especificar
+  - combobox
+  - text: Título profesional
+  - textbox "Título profesional":
+    - /placeholder: "Ej: Nutrición deportiva y clínica"
+  - generic: Sobre mí
+  - toolbar "Formato de texto":
+    - button "Negrita":
+    - button "Cursiva":
+    - button "Subrayado":
+    - button "Resaltado":
+    - button "Título":
+    - button "Subtítulo":
+    - button "Lista":
+    - button "Lista numerada":
+    - button "Insertar link":
+    - button "Deshacer" [disabled]:
+  - paragraph: Contá tu experiencia, tu enfoque y cómo acompañás a tus pacientes.
+  - text: Fecha de recibido
+  - combobox "Mes":
+    - generic: Mes
+  - combobox
+  - combobox "Año":
+    - generic: Año
+  - combobox
+  - paragraph: Calculamos tus años de experiencia automáticamente.
+  - generic: Mi enfoque
+  - toolbar "Formato de texto":
+    - button "Negrita":
+    - button "Cursiva":
+    - button "Subrayado":
+    - button "Resaltado":
+    - button "Título":
+    - button "Subtítulo":
+    - button "Lista":
+    - button "Lista numerada":
+    - button "Insertar link":
+    - button "Deshacer" [disabled]:
+  - paragraph: "Ej: nutrición empática, sin dietas restrictivas, centrada en hábitos."
+  - button "Guardar cambios" [disabled]
+  - generic: Atención
+  - text: Idiomas
+  - checkbox "Español"
+  - checkbox
+  - text: Español
+  - checkbox "Inglés"
+  - checkbox
+  - text: Inglés
+  - checkbox "Portugués"
+  - checkbox
+  - text: Portugués
+  - checkbox "Italiano"
+  - checkbox
+  - text: Italiano
+  - checkbox "Francés"
+  - checkbox
+  - text: Francés
+  - checkbox "Alemán"
+  - checkbox
+  - text: Alemán
+  - text: Áreas y condiciones que tratás
+  - 'textbox "Ej: obesidad, diabetes, TCA…"'
+  - button "Agregar":
+    - text: Agregar
+  - text: Pacientes que atiendo
+  - checkbox "Adultos"
+  - checkbox
+  - text: Adultos
+  - checkbox "Adolescentes"
+  - checkbox
+  - text: Adolescentes
+  - checkbox "Niños"
+  - checkbox
+  - text: Niños
+  - checkbox "Adultos mayores"
+  - checkbox
+  - text: Adultos mayores
+  - button "Guardar cambios" [disabled]
+  - generic: Trayectoria
+  - text: Formación
+  - text: Título
+  - textbox "Título"
+  - text: Institución
+  - textbox "Institución"
+  - text: Año
+  - textbox "Año"
+  - button "Agregar formación":
+    - text: Agregar formación
+  - text: Premios y reconocimientos
+  - 'textbox "Ej: Premio X 2023"'
+  - button "Agregar":
+    - text: Agregar
+  - text: Publicaciones
+  - 'textbox "Ej: Título del artículo (revista, año)"'
+  - button "Agregar":
+    - text: Agregar
+  - button "Guardar cambios" [disabled]
+  - generic: Obras sociales
+  - checkbox "Atiendo de forma particular"
+  - checkbox
+  - text: Atiendo de forma particular
+  - text: Obras sociales / prepagas que acepto
+  - combobox:
+    - generic: "Ej: OSDE, Swiss Medical…"
+  - paragraph: Si solo atendés de forma particular, marcá la casilla de arriba y dejá esta lista vacía.
+  - button "Guardar cambios" [disabled]
+  - generic: Contacto
+  - generic: Tu contacto personal para las consultas que llegan por tu perfil.
+  - text: WhatsApp
+  - combobox "Seleccionar país":
+    - generic: 🇦🇷
+    - generic: "+549"
+  - textbox "11 1234-5678"
+  - paragraph: Si lo dejás vacío, se usa el WhatsApp del consultorio.
+  - checkbox "Mostrar en mi perfil público" [checked]:
+  - checkbox [checked]
+  - text: Mostrar en mi perfil público
+  - button "Guardar cambios" [disabled]
+  - generic: Multimedia y redes
+  - text: Video de presentación
+  - textbox "Video de presentación":
+    - /placeholder: Pegá un link de YouTube o Vimeo
+  - paragraph: Solo links de YouTube o Vimeo.
+  - text: Redes y links
+  - text: Instagram
+  - generic: instagram.com/
+  - textbox "Instagram"
+  - text: Facebook
+  - generic: facebook.com/
+  - textbox "Facebook"
+  - text: X (Twitter)
+  - generic: x.com/
+  - textbox "X (Twitter)"
+  - text: LinkedIn
+  - generic: linkedin.com/in/
+  - textbox "LinkedIn"
+  - text: TikTok
+  - generic: tiktok.com/@
+  - textbox "TikTok"
+  - text: YouTube
+  - generic: youtube.com/
+  - textbox "YouTube"
+  - text: Sitio web
+  - textbox "Sitio web":
+    - /placeholder: "Ej: https://minutricion.com.ar"
+  - button "Guardar cambios" [disabled]
+  - generic: Secciones visibles
+  - generic: Elegí qué secciones se muestran en tu perfil público.
+  - generic: Trayectoria (formación, certificaciones)
+  - switch "Trayectoria (formación, certificaciones)" [checked]
+  - checkbox [checked]
+  - generic: Servicios (lista y precios)
+  - switch "Servicios (lista y precios)" [checked]
+  - checkbox [checked]
+  - generic: Reservas online (reservar conmigo)
+  - switch "Reservas online (reservar conmigo)" [checked]
+  - checkbox [checked]
+  - generic: Reseñas
+  - switch "Reseñas" [checked]
+  - checkbox [checked]
+  - generic: Ubicación
+  - switch "Ubicación" [checked]
+  - checkbox [checked]
+  - button "Guardar cambios" [disabled]
+  - generic: Certificaciones
+  - text: Nombre
+  - textbox "Nombre"
+  - text: Emisor
+  - textbox "Emisor"
+  - text: Año
+  - textbox "Año"
+  - text: Archivo (PDF o imagen)
+  - button "Archivo (PDF o imagen)"
+  - paragraph: El archivo es privado, solo para verificación. No se muestra públicamente.
+  - button "Agregar certificación":
+    - text: Agregar certificación
+  - generic: Galería del consultorio
+  - button "Agregar foto":
+    - text: Agregar foto
+  - paragraph: Tus propias visitas y las de tu equipo no se cuentan. Se cuenta una visita por persona por sesión, así una recarga no infla el número. Los turnos reservados se cuentan aunque el paciente no haya pasado por tu perfil, por ejemplo si reservó desde la página del consultorio o desde un link directo.
+- alert

@@ -1,0 +1,16 @@
+BEGIN;
+SELECT no_plan();
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claims','{"sub":"b2222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
+SELECT api.save_checkin_questions('11111111-1111-4111-8111-111111111111','[{"id":"eeeeeeee-1111-4111-8111-111111111111","text":"Energía","type":"scale","enabled":true,"required":true,"archived":false,"options":[],"alert":{"op":"lte","values":["2"]}}]');
+SELECT set_config('request.jwt.claims','{"sub":"d1111111-1111-4111-8111-111111111111","role":"authenticated"}',true);
+CREATE TEMP TABLE free_fixture AS SELECT (api.get_free_checkin('f1111111-1111-4111-8111-111111111111')->>'version')::timestamptz v;
+SELECT lives_ok($$SELECT api.submit_free_checkin('f1111111-1111-4111-8111-111111111111','99999999-1111-4111-8111-111111111111',v,'{"eeeeeeee-1111-4111-8111-111111111111":"2"}') FROM free_fixture$$,'Envío libre sin asignación');
+SELECT lives_ok($$SELECT api.submit_free_checkin('f1111111-1111-4111-8111-111111111111','99999999-1111-4111-8111-111111111111',v,'{"eeeeeeee-1111-4111-8111-111111111111":"2"}') FROM free_fixture$$,'Reintento idempotente');
+SELECT lives_ok($$SELECT api.submit_free_checkin('f1111111-1111-4111-8111-111111111111','99999999-2222-4222-8222-222222222222',v,'{"eeeeeeee-1111-4111-8111-111111111111":"4"}') FROM free_fixture$$,'Segundo envío el mismo día');
+SELECT is((SELECT count(*) FROM api.daily_checkins WHERE id IN ('99999999-1111-4111-8111-111111111111','99999999-2222-4222-8222-222222222222')),2::bigint,'Dos registros sin duplicar');
+SELECT throws_ok($$SELECT api.submit_free_checkin('f1111111-1111-4111-8111-111111111111',gen_random_uuid(),now()-interval '1 day','{}')$$,NULL,NULL,'Rechaza versión distinta');
+SELECT set_config('request.jwt.claims','{"sub":"d2222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
+SELECT throws_ok($$SELECT api.get_free_checkin('f1111111-1111-4111-8111-111111111111')$$,'No autorizado','Paciente ajeno no lee');
+SELECT * FROM finish();
+ROLLBACK;

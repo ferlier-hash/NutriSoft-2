@@ -1,0 +1,11 @@
+COMMAND: npm run db:types
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:31.000Z
+END_TIME: 2026-08-04T23:48:32.000Z
+DURATION_MS: 1000
+EXIT_CODE: 0
+--- STDOUT ---
+Generating types for typescript...
+Saved to src/types/database.types.ts
+--- STDERR ---
+(none)

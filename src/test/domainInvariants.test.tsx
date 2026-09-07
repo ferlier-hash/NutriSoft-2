@@ -86,8 +86,15 @@ describe('Invariantes del Estado Mock y Fechas Deterministas (Fase 1.1.2)', () =
       result.current.submitCheckInResponse('assign-1', 4, 4, false)
     ).toThrow('Este check-in ya ha sido completado previamente.');
 
-    // Resolver una alerta
+    // Reconocer una alerta conserva el trabajo pendiente y evita duplicidad.
     const firstAlertId = result.current.alerts[0]!.id;
+    act(() => {
+      result.current.acknowledgeAlert(firstAlertId);
+    });
+    expect(result.current.alerts.find(a => a.id === firstAlertId)?.status).toBe('acknowledged');
+    expect(() => result.current.acknowledgeAlert(firstAlertId)).toThrow('La alerta ya está en revisión.');
+
+    // Resolver una alerta reconocida
     act(() => {
       result.current.resolveAlert(firstAlertId);
     });

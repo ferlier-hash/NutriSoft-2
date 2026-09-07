@@ -19,8 +19,9 @@ try {
     process.exit(1);
   }
 
-  const currentContent = readFileSync(currentTypesPath, 'utf-8');
-  const tempContent = readFileSync(tempTypesPath, 'utf-8');
+  const normalize = (content) => `${content.trimEnd()}\n`;
+  const currentContent = normalize(readFileSync(currentTypesPath, 'utf-8'));
+  const tempContent = normalize(readFileSync(tempTypesPath, 'utf-8'));
 
   // 4. Eliminar temporal
   unlinkSync(tempTypesPath);

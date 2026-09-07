@@ -1,0 +1,67 @@
+- button "Feedback"
+- complementary:
+  - img "Vitals IA"
+  - generic: Vitals IA
+  - generic: Plan free
+  - button "1":
+    - generic: "1"
+  - button "‹"
+  - navigation:
+    - button "Inicio":
+      - text: Inicio
+    - button "Pacientes":
+      - text: Pacientes
+    - button "Chat":
+      - text: Chat
+    - button "Agenda":
+      - text: Agenda
+    - generic: Planes
+    - button "Templates":
+      - text: Templates
+    - button "Recetas":
+      - text: Recetas
+    - button "Mis Productos 9+" [active]:
+      - text: Mis Productos
+      - generic "430 alimentos aprendidos por IA para revisar": 9+
+    - generic: Seguimiento
+    - button "Analytics":
+      - text: Analytics
+    - button "Reportes":
+      - text: Reportes
+    - button "Antropometría":
+      - text: Antropometría
+  - button "FL Fernando Liernur Plan free ▲":
+    - generic: FL
+    - generic: Fernando Liernur
+    - generic: Plan free
+    - generic: ▲
+- main:
+  - generic: ⏳
+  - strong: Plan gratuito
+  - text: — 2d 23:53:30 restantes
+  - button "Ver planes →"
+  - heading "Mis Productos" [level=1]
+  - paragraph: Productos con macros exactos del rótulo. Aparecen primero en el buscador de planes y recetas.
+  - button "Agregar producto":
+    - text: Agregar producto
+  - heading "💡 Cómo funciona esta sección" [level=3]
+  - button "Ocultar"
+  - generic: 📦 Míos
+  - paragraph:
+    - text: "Productos que vos cargás con los macros exactos del rótulo (ej: una marca específica de yogur). Tienen"
+    - strong: prioridad
+    - text: en planes, recetas y en el análisis de fotos de tus pacientes.
+  - generic: 🤖 Aprendidos por IA
+  - paragraph: "Alimentos detectados automáticamente al analizar fotos. Crecen solos con el uso. Podés:"
+  - list:
+    - strong: ✅ Aprobar
+    - text: — lo validás como confiable
+    - strong: ✏️ Editar
+    - text: — crea una
+    - emphasis: copia personal
+    - text: en "Míos" (el global queda intacto para otros nutricionistas)
+    - strong: 🗑️ Eliminar
+    - text: — lo saca de la base (afecta a todos los nutris)
+  - button "📦 Míos"
+  - button "🤖 Aprendidos por IA"
+  - generic: Cargando productos...

@@ -1,0 +1,247 @@
+- text:           
+- menubar "Main":
+  - list:
+    - menuitem "Clientes":
+      - button "Clientes":
+        - generic: Clientes
+    - menuitem "Equipo":
+      - generic: Equipo
+    - menuitem "Librería":
+      - button "Librería":
+        - generic: Librería
+    - menuitem "Agenda":
+      - button "Agenda":
+        - generic: Agenda
+    - menuitem "Negocio":
+      - button "Negocio":
+        - generic: Negocio
+    - menuitem "Marketing":
+      - button "Marketing":
+        - generic: Marketing
+    - menuitem "AI Assistant":
+      - generic: AI Assistant
+- generic: F
+- generic: Es hora de recuperar tu tiempo.
+- text: ¡Toma el control!
+- paragraph: Accesos rápidos
+- button "Configurar accesos rápidos":
+- button "Crea con IA un Plan Nutri Tu asistente de nutrición":
+  - generic: Crea con IA un Plan Nutri
+  - generic: Tu asistente de nutrición
+- button "Crea Con IA Una Receta Tu asistente de nutrición":
+  - generic: Crea Con IA Una Receta
+  - generic: Tu asistente de nutrición
+- button "Añade un Cliente Nuevo cliente al instante":
+  - generic: Añade un Cliente
+  - generic: Nuevo cliente al instante
+- button "Crea con IA tu Workout Entrenamientos + rápido":
+  - generic: Crea con IA tu Workout
+  - generic: Entrenamientos + rápido
+- button "Crea con IA tu Programa Programas + rápido":
+  - generic: Crea con IA tu Programa
+  - generic: Programas + rápido
+- button "Crea un Plan Nutri Trabaja en su nutrición":
+  - generic: Crea un Plan Nutri
+  - generic: Trabaja en su nutrición
+- button "Registra tus Recetas Aprovecha tu contenido":
+  - generic: Registra tus Recetas
+  - generic: Aprovecha tu contenido
+- button "Crea tus Workouts Guía sus entrenamientos":
+  - generic: Crea tus Workouts
+  - generic: Guía sus entrenamientos
+- button "Crea tu Programa Multiplica tu tiempo x4":
+  - generic: Crea tu Programa
+  - generic: Multiplica tu tiempo x4
+- button "Asigna Cardio Encuentra el adecuado":
+  - generic: Asigna Cardio
+  - generic: Encuentra el adecuado
+- button "Comparte Archivos Marca la diferencia":
+  - generic: Comparte Archivos
+  - generic: Marca la diferencia
+- button "Prepara Formularios Mejora con feedback":
+  - generic: Prepara Formularios
+  - generic: Mejora con feedback
+- button "Agenda una Sesión Gestiona tu tiempo":
+  - generic: Agenda una Sesión
+  - generic: Gestiona tu tiempo
+- button "Anota tus Citas Sesiones individuales":
+  - generic: Anota tus Citas
+  - generic: Sesiones individuales
+- button "Sube tus vídeos Carga tu contenido":
+  - generic: Sube tus vídeos
+  - generic: Carga tu contenido
+- generic: Gana tiempo
+- button "Close":
+- paragraph: +2,1
+- paragraph: días
+- paragraph:
+  - text: Tiempo que los profesionales
+  - strong: ahorran a la semana.
+- generic: Gana clientes
+- button "Close":
+- paragraph: +10K
+- paragraph:
+  - text: Profesionales ya
+  - strong: han escalado su negocio
+  - text: con Harbiz.
+- generic: Gana más
+- button "Close":
+- paragraph: "14"
+- paragraph: días gratis
+- paragraph:
+  - text: Para
+  - strong: automatizar tu gestión
+  - text: y centrarte en lo que + importa.
+- button "slide-0 slide-1 Sesión Harbiz Reserva gratis una sesión Te ayudaremos a configurar la plataforma a tu gusto":
+  - img "slide-0"
+  - img "slide-1"
+  - generic: Sesión Harbiz
+  - button:
+  - button:
+  - paragraph: Reserva gratis una sesión
+  - generic: Te ayudaremos a configurar la plataforma a tu gusto
+- generic: Actividad reciente
+- generic: "0"
+- button:
+- button "Filtrar actividad":
+- figure:
+- heading "Aún no hay actividad por aquí" [level=2]
+- paragraph: Asigna tareas y descubre cómo tus clientes dan los primeros pasos para alcanzar sus objetivos.
+- button "Ver mis clientes":
+  - generic: Ver mis clientes
+- button "slide-0 slide-1 slide-2 slide-3 slide-4 Pack 100 vídeos 100 clases listas para tus clientes Una experiencia completa con vídeos profesionales.":
+  - img "slide-0"
+  - img "slide-1"
+  - img "slide-2"
+  - img "slide-3"
+  - img "slide-4"
+  - generic: Pack 100 vídeos
+  - button:
+  - button:
+  - paragraph: 100 clases listas para tus clientes
+  - generic: Una experiencia completa con vídeos profesionales.
+- generic: Agendar tareas
+- generic: "0"
+- figure:
+- heading "¡Lo estás haciendo genial!" [level=2]
+- paragraph: Has planificado tareas para todos tus clientes durante los próximos 30 días. ¡Sigue a buen ritmo!
+- generic: Próximos eventos
+- generic: "14"
+- radiogroup:
+  - radio "calendar":
+  - radio "list" [checked]:
+- heading "Esta semana" [level=3]
+- paragraph: 🥕 Sesión nutrición
+- generic: Mañana
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🎯 Sesión inicial grupal
+- generic: 14/08/2026
+- generic: Entrenamiento personal
+- generic: 2/8
+- generic: 05:10pm
+- generic: 06:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 14/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- heading "La semana que viene" [level=3]
+- paragraph: 🎯 Sesión inicial grupal
+- generic: 17/08/2026
+- generic: Entrenamiento personal
+- generic: 2/8
+- generic: 05:10pm
+- generic: 06:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 17/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 18/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🎯 Sesión inicial grupal
+- generic: 19/08/2026
+- generic: Entrenamiento personal
+- generic: 2/8
+- generic: 05:10pm
+- generic: 06:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 19/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 20/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🎯 Sesión inicial grupal
+- generic: 21/08/2026
+- generic: Entrenamiento personal
+- generic: 2/8
+- generic: 05:10pm
+- generic: 06:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 21/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- heading "Más adelante" [level=3]
+- paragraph: 🎯 Sesión inicial grupal
+- generic: 24/08/2026
+- generic: Entrenamiento personal
+- generic: 2/8
+- generic: 05:10pm
+- generic: 06:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 24/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- paragraph: 🥕 Sesión nutrición
+- generic: 25/08/2026
+- generic: Nutrición
+- generic: 2/6
+- generic: 05:10pm
+- generic: 05:40pm
+- button "Ver lista de eventos completa":
+  - generic: Ver lista de eventos completa
+- generic: Revisar cumplimiento
+- generic: "2"
+- generic: "[D"
+- link "[demo] fer Demo":
+  - /url: /clientes/j6cKtYRXeXmLtD5ji/planificacion
+- generic: M. 0%
+- generic: S. 0%
+- generic: "[R"
+- link "[demo] dany Roca":
+  - /url: /clientes/Sexcf2ZqzhQjjE9Xp/planificacion
+- generic: M. 5%
+- generic: S. 16%
+- generic: Suscripciones
+- paragraph: ¿Persigues a tus clientes para que paguen?
+- paragraph: Automatiza el cobro de sus suscripciones con Pagos Harbiz y sigue la evolución de tu negocio.
+- button "Activa Pagos Harbiz gratis":
+  - generic: Activa Pagos Harbiz gratis
+- generic: 1/5
+- button:
+- button:
+- button:
+- button "¡Explora tu nueva app!":
+  - generic: ¡Explora tu nueva app!
+- region "Notifications Alt+T"
+- text:   
+- iframe

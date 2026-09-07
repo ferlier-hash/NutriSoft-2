@@ -1,0 +1,130 @@
+- status:
+  - generic: "Perfil en revisión: esta sección sigue disponible. Mi día y Mis pacientes permanecen bloqueados hasta que Nutri-Pro apruebe tu verificación."
+  - link "Planes alimenticios":
+    - /url: /planes
+  - link "Estado de verificación":
+    - /url: /configuracion/mis-datos
+- complementary:
+  - link "Nutri-Pro — Ir a Mi día":
+    - /url: /dashboard
+    - generic: Nutri-Pro
+  - button "Contraer menú lateral" [expanded]:
+  - status:
+    - paragraph: Verificación en revisión
+    - paragraph: Citas y chat se activan cuando Nutri-Pro apruebe tu perfil.
+    - link "Ver estado →":
+      - /url: /configuracion/mis-datos
+  - button "Buscar acciones y rutas (⌘K)":
+    - generic: Buscar…
+    - generic: ⌘K
+  - button "Abrir Pasita":
+    - generic: Pasita
+    - 'generic "Función en fase Alpha: la experiencia puede cambiar y ocasionalmente fallar."': Alpha
+  - navigation:
+    - paragraph: Operar
+    - link "Mi día. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi día
+    - link "Mi agenda. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi agenda
+    - link "Planes alimenticios":
+      - /url: /planes
+      - generic: Planes alimenticios
+    - link "Mis pacientes. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mis pacientes
+    - paragraph: Comunicar
+    - link "Chat. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Chat
+    - paragraph: Inteligencia
+    - link "IA y consumo. Pasita requiere Nutri-Pro Plus Ultra + IA. Actualiza tu plan en Pagos y facturación.":
+      - /url: /configuracion/facturacion
+      - generic: IA y consumo
+    - paragraph: Cuenta
+    - button "Configuración" [expanded]:
+      - text: Configuración
+    - link "Configuración de la app":
+      - /url: /configuracion/app
+      - generic: Configuración de la app
+    - link "Autenticación":
+      - /url: /configuracion/cuenta
+      - generic: Autenticación
+    - link "Mis datos":
+      - /url: /configuracion/mis-datos
+      - generic: Mis datos
+    - link "Pagos y facturación":
+      - /url: /configuracion/facturacion
+      - generic: Pagos y facturación
+    - link "Contactar soporte":
+      - /url: /configuracion/soporte
+      - generic: Contactar soporte
+  - button "Cuenta de Fernando Liernur":
+    - paragraph: Fernando Liernur
+    - paragraph: ferliernur@gmail.com
+- main:
+  - heading "Configuración de la app" [level=1]
+  - paragraph: Preferencias para tu experiencia en la app de Nutri-Pro. Apariencia, alertas y configuraciones generales.
+  - heading "Alertas" [level=2]
+  - paragraph: Registra este dispositivo y elige qué tipos de aviso quieres recibir.
+  - paragraph: Alertas en este dispositivo
+  - paragraph: Registra este dispositivo para recibir alertas. Luego elige qué tipos quieres abajo.
+  - button "Activar alertas" [disabled]
+  - heading "Qué alertas recibir" [level=3]
+  - paragraph: Con muchos pacientes puedes dejar el chat desactivado y solo citas, o al revés.
+  - switch "Mensajes de pacientes Cuando un paciente escribe en el chat":
+    - generic: Mensajes de pacientes
+    - generic: Cuando un paciente escribe en el chat
+  - switch "Recordatorios de citas 30 min antes y a la hora de la cita" [checked]:
+    - generic: Recordatorios de citas
+    - generic: 30 min antes y a la hora de la cita
+  - switch "Citas vencidas Si una cita pending no se confirmó a tiempo":
+    - generic: Citas vencidas
+    - generic: Si una cita pending no se confirmó a tiempo
+  - heading "Recordatorios para pacientes" [level=2]
+  - paragraph: Aplica a todos tus pacientes activos.
+  - generic: Comida sin registrar (minutos entre avisos)
+  - paragraph: Tras la hora del slot, si no hay cumplimiento, se repite cada N minutos hasta que registren.
+  - button "Disminuir valor":
+  - spinbutton "Comida sin registrar (minutos entre avisos)": "15"
+  - button "Aumentar valor":
+  - generic: Grace de citas (minutos tras la hora)
+  - paragraph: Una cita pending vence en starts_at + este tiempo si no se confirma.
+  - button "Disminuir valor":
+  - spinbutton "Grace de citas (minutos tras la hora)": "10"
+  - button "Aumentar valor":
+  - button "Guardar recordatorios" [disabled]
+  - heading "Pasita (IA)" [level=2]
+  - paragraph: Modo de trabajo y presentación del asistente.
+  - heading "Trabajo" [level=3]
+  - switch "Modo independiente Pasita ejecuta acciones sin pedir confirmación (chat, citas, platillos).":
+    - generic: Modo independiente
+    - generic: Pasita ejecuta acciones sin pedir confirmación (chat, citas, platillos).
+  - heading "Panel" [level=3]
+  - switch "Panel acoplado En escritorio, Pasita empuja el contenido en Chat, Citas y Planes. En Mi día y otras pantallas usa panel superpuesto." [checked]:
+    - generic: Panel acoplado
+    - generic: En escritorio, Pasita empuja el contenido en Chat, Citas y Planes. En Mi día y otras pantallas usa panel superpuesto.
+  - switch "Fijar panel abierto Si está activo, Pasita sigue visible al cambiar de módulo. Si lo apagas, se cierra al navegar o al hacer clic fuera.":
+    - generic: Fijar panel abierto
+    - generic: Si está activo, Pasita sigue visible al cambiar de módulo. Si lo apagas, se cierra al navegar o al hacer clic fuera.
+  - heading "Apariencia" [level=2]
+  - paragraph: Elige el modo claro u oscuro. La preferencia se guarda en este dispositivo.
+  - heading "Modo claro u oscuro" [level=3]
+  - radiogroup "Tema de la interfaz":
+    - radio "Claro Fondo claro en todo el panel.":
+      - generic: Claro
+      - generic: Fondo claro en todo el panel.
+    - radio "Oscuro Reduce el brillo en entornos con poca luz.":
+      - generic: Oscuro
+      - generic: Reduce el brillo en entornos con poca luz.
+    - radio "Sistema Sigue la preferencia de tu dispositivo." [checked]:
+      - generic: Sistema
+      - generic: Sigue la preferencia de tu dispositivo.
+  - heading "Densidad del panel" [level=3]
+  - paragraph: Afecta Mi día (bandeja y agenda). Solo en este dispositivo.
+  - switch "Vista compacta Espaciado estándar entre filas y secciones.":
+    - generic: Vista compacta
+    - generic: Espaciado estándar entre filas y secciones.
+- region "Notifications alt+T"
+- alert

@@ -1,0 +1,118 @@
+- link "Ir al contenido principal":
+  - /url: "#main-content"
+- region "Notifications alt+T"
+- complementary:
+  - button "Colapsar menú":
+  - button "Fernando":
+    - generic: Fernando
+  - button "Notificaciones":
+  - button "Buscar… ⌘K":
+    - generic: Buscar…
+    - generic: ⌘K
+  - navigation:
+    - link "Inicio" [active]:
+      - /url: /
+      - generic: Inicio
+    - link "Pacientes Requiere un plan activo":
+      - /url: /patients
+      - generic: Pacientes
+      - img "Requiere un plan activo"
+    - link "Chats Requiere un plan activo":
+      - /url: /chats
+      - generic: Chats
+      - img "Requiere un plan activo"
+    - link "Agenda Requiere un plan activo":
+      - /url: /appointments
+      - generic: Agenda
+      - img "Requiere un plan activo"
+    - link "Planes Requiere un plan activo":
+      - /url: /meal-plans
+      - generic: Planes
+      - img "Requiere un plan activo"
+    - link "Alimentos Requiere un plan activo":
+      - /url: /foods
+      - generic: Alimentos
+      - img "Requiere un plan activo"
+    - link "Recursos Requiere un plan activo":
+      - /url: /education
+      - generic: Recursos
+      - img "Requiere un plan activo"
+    - link "Formularios Requiere un plan activo":
+      - /url: /forms
+      - generic: Formularios
+      - img "Requiere un plan activo"
+    - link "Pagos Requiere un plan activo":
+      - /url: /billing
+      - generic: Pagos
+      - img "Requiere un plan activo"
+    - link "Catálogo Requiere un plan activo":
+      - /url: /store
+      - generic: Catálogo
+      - img "Requiere un plan activo"
+    - link "Página pública":
+      - /url: /presencia
+      - generic: Página pública
+  - link "Novedades":
+    - /url: /changelog
+    - generic: Novedades
+  - link "Academia":
+    - /url: /guides
+    - generic: Academia
+  - link "Configuración":
+    - /url: /settings
+    - generic: Configuración
+  - button "FL Fernando Liernur Propietario/a":
+    - generic: FL
+    - paragraph: Fernando Liernur
+    - paragraph: Propietario/a
+- main:
+  - paragraph: El consultorio completo se habilita con un plan.
+  - link "Ver planes":
+    - /url: /subscribe
+    - text: Ver planes
+  - heading "Hola, Fernando" [level=1]
+  - paragraph: Este es el estado de tu perfil público. Completalo para recibir más consultas y activá un plan para gestionar tu consultorio.
+  - heading "Activá tu consultorio" [level=2]
+  - paragraph: "Agenda, pacientes, planes de alimentación e IA: todas las funciones se habilitan al elegir un plan."
+  - link "Ver planes":
+    - /url: /subscribe?from=free_home
+    - text: Ver planes
+  - paragraph: Garantía de 30 días · Cancelás cuando quieras
+  - heading "Qué tan fuerte está tu perfil" [level=2]
+  - paragraph: Cada dato que sumás te ayuda a aparecer más arriba en Google y en el directorio, y a que el paciente te elija cuando compara.
+  - generic: 1 de 7 completado
+  - generic: 14%
+  - progressbar
+  - list:
+    - link "Verificá tu matrícula":
+      - /url: /presencia
+      - generic: Verificá tu matrícula
+    - link "Agregá tu foto de perfil":
+      - /url: /settings
+      - generic: Agregá tu foto de perfil
+    - generic: "Listo:"
+    - text: Elegí tu especialidad
+    - link "Escribí tu título profesional":
+      - /url: /presencia
+      - generic: Escribí tu título profesional
+    - link "Contá quién sos en tu biografía":
+      - /url: /presencia
+      - generic: Contá quién sos en tu biografía
+    - link "Describí tu consultorio":
+      - /url: /presencia/consultorio
+      - generic: Describí tu consultorio
+    - link "Sumá tu WhatsApp de contacto":
+      - /url: /presencia/consultorio
+      - generic: Sumá tu WhatsApp de contacto
+  - heading "¿Aparecés en el directorio?" [level=2]
+  - paragraph: Todavía no aparecés
+  - paragraph: Enviá tu matrícula para que verifiquemos tu perfil y lo publiquemos.
+  - link "Completar mi perfil":
+    - /url: /presencia
+    - text: Completar mi perfil
+  - heading "Interés de pacientes" [level=2]
+  - generic: "0"
+  - paragraph:
+    - text: Contactos por WhatsApp · últimos 30 días
+  - paragraph: Completá tu perfil para aparecer en más búsquedas.
+- alert: Inicio

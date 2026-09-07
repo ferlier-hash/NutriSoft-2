@@ -1,0 +1,22 @@
+COMMAND: npm run test:run
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:39.000Z
+END_TIME: 2026-08-04T23:48:41.000Z
+DURATION_MS: 2000
+EXIT_CODE: 0
+--- STDOUT ---
+> nutrisoft@0.1.0 test:run
+> vitest run
+
+ RUN  v3.0.5 /Users/fernandoliernur/Projects/nutrisoft
+
+ ✓ src/test/domainInvariants.test.tsx (7 tests) 54ms
+ ✓ src/test/roleNavigationGuard.test.tsx (5 tests) 42ms
+ ✓ src/test/userFlowIntegration.test.tsx (5 tests) 61ms
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  23:48:39
+   Duration  412ms (transform 82ms, setup 120ms, collect 95ms, tests 157ms, environment 310ms, prepare 45ms)
+--- STDERR ---
+(none)

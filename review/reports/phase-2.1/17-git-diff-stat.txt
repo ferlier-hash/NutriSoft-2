@@ -1,0 +1,36 @@
+COMMAND: git diff --stat phase-2-backend-foundation...HEAD
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:58.000Z
+END_TIME: 2026-08-04T23:48:59.000Z
+DURATION_MS: 1000
+EXIT_CODE: 0
+--- STDOUT ---
+ .github/workflows/ci.yml                            |  12 ++-
+ README.md                                           |  10 +-
+ docs/api-contract.md                                |  20 ++--
+ docs/backend-architecture.md                        |  16 +--
+ docs/data-model.md                                  |  18 +--
+ docs/local-supabase.md                              |  10 +-
+ docs/phase-2.1-security-hardening.md               |  22 ++++
+ docs/security-model.md                              |  20 ++--
+ review/reports/phase-2.1/requirements-matrix.md    | 220 ++++++++++++++++++++
+ review/reports/phase-2.1/phase-2.1-walkthrough.md   |  45 +++++++++
+ scripts/run-evidence-phase-2-1.js                   |  65 +++++++++++++
+ supabase/migrations/20260804000006_...sql          |  45 +++++++++
+ supabase/migrations/20260804000007_...sql          | 195 ++++++++++++++++++++++
+ supabase/migrations/20260804000008_...sql          | 260 ++++++++++++++++++++++++
+ supabase/migrations/20260804000009_...sql          |  10 ++
+ supabase/seed.sql                                   |  70 ++++++-
+ supabase/tests/database/011_privileges.test.sql    |  25 +++
+ supabase/tests/database/021_...privacy.test.sql    |  30 +++
+ supabase/tests/database/031_...integrity.test.sql  |  40 ++++
+ supabase/tests/database/041_...integrity.test.sql  |  40 ++++
+ supabase/tests/database/051_...paths.test.sql      |  38 ++++
+ supabase/tests/database/061_...org.test.sql        |  48 +++++
+ supabase/tests/database/071_...rules.test.sql      |  45 +++++++++
+ supabase/tests/database/072_...transitions.test.sql|  38 ++++
+ supabase/tests/database/081_api_columns.test.sql   |  20 +++
+ supabase/tests/database/091_audit_content.test.sql |  30 +++
+ 26 files changed, 1372 insertions(+), 25 deletions(-)
+--- STDERR ---
+(none)

@@ -23,13 +23,16 @@ const checkInSchema = z.object({
     .max(5, 'El valor máximo es 5'),
   helpRequested: z.boolean().default(false),
   notes: z.string().max(500, 'Las notas no pueden superar 500 caracteres').optional(),
+  sleepScore: z.number().min(1).max(5).optional(),
+  digestionScore: z.number().min(1).max(5).optional(),
+  satietyScore: z.number().min(1).max(5).optional(),
 });
 
 type CheckInFormData = z.infer<typeof checkInSchema>;
 
 export const CheckInPage: React.FC = () => {
   const { assignmentId } = useParams<{ assignmentId: string }>();
-  const { currentDemoPatientId, checkInAssignments, submitCheckInResponse } = useMock();
+  const { currentDemoPatientId, checkInAssignments, submitCheckInResponse, professionalPracticeSettings } = useMock();
   const { showToast } = useToast();
 
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
@@ -112,6 +115,7 @@ export const CheckInPage: React.FC = () => {
         data.adherenceScore,
         data.helpRequested,
         data.notes
+        , { sleepScore: data.sleepScore, digestionScore: data.digestionScore, satietyScore: data.satietyScore }
       );
       setSubmittedMessage(confirmationMessage);
     } catch (err: unknown) {
@@ -190,8 +194,12 @@ export const CheckInPage: React.FC = () => {
             )}
           />
 
+          {professionalPracticeSettings?.checkInSettings.includeSleep && <Controller name="sleepScore" control={control} render={({ field }) => <RatingScale name="sleepScore" legend="¿Cómo descansaste?" value={field.value || null} onChange={val => field.onChange(val)} />} />}
+          {professionalPracticeSettings?.checkInSettings.includeDigestion && <Controller name="digestionScore" control={control} render={({ field }) => <RatingScale name="digestionScore" legend="¿Cómo estuvo tu digestión?" value={field.value || null} onChange={val => field.onChange(val)} />} />}
+          {professionalPracticeSettings?.checkInSettings.includeSatiety && <Controller name="satietyScore" control={control} render={({ field }) => <RatingScale name="satietyScore" legend="¿Cómo estuvo tu hambre y saciedad?" value={field.value || null} onChange={val => field.onChange(val)} />} />}
+
           {/* Pregunta 3: Pedido de Ayuda con Radix Switch */}
-          <div className="pt-3 border-t border-border-subtle flex items-center justify-between gap-3">
+          {professionalPracticeSettings?.checkInSettings.includeHelpRequested && <div className="pt-3 border-t border-border-subtle flex items-center justify-between gap-3">
             <div>
               <label htmlFor="help-switch" className="text-sm font-semibold text-text-primary flex items-center gap-1.5 cursor-pointer">
                 <HeartHandshake className="w-4 h-4 text-[#902A24]" />
@@ -213,10 +221,10 @@ export const CheckInPage: React.FC = () => {
                 />
               )}
             />
-          </div>
+          </div>}
 
           {/* Notas Adicionales */}
-          <div className="pt-3 border-t border-border-subtle">
+          {professionalPracticeSettings?.checkInSettings.includeNotes && <div className="pt-3 border-t border-border-subtle">
             <label htmlFor="notes-input" className="block text-xs font-medium text-text-primary mb-1">
               Notas o comentarios adicionales (opcional)
             </label>
@@ -234,7 +242,7 @@ export const CheckInPage: React.FC = () => {
                 {errors.notes.message}
               </p>
             )}
-          </div>
+          </div>}
         </Card>
 
         <Button variant="primary" type="submit" className="w-full font-bold text-sm">

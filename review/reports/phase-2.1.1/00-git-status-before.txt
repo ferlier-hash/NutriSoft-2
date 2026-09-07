@@ -1,0 +1,48 @@
+COMMAND: git status --porcelain=v1 --branch
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:10:47.582Z
+END_TIME: 2026-08-06T04:10:47.598Z
+DURATION_MS: 16
+EXIT_CODE: 0
+--- STDOUT ---
+## phase-2.1.1-validation-fix
+ M .github/workflows/ci.yml
+ M .gitignore
+ M README.md
+ M docs/api-contract.md
+ M docs/backend-architecture.md
+ M docs/data-model.md
+ M docs/local-supabase.md
+ M docs/security-model.md
+ M eslint.config.js
+ M package.json
+ M scripts/verify-types.js
+ M src/types/database.types.ts
+ M supabase/seed.sql
+ M vitest.config.ts
+?? docs/phase-2.1-security-hardening.md
+?? docs/product-backlog.md
+?? review/reports/phase-2.1.1/
+?? review/reports/phase-2.1/
+?? scripts/generate-types.js
+?? scripts/run-evidence-phase-2-1-1.js
+?? scripts/run-evidence-phase-2-1.js
+?? supabase/migrations/20260804000006_phase_2_1_integrity_hardening.sql
+?? supabase/migrations/20260804000007_phase_2_1_authorization_hardening.sql
+?? supabase/migrations/20260804000008_phase_2_1_rpc_hardening.sql
+?? supabase/migrations/20260804000009_phase_2_1_api_contract_hardening.sql
+?? supabase/migrations/20260805000010_phase_2_1_1_default_privileges.sql
+?? supabase/migrations/20260805000011_phase_2_1_1_check_in_and_api_hardening.sql
+?? supabase/tests/database/011_privileges.test.sql
+?? supabase/tests/database/021_platform_admin_privacy.test.sql
+?? supabase/tests/database/031_cross_tenant_integrity.test.sql
+?? supabase/tests/database/041_professional_assignment_integrity.test.sql
+?? supabase/tests/database/051_patient_negative_paths.test.sql
+?? supabase/tests/database/061_suspended_organization.test.sql
+?? supabase/tests/database/071_check_in_alert_rules.test.sql
+?? supabase/tests/database/072_rpc_state_transitions.test.sql
+?? supabase/tests/database/081_api_columns.test.sql
+?? supabase/tests/database/091_audit_content.test.sql
+
+--- STDERR ---
+(none)

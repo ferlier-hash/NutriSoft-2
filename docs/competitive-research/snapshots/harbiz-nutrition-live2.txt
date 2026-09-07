@@ -1,0 +1,136 @@
+- text:           
+- menubar "Main":
+  - list:
+    - menuitem "Clientes":
+      - button "Clientes":
+        - generic: Clientes
+    - menuitem "Equipo":
+      - generic: Equipo
+    - menuitem "Librería":
+      - button "Librería":
+        - generic: Librería
+    - menuitem "Agenda":
+      - button "Agenda":
+        - generic: Agenda
+    - menuitem "Negocio":
+      - button "Negocio":
+        - generic: Negocio
+    - menuitem "Marketing":
+      - button "Marketing":
+        - generic: Marketing
+    - menuitem "AI Assistant":
+      - generic: AI Assistant
+- generic: F
+- generic: Librería
+- generic: /
+- link "Actividad Física":
+  - /url: /libreria/ejercicios
+  - generic: Actividad Física
+- link "Vídeos":
+  - /url: /libreria/sesiones-en-video
+  - generic: Vídeos
+- link "Nutrición":
+  - /url: /libreria/nutricion
+  - generic: Nutrición
+- link "Programas":
+  - /url: /libreria/programas
+  - generic: Programas
+- link "Documentos":
+  - /url: /libreria/documentos
+  - generic: Documentos
+- link "Formularios":
+  - /url: /libreria/formulario-inicial
+  - generic: Formularios
+- link "Plantillas":
+  - /url: /libreria/plantillas
+  - generic: Plantillas
+- link "Logros":
+  - /url: /libreria/logros
+  - generic: Logros
+- link "Contenido a validar":
+  - /url: /libreria/contenido-a-validar
+  - generic: Contenido a validar
+- button:
+- button "Cerrar":
+  - paragraph: Cerrar
+- tablist:
+  - link "Planes nutricionales Crea y asigna planes de alimentación adaptados":
+    - /url: /libreria/nutricion
+    - heading "Planes nutricionales" [level=4]
+    - generic: Crea y asigna planes de alimentación adaptados
+  - link "Recetas Recetas con texto, vídeos, alimentos y macros para tus planes":
+    - /url: /libreria/recetas
+    - heading "Recetas" [level=4]
+    - generic: Recetas con texto, vídeos, alimentos y macros para tus planes
+  - link "Alimentos Medidas y valores nutricionales para usar en tus recetas":
+    - /url: /libreria/alimentos
+    - heading "Alimentos" [level=4]
+    - generic: Medidas y valores nutricionales para usar en tus recetas
+  - link "Agrupaciones de planes Organiza y asigna conjuntos de planes nutricionales a tus clientes":
+    - /url: /libreria/groupNutrition
+    - heading "Agrupaciones de planes" [level=4]
+    - generic: Organiza y asigna conjuntos de planes nutricionales a tus clientes
+- paragraph: Planes nutricionales
+- paragraph: "1"
+- paragraph: El asistente nutricional que trabaja por ti
+- paragraph: "Tú pones las reglas: kcal, macros y comidas. Harbiz Nutrition AI combina +900 recetas y crea el plan perfecto para tus clientes en segundos. Menos cálculos, más resultados."
+- button "Prueba gratis Harbiz AI":
+  - generic: Prueba gratis Harbiz AI
+- button "¿Cómo funciona?":
+  - generic: ¿Cómo funciona?
+- searchbox "Buscar por nombre o descripción..."
+- button:
+- button "Filtrar":
+  - generic: Filtrar
+- button "Añadir plan nutricional":
+  - generic: Añadir plan nutricional
+- button "Plan diario con Harbiz AI":
+  - generic: Plan diario con Harbiz AI
+- table:
+  - rowgroup:
+    - row "Nombre Descripción Tipo Kcal día Creador Fecha de creación":
+      - columnheader:
+        - checkbox
+      - columnheader
+      - columnheader "Nombre":
+        - text: Nombre
+      - columnheader "Descripción":
+        - text: Descripción
+      - columnheader "Tipo":
+        - text: Tipo
+      - columnheader "Kcal día":
+        - text: Kcal día
+      - columnheader "Creador":
+        - text: Creador
+      - columnheader "Fecha de creación":
+        - text: Fecha de creación
+  - rowgroup:
+    - 'row "🏋🏽 Plan de alimentación - Día de entrenamiento 🎯 El objetivo de este plan es bajar el % de grasa siguiendo una estructura de 3 semanas. Tipos de días: de entrenamiento, de cardio y de descanso. Diario 1740 kcal HZ Harbiz 12/8/2026"':
+      - cell:
+        - checkbox
+      - cell:
+      - cell "🏋🏽 Plan de alimentación - Día de entrenamiento":
+        - generic: 🏋🏽 Plan de alimentación - Día de entrenamiento
+      - 'cell "🎯 El objetivo de este plan es bajar el % de grasa siguiendo una estructura de 3 semanas. Tipos de días: de entrenamiento, de cardio y de descanso."':
+        - generic: "🎯 El objetivo de este plan es bajar el % de grasa siguiendo una estructura de 3 semanas. Tipos de días: de entrenamiento, de cardio y de descanso."
+      - cell "Diario":
+        - generic: Diario
+      - cell "1740 kcal"
+      - cell "HZ Harbiz":
+        - generic: HZ
+        - generic: Harbiz
+      - cell "12/8/2026"
+- paragraph: 1 - 1 de 1 elementos · Número de filas por página
+- combobox:
+  - paragraph: "10"
+- button:
+- button:
+- paragraph: Página 1 de 1
+- button:
+- button:
+- button "1/5":
+  - button:
+  - generic: 1/5
+- region "Notifications Alt+T"
+- text:   
+- iframe

@@ -1,0 +1,47 @@
+- link "MuraTrack Logo MuraTrack Panel de Control":
+  - /url: /dashboard
+  - img "MuraTrack Logo"
+  - generic: MuraTrack
+  - generic: Panel de Control
+- generic: Gestión
+- list:
+  - link "Panel Principal":
+    - /url: /dashboard
+    - generic: Panel Principal
+  - link "Pacientes":
+    - /url: /pacientes
+    - generic: Pacientes
+  - link "Agenda":
+    - /url: /agenda
+    - generic: Agenda
+- generic: Configuración
+- list:
+  - link "Perfil":
+    - /url: /perfil
+    - generic: Perfil
+  - link "Templates":
+    - /url: /templates
+    - generic: Templates
+  - link "Mi Suscripción":
+    - /url: /subscription
+    - generic: Mi Suscripción
+- button "Abrir menú de usuario":
+  - img "Fernando Liernur's logo"
+- paragraph: Fernando Liernur
+- paragraph: ferliernur@gmail.com
+- main:
+  - main:
+    - heading "Pacientes" [level=1]
+    - textbox "Buscar pacientes por nombre, email o teléfono":
+      - /placeholder: Buscar por nombre, email o teléfono...
+    - button "Agregar Paciente" [disabled]:
+      - text: Agregar Paciente
+- region "Notifications alt+T"
+- alert
+- dialog "Consentimiento de cookies":
+  - paragraph: Este sitio utiliza cookies
+  - paragraph: Utilizamos cookies para mejorar la experiencia de navegación y analizar el tráfico del sitio. Podés aceptar o rechazar su uso en cualquier momento.
+  - link "Política de privacidad":
+    - /url: /politica-privacidad
+  - button "Rechazar"
+  - button "Aceptar cookies"

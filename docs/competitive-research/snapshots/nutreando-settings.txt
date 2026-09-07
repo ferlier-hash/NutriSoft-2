@@ -1,0 +1,150 @@
+- link "Ir al contenido principal":
+  - /url: "#main-content"
+- region "Notifications alt+T"
+- complementary:
+  - button "Colapsar menú":
+  - button "Fernando":
+    - generic: Fernando
+  - button "Notificaciones":
+  - button "Buscar… ⌘K":
+    - generic: Buscar…
+    - generic: ⌘K
+  - navigation:
+    - link "Inicio":
+      - /url: /
+      - generic: Inicio
+    - link "Pacientes Requiere un plan activo":
+      - /url: /patients
+      - generic: Pacientes
+      - img "Requiere un plan activo"
+    - link "Chats Requiere un plan activo":
+      - /url: /chats
+      - generic: Chats
+      - img "Requiere un plan activo"
+    - link "Agenda Requiere un plan activo":
+      - /url: /appointments
+      - generic: Agenda
+      - img "Requiere un plan activo"
+    - link "Planes Requiere un plan activo":
+      - /url: /meal-plans
+      - generic: Planes
+      - img "Requiere un plan activo"
+    - link "Alimentos Requiere un plan activo":
+      - /url: /foods
+      - generic: Alimentos
+      - img "Requiere un plan activo"
+    - link "Recursos Requiere un plan activo":
+      - /url: /education
+      - generic: Recursos
+      - img "Requiere un plan activo"
+    - link "Formularios Requiere un plan activo":
+      - /url: /forms
+      - generic: Formularios
+      - img "Requiere un plan activo"
+    - link "Pagos Requiere un plan activo":
+      - /url: /billing
+      - generic: Pagos
+      - img "Requiere un plan activo"
+    - link "Catálogo Requiere un plan activo":
+      - /url: /store
+      - generic: Catálogo
+      - img "Requiere un plan activo"
+    - link "Página pública":
+      - /url: /presencia
+      - generic: Página pública
+  - link "Novedades":
+    - /url: /changelog
+    - generic: Novedades
+  - link "Academia":
+    - /url: /guides
+    - generic: Academia
+  - link "Configuración":
+    - /url: /settings
+    - generic: Configuración
+  - button "FL Fernando Liernur Propietario/a":
+    - generic: FL
+    - paragraph: Fernando Liernur
+    - paragraph: Propietario/a
+- main:
+  - paragraph: El consultorio completo se habilita con un plan.
+  - link "Ver planes":
+    - /url: /subscribe
+    - text: Ver planes
+  - heading "Configuración" [level=2]
+  - navigation "Configuración":
+    - heading "Mi cuenta" [level=3]
+    - list:
+      - link "Cuenta":
+        - /url: /settings
+        - generic "Cuenta"
+      - link "Notificaciones y app":
+        - /url: /settings/notificaciones
+        - generic "Notificaciones y app"
+    - heading "Consultorio" [level=3]
+    - list:
+      - link "Suscripción":
+        - /url: /settings/suscripcion
+        - generic "Suscripción"
+      - link "Exportar datos":
+        - /url: /settings/exportar
+        - generic "Exportar datos"
+  - heading "Cuenta" [level=3]
+  - generic: Identidad
+  - generic: Gestioná tu información personal
+  - generic: FL
+  - button "Subir":
+    - text: Subir
+  - text: Nombre
+  - generic: "*"
+  - textbox "Nombre":
+    - /placeholder: Tu nombre
+    - text: Fernando
+  - text: Apellido
+  - generic: "*"
+  - textbox "Apellido":
+    - /placeholder: Tu apellido
+    - text: Liernur
+  - text: Teléfono
+  - combobox "Seleccionar país":
+    - generic: 🇦🇷
+    - generic: "+549"
+  - textbox "11 1234-5678": "3413239404"
+  - text: Email
+  - textbox [disabled]: ferliernur@gmail.com
+  - text: Matrícula Nacional (MN)
+  - textbox "Matrícula Nacional (MN)":
+    - /placeholder: "Ej: 12345"
+    - text: "123456"
+  - text: Matrícula Provincial (MP)
+  - textbox "Matrícula Provincial (MP)":
+    - /placeholder: "Ej: 12345"
+  - text: Profesión
+  - combobox:
+    - generic: Nutrición
+  - text: Especialidad
+  - combobox:
+    - generic: Generalista
+  - text: Generalista
+  - button "Quitar Generalista":
+  - button "Guardar cambios" [disabled]
+  - generic: Cómo te ven tus pacientes
+  - generic: El nombre con el que el portal se refiere a vos cuando le habla a un paciente.
+  - text: Nombre
+  - combobox "Nombre":
+    - generic: Fernando
+  - combobox
+  - paragraph: Para usar tu tratamiento (Lic., Dr., Dra.), cargalo en Presencia pública.
+  - button "Guardar cambios" [disabled]
+  - generic: Seguridad
+  - text: Dirección de email
+  - textbox [disabled]: ferliernur@gmail.com
+  - paragraph: El link de recuperación se enviará a este email
+  - paragraph: Cambio seguro de contraseña
+  - paragraph: Por seguridad, los cambios de contraseña requieren verificación por email. Hacé clic abajo para recibir un link seguro.
+  - button "Enviar email de recuperación":
+    - text: Enviar email de recuperación
+  - heading "Firma digital" [level=4]
+  - paragraph: Se incluirá en los certificados. Recomendamos PNG con fondo transparente.
+  - button "Subir firma":
+    - text: Subir firma
+- alert

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 coverage
+.temp_worktree/
+supabase/.temp/
+supabase/.branches/
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +30,6 @@ coverage
 # Environment
 .env
 .env.*
+!.env.example
+supabase/functions/.env*
+!supabase/functions/.env.example

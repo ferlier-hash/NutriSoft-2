@@ -1,0 +1,14 @@
+COMMAND: npm run typecheck
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:12:45.003Z
+END_TIME: 2026-08-06T04:12:46.494Z
+DURATION_MS: 1491
+EXIT_CODE: 0
+--- STDOUT ---
+
+> nutrisoft@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+--- STDERR ---
+(none)

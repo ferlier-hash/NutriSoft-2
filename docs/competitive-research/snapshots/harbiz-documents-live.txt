@@ -1,0 +1,95 @@
+- text:           
+- menubar "Main":
+  - list:
+    - menuitem "Clientes":
+      - button "Clientes":
+        - generic: Clientes
+    - menuitem "Equipo":
+      - generic: Equipo
+    - menuitem "Librería":
+      - button "Librería":
+        - generic: Librería
+    - menuitem "Agenda":
+      - button "Agenda":
+        - generic: Agenda
+    - menuitem "Negocio":
+      - button "Negocio":
+        - generic: Negocio
+    - menuitem "Marketing":
+      - button "Marketing":
+        - generic: Marketing
+    - menuitem "AI Assistant":
+      - generic: AI Assistant
+- generic: F
+- generic: Librería
+- generic: /
+- link "Actividad Física":
+  - /url: /libreria/ejercicios
+  - generic: Actividad Física
+- link "Vídeos":
+  - /url: /libreria/sesiones-en-video
+  - generic: Vídeos
+- link "Nutrición":
+  - /url: /libreria/nutricion
+  - generic: Nutrición
+- link "Programas":
+  - /url: /libreria/programas
+  - generic: Programas
+- link "Documentos":
+  - /url: /libreria/documentos
+  - generic: Documentos
+- link "Formularios":
+  - /url: /libreria/formulario-inicial
+  - generic: Formularios
+- link "Plantillas":
+  - /url: /libreria/plantillas
+  - generic: Plantillas
+- link "Logros":
+  - /url: /libreria/logros
+  - generic: Logros
+- link "Contenido a validar":
+  - /url: /libreria/contenido-a-validar
+  - generic: Contenido a validar
+- button:
+- generic: Utiliza la biblioteca de documentos para añadir archivos que luego podrás compartir con tus clientes.
+- button " Añadir documento":
+  - generic: 
+  - text: Añadir documento
+- text: 
+- generic: 
+- textbox "Busca documentos por nombre o por su autor"
+- table:
+  - rowgroup:
+    - row "Nombre  Descripción  Visibilidad  Creador  Acciones":
+      - columnheader "Nombre ":
+        - text: Nombre
+        - generic: 
+      - columnheader "Descripción ":
+        - text: Descripción
+        - generic: 
+      - columnheader "Visibilidad ":
+        - text: Visibilidad
+        - generic: 
+      - columnheader "Creador ":
+        - text: Creador
+        - generic: 
+      - columnheader "Acciones":
+        - generic: Acciones
+  - rowgroup:
+    - row "No se han encontrado resultados":
+      - cell "No se han encontrado resultados":
+        - paragraph: No se han encontrado resultados
+- list:
+  - generic: «
+  - generic: <
+  - generic: ">"
+  - generic: »
+- generic: Mostrando del 1 al 0 de un total de 0
+- text:       
+- button "1/5":
+  - button:
+  - generic: 1/5
+- region "Notifications Alt+T"
+- text:   
+- iframe
+- text: 

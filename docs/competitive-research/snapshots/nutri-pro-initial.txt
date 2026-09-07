@@ -1,0 +1,157 @@
+- status:
+  - generic: "Perfil en revisión: esta sección sigue disponible. Mi día y Mis pacientes permanecen bloqueados hasta que Nutri-Pro apruebe tu verificación."
+  - link "Planes alimenticios":
+    - /url: /planes
+  - link "Estado de verificación":
+    - /url: /configuracion/mis-datos
+- complementary:
+  - link "Nutri-Pro — Ir a Mi día":
+    - /url: /dashboard
+  - button "Expandir menú lateral":
+  - navigation:
+    - paragraph: Operar
+    - link "Mi día. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi día
+    - link "Mi agenda. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi agenda
+    - link "Planes alimenticios":
+      - /url: /planes
+      - generic: Planes alimenticios
+    - link "Mis pacientes. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mis pacientes
+    - paragraph: Comunicar
+    - link "Chat. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Chat
+    - paragraph: Inteligencia
+    - link "IA y consumo. Pasita requiere Nutri-Pro Plus Ultra + IA. Actualiza tu plan en Pagos y facturación.":
+      - /url: /configuracion/facturacion
+      - generic: IA y consumo
+    - paragraph: Cuenta
+    - link "Verificación en revisión Configuración":
+      - /url: /configuracion
+      - status "Verificación en revisión"
+      - generic: Configuración
+  - button "Cuenta de Fernando Liernur"
+- main:
+  - heading "Pagos y facturación" [level=1]
+  - paragraph: Administra tu plan (Freemium, Nutri-Pro Plus o Plus Ultra + IA), método de pago y facturas de tu suscripción.
+  - heading "Resumen del plan" [level=2]
+  - paragraph: Plan, facturación, acceso a módulos y acciones de pago.
+  - generic "Datos del plan":
+    - paragraph: Plan
+    - link "Freemium":
+      - /url: /configuracion/facturacion
+    - paragraph: Sin suscripción de pago. Hasta 2 pacientes de por vida.
+    - paragraph: Estado de pago
+    - generic: Sin suscripción de pago
+    - paragraph: Verificación
+    - generic: En revisión
+    - paragraph: Método de pago
+    - generic: Sin registrar
+    - paragraph: Citas
+    - paragraph: Requiere Nutri-Pro Plus
+    - generic: Bloqueado
+    - paragraph: Chat
+    - paragraph: Requiere Nutri-Pro Plus
+    - generic: Bloqueado
+    - paragraph: Pasita (IA)
+    - paragraph: Requiere Nutri-Pro Plus Ultra + IA
+    - generic: Bloqueado
+  - heading "Uso y comprobantes" [level=2]
+  - paragraph: Cupo de pacientes e historial de facturas.
+  - paragraph: Cupo de pacientes
+  - paragraph:
+    - text: "0"
+    - generic: / 2
+  - progressbar "0 de 2 cupo de pacientes"
+  - paragraph: Altas en Freemium son permanentes; archivar no libera cupo.
+  - generic: 0% usado
+  - paragraph: Te quedan 2 altas disponibles
+  - paragraph: Facturas recientes
+  - generic: Disponible al activar un plan de pago.
+  - heading "Comparativa de planes" [level=2]
+  - paragraph: Freemium, Nutri-Pro Plus y Plus Ultra + IA lado a lado.
+  - paragraph: Freemium
+  - generic: Plan actual
+  - paragraph: Gratis
+  - paragraph: Máx. 2 pacientes (cupos de por vida)
+  - paragraph: Para consultorios que quieren probar la plataforma con panel, planes alimenticios y pacientes.
+  - list "Incluye Freemium":
+    - generic: Panel y planes alimenticios
+    - generic: Hasta 2 pacientes (cupos totales)
+    - generic: Invitación por enlace
+    - generic: Configuración de cuenta
+  - paragraph: Nutri-Pro Plus
+  - paragraph: $179.00 MXN
+  - paragraph: + impuestos · Anual ~$1,825.80 MXN (15% vs. 12 meses)
+  - paragraph: Más pacientes activos, citas, chat y MFA para operar una consulta en crecimiento.
+  - list "Incluye Nutri-Pro Plus":
+    - generic: Hasta 30 pacientes activos (archivados no cuentan)
+    - generic: Citas y calendario
+    - generic: Chat con pacientes
+    - generic: MFA (TOTP)
+  - paragraph:
+    - generic: Nutri-Pro Plus Ultra + IA
+    - generic: + IA
+  - paragraph: $479.00 MXN
+  - paragraph: + impuestos · Anual ~$4,885.80 MXN (15% vs. 12 meses)
+  - paragraph: Hasta 50 pacientes activos y Pasita cuando el plan esté disponible.
+  - list "Incluye Nutri-Pro Plus Ultra":
+    - generic: Pasita en planes y comidas personalizadas
+    - generic: Hasta 50 pacientes activos
+    - generic: 1.5M tokens IA / mes
+    - generic: Citas, chat y MFA incluidos
+  - heading "Mejorar a Nutri-Pro Plus" [level=2]
+  - paragraph: Más pacientes activos, citas, chat y MFA. El cobro es recurrente y seguro.
+  - paragraph:
+    - strong: $179.00 MXN
+    - text: al mes + impuestos.
+  - paragraph:
+    - text: "Anual:"
+    - strong: $1,825.80 MXN
+    - text: antes de impuestos (−15% vs. 12 meses a precio mensual · ahorras
+    - strong: $322.20 MXN
+    - text: ).
+  - paragraph:
+    - text: La suscripción a Nutri-Pro Plus está disponible cuando Nutri-Pro
+    - strong: apruebe tu verificación profesional
+    - text: (cédula, INE y rostro completos). Revisa
+    - link "Mis datos":
+      - /url: /configuracion/mis-datos
+    - text: .
+  - heading "Nutri-Pro Plus Ultra + IA" [level=2]
+  - paragraph:
+    - generic: Pasita y el plan Ultra estarán disponibles pronto.
+    - generic: Próximamente
+  - paragraph:
+    - strong: $479.00 MXN
+    - text: al mes + impuestos.
+  - paragraph:
+    - text: Hasta
+    - strong: 50 pacientes activos
+    - text: "con Pasita en planes y comidas custom. Anual:"
+    - strong: $4,885.80 MXN
+    - text: antes de impuestos (−15% vs. 12 meses · ahorras
+    - strong: $862.20 MXN
+    - text: ).
+  - paragraph: El upgrade a Nutri-Pro Plus Ultra + IA aún no está abierto. Puedes operar con Freemium o Nutri-Pro Plus mientras tanto.
+  - heading "Verificación pendiente" [level=2]
+  - paragraph: El background check profesional habilita citas y chat junto con Nutri-Pro Plus.
+  - paragraph: Verificación en revisión
+  - paragraph:
+    - text: Nutri-Pro revisa tu cédula, INE y rostro. Hasta entonces, citas y chat permanecen bloqueados aunque tengas Plus. Detalle en
+    - link "Mis datos":
+      - /url: /configuracion/mis-datos
+    - text: .
+  - heading "Opciones adicionales" [level=2]
+  - paragraph: Cancelación de suscripción y datos fiscales de registro.
+  - heading "Datos fiscales (onboarding)" [level=3]
+  - paragraph: Solo lectura. Para cambios de facturación, usa el centro de pagos.
+  - paragraph: Dirección
+  - paragraph: MX
+- region "Notifications alt+T"
+- alert

@@ -1,0 +1,840 @@
+- complementary:
+  - img "cheNutri"
+  - paragraph: Nutricionista
+  - button "Notificaciones":
+  - navigation:
+    - link "🏠 Dashboard":
+      - /url: /nutritionist
+      - generic: 🏠
+      - generic: Dashboard
+    - link "👤 Pacientes":
+      - /url: /nutritionist/clients
+      - generic: 👤
+      - generic: Pacientes
+    - link "💬 Chats":
+      - /url: /nutritionist/chats
+      - generic: 💬
+      - generic: Chats
+    - link "🍽️ Registros":
+      - /url: /nutritionist/meals
+      - generic: 🍽️
+      - generic: Registros
+    - link "🥗 Alimentos":
+      - /url: /nutritionist/foods
+      - generic: 🥗
+      - generic: Alimentos
+    - link "🍳 Recetas":
+      - /url: /nutritionist/recipes
+      - generic: 🍳
+      - generic: Recetas
+    - link "🔄 Equivalencias":
+      - /url: /nutritionist/exchange-groups
+      - generic: 🔄
+      - generic: Equivalencias
+    - link "📋 Planes":
+      - /url: /nutritionist/plans
+      - generic: 📋
+      - generic: Planes
+    - link "📚 Recursos":
+      - /url: /nutritionist/resources
+      - generic: 📚
+      - generic: Recursos
+    - link "📅 Turnos":
+      - /url: /nutritionist/appointments
+      - generic: 📅
+      - generic: Turnos
+    - link "💵 Cobros":
+      - /url: /nutritionist/payments
+      - generic: 💵
+      - generic: Cobros
+    - link "📩 Solicitudes":
+      - /url: /nutritionist/contact-requests
+      - generic: 📩
+      - generic: Solicitudes
+    - link "❓ Ayuda":
+      - /url: /ayuda?a=nutritionist
+      - generic: ❓
+      - generic: Ayuda
+  - button "Cerrar anuncio": ✕
+  - generic: ⚡
+  - paragraph: Hasta 10 pacientes
+  - paragraph: Con el plan Pro manejás hasta 50.
+  - button "Ver planes →"
+  - button "Anuncio 1"
+  - button "Anuncio 2"
+  - button "Anuncio 3"
+  - button "Anuncio 4"
+  - link "⭐ Mi Suscripción":
+    - /url: /nutritionist/settings
+    - generic: ⭐
+    - text: Mi Suscripción
+  - link "⚙️ Configuración":
+    - /url: /nutritionist/settings
+    - generic: ⚙️
+    - text: Configuración
+  - button "🚪 Cerrar sesión":
+    - generic: 🚪
+    - text: Cerrar sesión
+  - button "🌐 ES"
+- main:
+  - button "Cerrar": ✕
+  - generic: ✅
+  - paragraph: Agregamos funcionalidades nuevas!
+  - paragraph: "- 🍽️ Recetario de chenutri: +60 recetas con calorías y macros por porción, listas para usar. - 🔄 Equivalencias: alimentos y comidas intercambiables sin romper el plan. - 📄 Plan en PDF renovado: con logo, a color y con la opción de sumar tu propio logo. - ✨ Copiá recetas de chenutri a tu recetario y editalas a tu gusto."
+  - heading "Recetas" [level=1]
+  - paragraph: Armá recetas con la base de alimentos; se calculan los macros por porción.
+  - button "+ Nueva receta"
+  - button "Todas"
+  - button "Principales"
+  - button "Acompañamientos"
+  - button "Colaciones"
+  - button "Postres"
+  - 'link "Ananá en almíbar light chenutri Postre 1 ingrediente · 1 porción Por porción: 40 kcal · C9.6 P0.3 G0.1"':
+    - /url: /nutritionist/recipes/global_anana-en-almibar-light
+    - heading "Ananá en almíbar light" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 40 kcal
+    - text: · C9.6 P0.3 G0.1
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_anana-en-almibar-light/copy
+  - 'link "Arándanos con yogur chenutri Postre 2 ingredientes · 1 porción Por porción: 107 kcal · C15.9 P4.1 G3.5"':
+    - /url: /nutritionist/recipes/global_arandanos-con-yogur
+    - heading "Arándanos con yogur" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 107 kcal
+    - text: · C15.9 P4.1 G3.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_arandanos-con-yogur/copy
+  - 'link "Durazno en almíbar light chenutri Postre 1 ingrediente · 1 porción Por porción: 35 kcal · C8.8 P0.4 G0.1"':
+    - /url: /nutritionist/recipes/global_durazno-en-almibar-light
+    - heading "Durazno en almíbar light" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 35 kcal
+    - text: · C8.8 P0.4 G0.1
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_durazno-en-almibar-light/copy
+  - 'link "Frutillas chenutri Postre 1 ingrediente · 1 porción Por porción: 48 kcal · C12 P1 G0.5"':
+    - /url: /nutritionist/recipes/global_frutillas
+    - heading "Frutillas" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 48 kcal
+    - text: · C12 P1 G0.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_frutillas/copy
+  - 'link "Frutillas con yogur chenutri Postre 2 ingredientes · 1 porción Por porción: 93 kcal · C12.7 P4.2 G3.6"':
+    - /url: /nutritionist/recipes/global_frutillas-con-yogur
+    - heading "Frutillas con yogur" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 93 kcal
+    - text: · C12.7 P4.2 G3.6
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_frutillas-con-yogur/copy
+  - 'link "Naranja chenutri Postre 1 ingrediente · 1 porción Por porción: 71 kcal · C18 P1.4 G0.2"':
+    - /url: /nutritionist/recipes/global_naranja
+    - heading "Naranja" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 71 kcal
+    - text: · C18 P1.4 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_naranja/copy
+  - 'link "Banana chenutri Postre 1 ingrediente · 1 porción Por porción: 107 kcal · C27.6 P1.3 G0.4"':
+    - /url: /nutritionist/recipes/global_banana
+    - heading "Banana" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 107 kcal
+    - text: · C27.6 P1.3 G0.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_banana/copy
+  - 'link "Banana (colación) chenutri Colación 1 ingrediente · 1 porción Por porción: 107 kcal · C27.6 P1.3 G0.4"':
+    - /url: /nutritionist/recipes/global_banana-colacion
+    - heading "Banana (colación)" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 107 kcal
+    - text: · C27.6 P1.3 G0.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_banana-colacion/copy
+  - 'link "Frutillas (colación) chenutri Colación 1 ingrediente · 1 porción Por porción: 48 kcal · C12 P1 G0.5"':
+    - /url: /nutritionist/recipes/global_frutillas-colacion
+    - heading "Frutillas (colación)" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 48 kcal
+    - text: · C12 P1 G0.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_frutillas-colacion/copy
+  - 'link "Manzana chenutri Postre 1 ingrediente · 1 porción Por porción: 78 kcal · C21 P0.5 G0.3"':
+    - /url: /nutritionist/recipes/global_manzana
+    - heading "Manzana" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 78 kcal
+    - text: · C21 P0.5 G0.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_manzana/copy
+  - 'link "Manzana (colación) chenutri Colación 1 ingrediente · 1 porción Por porción: 78 kcal · C21 P0.5 G0.3"':
+    - /url: /nutritionist/recipes/global_manzana-colacion
+    - heading "Manzana (colación)" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 78 kcal
+    - text: · C21 P0.5 G0.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_manzana-colacion/copy
+  - 'link "Naranja (colación) chenutri Colación 1 ingrediente · 1 porción Por porción: 71 kcal · C18 P1.4 G0.2"':
+    - /url: /nutritionist/recipes/global_naranja-colacion
+    - heading "Naranja (colación)" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 71 kcal
+    - text: · C18 P1.4 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_naranja-colacion/copy
+  - 'link "Pera chenutri Postre 1 ingrediente · 1 porción Por porción: 86 kcal · C22.5 P0.6 G0.2"':
+    - /url: /nutritionist/recipes/global_pera
+    - heading "Pera" [level=3]
+    - generic: chenutri
+    - generic: Postre
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 86 kcal
+    - text: · C22.5 P0.6 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pera/copy
+  - 'link "Pera (colación) chenutri Colación 1 ingrediente · 1 porción Por porción: 86 kcal · C22.5 P0.6 G0.2"':
+    - /url: /nutritionist/recipes/global_pera-colacion
+    - heading "Pera (colación)" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 86 kcal
+    - text: · C22.5 P0.6 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pera-colacion/copy
+  - 'link "Bastoncitos de zanahoria chenutri Colación 1 ingrediente · 1 porción Por porción: 41 kcal · C10 P0.9 G0.2"':
+    - /url: /nutritionist/recipes/global_bastoncitos-de-zanahoria
+    - heading "Bastoncitos de zanahoria" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 41 kcal
+    - text: · C10 P0.9 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_bastoncitos-de-zanahoria/copy
+  - 'link "Gelatina light con fruta chenutri Colación 2 ingredientes · 1 porción Por porción: 26 kcal · C5 P1.8 G0.2"':
+    - /url: /nutritionist/recipes/global_gelatina-light-con-fruta
+    - heading "Gelatina light con fruta" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 26 kcal
+    - text: · C5 P1.8 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_gelatina-light-con-fruta/copy
+  - 'link "Huevo duro chenutri Colación 1 ingrediente · 1 porción Por porción: 72 kcal · C0.4 P6.5 G5"':
+    - /url: /nutritionist/recipes/global_huevo-duro
+    - heading "Huevo duro" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 72 kcal
+    - text: · C0.4 P6.5 G5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_huevo-duro/copy
+  - 'link "Palitos de pepino y apio chenutri Colación 2 ingredientes · 1 porción Por porción: 18 kcal · C4.1 P0.9 G0.2"':
+    - /url: /nutritionist/recipes/global_palitos-de-pepino-y-apio
+    - heading "Palitos de pepino y apio" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 18 kcal
+    - text: · C4.1 P0.9 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_palitos-de-pepino-y-apio/copy
+  - 'link "Puñado de frutos secos chenutri Colación 2 ingredientes · 1 porción Por porción: 185 kcal · C5.4 P5.5 G17.3"':
+    - /url: /nutritionist/recipes/global_punado-de-frutos-secos
+    - heading "Puñado de frutos secos" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 185 kcal
+    - text: · C5.4 P5.5 G17.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_punado-de-frutos-secos/copy
+  - 'link "Trozo de queso Port Salut chenutri Colación 1 ingrediente · 1 porción Por porción: 74 kcal · C0.6 P7.2 G4.8"':
+    - /url: /nutritionist/recipes/global_trozo-de-queso-port-salut
+    - heading "Trozo de queso Port Salut" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 74 kcal
+    - text: · C0.6 P7.2 G4.8
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_trozo-de-queso-port-salut/copy
+  - 'link "Yogur bebible descremado chenutri Colación 1 ingrediente · 1 porción Por porción: 80 kcal · C12 P6.8 G0.2"':
+    - /url: /nutritionist/recipes/global_yogur-bebible-descremado
+    - heading "Yogur bebible descremado" [level=3]
+    - generic: chenutri
+    - generic: Colación
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 80 kcal
+    - text: · C12 P6.8 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_yogur-bebible-descremado/copy
+  - 'link "Humus de garbanzos chenutri Acompañamiento 5 ingredientes · 4 porciónes Por porción: 183 kcal · C19.2 P7 G9.4"':
+    - /url: /nutritionist/recipes/global_humus-de-garbanzos
+    - heading "Humus de garbanzos" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 5 ingredientes · 4 porciónes
+    - text: "Por porción:"
+    - strong: 183 kcal
+    - text: · C19.2 P7 G9.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_humus-de-garbanzos/copy
+  - 'link "Salsa de berenjenas asadas chenutri Acompañamiento 5 ingredientes · 3 porciónes Por porción: 93 kcal · C7.3 P2.1 G7.1"':
+    - /url: /nutritionist/recipes/global_salsa-de-berenjenas-asadas
+    - heading "Salsa de berenjenas asadas" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 5 ingredientes · 3 porciónes
+    - text: "Por porción:"
+    - strong: 93 kcal
+    - text: · C7.3 P2.1 G7.1
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_salsa-de-berenjenas-asadas/copy
+  - 'link "Salsa de morrones asados chenutri Acompañamiento 3 ingredientes · 3 porciónes Por porción: 73 kcal · C5.6 P0.9 G5.3"':
+    - /url: /nutritionist/recipes/global_salsa-de-morrones-asados
+    - heading "Salsa de morrones asados" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 3 porciónes
+    - text: "Por porción:"
+    - strong: 73 kcal
+    - text: · C5.6 P0.9 G5.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_salsa-de-morrones-asados/copy
+  - 'link "Salsa de tomate casera chenutri Acompañamiento 4 ingredientes · 4 porciónes Por porción: 57 kcal · C5.2 P1.1 G4"':
+    - /url: /nutritionist/recipes/global_salsa-de-tomate-casera
+    - heading "Salsa de tomate casera" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 4 porciónes
+    - text: "Por porción:"
+    - strong: 57 kcal
+    - text: · C5.2 P1.1 G4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_salsa-de-tomate-casera/copy
+  - 'link "Ensalada criolla chenutri Acompañamiento 4 ingredientes · 1 porción Por porción: 113 kcal · C9 P2 G8.3"':
+    - /url: /nutritionist/recipes/global_ensalada-criolla
+    - heading "Ensalada criolla" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 113 kcal
+    - text: · C9 P2 G8.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-criolla/copy
+  - 'link "Ensalada de cebolla morada y tomate chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 113 kcal · C9.2 P1.7 G8.3"':
+    - /url: /nutritionist/recipes/global_ensalada-de-cebolla-morada-y-tomate
+    - heading "Ensalada de cebolla morada y tomate" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 113 kcal
+    - text: · C9.2 P1.7 G8.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-cebolla-morada-y-tomate/copy
+  - 'link "Ensalada variada chenutri Acompañamiento 5 ingredientes · 1 porción Por porción: 126 kcal · C12.3 P2.2 G8.4"':
+    - /url: /nutritionist/recipes/global_ensalada-variada
+    - heading "Ensalada variada" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 5 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 126 kcal
+    - text: · C12.3 P2.2 G8.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-variada/copy
+  - 'link "Salsa criolla chenutri Acompañamiento 6 ingredientes · 4 porciónes Por porción: 54 kcal · C4.3 P0.8 G3.9"':
+    - /url: /nutritionist/recipes/global_salsa-criolla
+    - heading "Salsa criolla" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 6 ingredientes · 4 porciónes
+    - text: "Por porción:"
+    - strong: 54 kcal
+    - text: · C4.3 P0.8 G3.9
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_salsa-criolla/copy
+  - 'link "Ensalada de arroz, tomate y repollo chenutri Acompañamiento 4 ingredientes · 1 porción Por porción: 225 kcal · C33.3 P3.9 G8.5"':
+    - /url: /nutritionist/recipes/global_ensalada-de-arroz-tomate-y-repollo
+    - heading "Ensalada de arroz, tomate y repollo" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 225 kcal
+    - text: · C33.3 P3.9 G8.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-arroz-tomate-y-repollo/copy
+  - 'link "Ensalada de chauchas y huevo chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 174 kcal · C7.4 P8.3 G13.2"':
+    - /url: /nutritionist/recipes/global_ensalada-de-chauchas-y-huevo
+    - heading "Ensalada de chauchas y huevo" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 174 kcal
+    - text: · C7.4 P8.3 G13.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-chauchas-y-huevo/copy
+  - 'link "Ensalada de zanahoria y huevo chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 166 kcal · C10.4 P7.4 G11.2"':
+    - /url: /nutritionist/recipes/global_ensalada-de-zanahoria-y-huevo
+    - heading "Ensalada de zanahoria y huevo" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 166 kcal
+    - text: · C10.4 P7.4 G11.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-zanahoria-y-huevo/copy
+  - 'link "Ensalada de tomate, huevo y zanahoria chenutri Acompañamiento 4 ingredientes · 1 porción Por porción: 194 kcal · C12.1 P8.2 G13.3"':
+    - /url: /nutritionist/recipes/global_ensalada-de-tomate-huevo-y-zanahoria
+    - heading "Ensalada de tomate, huevo y zanahoria" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 194 kcal
+    - text: · C12.1 P8.2 G13.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-tomate-huevo-y-zanahoria/copy
+  - 'link "Ensalada de tomate y zanahoria chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 114 kcal · C9.9 P1.4 G8.3"':
+    - /url: /nutritionist/recipes/global_ensalada-de-tomate-y-zanahoria
+    - heading "Ensalada de tomate y zanahoria" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 114 kcal
+    - text: · C9.9 P1.4 G8.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-tomate-y-zanahoria/copy
+  - 'link "Ensalada mixta chenutri Acompañamiento 4 ingredientes · 1 porción Por porción: 110 kcal · C8.3 P2 G8.3"':
+    - /url: /nutritionist/recipes/global_ensalada-mixta
+    - heading "Ensalada mixta" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 110 kcal
+    - text: · C8.3 P2 G8.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-mixta/copy
+  - 'link "Brócoli al vapor chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 95 kcal · C10.5 P4.2 G5.6"':
+    - /url: /nutritionist/recipes/global_brocoli-al-vapor
+    - heading "Brócoli al vapor" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 95 kcal
+    - text: · C10.5 P4.2 G5.6
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_brocoli-al-vapor/copy
+  - 'link "Calabaza y brócoli al vapor chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 97 kcal · C12.6 P3.2 G5.4"':
+    - /url: /nutritionist/recipes/global_calabaza-y-brocoli-al-vapor
+    - heading "Calabaza y brócoli al vapor" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 97 kcal
+    - text: · C12.6 P3.2 G5.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_calabaza-y-brocoli-al-vapor/copy
+  - 'link "Chips de boniato al horno chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 206 kcal · C31.5 P2.4 G8.2"':
+    - /url: /nutritionist/recipes/global_chips-de-boniato-al-horno
+    - heading "Chips de boniato al horno" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 206 kcal
+    - text: · C31.5 P2.4 G8.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_chips-de-boniato-al-horno/copy
+  - 'link "Batata al horno chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 216 kcal · C40 P3.2 G5.2"':
+    - /url: /nutritionist/recipes/global_batata-al-horno
+    - heading "Batata al horno" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 216 kcal
+    - text: · C40 P3.2 G5.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_batata-al-horno/copy
+  - 'link "Boniato al horno en cubos chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 224 kcal · C42 P3.2 G5.2"':
+    - /url: /nutritionist/recipes/global_boniato-al-horno-en-cubos
+    - heading "Boniato al horno en cubos" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 224 kcal
+    - text: · C42 P3.2 G5.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_boniato-al-horno-en-cubos/copy
+  - 'link "Boniato hervido chenutri Acompañamiento 1 ingrediente · 1 porción Por porción: 180 kcal · C42 P3.2 G0.2"':
+    - /url: /nutritionist/recipes/global_boniato-hervido
+    - heading "Boniato hervido" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 1 ingrediente · 1 porción
+    - text: "Por porción:"
+    - strong: 180 kcal
+    - text: · C42 P3.2 G0.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_boniato-hervido/copy
+  - 'link "Papa y batata al horno con cebolla chenutri Acompañamiento 4 ingredientes · 1 porción Por porción: 227 kcal · C41.5 P4.2 G5.3"':
+    - /url: /nutritionist/recipes/global_papa-y-batata-al-horno-con-cebolla
+    - heading "Papa y batata al horno con cebolla" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 227 kcal
+    - text: · C41.5 P4.2 G5.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_papa-y-batata-al-horno-con-cebolla/copy
+  - 'link "Arroz blanco chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 222 kcal · C42 P4.1 G3.5"':
+    - /url: /nutritionist/recipes/global_arroz-blanco
+    - heading "Arroz blanco" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 222 kcal
+    - text: · C42 P4.1 G3.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_arroz-blanco/copy
+  - 'link "Arroz integral chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 194 kcal · C34.5 P3.9 G4.4"':
+    - /url: /nutritionist/recipes/global_arroz-integral
+    - heading "Arroz integral" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 194 kcal
+    - text: · C34.5 P3.9 G4.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_arroz-integral/copy
+  - 'link "Fideos al aceite de oliva chenutri Acompañamiento 2 ingredientes · 1 porción Por porción: 385 kcal · C60 P10.4 G11.2"':
+    - /url: /nutritionist/recipes/global_fideos-al-aceite-de-oliva
+    - heading "Fideos al aceite de oliva" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 385 kcal
+    - text: · C60 P10.4 G11.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_fideos-al-aceite-de-oliva/copy
+  - 'link "Fideos con manteca y queso chenutri Acompañamiento 3 ingredientes · 1 porción Por porción: 424 kcal · C60.4 P14.1 G13.5"':
+    - /url: /nutritionist/recipes/global_fideos-con-manteca-y-queso
+    - heading "Fideos con manteca y queso" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 424 kcal
+    - text: · C60.4 P14.1 G13.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_fideos-con-manteca-y-queso/copy
+  - 'link "Puré de batata chenutri Acompañamiento 3 ingredientes · 2 porciónes Por porción: 158 kcal · C31 P3.1 G2.7"':
+    - /url: /nutritionist/recipes/global_pure-de-batata
+    - heading "Puré de batata" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 158 kcal
+    - text: · C31 P3.1 G2.7
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pure-de-batata/copy
+  - 'link "Puré de boniato chenutri Acompañamiento 3 ingredientes · 2 porciónes Por porción: 164 kcal · C32.5 P3.1 G2.7"':
+    - /url: /nutritionist/recipes/global_pure-de-boniato
+    - heading "Puré de boniato" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 164 kcal
+    - text: · C32.5 P3.1 G2.7
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pure-de-boniato/copy
+  - 'link "Puré de papa chenutri Acompañamiento 3 ingredientes · 2 porciónes Por porción: 188 kcal · C27 P4 G7.3"':
+    - /url: /nutritionist/recipes/global_pure-de-papa
+    - heading "Puré de papa" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 3 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 188 kcal
+    - text: · C27 P4 G7.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pure-de-papa/copy
+  - 'link "Puré de zapallo chenutri Acompañamiento 2 ingredientes · 2 porciónes Por porción: 81 kcal · C12.3 P1.8 G4.2"':
+    - /url: /nutritionist/recipes/global_pure-de-zapallo
+    - heading "Puré de zapallo" [level=3]
+    - generic: chenutri
+    - generic: Acompañamiento
+    - paragraph: 2 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 81 kcal
+    - text: · C12.3 P1.8 G4.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pure-de-zapallo/copy
+  - 'link "Ensalada de lentejas con huevo, tomate y apio chenutri Principal 5 ingredientes · 1 porción Por porción: 395 kcal · C44.7 P25.5 G14.1"':
+    - /url: /nutritionist/recipes/global_ensalada-de-lentejas-con-huevo-tomate-y-apio
+    - heading "Ensalada de lentejas con huevo, tomate y apio" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 5 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 395 kcal
+    - text: · C44.7 P25.5 G14.1
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-de-lentejas-con-huevo-tomate-y-apio/copy
+  - 'link "Huevo revuelto chenutri Principal 2 ingredientes · 1 porción Por porción: 187 kcal · C0.7 P13 G15"':
+    - /url: /nutritionist/recipes/global_huevo-revuelto
+    - heading "Huevo revuelto" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 187 kcal
+    - text: · C0.7 P13 G15
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_huevo-revuelto/copy
+  - 'link "Lasagna de berenjenas chenutri Principal 6 ingredientes · 2 porciónes Por porción: 359 kcal · C14.1 P19.6 G25.7"':
+    - /url: /nutritionist/recipes/global_lasagna-de-berenjenas
+    - heading "Lasagna de berenjenas" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 6 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 359 kcal
+    - text: · C14.1 P19.6 G25.7
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_lasagna-de-berenjenas/copy
+  - 'link "Pollo salteado con vegetales chenutri Principal 5 ingredientes · 1 porción Por porción: 267 kcal · C12 P30.3 G11.4"':
+    - /url: /nutritionist/recipes/global_pollo-salteado-con-vegetales
+    - heading "Pollo salteado con vegetales" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 5 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 267 kcal
+    - text: · C12 P30.3 G11.4
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pollo-salteado-con-vegetales/copy
+  - 'link "Carne magra al horno chenutri Principal 2 ingredientes · 1 porción Por porción: 276 kcal · C0 P39.6 G12.2"':
+    - /url: /nutritionist/recipes/global_carne-magra-al-horno
+    - heading "Carne magra al horno" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 276 kcal
+    - text: · C0 P39.6 G12.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_carne-magra-al-horno/copy
+  - 'link "Guiso de lentejas chenutri Principal 6 ingredientes · 2 porciónes Por porción: 365 kcal · C44.2 P23.1 G11.3"':
+    - /url: /nutritionist/recipes/global_guiso-de-lentejas
+    - heading "Guiso de lentejas" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 6 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 365 kcal
+    - text: · C44.2 P23.1 G11.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_guiso-de-lentejas/copy
+  - 'link "Hamburguesa casera de carne chenutri Principal 4 ingredientes · 1 porción Por porción: 447 kcal · C12.4 P26.9 G32"':
+    - /url: /nutritionist/recipes/global_hamburguesa-casera-de-carne
+    - heading "Hamburguesa casera de carne" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 447 kcal
+    - text: · C12.4 P26.9 G32
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_hamburguesa-casera-de-carne/copy
+  - 'link "Omelette chenutri Principal 2 ingredientes · 1 porción Por porción: 187 kcal · C0.7 P13 G15"':
+    - /url: /nutritionist/recipes/global_omelette
+    - heading "Omelette" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 187 kcal
+    - text: · C0.7 P13 G15
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_omelette/copy
+  - 'link "Ensalada Caesar con pollo chenutri Principal 6 ingredientes · 1 porción Por porción: 418 kcal · C12.9 P41.8 G22.1"':
+    - /url: /nutritionist/recipes/global_ensalada-caesar-con-pollo
+    - heading "Ensalada Caesar con pollo" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 6 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 418 kcal
+    - text: · C12.9 P41.8 G22.1
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_ensalada-caesar-con-pollo/copy
+  - 'link "Tortilla de papa chenutri Principal 4 ingredientes · 2 porciónes Por porción: 263 kcal · C20.2 P12.1 G15.2"':
+    - /url: /nutritionist/recipes/global_tortilla-de-papa
+    - heading "Tortilla de papa" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 4 ingredientes · 2 porciónes
+    - text: "Por porción:"
+    - strong: 263 kcal
+    - text: · C20.2 P12.1 G15.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_tortilla-de-papa/copy
+  - 'link "Bife de nalga a la plancha chenutri Principal 2 ingredientes · 1 porción Por porción: 276 kcal · C0 P39.6 G12.2"':
+    - /url: /nutritionist/recipes/global_bife-de-nalga-a-la-plancha
+    - heading "Bife de nalga a la plancha" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 276 kcal
+    - text: · C0 P39.6 G12.2
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_bife-de-nalga-a-la-plancha/copy
+  - 'link "Costillita de cerdo al horno chenutri Principal 2 ingredientes · 1 porción Por porción: 359 kcal · C0 P30 G26"':
+    - /url: /nutritionist/recipes/global_costillita-de-cerdo-al-horno
+    - heading "Costillita de cerdo al horno" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 359 kcal
+    - text: · C0 P30 G26
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_costillita-de-cerdo-al-horno/copy
+  - 'link "Merluza al horno chenutri Principal 2 ingredientes · 1 porción Por porción: 233 kcal · C0 P32.4 G10.3"':
+    - /url: /nutritionist/recipes/global_merluza-al-horno
+    - heading "Merluza al horno" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 233 kcal
+    - text: · C0 P32.4 G10.3
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_merluza-al-horno/copy
+  - 'link "Milanesa napolitana de carne chenutri Principal 4 ingredientes · 1 porción Por porción: 456 kcal · C20.2 P32.8 G27.9"':
+    - /url: /nutritionist/recipes/global_milanesa-napolitana-de-carne
+    - heading "Milanesa napolitana de carne" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 4 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 456 kcal
+    - text: · C20.2 P32.8 G27.9
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_milanesa-napolitana-de-carne/copy
+  - 'link "Pechuga de pollo grillada chenutri Principal 2 ingredientes · 1 porción Por porción: 224 kcal · C0 P34.5 G8.9"':
+    - /url: /nutritionist/recipes/global_pechuga-de-pollo-grillada
+    - heading "Pechuga de pollo grillada" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 224 kcal
+    - text: · C0 P34.5 G8.9
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_pechuga-de-pollo-grillada/copy
+  - 'link "Salmón grillado chenutri Principal 2 ingredientes · 1 porción Por porción: 356 kcal · C0 P30 G24.5"':
+    - /url: /nutritionist/recipes/global_salmon-grillado
+    - heading "Salmón grillado" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 356 kcal
+    - text: · C0 P30 G24.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_salmon-grillado/copy
+  - 'link "Milanesa de pollo al horno chenutri Principal 2 ingredientes · 1 porción Por porción: 314 kcal · C18 P30 G14"':
+    - /url: /nutritionist/recipes/global_milanesa-de-pollo-al-horno
+    - heading "Milanesa de pollo al horno" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 314 kcal
+    - text: · C18 P30 G14
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_milanesa-de-pollo-al-horno/copy
+  - 'link "Milanesa de carne al horno chenutri Principal 2 ingredientes · 1 porción Por porción: 367 kcal · C18 P27 G21.5"':
+    - /url: /nutritionist/recipes/global_milanesa-de-carne-al-horno
+    - heading "Milanesa de carne al horno" [level=3]
+    - generic: chenutri
+    - generic: Principal
+    - paragraph: 2 ingredientes · 1 porción
+    - text: "Por porción:"
+    - strong: 367 kcal
+    - text: · C18 P27 G21.5
+  - link "Copiar y editar":
+    - /url: /nutritionist/recipes/global_milanesa-de-carne-al-horno/copy
+- alert

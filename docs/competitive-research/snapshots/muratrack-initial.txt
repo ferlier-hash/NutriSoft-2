@@ -1,0 +1,119 @@
+- link "MuraTrack Logo MuraTrack Panel de Control":
+  - /url: /dashboard
+  - img "MuraTrack Logo"
+  - generic: MuraTrack
+  - generic: Panel de Control
+- generic: Gestión
+- list:
+  - link "Panel Principal":
+    - /url: /dashboard
+    - generic: Panel Principal
+  - link "Pacientes":
+    - /url: /pacientes
+    - generic: Pacientes
+  - link "Agenda":
+    - /url: /agenda
+    - generic: Agenda
+- generic: Configuración
+- list:
+  - link "Perfil":
+    - /url: /perfil
+    - generic: Perfil
+  - link "Templates":
+    - /url: /templates
+    - generic: Templates
+  - link "Mi Suscripción":
+    - /url: /subscription
+    - generic: Mi Suscripción
+- button "Abrir menú de usuario":
+  - img "Fernando Liernur's logo"
+- paragraph: Fernando Liernur
+- paragraph: ferliernur@gmail.com
+- main:
+  - paragraph: Te quedan 7 días de tu prueba
+  - link "Elegir un plan":
+    - /url: /subscription
+  - button "Cerrar banner":
+  - main:
+    - heading "Dashboard Nutricionista" [level=1]
+    - paragraph: Gestiona tus pacientes y consultas
+    - generic: ¡Te damos la bienvenida a MuraTrack!
+    - paragraph: Completá estos 3 pasos para dejar tu práctica lista — te lleva pocos minutos.
+    - button "Omitir por ahora":
+      - generic: Omitir por ahora
+      - generic: —
+    - progressbar "0 de 3 pasos completados"
+    - paragraph:
+      - generic: 0 de 3
+      - text: completados
+    - generic: "01"
+    - paragraph: Perfil completo
+    - paragraph: Agregá tu matrícula y especialidad
+    - text: Empezar
+    - generic: ⏱ 2 min
+    - generic: "02"
+    - paragraph: Primer paciente
+    - paragraph: Cargá los datos de tu primer paciente
+    - text: Empezar
+    - generic: ⏱ 2 min
+    - generic: "03"
+    - paragraph: Explorá tu primer paciente
+    - paragraph: Conocé su perfil, progreso y próximos pasos
+    - text: Visitar
+    - generic: ⏱ 2 min
+    - generic: Total Pacientes
+    - generic: "0"
+    - paragraph: Pacientes activos en tu práctica
+    - generic: Con Mediciones Recientes
+    - generic: "0"
+    - generic: ↘ 0%
+    - paragraph: Pacientes con actividad en los últimos 30 días
+    - generic: Mediciones Últimos 30 Días
+    - generic: "0"
+    - paragraph: Total de análisis de bioimpedancia realizados
+    - generic: Pacientes Nuevos
+    - generic: "0"
+    - paragraph: Nuevos pacientes este mes
+    - text: Resumen del Mes
+    - generic: Estadísticas de tu práctica nutricional
+    - paragraph: Tasa de Seguimiento
+    - paragraph: 0% de pacientes activos
+    - paragraph: 0/0
+    - paragraph: Crecimiento
+    - paragraph: Nuevos pacientes este mes
+    - paragraph: "+0"
+    - paragraph: Actividad
+    - paragraph: Mediciones últimos 30 días
+    - paragraph: "0"
+    - text: Actividad Reciente
+    - generic: Últimas actualizaciones de pacientes
+    - paragraph: No hay actividad reciente
+    - paragraph: Los pacientes aparecerán aquí cuando tengan mediciones o sean nuevos
+    - link "Ver todos los pacientes":
+      - /url: /patients
+    - generic: Tu Plan
+    - generic: Pro
+    - generic: Pacientes
+    - generic: 0/∞
+    - generic: Ilimitado
+    - generic: Análisis
+    - generic: 0/∞
+    - generic: Ilimitado
+    - generic: Planes
+    - generic: 0/∞
+    - generic: Ilimitado
+    - generic: Templates
+    - generic: 0/∞
+    - generic: Ilimitado
+    - link "Ver detalles":
+      - /url: /subscription
+      - text: Ver detalles
+- region "Notifications alt+T"
+- alert
+- dialog "Consentimiento de cookies":
+  - paragraph: Este sitio utiliza cookies
+  - paragraph: Utilizamos cookies para mejorar la experiencia de navegación y analizar el tráfico del sitio. Podés aceptar o rechazar su uso en cualquier momento.
+  - link "Política de privacidad":
+    - /url: /politica-privacidad
+  - button "Rechazar"
+  - button "Aceptar cookies"

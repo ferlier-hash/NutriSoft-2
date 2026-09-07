@@ -1,0 +1,92 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Equivalencias" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- list:
+  - link "balance Listas de equivalentes":
+    - /url: "#food-group-widget"
+    - generic: balance
+    - text: Listas de equivalentes
+  - link "breakfast_dining Grupos de alimentos":
+    - /url: "#equivalent-group-widget"
+    - generic: breakfast_dining
+    - text: Grupos de alimentos
+- link "Crear add":
+  - /url: /foods/create_food_list?equivalents_group=true
+  - text: Crear
+  - generic: add
+- generic: info
+- textbox "Buscar lista de equivalentes"
+- generic: search
+- link "Todas las bases de datos":
+  - /url: javascript:void(0)
+  - generic: Todas las bases de datos
+- button "Todas las bases de datos"
+- text: search
+- combobox:
+  - option "Todas las bases de datos" [selected]
+  - option "Mis listas de equivalentes"
+- generic: balance
+- generic: Sin resultados
+- text: search search
+- status
+- iframe
+- status
+- status
+- button "Open Intercom Messenger":

@@ -1,0 +1,227 @@
+- complementary:
+  - img "Trofenia"
+  - generic: Trofenia
+  - button:
+  - navigation:
+    - paragraph: Principal
+    - link "Panel Principal":
+      - /url: /es/dashboard
+      - generic: Panel Principal
+    - link "Pacientes":
+      - /url: /es/patients
+      - generic: Pacientes
+    - link "Agenda":
+      - /url: /es/appointments
+      - generic: Agenda
+    - link "Antropometría":
+      - /url: /es/anthropometry
+      - generic: Antropometría
+    - link "Consultas":
+      - /url: /es/consultations
+      - generic: Consultas
+    - link "Plantillas de Planes de Dieta":
+      - /url: /es/meal-plans/templates
+      - generic: Plantillas de Planes de Dieta
+    - link "Templates de Catering":
+      - /url: /es/catering/templates
+      - generic: Templates de Catering
+    - link "Catering":
+      - /url: /es/catering
+      - generic: Catering
+    - paragraph: Reportes
+    - link "Estadísticas de Turnos":
+      - /url: /es/reports/appointments-stats
+      - generic: Estadísticas de Turnos
+    - link "Pagos Fallidos":
+      - /url: /es/reports/failed-payments
+      - generic: Pagos Fallidos
+    - paragraph: Configuración
+    - link "Profesionales":
+      - /url: /es/settings/professionals
+      - generic: Profesionales
+    - link "Consultorios":
+      - /url: /es/settings/offices
+      - generic: Consultorios
+    - link "Tipos de Consulta":
+      - /url: /es/settings/appointment-types
+      - generic: Tipos de Consulta
+    - link "Integración de Pagos":
+      - /url: /es/settings/payments
+      - generic: Integración de Pagos
+    - link "Equipo":
+      - /url: /es/settings/team
+      - generic: Equipo
+    - link "Suscripción":
+      - /url: /es/settings/billing
+      - generic: Suscripción
+    - link "Mis Pagos":
+      - /url: /es/profile/payments
+      - generic: Mis Pagos
+    - link "Ayuda":
+      - /url: /es/help
+      - generic: Ayuda
+  - paragraph: Versión 1.0.0
+- banner:
+  - heading "Bienvenido, Fer" [level=2]
+  - button:
+  - button "F":
+    - generic: F
+- main:
+  - heading "Agenda" [level=1]
+  - paragraph: Gestiona los turnos de tu equipo
+  - link "Nuevo Turno":
+    - /url: /es/appointments/new
+    - button "Nuevo Turno":
+      - text: Nuevo Turno
+  - heading "Página Pública de Reservas" [level=3]
+  - paragraph: Comparte este enlace con tus pacientes para que puedan reservar turnos online
+  - code: https://www.trofenia.com.ar/turnos/nutriplus
+  - button "Copiar enlace":
+    - text: Copiar enlace
+  - button "Abrir en nueva pestaña":
+    - text: Abrir en nueva pestaña
+  - text: Filtrar por Profesional
+  - combobox:
+    - generic: Todos los profesionales
+  - text: Filtrar por Consultorio
+  - combobox:
+    - generic: Todos los consultorios
+  - button "Semana antes":
+    - img: 
+  - button "Semana siguiente":
+    - img: 
+  - button "Hoy" [disabled]
+  - heading "10 – 16 ago 2026" [level=2]
+  - button "Mes"
+  - button "Semana" [pressed]
+  - button "Día"
+  - button "Agenda"
+  - generic "10 – 16 ago 2026":
+    - grid:
+      - rowgroup:
+        - row "10 de agosto de 2026 11 de agosto de 2026 12 de agosto de 2026 13 de agosto de 2026 14 de agosto de 2026 15 de agosto de 2026 16 de agosto de 2026":
+          - columnheader "10 de agosto de 2026":
+            - generic "10 de agosto de 2026": lun 10/8
+          - columnheader "11 de agosto de 2026":
+            - generic "11 de agosto de 2026": mar 11/8
+          - columnheader "12 de agosto de 2026":
+            - generic "12 de agosto de 2026": mié 12/8
+          - columnheader "13 de agosto de 2026":
+            - generic "13 de agosto de 2026": jue 13/8
+          - columnheader "14 de agosto de 2026":
+            - generic "14 de agosto de 2026": vie 14/8
+          - columnheader "15 de agosto de 2026":
+            - generic "15 de agosto de 2026": sáb 15/8
+          - columnheader "16 de agosto de 2026":
+            - generic "16 de agosto de 2026": dom 16/8
+      - rowgroup:
+        - table:
+          - rowgroup:
+            - row:
+              - cell:
+                - generic: "7"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "8"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "9"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "10"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "11"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "12"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "13"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "14"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "15"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "16"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "17"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "18"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "19"
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell:
+                - generic: "20"
+              - cell
+            - row:
+              - cell
+              - cell
+        - row:
+          - gridcell
+          - gridcell
+          - gridcell
+          - gridcell
+          - gridcell
+          - gridcell
+          - gridcell
+- region "Notifications alt+T"
+- alert

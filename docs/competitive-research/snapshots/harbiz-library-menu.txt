@@ -1,0 +1,489 @@
+- text:           
+- menubar "Main":
+  - list:
+    - menuitem "Clientes":
+      - button "Clientes":
+        - generic: Clientes
+    - menuitem "Equipo":
+      - generic: Equipo
+    - menuitem "Librería Librería Todos tus recursos reunidos para planificar los entrenamientos y nutrición de tus clientes desde un solo lugar Actividad Física Ejercicios, workouts y sesiones de cardio para tus clientes Vídeos Sube vídeos y clases que tus clientes podrán ver desde la app Nutrición Planes y recetas para asignar y compartir con tus clientes Programas Nuevo Define el entrenamiento de tus clientes y guía su progreso Documentos Sube y comparte material con tus clientes desde tu biblioteca Formularios Conoce a tus clientes para planificar sus rutinas y objetivos Plantillas Aprovecha el material creado por nuestros expertos Logros Nuevo Crea y gestiona logros para motivar a tus clientes Contenido a validar Revisa y aprueba el contenido generado por tu equipo":
+      - button "Librería" [expanded]:
+        - generic: Librería
+      - generic "Librería":
+        - generic: Librería
+        - generic: Todos tus recursos reunidos para planificar los entrenamientos y nutrición de tus clientes desde un solo lugar
+        - link "Actividad Física Ejercicios, workouts y sesiones de cardio para tus clientes":
+          - /url: /libreria/ejercicios
+          - generic: Actividad Física
+          - generic: Ejercicios, workouts y sesiones de cardio para tus clientes
+        - link "Vídeos Sube vídeos y clases que tus clientes podrán ver desde la app":
+          - /url: /libreria/sesiones-en-video
+          - generic: Vídeos
+          - generic: Sube vídeos y clases que tus clientes podrán ver desde la app
+        - link "Nutrición Planes y recetas para asignar y compartir con tus clientes":
+          - /url: /libreria/nutricion
+          - generic: Nutrición
+          - generic: Planes y recetas para asignar y compartir con tus clientes
+        - link "Programas Nuevo Define el entrenamiento de tus clientes y guía su progreso":
+          - /url: /libreria/programas
+          - generic: Programas
+          - generic: Nuevo
+          - generic: Define el entrenamiento de tus clientes y guía su progreso
+        - link "Documentos Sube y comparte material con tus clientes desde tu biblioteca":
+          - /url: /libreria/documentos
+          - generic: Documentos
+          - generic: Sube y comparte material con tus clientes desde tu biblioteca
+        - link "Formularios Conoce a tus clientes para planificar sus rutinas y objetivos":
+          - /url: /libreria/formulario-inicial
+          - generic: Formularios
+          - generic: Conoce a tus clientes para planificar sus rutinas y objetivos
+        - link "Plantillas Aprovecha el material creado por nuestros expertos":
+          - /url: /libreria/plantillas
+          - generic: Plantillas
+          - generic: Aprovecha el material creado por nuestros expertos
+        - link "Logros Nuevo Crea y gestiona logros para motivar a tus clientes":
+          - /url: /libreria/logros
+          - generic: Logros
+          - generic: Nuevo
+          - generic: Crea y gestiona logros para motivar a tus clientes
+        - link "Contenido a validar Revisa y aprueba el contenido generado por tu equipo":
+          - /url: /libreria/contenido-a-validar
+          - generic: Contenido a validar
+          - generic: Revisa y aprueba el contenido generado por tu equipo
+    - menuitem "Agenda":
+      - button "Agenda":
+        - generic: Agenda
+    - menuitem "Negocio":
+      - button "Negocio":
+        - generic: Negocio
+    - menuitem "Marketing":
+      - button "Marketing":
+        - generic: Marketing
+    - menuitem "AI Assistant":
+      - generic: AI Assistant
+- generic: F
+- generic: Librería
+- generic: /
+- link "Actividad Física":
+  - /url: /libreria/ejercicios
+  - generic: Actividad Física
+- link "Vídeos":
+  - /url: /libreria/sesiones-en-video
+  - generic: Vídeos
+- link "Nutrición":
+  - /url: /libreria/nutricion
+  - generic: Nutrición
+- link "Programas":
+  - /url: /libreria/programas
+  - generic: Programas
+- link "Documentos":
+  - /url: /libreria/documentos
+  - generic: Documentos
+- link "Formularios":
+  - /url: /libreria/formulario-inicial
+  - generic: Formularios
+- link "Plantillas":
+  - /url: /libreria/plantillas
+  - generic: Plantillas
+- link "Logros":
+  - /url: /libreria/logros
+  - generic: Logros
+- link "Contenido a validar":
+  - /url: /libreria/contenido-a-validar
+  - generic: Contenido a validar
+- button:
+- button "Cerrar":
+  - paragraph: Cerrar
+- tablist:
+  - link "Ejercicios Crea, organiza y añade ejercicios a tus entrenamientos personalizados":
+    - /url: /libreria/ejercicios
+    - heading "Ejercicios" [level=4]
+    - generic: Crea, organiza y añade ejercicios a tus entrenamientos personalizados
+  - link "Workouts Crea rutinas combinando ejercicios y objetivos específicos":
+    - /url: /libreria/workouts
+    - heading "Workouts" [level=4]
+    - generic: Crea rutinas combinando ejercicios y objetivos específicos
+  - link "Cardio Crea o asigna sesiones de cardio personalizadas en tus planes":
+    - /url: /libreria/cardios
+    - heading "Cardio" [level=4]
+    - generic: Crea o asigna sesiones de cardio personalizadas en tus planes
+- generic: 
+- textbox "Busca por nombre..."
+- generic: 2129 ejercicios
+- generic: Mostrar solo mis favoritos
+- button " Filtrar":
+  - generic: 
+  - text: Filtrar
+- button " Crear un ejercicio":
+  - generic: 
+  - text: Crear un ejercicio
+- paragraph:
+  - generic: 1/2 Dominada con agarre neutro
+  - generic: barra de dominadas
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: intermedio
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada con agarre neutro asistida con goma
+  - generic: barra de dominadas
+  - generic: goma elástica
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: principiante
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada con agarre prono
+  - generic: barra de dominadas
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: intermedio
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada con agarre prono asistida con goma
+  - generic: barra de dominadas
+  - generic: goma elástica
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: principiante
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada con agarre supino
+  - generic: barra de dominadas
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: intermedio
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada con agarre supino asistida con goma
+  - generic: barra de dominadas
+  - generic: goma elástica
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: principiante
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Dominada en 4 tiempos
+  - generic: barra de dominadas
+  - generic: bilateral
+  - generic: tracción
+  - generic: dominadas
+  - generic: intermedio
+  - generic: fuerza
+  - generic: dorsal
+  - generic: espalda
+  - generic: compuesto
+  - generic: tren superior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Lunge atrás con TRX
+  - generic: trx
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Lunge con TRX
+  - generic: trx
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Pistol Squat en plano inclinado.
+  - generic: cuña
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla Búlgara con Salto + Flexión Cadera con TRX
+  - generic: trx
+  - generic: pliometría
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: saltos
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla Búlgara con Salto con TRX
+  - generic: trx
+  - generic: pliometría
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: saltos
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla Búlgara con TRX
+  - generic: trx
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla Unipodal con TRX
+  - generic: trx
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla con KB Bilateral
+  - generic: kettlebell
+  - generic: bilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla con Salto con TRX
+  - generic: trx
+  - generic: pliometría
+  - generic: bilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: saltos
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla con TRX
+  - generic: trx
+  - generic: bilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 Sentadilla con barra.
+  - generic: barra
+  - generic: bilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: principiante
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 squat unipodal pierna libre por delante
+  - generic: peso corporal
+  - generic: sin material
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- paragraph:
+  - generic: 1/2 squat unipodal pierna libre por detrás
+  - generic: peso corporal
+  - generic: sin material
+  - generic: unilateral
+  - generic: empuje
+  - generic: dominante de rodilla
+  - generic: intermedio
+  - generic: fuerza
+  - generic: glúteo
+  - generic: cuádriceps
+  - generic: compuesto
+  - generic: tren inferior
+- img "Harbiz"
+- generic: Harbiz
+- button "":
+  - generic: 
+- img "Card image cap"
+- list:
+  - generic: «
+  - generic: <
+  - generic: "1"
+  - generic: "2"
+  - generic: "3"
+  - generic: "4"
+  - generic: "5"
+  - generic: ">"
+  - generic: »
+- generic: Mostrando del 1 al 20 de un total de 2129
+- text: 
+- text:     
+- button "1/5":
+  - button:
+  - generic: 1/5
+- region "Notifications Alt+T"
+- text:   
+- iframe

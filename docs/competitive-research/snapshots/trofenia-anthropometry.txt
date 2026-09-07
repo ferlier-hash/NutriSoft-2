@@ -1,0 +1,107 @@
+- complementary:
+  - img "Trofenia"
+  - generic: Trofenia
+  - button:
+  - navigation:
+    - paragraph: Principal
+    - link "Panel Principal":
+      - /url: /es/dashboard
+      - generic: Panel Principal
+    - link "Pacientes":
+      - /url: /es/patients
+      - generic: Pacientes
+    - link "Agenda":
+      - /url: /es/appointments
+      - generic: Agenda
+    - link "Antropometría":
+      - /url: /es/anthropometry
+      - generic: Antropometría
+    - link "Consultas":
+      - /url: /es/consultations
+      - generic: Consultas
+    - link "Plantillas de Planes de Dieta":
+      - /url: /es/meal-plans/templates
+      - generic: Plantillas de Planes de Dieta
+    - link "Templates de Catering":
+      - /url: /es/catering/templates
+      - generic: Templates de Catering
+    - link "Catering":
+      - /url: /es/catering
+      - generic: Catering
+    - paragraph: Reportes
+    - link "Estadísticas de Turnos":
+      - /url: /es/reports/appointments-stats
+      - generic: Estadísticas de Turnos
+    - link "Pagos Fallidos":
+      - /url: /es/reports/failed-payments
+      - generic: Pagos Fallidos
+    - paragraph: Configuración
+    - link "Profesionales":
+      - /url: /es/settings/professionals
+      - generic: Profesionales
+    - link "Consultorios":
+      - /url: /es/settings/offices
+      - generic: Consultorios
+    - link "Tipos de Consulta":
+      - /url: /es/settings/appointment-types
+      - generic: Tipos de Consulta
+    - link "Integración de Pagos":
+      - /url: /es/settings/payments
+      - generic: Integración de Pagos
+    - link "Equipo":
+      - /url: /es/settings/team
+      - generic: Equipo
+    - link "Suscripción":
+      - /url: /es/settings/billing
+      - generic: Suscripción
+    - link "Mis Pagos":
+      - /url: /es/profile/payments
+      - generic: Mis Pagos
+    - link "Ayuda":
+      - /url: /es/help
+      - generic: Ayuda
+  - paragraph: Versión 1.0.0
+- banner:
+  - heading "Bienvenido, Fer" [level=2]
+  - button:
+  - button "F":
+    - generic: F
+- main:
+  - heading "Antropometría" [level=1]
+  - paragraph: Todas las mediciones antropométricas del equipo
+  - 'link "Ayuda: Cálculos"':
+    - /url: /es/anthropometry/help
+    - 'button "Ayuda: Cálculos"':
+      - text: "Ayuda: Cálculos"
+  - generic: Total Mediciones
+  - generic: "0"
+  - paragraph: Registradas en el sistema
+  - generic: Pacientes con Mediciones
+  - generic: "0"
+  - paragraph: Pacientes únicos
+  - generic: Este Mes
+  - generic: "0"
+  - paragraph: Mediciones realizadas
+  - heading "Filtros" [level=3]
+  - text: Buscar
+  - textbox "Buscar":
+    - /placeholder: Buscar por paciente, profesional, documento...
+  - text: Paciente
+  - combobox "Paciente":
+    - generic: Todos los pacientes
+  - text: Profesional
+  - combobox "Profesional":
+    - generic: Todos los profesionales
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - generic: Mediciones
+  - paragraph: No hay mediciones registradas
+  - paragraph: Las mediciones se crean desde la página de cada paciente
+  - link "Ir a Pacientes":
+    - /url: /es/patients
+    - button "Ir a Pacientes":
+      - text: Ir a Pacientes
+- region "Notifications alt+T"
+- alert

@@ -1,0 +1,83 @@
+- link "Ir al contenido principal":
+  - /url: "#main-content"
+- region "Notifications alt+T"
+- complementary:
+  - button "Colapsar menú":
+  - button "Fernando":
+    - generic: Fernando
+  - button "Notificaciones":
+  - button "Buscar… ⌘K":
+    - generic: Buscar…
+    - generic: ⌘K
+  - navigation:
+    - link "Inicio":
+      - /url: /
+      - generic: Inicio
+    - link "Pacientes Requiere un plan activo":
+      - /url: /patients
+      - generic: Pacientes
+      - img "Requiere un plan activo"
+    - link "Chats Requiere un plan activo":
+      - /url: /chats
+      - generic: Chats
+      - img "Requiere un plan activo"
+    - link "Agenda Requiere un plan activo":
+      - /url: /appointments
+      - generic: Agenda
+      - img "Requiere un plan activo"
+    - link "Planes Requiere un plan activo":
+      - /url: /meal-plans
+      - generic: Planes
+      - img "Requiere un plan activo"
+    - link "Alimentos Requiere un plan activo":
+      - /url: /foods
+      - generic: Alimentos
+      - img "Requiere un plan activo"
+    - link "Recursos Requiere un plan activo":
+      - /url: /education
+      - generic: Recursos
+      - img "Requiere un plan activo"
+    - link "Formularios Requiere un plan activo":
+      - /url: /forms
+      - generic: Formularios
+      - img "Requiere un plan activo"
+    - link "Pagos Requiere un plan activo":
+      - /url: /billing
+      - generic: Pagos
+      - img "Requiere un plan activo"
+    - link "Catálogo Requiere un plan activo":
+      - /url: /store
+      - generic: Catálogo
+      - img "Requiere un plan activo"
+    - link "Página pública":
+      - /url: /presencia
+      - generic: Página pública
+  - link "Novedades":
+    - /url: /changelog
+    - generic: Novedades
+  - link "Academia":
+    - /url: /guides
+    - generic: Academia
+  - link "Configuración":
+    - /url: /settings
+    - generic: Configuración
+  - button "FL Fernando Liernur Propietario/a":
+    - generic: FL
+    - paragraph: Fernando Liernur
+    - paragraph: Propietario/a
+- main:
+  - paragraph: El consultorio completo se habilita con un plan.
+  - link "Ver planes":
+    - /url: /subscribe
+    - text: Ver planes
+  - text: Exclusivo con un plan
+  - heading "Historia clínica nutricional digital para tu consultorio" [level=1]
+  - paragraph: Tené antecedentes, anamnesis, registros de cada consulta, objetivos y estudios del paciente en una sola ficha. Los formularios los completa el paciente desde su portal o los cargás vos, y exportás toda la historia clínica a PDF cuando la necesitás.
+  - link "Ver planes":
+    - /url: /subscribe
+  - img "Historia clínica nutricional digital para tu consultorio"
+  - paragraph: Antecedentes y anamnesis editables
+  - paragraph: Registros clínicos por consulta
+  - paragraph: Formularios que completa el paciente
+  - paragraph: O los carga tu equipo
+- alert

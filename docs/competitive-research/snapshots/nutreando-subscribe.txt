@@ -1,0 +1,145 @@
+- link "Ir al contenido principal":
+  - /url: "#main-content"
+- region "Notifications alt+T"
+- alert
+- img "Nutreando"
+- link "Volver al consultorio":
+  - /url: /
+  - generic: Volver al consultorio
+- paragraph: Hola, Fernando
+- heading "Elegí tu plan" [level=1]
+- paragraph: Todas las funciones están en los dos planes pagos.
+- text: "Garantía de 30 días: si no te convence, te devolvemos el 100%"
+- button "Mensual" [pressed]
+- button "Anual -20%":
+  - text: Anual
+  - generic: "-20%"
+- generic: Más elegido
+- heading "Consultorio Pro" [level=3]
+- paragraph: Para consultorios en crecimiento.
+- generic: $ 70.000
+- generic: ARS/mes
+- paragraph: Con el anual ahorrás $ 168.000 al año
+- paragraph: Precio final en pesos · sin sorpresas
+- paragraph: Pacientes ilimitados
+- list:
+  - generic: Sumá profesionales y secretaría a tu equipo
+  - generic: IA completa incluida
+  - generic: Plan anual con 20% de descuento
+- button "Somos equipo":
+  - text: Somos equipo
+- button "Elegir Pro":
+  - text: Elegir Pro
+- heading "Consultorio Inicial" [level=3]
+- paragraph: Para nutricionistas que están construyendo su consultorio.
+- generic: $ 40.000
+- generic: ARS/mes
+- paragraph: Precio final en pesos · sin sorpresas
+- paragraph: Todo el software, sin recortes
+- list:
+  - generic: Acceso a todas las funciones
+  - generic: IA completa incluida
+  - generic: 1 profesional
+  - generic: Hasta 10 pacientes activos
+- paragraph: Pasás a Pro cuando quieras, sin perder nada.
+- button "Elegir Inicial":
+  - text: Elegir Inicial
+- heading "Perfil Profesional" [level=3]
+- generic: Tu plan actual
+- paragraph: Para que pacientes nuevos te encuentren en Google, sin usar el software.
+- text: Gratis
+- paragraph: para siempre
+- list:
+  - generic: Perfil público con URL propia
+  - generic: Aparecés en el directorio de nutricionistas
+  - generic: Perfil optimizado para Google
+  - generic: Tus servicios, precios y sedes
+  - generic: Contacto directo por WhatsApp
+  - generic: Sello «Verificado» con tu matrícula
+  - generic: Sin gestión de pacientes ni agenda
+- link "Completar mi perfil":
+  - /url: /presencia
+- button "¿Tenés un código de convenio?"
+- alert:
+  - generic: Tu consultorio ya está creado
+  - generic: "Elegí tu plan y lo empezás a usar entero hoy. Tu perfil público ya existe: para que aparezca en el directorio, cargá tu matrícula y la verificamos en 24 horas hábiles."
+- paragraph: Nutricionistas que ya confían en Nutreando
+- list:
+  - paragraph: Fede Prina
+  - paragraph: Lic. en Nutrición estética y deportiva
+  - link "@prinanutricion":
+    - /url: https://instagram.com/prinanutricion
+  - blockquote:
+    - paragraph: “Nutreando se convirtió en una herramienta fundamental en mi consultorio. Me permite organizar el seguimiento de los pacientes de manera simple, mantener una comunicación más fluida y optimizar mucho el tiempo administrativo. Desde que la implementé, noté una mejora en la adherencia de los pacientes y en la calidad del seguimiento nutricional. La plataforma es intuitiva, práctica y se adapta muy bien al trabajo diario de un nutricionista. Sin dudas, una inversión que aporta valor tanto al profesional como al paciente.”
+    - button "Ver más"
+  - paragraph: Soledad
+  - paragraph: Lic. en Nutricion especialista en Salud Metabolica
+  - link "@nutricion_positiva_si":
+    - /url: https://instagram.com/nutricion_positiva_si
+  - blockquote:
+    - paragraph: “Los conocí hace 1 mes y me encanta el sistema, xq engloba todo en uno. Antes tenia recursos en drive, los enviaba por mail o wsp, fichas en excel, otro programa de recordatorio de turnos, la caja a mano, etc. Además la atención de Aldana y Fabricio es impecable. Se que inlcuso seguirán actualizándolo así que apuesto a mejores consultas junto a ellos! Gracias”
+    - button "Ver más"
+  - paragraph: Ani Teruelo
+  - paragraph: Nutrición Deportiva
+  - link "@ap.nutrisalud":
+    - /url: https://instagram.com/ap.nutrisalud
+  - blockquote:
+    - paragraph: “El sistema que siempre soñé, todavía me falta sacarle mucho provecho pero estoy aprendiendo y dándole mi nueva forma de trabajo. Me parece re importante tener todo en un solo lugar y mis pacientes también me refieren que está muy bueno el sistema! Así que feliz :)”
+    - button "Ver más"
+  - paragraph: Lic Maki Arnaudo
+  - paragraph: Magister en Nutrición deportiva
+  - link "@_ind.nutricion.arg":
+    - /url: https://instagram.com/_ind.nutricion.arg
+  - blockquote:
+    - paragraph: “Es excelente tanto para agilizar el armado de informe de las mediciones antropométricas, como el armando de las planificaciones nutricionales, ir viendo los registros en tiempo real con cálculos de macros , podes dar una devolución en el momento, automatizar todo, y el plus de tener ya agenda de turno, pagos todo en el mismo sistema, excelente herramienta de trabajo y me agiliza absolutamente todo !!! Lo Super recomiendo”
+    - button "Ver más"
+  - paragraph: Caro Ortiz de Zárate
+  - paragraph: Lic. en Nutrición Deportiva y Coach Ontológico
+  - link "@nutri.caro.run":
+    - /url: https://instagram.com/nutri.caro.run
+  - blockquote:
+    - paragraph: "“Como profesional con 20 años de trayectoria, migrar mi base de datos a Nutreando fue la mejor decisión. Con Nutreando siento que formé equipo, no contraté una aplicación; son parte de mi equipo. El valor humano, la empatía y el soporte de Aldana y Fabricio son excepcionales. La plataforma centraliza todo de forma excelente: turnos, historias clínicas, bioimpedancias y antropometrías con el formato de informe ISAK y sus curvas visuales, un plus enorme. Su flexibilidad es total: me permite personalizar qué métricas ve cada paciente, importar mis planes en PDF y me da la posibilidad de armar los planes nuevos directamente en la misma aplicación. Además, la gestión y autogestión de turnos superó nuestras proyecciones. Nos permite seguir manejando la agenda nosotros mientras los pacientes aprenden a autogestionarse de a poco. He recibido confirmaciones y turnos nuevos en horarios en los que jamás hubiésemos trabajado, lo que generó un aumento directo en mis ingresos y una mejor organización de las finanzas mediante pagos por adelantado. Esto se tradujo en un mayor compromiso de los pacientes y menos cancelaciones. Sé que todavía tengo muchas funciones por seguir sumando y sé que Nutreando nos va a seguir sorprendiendo. Transformó mi organización interna y elevó la experiencia en la consulta. ¡100% recomendada!”"
+    - button "Ver más"
+  - paragraph: Verónica
+  - paragraph: Lic. en Nutrición, antropometrista ISAK NIVEL 2
+  - link "@equilibrium.iguazu":
+    - /url: https://instagram.com/equilibrium.iguazu
+  - blockquote:
+    - paragraph: “Si sos una nutri que aun sigue con miles de archivos y te estresa tratar de comparar la evolución de los pacientes o tratar de encontrar detalles en la anamnesis...ACTUALIZATE!!! Antes yo usaba una plataforma de Portugal y no obtenía respuestas por las sugerencias que quería que hagan para que sea mas específica o tenia errores que jamás me resolvieron.. hasta que apareció NUTREANDO...realmente es ALL IN ONE.. y además tenés alguien del otro lado que te responde a las dudas o consultas que tengas... antes cargaba manualmente todo! laboratorio, informe de antropometría ISAK, informe de balanza de bioimpedancia y ahora solo subís el archivo y la IA te lo acomoda y no solo eso.. sino que también te hace comparativas con métricas anteriores!!.. esto realmente es un golazo de media cancha!!ahorras tiempo en la consulta, automáticamente te hace comparativas con gráficos de la evolución, resúmenes del caso (repaso del caso), app para el paciente para que tenga su plan, evolución, registro alimentario solo con la foto!!! miles de detalles!! esta app concentra todo lo que nos gustaría como NUTRIS!! es mega completa!!LA MEJOR DEL MUNDO MUNDIAL!!!!!”
+    - button "Ver más"
+  - paragraph: Aldana Magali Richieri
+  - paragraph: Licenciada en Nutrición
+  - link "@aldana.nutri":
+    - /url: https://instagram.com/aldana.nutri
+  - blockquote:
+    - paragraph: “Ser cofundadora de Nutreando tiene un significado muy especial para mí, porque esta plataforma nació de los desafíos que viví todos los días como nutricionista. Queríamos una herramienta que realmente entendiera nuestra forma de trabajar y acompañara la transformación digital de la profesión. Hoy me emociona ver que la plataforma que soñamos está acompañando a cada vez más nutricionistas en este cambio hacia un nuevo paradigma digital para nuestra profesión en Argentina.”
+    - button "Ver más"
+  - paragraph: Ana Paola Fernandez
+  - paragraph: Lic en nutrición con enfoque integrativo
+  - link "@nutriap_":
+    - /url: https://instagram.com/nutriap_
+  - blockquote:
+    - paragraph: "“Nutreando es una herramienta ESENCIAL en nuestro trabajo diario. Los grandes beneficios que tengo es concentrar todo en un solo lugar, delegar ciertos asuntos administrativos en los que perdía mucho tiempo (ej reprogramar un turno, registrar señas, recordar turnos, etc) , liberar la sobre notificación de whastapp (donde mi respuesta era lenta ya que se me acumulaban muchos mensajes) y la profesionalización de: entrega de planes, informes de análisis de composición corporal y hacer seguimiento entre consultas. Es una herramienta ESENCIAL PARA LOS TIEMPOS QUE CORREN. La adherencia de los pacientes mejora (se sienten más acompañados). Y sobretodo MEJORA LA PERCEPCIÓN DE CALIDAD DE LA CONSULTA POR PARTE DE LOS PACIENTES.”"
+    - button "Ver más"
+  - paragraph: luchi lehmann
+  - paragraph: lic. Nutricion Deportiva
+  - link "@nutriluchileh":
+    - /url: https://instagram.com/nutriluchileh
+  - blockquote:
+    - paragraph: “Estoy trabajando con Nutreando hace poco y me resulta muy bueno , me tengo que acostumbrar un poco pero creo que la accesibilidad tanto para el profesional como para los pacientes es buenisima, creo que tiene mucho potencial y los chicos de soporte son un 10!!!”
+    - button "Ver más"
+  - paragraph: Julieta Busca
+  - paragraph: Lic en nutricion
+  - link "@julietabuscanutricion":
+    - /url: https://instagram.com/julietabuscanutricion
+  - blockquote:
+    - paragraph: “Nutreando me cambio la forma de atender. Hoy atiendo en forma mucho mas dinamica, organizada. Realmente esta muy bien pensada y diseñada! De todas las plataformas que probe esta sin dudas es la mejor.”
+  - paragraph: YOLANDA I. ZUBZUK
+  - paragraph: Lic en Nutricion Funcional y Diabetes
+  - link "@nutricionista_zubzuk":
+    - /url: https://instagram.com/nutricionista_zubzuk
+  - blockquote:
+    - paragraph: “Me resultó una herramienta maravillosa y muy sencilla de usar. En el consultorio me ayudó a resolver gran parte del trabajo administrativo, especialmente la organización de turnos, el seguimiento de la evolución de mis pacientes y la carga de documentación. Puedo tener toda la información ordenada y a mano en un mismo lugar, lo que me permite dedicar más tiempo a la atención y al acompañamiento de cada paciente. Todavía sigo descubriendo nuevas funciones y siempre hay alguien del otro lado disponible para ayudarme...”
+    - button "Ver más"
+- link "Contactanos por WhatsApp":
+  - /url: https://wa.me/5491178882025?text=Hola!%20Me%20interesa%20Nutreando%2C%20%C2%BFme%20cont%C3%A1s%20m%C3%A1s%3F

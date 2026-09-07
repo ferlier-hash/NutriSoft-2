@@ -2,55 +2,59 @@ name: NutriSoft CI Pipeline
 
 on:
   push:
-    branches: [ main, phase-2-backend-foundation, phase-1.1-stabilization ]
+    branches: ['main', 'phase-*']
   pull_request:
-    branches: [ main, phase-2-backend-foundation ]
+    branches: ['main', 'phase-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   verify:
     name: Frontend & Database Verification
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'npm'
+          cache: npm
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Run blocking verification and collect evidence
+        run: node scripts/run-evidence-phase-2-1-1.js
 
-      - name: Frontend Linting
-        run: npm run lint
-
-      - name: Frontend Typecheck
-        run: npm run typecheck
-
-      - name: Frontend Vitest Suite
-        run: npm run test
-
-      - name: Frontend Production Build
-        run: npm run build
-
-      - name: Start Local Supabase
-        run: npx supabase start
-
-      - name: Database Reset & Seed
-        run: npm run db:reset
-
-      - name: Database pgTAP Test Suite
-        run: npm run db:test
-
-      - name: Database Linting
-        run: npm run db:lint
-
-      - name: Database TypeScript Verification
-        run: npm run db:verify-types
-
-      - name: Stop Local Supabase
+      - name: Generate Workflow Metadata
         if: always()
-        run: npx supabase stop
+        run: |
+          mkdir -p review/reports/phase-2.1.1
+          node -e "
+          const fs = require('fs');
+          const data = {
+            GITHUB_SHA: process.env.GITHUB_SHA,
+            GITHUB_REF: process.env.GITHUB_REF,
+            GITHUB_RUN_ID: process.env.GITHUB_RUN_ID,
+            GITHUB_RUN_ATTEMPT: process.env.GITHUB_RUN_ATTEMPT,
+            GITHUB_WORKFLOW: process.env.GITHUB_WORKFLOW,
+            GITHUB_EVENT_NAME: process.env.GITHUB_EVENT_NAME,
+            WORKFLOW_URL: process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID,
+            TIMESTAMP_UTC: new Date().toISOString()
+          };
+          fs.writeFileSync('review/reports/phase-2.1.1/00-ci-workflow-metadata.json', JSON.stringify(data, null, 2));
+          "
+
+      - name: Upload Verification Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-2.1.1-verification-reports
+          path: review/reports/phase-2.1.1/
+          if-no-files-found: error
+          retention-days: 14

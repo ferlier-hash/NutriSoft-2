@@ -1,0 +1,104 @@
+- complementary:
+  - img "Trofenia"
+  - generic: Trofenia
+  - button:
+  - navigation:
+    - paragraph: Principal
+    - link "Panel Principal":
+      - /url: /es/dashboard
+      - generic: Panel Principal
+    - link "Pacientes":
+      - /url: /es/patients
+      - generic: Pacientes
+    - link "Agenda":
+      - /url: /es/appointments
+      - generic: Agenda
+    - link "Antropometría":
+      - /url: /es/anthropometry
+      - generic: Antropometría
+    - link "Consultas":
+      - /url: /es/consultations
+      - generic: Consultas
+    - link "Plantillas de Planes de Dieta":
+      - /url: /es/meal-plans/templates
+      - generic: Plantillas de Planes de Dieta
+    - link "Templates de Catering":
+      - /url: /es/catering/templates
+      - generic: Templates de Catering
+    - link "Catering":
+      - /url: /es/catering
+      - generic: Catering
+    - paragraph: Reportes
+    - link "Estadísticas de Turnos":
+      - /url: /es/reports/appointments-stats
+      - generic: Estadísticas de Turnos
+    - link "Pagos Fallidos":
+      - /url: /es/reports/failed-payments
+      - generic: Pagos Fallidos
+    - paragraph: Configuración
+    - link "Profesionales":
+      - /url: /es/settings/professionals
+      - generic: Profesionales
+    - link "Consultorios":
+      - /url: /es/settings/offices
+      - generic: Consultorios
+    - link "Tipos de Consulta":
+      - /url: /es/settings/appointment-types
+      - generic: Tipos de Consulta
+    - link "Integración de Pagos":
+      - /url: /es/settings/payments
+      - generic: Integración de Pagos
+    - link "Equipo":
+      - /url: /es/settings/team
+      - generic: Equipo
+    - link "Suscripción":
+      - /url: /es/settings/billing
+      - generic: Suscripción
+    - link "Mis Pagos":
+      - /url: /es/profile/payments
+      - generic: Mis Pagos
+    - link "Ayuda":
+      - /url: /es/help
+      - generic: Ayuda
+  - paragraph: Versión 1.0.0
+- banner:
+  - heading "Bienvenido, Fer" [level=2]
+  - button:
+  - button "F":
+    - generic: F
+- main:
+  - heading "Consultas" [level=1]
+  - paragraph: Registros de consultas realizadas
+  - link "Nueva Consulta":
+    - /url: /es/consultations/new
+    - button "Nueva Consulta":
+      - text: Nueva Consulta
+  - heading "Filtros" [level=3]
+  - text: Buscar
+  - textbox "Buscar":
+    - /placeholder: Buscar por paciente, tipo, notas...
+  - text: Profesional
+  - combobox "Profesional":
+    - generic: Fer
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - table:
+    - rowgroup:
+      - row "Fecha Paciente Tipo Notas Acciones":
+        - columnheader "Fecha"
+        - columnheader "Paciente"
+        - columnheader "Tipo"
+        - columnheader "Notas"
+        - columnheader "Acciones"
+    - rowgroup:
+      - row "No hay consultas registradas":
+        - cell "No hay consultas registradas"
+  - generic: Mostrando 0 de 0 consultas
+  - button "Anterior" [disabled]:
+    - text: Anterior
+  - button "Siguiente" [disabled]:
+    - text: Siguiente
+- region "Notifications alt+T"
+- alert

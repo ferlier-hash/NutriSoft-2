@@ -1,26 +1,30 @@
-# Guía de Desarrollo Local con Supabase — NutriSoft
+# Guía de Desarrollo Local con Supabase — NutriSoft (Fase 2.1)
 
-## 🛠️ Comandos Básicos
+## 🛠️ Comandos de Verificación y Generación de Reportes
 
 ```bash
-# Iniciar Supabase local (requiere Docker Desktop / Podman activo)
+# 1. Iniciar Supabase local (requiere Docker Desktop activo)
 npm run supabase:start
 
-# Detener Supabase local
-npm run supabase:stop
-
-# Reconstruir la base de datos desde cero con seed
+# 2. Reconstruir base de datos y ejecutar las migraciones limpias con seed
 npm run db:reset
 
-# Ejecutar la suite de pruebas pgTAP
+# 3. Ejecutar las 23 suites de pruebas pgTAP (139 assertions)
 npm run db:test
 
-# Ejecutar el linter de base de datos
+# 4. Ejecutar el linter de base de datos
 npm run db:lint
 
-# Regenerar tipos TypeScript
+# 5. Generar y verificar sincronización de tipos TypeScript
 npm run db:types
-
-# Verificar sincronización de tipos TypeScript
 npm run db:verify-types
+
+# 6. Verificar autenticación real local con un usuario temporal autolimpiable
+npm run verify:auth
+
+# 7. Ejecutar verificación integral del proyecto
+npm run verify:all
+
+# 8. Ejecutar colector automático de evidencias de la Fase 2.1
+node scripts/run-evidence-phase-2-1.js
 ```

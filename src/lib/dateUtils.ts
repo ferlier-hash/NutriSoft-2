@@ -47,6 +47,23 @@ export function formatDateTime(isoString: string): string {
   }
 }
 
+export function formatFullDateTime(isoString: string): string {
+  try {
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return isoString;
+    return new Intl.DateTimeFormat('es-AR', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(date);
+  } catch {
+    return isoString;
+  }
+}
+
 export function formatRelativeTime(isoString: string): string {
   try {
     const date = new Date(isoString);

@@ -1,0 +1,89 @@
+- complementary:
+  - img "cheNutri"
+  - paragraph: Nutricionista
+  - button "Notificaciones":
+  - navigation:
+    - link "🏠 Dashboard":
+      - /url: /nutritionist
+      - generic: 🏠
+      - generic: Dashboard
+    - link "👤 Pacientes":
+      - /url: /nutritionist/clients
+      - generic: 👤
+      - generic: Pacientes
+    - link "💬 Chats":
+      - /url: /nutritionist/chats
+      - generic: 💬
+      - generic: Chats
+    - link "🍽️ Registros":
+      - /url: /nutritionist/meals
+      - generic: 🍽️
+      - generic: Registros
+    - link "🥗 Alimentos":
+      - /url: /nutritionist/foods
+      - generic: 🥗
+      - generic: Alimentos
+    - link "🍳 Recetas":
+      - /url: /nutritionist/recipes
+      - generic: 🍳
+      - generic: Recetas
+    - link "🔄 Equivalencias":
+      - /url: /nutritionist/exchange-groups
+      - generic: 🔄
+      - generic: Equivalencias
+    - link "📋 Planes":
+      - /url: /nutritionist/plans
+      - generic: 📋
+      - generic: Planes
+    - link "📚 Recursos":
+      - /url: /nutritionist/resources
+      - generic: 📚
+      - generic: Recursos
+    - link "📅 Turnos":
+      - /url: /nutritionist/appointments
+      - generic: 📅
+      - generic: Turnos
+    - link "💵 Cobros":
+      - /url: /nutritionist/payments
+      - generic: 💵
+      - generic: Cobros
+    - link "📩 Solicitudes":
+      - /url: /nutritionist/contact-requests
+      - generic: 📩
+      - generic: Solicitudes
+    - link "❓ Ayuda":
+      - /url: /ayuda?a=nutritionist
+      - generic: ❓
+      - generic: Ayuda
+  - button "Cerrar anuncio": ✕
+  - generic: ⚡
+  - paragraph: Hasta 10 pacientes
+  - paragraph: Con el plan Pro manejás hasta 50.
+  - button "Ver planes →"
+  - button "Anuncio 1"
+  - button "Anuncio 2"
+  - button "Anuncio 3"
+  - button "Anuncio 4"
+  - link "⭐ Mi Suscripción":
+    - /url: /nutritionist/settings
+    - generic: ⭐
+    - text: Mi Suscripción
+  - link "⚙️ Configuración":
+    - /url: /nutritionist/settings
+    - generic: ⚙️
+    - text: Configuración
+  - button "🚪 Cerrar sesión":
+    - generic: 🚪
+    - text: Cerrar sesión
+  - button "🌐 ES"
+- main:
+  - button "Cerrar": ✕
+  - generic: ✅
+  - paragraph: Agregamos funcionalidades nuevas!
+  - paragraph: "- 🍽️ Recetario de chenutri: +60 recetas con calorías y macros por porción, listas para usar. - 🔄 Equivalencias: alimentos y comidas intercambiables sin romper el plan. - 📄 Plan en PDF renovado: con logo, a color y con la opción de sumar tu propio logo. - ✨ Copiá recetas de chenutri a tu recetario y editalas a tu gusto."
+  - heading "Planes alimentarios" [level=1]
+  - paragraph: Creá plantillas de planes reutilizables con la base de alimentos.
+  - button "+ Nuevo plan"
+  - paragraph: Todavía no tenés planes.
+  - button "Crear el primero →"
+- alert

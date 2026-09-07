@@ -1,0 +1,27 @@
+COMMAND: npm audit --audit-level=high
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:13:33.899Z
+END_TIME: 2026-08-06T04:13:34.796Z
+DURATION_MS: 897
+EXIT_CODE: 0
+--- STDOUT ---
+# npm audit report
+
+react-router  
+Severity: moderate
+React Router: Open redirect via backslash in <Link> and useNavigate (CVE-2025-68470 bypass) - https://github.com/advisories/GHSA-wrjc-x8rr-h8h6
+React Router: Arbitrary Constructor Injection via deserializeErrors() in React Router SSR Hydration - https://github.com/advisories/GHSA-337j-9hxr-rhxg
+No fix available
+node_modules/react-router
+  react-router-dom  
+  Depends on vulnerable versions of react-router
+  node_modules/react-router-dom
+
+
+2 moderate severity vulnerabilities
+
+Some issues need review, and may require choosing
+a different dependency.
+
+--- STDERR ---
+(none)

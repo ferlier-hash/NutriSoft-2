@@ -1,0 +1,125 @@
+- status:
+  - generic: Tu perfil sigue en revisión por moderadores. Aquí puedes revisar tus datos; cuando seas verificado podrás usar Mi día, Mis pacientes y asignar planes.
+  - link "Planes alimenticios":
+    - /url: /planes
+- complementary:
+  - link "Nutri-Pro — Ir a Mi día":
+    - /url: /dashboard
+    - generic: Nutri-Pro
+  - button "Contraer menú lateral" [expanded]:
+  - status:
+    - paragraph: Verificación en revisión
+    - paragraph: Citas y chat se activan cuando Nutri-Pro apruebe tu perfil.
+    - link "Ver estado →":
+      - /url: /configuracion/mis-datos
+  - button "Buscar acciones y rutas (⌘K)":
+    - generic: Buscar…
+    - generic: ⌘K
+  - button "Abrir Pasita":
+    - generic: Pasita
+    - 'generic "Función en fase Alpha: la experiencia puede cambiar y ocasionalmente fallar."': Alpha
+  - navigation:
+    - paragraph: Operar
+    - link "Mi día. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi día
+    - link "Mi agenda. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mi agenda
+    - link "Planes alimenticios":
+      - /url: /planes
+      - generic: Planes alimenticios
+    - link "Mis pacientes. Disponible cuando Nutri-Pro apruebe tu verificación profesional. Consulta el estado en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Mis pacientes
+    - paragraph: Comunicar
+    - link "Chat. Citas y chat estarán disponibles una vez que Nutri-Pro apruebe tu verificación. Tu estado aparece en Configuración → Mis datos.":
+      - /url: /configuracion/mis-datos
+      - generic: Chat
+    - paragraph: Inteligencia
+    - link "IA y consumo. Pasita requiere Nutri-Pro Plus Ultra + IA. Actualiza tu plan en Pagos y facturación.":
+      - /url: /configuracion/facturacion
+      - generic: IA y consumo
+    - paragraph: Cuenta
+    - button "Configuración" [expanded]:
+      - text: Configuración
+    - link "Configuración de la app":
+      - /url: /configuracion/app
+      - generic: Configuración de la app
+    - link "Autenticación":
+      - /url: /configuracion/cuenta
+      - generic: Autenticación
+    - link "Mis datos":
+      - /url: /configuracion/mis-datos
+      - generic: Mis datos
+    - link "Pagos y facturación":
+      - /url: /configuracion/facturacion
+      - generic: Pagos y facturación
+    - link "Contactar soporte":
+      - /url: /configuracion/soporte
+      - generic: Contactar soporte
+  - button "Cuenta de Fernando Liernur":
+    - paragraph: Fernando Liernur
+    - paragraph: ferliernur@gmail.com
+- main:
+  - heading "Mis datos" [level=1]
+  - paragraph: Confirma y actualiza tu información personal, documentos de verificación y datos profesionales visibles para pacientes.
+  - heading "Verificación profesional" [level=2]
+  - paragraph: Estado del background check que habilita citas y chat cuando tu plan lo permite.
+  - paragraph: Estado actual
+  - paragraph: Verificación en revisión
+  - paragraph: Nutri-Pro revisa tu cédula, INE y rostro de forma manual. Te avisaremos cuando cambie el estado.
+  - heading "Datos personales" [level=2]
+  - paragraph: Nombre legal y datos de identificación oficial usados en la verificación manual (INE).
+  - heading "Nombre y apellidos" [level=3]
+  - paragraph: Como aparecen en tu identificación oficial.
+  - generic: Nombre(s)
+  - textbox "Nombre(s)"
+  - generic: Apellido paterno
+  - textbox "Apellido paterno"
+  - generic: Apellido materno
+  - textbox "Apellido materno"
+  - button "Guardar nombre"
+  - heading "Identificación oficial" [level=3]
+  - paragraph: Fecha de nacimiento y CURP asociados a tu INE.
+  - generic: Fecha de nacimiento
+  - textbox "Fecha de nacimiento"
+  - generic: CURP (opcional)
+  - textbox "CURP (opcional)"
+  - button "Guardar nacimiento y CURP"
+  - heading "Documentos de verificación" [level=2]
+  - paragraph: Archivos subidos en el onboarding. Solo tú puedes abrirlos; el enlace caduca en pocos minutos.
+  - generic "Documentos de identidad":
+    - paragraph: INE
+    - paragraph: Sin archivo registrado.
+    - button "Choose File"
+    - button "Subir INE":
+      - text: Subir INE
+    - paragraph: Foto de rostro
+    - paragraph: Sin archivo registrado.
+    - button "Choose File"
+    - button "Subir selfie":
+      - text: Subir selfie
+  - paragraph: Puedes actualizar tus documentos mientras tu caso está en revisión.
+  - heading "Datos profesionales y públicos" [level=2]
+  - paragraph: Titulación, cédula y contacto que pueden mostrarse a tus pacientes según el producto.
+  - heading "Perfil profesional" [level=3]
+  - paragraph: Información visible en tu práctica dentro de Nutri-Pro.
+  - generic: Título profesional
+  - textbox "Título profesional":
+    - /placeholder: Ej. Nutriólogo
+  - generic: Cédula profesional
+  - textbox "Cédula profesional":
+    - /placeholder: Ej. 12345678
+    - text: "153"
+  - generic: Número de celular (opcional)
+  - textbox "Número de celular (opcional)"
+  - paragraph: Formato E.164 sin espacios (ej. +525512345678). Guarda antes de solicitar el código por WhatsApp.
+  - generic: Correo público (opcional)
+  - textbox "Correo público (opcional)"
+  - generic: Ciudad o ubicación pública (opcional)
+  - textbox "Ciudad o ubicación pública (opcional)":
+    - /placeholder: Ej. Guadalajara
+  - button "Guardar datos profesionales"
+- region "Notifications alt+T"
+- alert

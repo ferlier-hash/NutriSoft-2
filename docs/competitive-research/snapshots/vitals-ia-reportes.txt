@@ -1,0 +1,166 @@
+- button "Feedback"
+- complementary:
+  - img "Vitals IA"
+  - generic: Vitals IA
+  - generic: Plan free
+  - button "1":
+    - generic: "1"
+  - button "‹"
+  - navigation:
+    - button "Inicio":
+      - text: Inicio
+    - button "Pacientes":
+      - text: Pacientes
+    - button "Chat":
+      - text: Chat
+    - button "Agenda":
+      - text: Agenda
+    - generic: Planes
+    - button "Templates":
+      - text: Templates
+    - button "Recetas":
+      - text: Recetas
+    - button "Mis Productos 9+":
+      - text: Mis Productos
+      - generic "430 alimentos aprendidos por IA para revisar": 9+
+    - generic: Seguimiento
+    - button "Analytics":
+      - text: Analytics
+    - button "Reportes" [active]:
+      - text: Reportes
+    - button "Antropometría":
+      - text: Antropometría
+  - button "FL Fernando Liernur Plan free ▲":
+    - generic: FL
+    - generic: Fernando Liernur
+    - generic: Plan free
+    - generic: ▲
+- main:
+  - generic: ⏳
+  - strong: Plan gratuito
+  - text: — 2d 23:53:28 restantes
+  - button "Ver planes →"
+  - complementary:
+    - heading "Reportes" [level=1]
+    - paragraph: Armá un PDF profesional con el progreso de tu paciente.
+    - generic: Paciente
+    - combobox:
+      - option "— Elegí un paciente —" [selected]
+      - option "Agustín Testeo (Demo)"
+    - generic: Título del reporte (opcional)
+    - textbox "Título"
+    - generic: Período
+    - button "Última semana"
+    - button "Último mes"
+    - button "Últimos 3 meses"
+    - button "Últimos 6 meses"
+    - button "Personalizado"
+    - textbox: 2026-07-13
+    - textbox: 2026-08-12
+    - generic: Template
+    - combobox:
+      - option "— En blanco —" [selected]
+    - button "Guardar"
+    - generic: Secciones
+    - checkbox [checked]
+    - generic: Encabezado
+    - generic: Logo del nutri, nombre del paciente, rango y fecha de emisión
+    - button "▲"
+    - button "▼"
+    - checkbox [checked]
+    - generic: Datos del paciente
+    - generic: Edad, sexo, objetivo, antecedentes clínicos
+    - button "▲"
+    - button "▼"
+    - checkbox [checked]
+    - generic: Resumen ejecutivo
+    - generic: Texto libre — ideal para un párrafo de contexto inicial
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Evolución del peso
+    - generic: Tabla con peso por fecha + delta + tendencia del período
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Medidas corporales
+    - generic: "Cintura, cadera, brazo, % grasa (fuente: Medidas del perfil)"
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Antropometría (ISAK)
+    - generic: Evaluación antropométrica profesional ISAK
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Macros promedio
+    - generic: Calorías, P/C/G promedio y adherencia al objetivo
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Adherencia
+    - generic: "% días con registro, comidas registradas, racha más larga"
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Distribución de comidas
+    - generic: Cantidad de registros por tipo (desayuno/almuerzo/cena/etc.)
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Bienestar
+    - generic: Ánimo, hambre y energía promedio + tendencia
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Plan alimentario
+    - generic: Plan activo con macros objetivo y comidas
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox
+    - generic: Fotos de progreso
+    - generic: Lista de fotos del período (en PDF se incluye la URL)
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Consultas del período
+    - generic: Tabla de consultas agendadas/realizadas en el período
+    - button "▲"
+    - button "▼"
+    - checkbox [checked]
+    - generic: Notas clínicas
+    - generic: Notas del período (más recientes primero)
+    - button "▲"
+    - button "▼"
+    - checkbox [checked]
+    - generic: Recomendaciones
+    - generic: Texto libre — recomendaciones a futuro
+    - button "▲"
+    - button "▼"
+    - button "✎"
+    - checkbox [checked]
+    - generic: Firma y cierre
+    - generic: Firma del nutri, matrícula y datos de contacto
+    - button "▲"
+    - button "▼"
+    - button "✎"
+  - main:
+    - button "◀ Ocultar config"
+    - generic: Elegí un paciente para empezar
+    - button "💾 Guardar borrador" [disabled]
+    - button "📨 Enviar por Telegram" [disabled]
+    - button "📄 Descargar PDF" [disabled]
+    - generic: 📋
+    - generic: Elegí un paciente para empezar
+    - generic: El reporte se va construyendo en tiempo real con los datos del paciente.
+- generic: "0"

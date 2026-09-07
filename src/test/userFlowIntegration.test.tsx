@@ -72,8 +72,13 @@ describe('TEST-01: Secuencia de Flujo Completo Real de 12 Pasos (Fase 1.1.2)', (
     expect(camilaAlerts.length).toBe(3);
     expect(camilaAlerts[0]?.patientName).toBe('Camila Ríos');
 
-    // 9. Resolver una alerta
+    // 9. Reconocer y luego resolver una alerta sin perder trazabilidad
     const targetAlertId = camilaAlerts[0]!.id;
+    act(() => {
+      result.current.acknowledgeAlert(targetAlertId);
+    });
+    expect(result.current.alerts.find(a => a.id === targetAlertId)?.status).toBe('acknowledged');
+
     act(() => {
       result.current.resolveAlert(targetAlertId);
     });
@@ -93,6 +98,7 @@ describe('TEST-01: Secuencia de Flujo Completo Real de 12 Pasos (Fase 1.1.2)', (
 
     expect(newRec).toBeDefined();
     expect(newRec?.createdBy).toBe('nutri-1');
+    expect(newRec?.responseId).toBeDefined();
 
     // 11. Cambiar nuevamente al paciente (Camila Ríos)
     act(() => {

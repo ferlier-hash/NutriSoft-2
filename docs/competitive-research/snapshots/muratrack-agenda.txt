@@ -1,0 +1,11 @@
+- status "Cargando..."
+- status "Cargando..."
+- region "Notifications alt+T"
+- alert
+- dialog "Consentimiento de cookies":
+  - paragraph: Este sitio utiliza cookies
+  - paragraph: Utilizamos cookies para mejorar la experiencia de navegación y analizar el tráfico del sitio. Podés aceptar o rechazar su uso en cualquier momento.
+  - link "Política de privacidad":
+    - /url: /politica-privacidad
+  - button "Rechazar"
+  - button "Aceptar cookies"

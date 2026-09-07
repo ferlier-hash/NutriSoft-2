@@ -1,0 +1,20 @@
+COMMAND: npm run db:lint
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:12:35.743Z
+END_TIME: 2026-08-06T04:12:37.891Z
+DURATION_MS: 2148
+EXIT_CODE: 0
+--- STDOUT ---
+
+> nutrisoft@0.1.0 db:lint
+> supabase db lint --schema api,app,security --level error
+
+{"results":[],"message":"db lint"}
+
+--- STDERR ---
+Connecting to local database...
+Linting schema: api
+Linting schema: app
+Linting schema: security
+
+No schema errors found

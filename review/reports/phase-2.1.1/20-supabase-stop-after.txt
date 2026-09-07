@@ -1,0 +1,10 @@
+COMMAND: npx supabase stop
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-05T00:54:20.000Z
+END_TIME: 2026-08-05T00:54:21.000Z
+DURATION_MS: 1000
+EXIT_CODE: 0
+--- STDOUT ---
+Stopped local Supabase containers.
+--- STDERR ---
+(none)

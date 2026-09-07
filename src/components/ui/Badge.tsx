@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'high' | 'medium' | 'normal' | 'active' | 'suspended' | 'pending' | 'info';
+  variant?: 'high' | 'medium' | 'normal' | 'active' | 'suspended' | 'pending' | 'info' | 'neutral';
   className?: string;
 }
 
@@ -15,6 +15,7 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'info', classN
     suspended: 'bg-[#FCEBEA] text-[#902A24] border-[#F8C4C1]',
     pending: 'bg-[#FDF6E2] text-[#845712] border-[#F4E3B4]',
     info: 'bg-[#EAEFFC] text-[#2D3F99] border-[#C6D4F8]',
+    neutral: 'bg-[#F2F4F5] text-[#4B5660] border-[#D8E0E3]',
   };
 
   return (

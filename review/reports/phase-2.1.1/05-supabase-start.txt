@@ -1,0 +1,11 @@
+COMMAND: npx supabase start
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-06T04:11:05.489Z
+END_TIME: 2026-08-06T04:11:31.423Z
+DURATION_MS: 25934
+EXIT_CODE: 0
+--- STDOUT ---
+{"DB_URL":"postgresql://postgres:postgres@127.0.0.1:54322/postgres","API_URL":"http://127.0.0.1:54321","REST_URL":"http://127.0.0.1:54321/rest/v1","GRAPHQL_URL":"http://127.0.0.1:54321/graphql/v1","FUNCTIONS_URL":"http://127.0.0.1:54321/functions/v1","MCP_URL":"http://127.0.0.1:54321/mcp","STUDIO_URL":"http://127.0.0.1:54323","PUBLISHABLE_KEY":"[REDACTED]","SECRET_KEY":"[REDACTED]","JWT_SECRET":"[REDACTED]","ANON_KEY":"[REDACTED]","SERVICE_ROLE_KEY":"[REDACTED]","MAILPIT_URL":"http://127.0.0.1:54324","INBUCKET_URL":"http://127.0.0.1:54324","STORAGE_S3_URL":"http://127.0.0.1:54321/storage/v1/s3","S3_PROTOCOL_ACCESS_KEY_ID":"[REDACTED]","S3_PROTOCOL_ACCESS_KEY_SECRET":"[REDACTED]","S3_PROTOCOL_REGION":"local","message":""}
+
+--- STDERR ---
+(none)

@@ -1,0 +1,481 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Tu agenda" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- text: Crear
+- generic: add
+- generic: work_history
+- heading "9 – 15 ago 2026" [level=2]
+- button "prev":
+  - generic: 
+- button "Hoy" [disabled]
+- button "next":
+  - generic: 
+- button "Día"
+- button "Semana"
+- button "Mes"
+- table:
+  - rowgroup:
+    - row "dom 9/8 lun 10/8 mar 11/8 mié 12/8 jue 13/8 vie 14/8 sáb 15/8":
+      - cell "dom 9/8 lun 10/8 mar 11/8 mié 12/8 jue 13/8 vie 14/8 sáb 15/8":
+        - table:
+          - rowgroup:
+            - row "dom 9/8 lun 10/8 mar 11/8 mié 12/8 jue 13/8 vie 14/8 sáb 15/8":
+              - columnheader
+              - columnheader "dom 9/8"
+              - columnheader "lun 10/8"
+              - columnheader "mar 11/8"
+              - columnheader "mié 12/8"
+              - columnheader "jue 13/8"
+              - columnheader "vie 14/8"
+              - columnheader "sáb 15/8"
+  - rowgroup:
+    - row "Todo el día 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00 9:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00":
+      - cell "Todo el día 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00 9:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00":
+        - table:
+          - rowgroup:
+            - row "Todo el día":
+              - cell "Todo el día"
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+        - table:
+          - rowgroup:
+            - row:
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+        - separator
+        - table:
+          - rowgroup:
+            - row:
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+        - table:
+          - rowgroup:
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "1:00":
+              - cell "1:00":
+                - generic: 1:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "2:00":
+              - cell "2:00":
+                - generic: 2:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "3:00":
+              - cell "3:00":
+                - generic: 3:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "4:00":
+              - cell "4:00":
+                - generic: 4:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "5:00":
+              - cell "5:00":
+                - generic: 5:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "6:00":
+              - cell "6:00":
+                - generic: 6:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "7:00":
+              - cell "7:00":
+                - generic: 7:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "8:00":
+              - cell "8:00":
+                - generic: 8:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "9:00":
+              - cell "9:00":
+                - generic: 9:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "10:00":
+              - cell "10:00":
+                - generic: 10:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "11:00":
+              - cell "11:00":
+                - generic: 11:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "12:00":
+              - cell "12:00":
+                - generic: 12:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "13:00":
+              - cell "13:00":
+                - generic: 13:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "14:00":
+              - cell "14:00":
+                - generic: 14:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "15:00":
+              - cell "15:00":
+                - generic: 15:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "16:00":
+              - cell "16:00":
+                - generic: 16:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "17:00":
+              - cell "17:00":
+                - generic: 17:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "18:00":
+              - cell "18:00":
+                - generic: 18:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "19:00":
+              - cell "19:00":
+                - generic: 19:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "20:00":
+              - cell "20:00":
+                - generic: 20:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "21:00":
+              - cell "21:00":
+                - generic: 21:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "22:00":
+              - cell "22:00":
+                - generic: 22:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row "23:00":
+              - cell "23:00":
+                - generic: 23:00
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+            - row:
+              - cell
+              - cell
+        - table:
+          - rowgroup:
+            - row:
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+              - cell
+- heading "Consulta transcurriendo" [level=3]
+- link "Patient exemple":
+  - /url: /patients/3286036/information
+  - img "Patient exemple"
+- link "Patient exemple":
+  - /url: /patients/3286036/information
+  - heading "Patient exemple" [level=4]
+- generic: 31 de julio | 09:00 - 09:30
+- button "more_vert":
+  - generic: more_vert
+- generic: Completar consulta
+- link "Volver a la consulta":
+  - /url: /appointments/3728371/patient_information
+- heading "Configura el servicio de peticiones de consultas" [level=3]
+- generic: Horario de trabajo
+- generic: Se necesita que definas tu horario de trabajo para que se puedan programar consultas.
+- generic: Definir horario de trabajo
+- generic: east
+- generic: ¡Bien!, ya definiste los lugares de consulta!
+- generic: Tus servicios
+- generic: Define cuales son los servicios de nutrición que ofertas a tus clientes.
+- generic: Definir mis servicios
+- generic: east
+- text: search search search search search search search search search search search search search search
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- status
+- iframe

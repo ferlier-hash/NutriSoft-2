@@ -8,14 +8,14 @@ import { Inbox, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 export const InboxPage: React.FC = () => {
   // SCOPE-01: Usar las alertas del profesional actual
-  const { professionalAlerts, resolveAlert, currentDemoNutritionist } = useMock();
+  const { professionalAlerts, acknowledgeAlert, resolveAlert, currentDemoNutritionist } = useMock();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'unresolved' | 'high'>('unresolved');
 
   const filteredAlerts = professionalAlerts.filter(a => {
-    if (filter === 'unresolved') return a.status === 'unresolved';
-    if (filter === 'high') return a.priority === 'high' && a.status === 'unresolved';
+    if (filter === 'unresolved') return a.status !== 'resolved';
+    if (filter === 'high') return a.priority === 'high' && a.status !== 'resolved';
     return true;
   });
 
@@ -48,7 +48,7 @@ export const InboxPage: React.FC = () => {
                 : 'text-text-secondary hover:text-text-primary'
             }`}
           >
-            Pendientes ({professionalAlerts.filter(a => a.status === 'unresolved').length})
+            Pendientes ({professionalAlerts.filter(a => a.status !== 'resolved').length})
           </button>
           <button
             type="button"
@@ -93,6 +93,15 @@ export const InboxPage: React.FC = () => {
               key={alert.id}
               alert={alert}
               onSelectPatient={handleSelectPatient}
+              onAcknowledgeAlert={alertId => {
+                try {
+                  acknowledgeAlert(alertId);
+                  showToast('Alerta en revisión', 'La alerta sigue pendiente hasta que confirmes su resolución.');
+                } catch (err: unknown) {
+                  const msg = err instanceof Error ? err.message : 'Error al revisar alerta';
+                  showToast('Error', msg, 'error');
+                }
+              }}
               onResolveAlert={alertId => {
                 try {
                   resolveAlert(alertId);

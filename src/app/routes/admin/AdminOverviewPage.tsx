@@ -1,247 +1,127 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  ArrowRight,
+  Building2,
+  CalendarClock,
+  CircleAlert,
+  Clock3,
+  Plus,
+  ShieldCheck,
+  Stethoscope,
+  Users,
+} from 'lucide-react';
 import { useMock } from '../../provider';
-import { useToast } from '../../../components/ui/Toast';
-import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
-import { Dialog } from '../../../components/ui/Dialog';
-import { Building2, Stethoscope, Users, TrendingUp, Plus } from 'lucide-react';
+import { PlatformHistoryChart } from '../../../components/domain/PlatformHistoryChart';
+import { CreateOrganizationDialog } from '../../../components/domain/CreateOrganizationDialog';
+import { RegisterPaymentDialog } from '../../../components/domain/RegisterPaymentDialog';
+import { daysUntil } from '../../../lib/adminCommercial';
 
 export const AdminOverviewPage: React.FC = () => {
-  const { organizations, addOrganization } = useMock();
-  const { showToast } = useToast();
+  const { organizations } = useMock();
   const navigate = useNavigate();
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [paymentOrganizationId, setPaymentOrganizationId] = useState<string | null>(null);
+  const paymentOrganization = organizations.find(item => item.id === paymentOrganizationId) ?? null;
 
-  const [isAddOrgOpen, setIsAddOrgOpen] = useState(false);
-  const [orgName, setOrgName] = useState('');
-  const [orgLocation, setOrgLocation] = useState('');
-  const [orgPlan, setOrgPlan] = useState<'Básico' | 'Pro' | 'Enterprise'>('Pro');
+  const activeOrganizations = organizations.filter(item => item.status === 'active').length;
+  const activePatients = organizations
+    .filter(item => item.status === 'active' || item.status === 'payment_due')
+    .reduce((sum, item) => sum + item.patientsCount, 0);
+  const nutritionists = organizations.reduce((sum, item) => sum + item.nutritionistsCount, 0);
+  const dueSoonOrganizations = organizations.filter(item => item.status === 'active' && daysUntil(item.nextBillingDate) >= 0 && daysUntil(item.nextBillingDate) <= 3);
+  const paymentDueOrganizations = organizations.filter(item => item.status === 'payment_due');
+  const nearSuspensionOrganizations = organizations.filter(item => item.status === 'payment_due' && item.suspensionDate && daysUntil(item.suspensionDate) <= 2);
+  const suspendedOrganizations = organizations.filter(item => item.status === 'suspended');
 
-  const totalOrgs = organizations.length;
-  const totalNutris = organizations.reduce((sum, o) => sum + o.nutritionistsCount, 0);
-  const totalPatients = organizations.reduce((sum, o) => sum + o.patientsCount, 0);
+  const summaryCards = [
+    { label: 'Consultorios activos', value: activeOrganizations, note: `${organizations.length} registrados`, icon: Building2, to: '/admin/organizations' },
+    { label: 'Nutricionistas', value: nutritionists, note: 'Perfiles vinculados', icon: Stethoscope, to: '/admin/nutritionists' },
+    { label: 'Pacientes activos', value: activePatients, note: 'Sólo conteo agregado', icon: Users },
+  ];
 
-  const handleCreateOrgSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const created = addOrganization(orgName, orgLocation, orgPlan);
-      setIsAddOrgOpen(false);
-      setOrgName('');
-      setOrgLocation('');
-      showToast('Organización creada', `Se registró ${created.name} exitosamente.`);
-      navigate(`/admin/organizations/${created.id}`);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error al crear la organización';
-      showToast('Error', msg, 'error');
-    }
-  };
+  const operationCards = [
+    { label: 'Vencen en 3 días', organizations: dueSoonOrganizations, icon: CalendarClock, tone: 'info', allowPayment: true },
+    { label: 'Pendiente de pago', organizations: paymentDueOrganizations, icon: Clock3, tone: 'warning', allowPayment: true },
+    { label: 'Próximo a suspensión', organizations: nearSuspensionOrganizations, icon: CircleAlert, tone: 'critical', allowPayment: true },
+    { label: 'Suspendidos', organizations: suspendedOrganizations, icon: ShieldCheck, tone: 'neutral', allowPayment: false },
+  ];
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      {/* Cabecera & Acción */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-7 max-w-[1440px] mx-auto">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
         <div>
-          <h2 className="text-2xl font-bold text-text-primary">Resumen General de Plataforma</h2>
-          <p className="text-xs text-text-secondary mt-0.5">
-            Supervisa los indicadores globales de uso, organizaciones activas y profesionales registrados.
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-strong">Super Admin · Vista comercial</p>
+          <h2 className="text-3xl font-bold text-text-primary mt-2">Resumen General de Plataforma</h2>
+          <p className="text-sm text-text-secondary mt-2 max-w-2xl">
+            Estado operativo y comercial de NutriSoft. Las métricas son agregadas y no exponen información clínica identificable.
           </p>
         </div>
+        <Button variant="primary" onClick={() => setIsAddOpen(true)} className="gap-2 self-start lg:self-auto">
+          <Plus className="w-4 h-4" /> Nuevo consultorio
+        </Button>
+      </div>
 
-        <div className="flex items-center gap-2">
-          <Button asChild variant="secondary">
-            <Link to="/admin/nutritionists" className="flex items-center gap-2">
-              <Stethoscope className="w-4 h-4" />
-              <span>Ver nutricionistas</span>
-            </Link>
-          </Button>
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4" aria-label="Indicadores principales">
+        {summaryCards.map(({ label, value, note, icon: Icon, to }) => {
+          const content = (
+            <div className="bg-surface border border-border-subtle rounded-2xl p-5 h-full hover:border-border-hover transition-colors shadow-sm">
+              <div className="flex items-start justify-between">
+                <div className="w-11 h-11 rounded-xl bg-brand-soft text-brand-strong flex items-center justify-center"><Icon className="w-5 h-5" /></div>
+                {to && <ArrowRight className="w-4 h-4 text-text-tertiary" />}
+              </div>
+              <p className="text-sm text-text-secondary mt-5">{label}</p>
+              <p className="text-3xl font-bold text-text-primary mt-1">{value.toLocaleString('es-AR')}</p>
+              <p className="text-xs text-text-tertiary mt-1">{note}</p>
+            </div>
+          );
+          return to ? <Link key={label} to={to} className="rounded-2xl">{content}</Link> : <div key={label}>{content}</div>;
+        })}
+      </section>
 
-          <Button asChild variant="primary">
-            <Link to="/admin/organizations" className="flex items-center gap-2">
-              <Building2 className="w-4 h-4" />
-              <span>Ver organizaciones</span>
-            </Link>
-          </Button>
+      <section aria-labelledby="commercial-attention-title">
+        <div className="mb-3">
+          <div>
+            <h3 id="commercial-attention-title" className="text-lg font-bold text-text-primary">Atención comercial</h3>
+            <p className="text-xs text-text-secondary mt-0.5">Prioridades calculadas sobre el próximo vencimiento y el estado actual.</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+          {operationCards.map(({ label, organizations: matchingOrganizations, icon: Icon, tone, allowPayment }) => (
+            <article key={label} className={`commercial-card commercial-card--${tone}`}>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs font-semibold text-text-secondary">{label}</p>
+                <Icon className="w-4 h-4" />
+              </div>
+              <p className="text-2xl font-bold text-text-primary mt-3">{matchingOrganizations.length}</p>
+              {matchingOrganizations.length > 0 && (
+                <ul className="mt-3 pt-3 border-t border-border-subtle space-y-1.5">
+                  {matchingOrganizations.map(organization => (
+                    <li key={organization.id} className="flex items-center justify-between gap-2 text-[11px] font-semibold text-text-secondary">
+                      <span className="truncate" title={organization.name}>{organization.name}</span>
+                      {allowPayment && <button type="button" onClick={() => setPaymentOrganizationId(organization.id)} className="shrink-0 text-[10px] font-bold text-brand-strong hover:underline">Registrar pago</button>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <PlatformHistoryChart />
+
+      <div className="rounded-2xl border border-[#C6D4F8] bg-[#F4F6FE] p-4 flex gap-3 text-[#2D3F99]">
+        <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" />
+        <div>
+          <p className="text-sm font-bold">Privacidad por diseño</p>
+          <p className="text-xs mt-1 leading-relaxed">El Super Admin administra consultorios, planes, pagos y métricas agregadas. El contenido clínico permanece fuera de este portal.</p>
         </div>
       </div>
 
-      {/* Tarjetas de Métricas Consolidadas con Link Reales (A11Y-01) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Link
-          to="/admin/organizations"
-          className="block outline-none focus-visible:ring-2 focus-visible:ring-brand-strong rounded-2xl transition-all hover:scale-[1.01]"
-        >
-          <Card className="flex items-center gap-4 hover:border-brand-primary h-full">
-            <div className="w-12 h-12 rounded-2xl bg-surface-tinted border border-border-subtle flex items-center justify-center text-brand-strong shrink-0">
-              <Building2 className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-text-secondary font-medium">Organizaciones</p>
-              <h3 className="text-2xl font-bold text-text-primary">{totalOrgs}</h3>
-              <span className="text-[11px] text-[#1E5235] font-semibold flex items-center gap-0.5">
-                <TrendingUp className="w-3 h-3" /> +12 este mes
-              </span>
-            </div>
-          </Card>
-        </Link>
-
-        <Link
-          to="/admin/nutritionists"
-          className="block outline-none focus-visible:ring-2 focus-visible:ring-brand-strong rounded-2xl transition-all hover:scale-[1.01]"
-        >
-          <Card className="flex items-center gap-4 hover:border-brand-primary h-full">
-            <div className="w-12 h-12 rounded-2xl bg-[#EAEFFC] border border-[#C6D4F8] flex items-center justify-center text-[#2D3F99] shrink-0">
-              <Stethoscope className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-text-secondary font-medium">Nutricionistas</p>
-              <h3 className="text-2xl font-bold text-text-primary">{totalNutris}</h3>
-              <span className="text-[11px] text-[#2D3F99] font-semibold flex items-center gap-0.5">
-                <TrendingUp className="w-3 h-3" /> +28 este mes
-              </span>
-            </div>
-          </Card>
-        </Link>
-
-        <Card className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-surface-tinted border border-border-subtle flex items-center justify-center text-brand-strong shrink-0">
-            <Users className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-xs text-text-secondary font-medium">Pacientes activos (Métrica)</p>
-            <h3 className="text-2xl font-bold text-text-primary">{totalPatients.toLocaleString()}</h3>
-            <span className="text-[11px] text-[#1E5235] font-semibold flex items-center gap-0.5">
-              <TrendingUp className="w-3 h-3" /> +196 este mes
-            </span>
-          </div>
-        </Card>
-
-        <Card className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#EAEFFC] border border-[#C6D4F8] flex items-center justify-center text-[#2D3F99] shrink-0">
-            <TrendingUp className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-xs text-text-secondary font-medium">Retención (30 días)</p>
-            <h3 className="text-2xl font-bold text-text-primary">97%</h3>
-            <span className="text-[11px] text-[#2D3F99] font-semibold flex items-center gap-0.5">
-              <TrendingUp className="w-3 h-3" /> +4 pp vs. mes anterior
-            </span>
-          </div>
-        </Card>
-      </div>
-
-      {/* Sección Acciones Rápidas */}
-      <Card className="space-y-4">
-        <h3 className="font-bold text-base text-text-primary border-b border-border-subtle pb-2">
-          Acciones administrativas principales
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Button
-            asChild
-            variant="secondary"
-            className="flex items-center justify-start gap-3 p-4 h-auto text-left"
-          >
-            <Link to="/admin/organizations">
-              <Building2 className="w-5 h-5 text-brand-strong" />
-              <div>
-                <p className="font-semibold text-xs text-text-primary">Gestionar Organizaciones</p>
-                <p className="text-[11px] font-normal text-text-secondary">Ver planes, altas y estados</p>
-              </div>
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="secondary"
-            className="flex items-center justify-start gap-3 p-4 h-auto text-left"
-          >
-            <Link to="/admin/nutritionists">
-              <Stethoscope className="w-5 h-5 text-[#2D3F99]" />
-              <div>
-                <p className="font-semibold text-xs text-text-primary">Directorio de Nutricionistas</p>
-                <p className="text-[11px] font-normal text-text-secondary">Ver asignaciones y profesionales</p>
-              </div>
-            </Link>
-          </Button>
-
-          <Button
-            variant="primary"
-            onClick={() => setIsAddOrgOpen(true)}
-            className="flex items-center justify-start gap-3 p-4 h-auto text-left"
-          >
-            <Plus className="w-5 h-5 text-text-primary" />
-            <div>
-              <p className="font-semibold text-xs text-text-primary">Nueva Organización</p>
-              <p className="text-[11px] font-normal text-text-primary">Registrar consultorio o clínica</p>
-            </div>
-          </Button>
-        </div>
-      </Card>
-
-      {/* Dialog UX-01: Registro de Nueva Organización */}
-      <Dialog
-        isOpen={isAddOrgOpen}
-        onClose={() => setIsAddOrgOpen(false)}
-        title="Registrar nueva organización"
-        description="Ingresa los datos para dar de alta una nueva clínica o consultorio en la plataforma."
-      >
-        <form onSubmit={handleCreateOrgSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="new-org-name" className="block text-xs font-medium text-text-primary mb-1">
-              Nombre de la Organización *
-            </label>
-            <input
-              id="new-org-name"
-              type="text"
-              required
-              value={orgName}
-              onChange={e => setOrgName(e.target.value)}
-              placeholder="Ej. Centro Médico NutriSalud"
-              className="w-full px-3 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:ring-2 focus:ring-brand-strong text-text-primary"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="new-org-location" className="block text-xs font-medium text-text-primary mb-1">
-              Ubicación *
-            </label>
-            <input
-              id="new-org-location"
-              type="text"
-              required
-              value={orgLocation}
-              onChange={e => setOrgLocation(e.target.value)}
-              placeholder="Ej. Buenos Aires, AR"
-              className="w-full px-3 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:ring-2 focus:ring-brand-strong text-text-primary"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="new-org-plan" className="block text-xs font-medium text-text-primary mb-1">
-              Plan Suscripto *
-            </label>
-            <select
-              id="new-org-plan"
-              value={orgPlan}
-              onChange={e => setOrgPlan(e.target.value as 'Básico' | 'Pro' | 'Enterprise')}
-              className="w-full px-3 py-2 text-xs bg-surface-subtle border border-border-subtle rounded-xl focus:ring-2 focus:ring-brand-strong text-text-primary"
-            >
-              <option value="Básico">Básico</option>
-              <option value="Pro">Pro</option>
-              <option value="Enterprise">Enterprise</option>
-            </select>
-          </div>
-
-          <div className="flex justify-end gap-2 pt-2 border-t border-border-subtle">
-            <Button variant="secondary" type="button" onClick={() => setIsAddOrgOpen(false)}>
-              Cancelar
-            </Button>
-            <Button variant="primary" type="submit">
-              Guardar organización
-            </Button>
-          </div>
-        </form>
-      </Dialog>
+      <CreateOrganizationDialog isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} onCreated={organization => navigate(`/admin/organizations/${organization.id}`)} />
+      <RegisterPaymentDialog organization={paymentOrganization} isOpen={Boolean(paymentOrganization)} onClose={() => setPaymentOrganizationId(null)} />
     </div>
   );
 };

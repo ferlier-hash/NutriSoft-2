@@ -1,0 +1,129 @@
+- navigation:
+  - list:
+    - link "Logo":
+      - /url: /
+      - img "Logo"
+  - list:
+    - link "home":
+      - /url: /professionals/home
+      - generic: home
+  - list:
+    - link "calendar_month":
+      - /url: /professionals/appointments
+      - generic: calendar_month
+    - link "account_circle":
+      - /url: /professionals/patients
+      - generic: account_circle
+  - list:
+    - link "mail":
+      - /url: /professionals/conversations
+      - generic: mail
+    - link "digital_wellbeing":
+      - /url: /professionals/follow_up
+      - generic: digital_wellbeing
+  - list:
+    - link "nutrition":
+      - /url: /professionals/foods
+      - generic: nutrition
+    - link "stockpot":
+      - /url: /professionals/recipes
+      - generic: stockpot
+    - link "balance":
+      - /url: /professionals/food_lists
+      - generic: balance
+    - link "list_alt_add":
+      - /url: /professionals/templates
+      - generic: list_alt_add
+  - list:
+    - link "school":
+      - /url: /professionals/academy
+      - generic: school
+    - link "globe_uk":
+      - /url: /professionals/website
+      - generic: globe_uk
+    - link "person_raised_hand":
+      - /url: https://help.nutrium.com/es
+      - generic: person_raised_hand
+- navigation:
+  - heading "Buenos días, Fernando" [level=2]
+  - button "notifications_off":
+    - generic: notifications_off
+  - link "mail":
+    - /url: /professionals/conversations
+    - generic: mail
+  - button "card_membership":
+    - generic: card_membership
+  - list:
+    - button "Fernando Liernur keyboard_arrow_down Ilimitados":
+      - generic: Fernando Liernur
+      - generic: keyboard_arrow_down
+      - generic: Ilimitados
+- heading "Consulta transcurriendo" [level=3]
+- link "Patient exemple":
+  - /url: /patients/3286036/information
+  - img "Patient exemple"
+- link "Patient exemple":
+  - /url: /patients/3286036/information
+  - heading "Patient exemple" [level=4]
+- generic: 31 de julio | 09:00 - 09:30
+- button "more_vert":
+  - generic: more_vert
+- generic: Completar consulta
+- link "Volver a la consulta":
+  - /url: /appointments/3728371/patient_information
+- heading "Próximas consultas" [level=4]
+- link "Abrir calendario arrow_forward":
+  - /url: /professionals/appointments
+  - text: Abrir calendario
+  - generic: arrow_forward
+- button "more_vert":
+  - generic: more_vert
+- button "more_vert":
+  - generic: more_vert
+- button "more_vert":
+  - generic: more_vert
+- button "more_vert":
+  - generic: more_vert
+- generic: calendar_month
+- generic: Esta lista está vacía
+- generic: No tienes más ninguna consulta programada.
+- link "Programar consulta":
+  - /url: /professionals/schedule_appointment
+- text: Mis estadísticas
+- generic: 13 jul.–12 ago. vs 13 jun.–12 jul.
+- generic: Últimos 30 días
+- combobox
+- generic: expand_more
+- generic: account_circle
+- generic: "1"
+- generic: "+1"
+- generic: Nuevos clientes
+- generic: calendar_month
+- generic: "0"
+- generic: =
+- generic: Primeras consultas
+- generic: autorenew
+- generic: "0"
+- generic: =
+- generic: Consultas de seguimiento
+- generic: mail
+- generic: "0"
+- generic: =
+- generic: Mensajes enviados
+- list:
+  - link "calendar_month Citas canceladas":
+    - /url: "#activities-widget"
+    - generic: calendar_month
+    - text: Citas canceladas
+  - link "mail Últimos mensajes":
+    - /url: "#conversations-widget"
+    - generic: mail
+    - text: Últimos mensajes
+- generic: calendar_month
+- generic: Esta lista está vacía
+- link "Ver todas las actividades east":
+  - /url: /professionals/follow_up
+  - text: Ver todas las actividades
+  - generic: east
+- iframe
+- button "Open Intercom Messenger":

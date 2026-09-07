@@ -1,0 +1,49 @@
+- button "Feedback"
+- complementary:
+  - img "Vitals IA"
+  - generic: Vitals IA
+  - generic: Plan free
+  - button "1":
+    - generic: "1"
+  - button "‹"
+  - navigation:
+    - button "Inicio":
+      - text: Inicio
+    - button "Pacientes":
+      - text: Pacientes
+    - button "Chat":
+      - text: Chat
+    - button "Agenda":
+      - text: Agenda
+    - generic: Planes
+    - button "Templates" [active]:
+      - text: Templates
+    - button "Recetas":
+      - text: Recetas
+    - button "Mis Productos 9+":
+      - text: Mis Productos
+      - generic "430 alimentos aprendidos por IA para revisar": 9+
+    - generic: Seguimiento
+    - button "Analytics":
+      - text: Analytics
+    - button "Reportes":
+      - text: Reportes
+    - button "Antropometría":
+      - text: Antropometría
+  - button "FL Fernando Liernur Plan free ▲":
+    - generic: FL
+    - generic: Fernando Liernur
+    - generic: Plan free
+    - generic: ▲
+- main:
+  - generic: ⏳
+  - strong: Plan gratuito
+  - text: — 2d 23:53:33 restantes
+  - button "Ver planes →"
+  - heading "Templates de planes" [level=1]
+  - paragraph: Plantillas reutilizables para asignar rápidamente a pacientes nuevos.
+  - button "+ Nuevo template"
+  - paragraph: 📋
+  - paragraph: No hay templates todavía
+  - paragraph: Creá uno para reutilizarlo en múltiples pacientes.
+  - button "+ Nuevo template"

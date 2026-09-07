@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-08-06T04:13:47.105Z",
+  "status": "PASS",
+  "failure": null,
+  "steps": [
+    {
+      "filename": "00-git-status-before.txt",
+      "command": "git status --porcelain=v1 --branch",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 16
+    },
+    {
+      "filename": "02-npm-ci.txt",
+      "command": "npm ci --no-audit --no-fund",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 3925
+    },
+    {
+      "filename": "03-npm-ls.txt",
+      "command": "npm ls --depth=0",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 314
+    },
+    {
+      "filename": "04-supabase-stop-before.txt",
+      "command": "npx supabase stop",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 13649
+    },
+    {
+      "filename": "05-supabase-start.txt",
+      "command": "npx supabase start",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 25934
+    },
+    {
+      "filename": "06-db-reset-first.txt",
+      "command": "npm run db:reset",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 31730
+    },
+    {
+      "filename": "07-db-reset-second.txt",
+      "command": "npm run db:reset",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 30403
+    },
+    {
+      "filename": "08-db-test.txt",
+      "command": "npm run db:test",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 2181
+    },
+    {
+      "filename": "09-db-lint.txt",
+      "command": "npm run db:lint",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 2148
+    },
+    {
+      "filename": "10-db-types.txt",
+      "command": "npm run db:types",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 2938
+    },
+    {
+      "filename": "11-db-verify-types.txt",
+      "command": "npm run db:verify-types",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 2674
+    },
+    {
+      "filename": "12-frontend-lint.txt",
+      "command": "npm run lint",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1493
+    },
+    {
+      "filename": "13-frontend-typecheck.txt",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1491
+    },
+    {
+      "filename": "14-frontend-tests.txt",
+      "command": "npm run test",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 2436
+    },
+    {
+      "filename": "15-frontend-build.txt",
+      "command": "npm run build",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 3231
+    },
+    {
+      "filename": "16-verify-all.txt",
+      "command": "npm run verify:all",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 41737
+    },
+    {
+      "filename": "17-npm-audit-high.txt",
+      "command": "npm audit --audit-level=high",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 897
+    },
+    {
+      "filename": "18-secret-scan.txt",
+      "command": "git grep -nE BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR- -- . :(exclude)scripts/run-evidence-phase-2-1-1.js :(exclude)review/reports/**",
+      "exitCode": 1,
+      "passed": true,
+      "durationMs": 44
+    },
+    {
+      "filename": "19-git-diff-stat.txt",
+      "command": "git diff --stat phase-2.1-security-hardening...HEAD",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 19
+    },
+    {
+      "filename": "21-supabase-stop-after.txt",
+      "command": "npx supabase stop",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 12219
+    },
+    {
+      "filename": "22-git-status-after.txt",
+      "command": "git status --porcelain=v1 --branch",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 23
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+- banner:
+  - link "Logotipo Harbiz azul en la cabecera de navegación":
+    - /url: /?r=0
+    - img "Logotipo Harbiz azul en la cabecera de navegación"
+  - navigation:
+    - button "Funcionalidades":
+      - generic: Funcionalidades
+    - button "Sectores":
+      - generic: Sectores
+    - button "Recursos":
+      - generic: Recursos
+    - button "Sobre Harbiz":
+      - generic: Sobre Harbiz
+    - link "Precio":
+      - /url: /tarifas
+    - button "es":
+      - generic: es
+    - link "Prueba gratis":
+      - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+      - generic: Prueba gratis
+    - link "Iniciar sesión":
+      - /url: https://app.harbiz.io/login?_gl=1*jmx22k*_gcl_au*MTEyMzUzNjU2Ni4xNzY3MDEwNjQ0
+- generic: Precio
+- heading "Elige tu plan y escala tu negocio sin escalar tus horas" [level=1]
+- paragraph:
+  - text: La app todo-en-uno para
+  - strong: entrenadores, nutricionistas y centros
+  - text: ": gestiona clientes, entrega planes, automatiza seguimiento y crece (con IA)."
+- link "Prueba 14 días gratis" [active]:
+  - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+  - generic: Prueba 14 días gratis
+- generic: Cancela cuando quieras
+- generic: Sin tarjeta de crédito
+- generic: Sin permanencia
+- img "Deportista usando la app Harbiz durante su entrenamiento"
+- img "Atleta entrenando con programa de Harbiz en el móvil"
+- img "Cliente siguiendo su rutina de entrenamiento en Harbiz"
+- img "Deportista registrando su progreso en la app Harbiz"
+- generic: Más de 10.000 profesionales
+- tablist:
+  - tab "Mensual" [selected]:
+    - generic: Mensual
+  - tab "Anual (-25%)":
+    - generic: Anual (-25%)
+- tabpanel "Mensual":
+  - generic: Basic
+  - generic: "5"
+  - button "hasta 5 clientes Background Planes":
+    - generic: hasta 5 clientes
+    - img "Background Planes"
+  - generic: $
+  - generic: "19"
+  - generic: /mes
+  - link "Prueba 14 días gratis":
+    - /url: https://app.harbiz.io/acceso-usuarios-plataforma?_gl=1*187mfht*_gcl_aw*R0NMLjE3MTYxOTg2ODEuQ2owS0NRanc2YXV5QmhEekFSSXNBTElvNnZfM3lJcV85M3RqY1lUaHpka2xWTG9XUmVaOFk3X1BiaEJfTE11dTk4eTFBeHNmSnNPbGswc2FBclZNRUFMd193Y0I.*_gcl_au*MTg4Njc2NDg1NC4xNzE2MTk1NTM4*_ga*MjUwODE0OS4xNzE2MTk1NTM4*_ga_DGSWP5C8PM*MTcyMjYwMTM4My4zNy4xLjE3MjI2MDEzODMuNjAuMC4w
+    - generic: Prueba 14 días gratis
+  - generic: Incluye todas las funcionalidades
+  - generic: "Soporte personalizado: Email + chat"
+  - generic: "Tiempo estimado de respuesta: 12h"
+  - generic: Acceso exclusivo a Harbiz Community
+  - generic: Exporta tus informes
+  - generic: Mentoría con especialistas
+  - generic: Tu propia app en iOS y Android
+  - generic: Pro
+  - generic: "50"
+  - button "hasta 50 clientes Arrow Down Icon":
+    - generic: hasta 50 clientes
+    - img "Arrow Down Icon"
+  - generic: $
+  - generic: "129"
+  - generic: /mes
+  - link "Prueba 14 días gratis":
+    - /url: https://app.harbiz.io/acceso-usuarios-plataforma?_gl=1*187mfht*_gcl_aw*R0NMLjE3MTYxOTg2ODEuQ2owS0NRanc2YXV5QmhEekFSSXNBTElvNnZfM3lJcV85M3RqY1lUaHpka2xWTG9XUmVaOFk3X1BiaEJfTE11dTk4eTFBeHNmSnNPbGswc2FBclZNRUFMd193Y0I.*_gcl_au*MTg4Njc2NDg1NC4xNzE2MTk1NTM4*_ga*MjUwODE0OS4xNzE2MTk1NTM4*_ga_DGSWP5C8PM*MTcyMjYwMTM4My4zNy4xLjE3MjI2MDEzODMuNjAuMC4w
+    - generic: Prueba 14 días gratis
+  - generic: Incluye todas las funcionalidades
+  - generic: Soporte por Email + Chat + Videollamada + WhatsApp
+  - generic: "Tiempo estimado de respuesta: 1h"
+  - generic: Acceso exclusivo a Harbiz Community
+  - generic: Exporta tus informes
+  - generic: Mentoría con especialistas
+  - generic: Tu propia app en iOS y Android
+  - generic: App
+  - generic: "50"
+  - button "hasta 50 clientes Fondo decorativo de las tarjetas de planes":
+    - generic: hasta 50 clientes
+    - img "Fondo decorativo de las tarjetas de planes"
+  - generic: $
+  - generic: "219"
+  - generic: /mes
+  - link "Prueba 14 días gratis":
+    - /url: https://app.harbiz.io/acceso-usuarios-plataforma?_gl=1*187mfht*_gcl_aw*R0NMLjE3MTYxOTg2ODEuQ2owS0NRanc2YXV5QmhEekFSSXNBTElvNnZfM3lJcV85M3RqY1lUaHpka2xWTG9XUmVaOFk3X1BiaEJfTE11dTk4eTFBeHNmSnNPbGswc2FBclZNRUFMd193Y0I.*_gcl_au*MTg4Njc2NDg1NC4xNzE2MTk1NTM4*_ga*MjUwODE0OS4xNzE2MTk1NTM4*_ga_DGSWP5C8PM*MTcyMjYwMTM4My4zNy4xLjE3MjI2MDEzODMuNjAuMC4w
+    - generic: Prueba 14 días gratis
+  - generic: Incluye todas las funcionalidades
+  - generic: Soporte por Email + Chat + Videollamada + WhatsApp
+  - generic: "Tiempo de respuesta estimado: menos de 1 hora"
+  - generic: Acceso exclusivo a Harbiz Community
+  - generic: Exporta tus informes
+  - generic: Mentoría con especialistas
+  - generic: Tu propia app en iOS y Android
+- heading "Todo plan incluye:" [level=2]
+- heading "Gestión y entrega del servicio" [level=3]
+- paragraph: Organiza clientes, planes y seguimiento para dar una experiencia profesional.
+- heading "IA para ahorrar horas" [level=3]
+- paragraph: Acelera tareas repetitivas y personaliza más rápido sin perder criterio.
+- heading "Marketing para crecer" [level=3]
+- paragraph: Herramientas para captar y convertir mejor, sin depender de improvisar.
+- heading "Soporte y acompañamiento" [level=3]
+- paragraph: Te ayudamos a implementar para que se traduzca en resultados.
+- link "Empieza gratis hoy":
+  - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+  - generic: Empieza gratis hoy
+- heading "Potencia tu plan con add-ons" [level=2]
+- region "carousel":
+  - group "1 of 3":
+    - link "Add-on de app personalizada con tu marca en Harbiz Personaliza tu app Haz que tu marca se vea, se recuerde y se sienta más tuya Ahorra 25% con pago anual +$18,74 / mes+$24,99 / mes $224,91/año en un pago · ahorras $74,97 Tu app con nombre e icono propios Más marca en cada pantalla Vídeo y emails de bienvenida Personalizar mi app":
+      - /url: https://hs.harbiz.io/meetings/anardeli/web-demo-5000-conoce-harbiz-con-uno-de-nuestros-especialistas-es?uuid=36b06026-dd2b-48ab-9bbe-88366d9b8664
+      - img "Add-on de app personalizada con tu marca en Harbiz"
+      - generic: Personaliza tu app
+      - paragraph: Haz que tu marca se vea, se recuerde y se sienta más tuya
+      - generic: Ahorra 25% con pago anual
+      - strong: +$18,74 / mes
+      - text: +$24,99 / mes
+      - generic: $224,91/año en un pago · ahorras $74,97
+      - paragraph: Tu app con nombre e icono propios
+      - paragraph: Más marca en cada pantalla
+      - paragraph: Vídeo y emails de bienvenida
+      - generic: Personalizar mi app
+  - link:
+    - /url: https://hs.harbiz.io/meetings/anardeli/web-demo-5000-conoce-harbiz-con-uno-de-nuestros-especialistas-es?uuid=36b06026-dd2b-48ab-9bbe-88366d9b8664
+    - generic: Nutri AI
+    - paragraph: Crea planes de nutrición en minutos
+    - generic: Ahorra 25% con pago anual
+    - strong: +$11,24 / mes
+    - text: +$14,99 / mes
+    - generic: $134,91/año en un pago · ahorras $44,97
+    - paragraph: Planes con o sin IA
+    - paragraph: 900+ recetas listas para usar
+    - paragraph: Personaliza, combina e imprime fácil
+    - generic: Añadir Nutri AI
+  - link:
+    - /url: https://hs.harbiz.io/meetings/anardeli/web-demo-5000-conoce-harbiz-con-uno-de-nuestros-especialistas-es?uuid=36b06026-dd2b-48ab-9bbe-88366d9b8664
+    - generic: Biblioteca de Vídeos
+    - paragraph: Más contenido listo para usar, sin empezar siempre de cero.
+    - generic: Ahorra 25% con pago anual
+    - strong: +$14,99 / mes
+    - text: +$19,99 / mes
+    - generic: $179,91/año en un pago · ahorras $59,97
+    - paragraph: 100+ vídeos de rutinas listas
+    - paragraph: Más variedad, menos tiempo creando
+    - paragraph: Clases de profesionales reconocidos
+    - generic: Añadir vídeos
+  - button "previous slide":
+  - button "next slide":
+  - button "Show slide 1 of 3" [pressed]
+  - button "Show slide 2 of 3"
+  - button "Show slide 3 of 3"
+- generic: Automatiza tus ventas
+- heading "¿También quieres cobrar y automatizar pagos?" [level=2]
+- paragraph: Haz crecer tu negocio de la noche a la mañana con nuestra automatización de pagos, diseñada para potenciar tu máquina de ventas.
+- img "Automatización de pagos y suscripciones en Harbiz"
+- heading "Pagos y suscripciones sin complicarte" [level=3]
+- generic: Crea planes de suscripción, como Netflix y olvídate de perseguir en la renovación de pagos cada mes.
+- heading "Reduce impagos con automatizaciones" [level=3]
+- generic: Nuestro sistema recupera de manera automática aquellos cobros que no hayan sido completados con éxito.
+- heading "Facturación automática" [level=3]
+- generic: Olvídate de la generación de facturas y contabilidad… nosotros nos encargamos de todo.
+- link "Ver funcionalidades de pagos":
+  - /url: /funcionalidades/payments
+  - generic: Ver funcionalidades de pagos
+- heading "¿Listo para simplificar tu gestión y enfocarte en tus clientes?" [level=1]
+- link "Prueba gratis":
+  - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+  - generic: Prueba gratis
+- generic: Sin permanencia
+- generic: Sin tarjeta de crédito
+- generic: Sin límites
+- img "App Harbiz mostrada en dos móviles como cierre de página"
+- img "Pantalla de inicio de la app Harbiz en el móvil"
+- img "Vista de rutina del cliente en la app Harbiz"
+- heading "Preguntas frecuentes" [level=2]
+- paragraph: Aquí encontrarás respuestas a las consultas más habituales sobre nuestra plataforma. Si sigues teniendo alguna duda, contacta con nosotros directamente.
+- generic: ¿El precio es mensual o anual?
+- paragraph: El precio mostrado es €/mes con pago anual (12 meses). En el toggle puedes ver la opción mensual.
+- generic: ¿Hay permanencia?
+- paragraph: No. Puedes cancelar cuando quieras.
+- generic: ¿Cómo funciona el periodo de prueba gratuito?
+- paragraph: Tendrás la posibilidad de disfrutar Harbiz con todas las funcionalidades y clientes ilimitados durante tu periodo de prueba totalmente GRATIS y sin necesidad de introducir tarjeta de pago. Una vez vencido este periodo serás automáticamente redireccionado a la pantalla de pago para activar el plan que desees.
+- generic: ¿Qué pasa si aumento clientes?
+- paragraph: Puedes actualizar tu plan en cualquier momento. Mantienes tu información y el cambio se aplica al nuevo límite.
+- generic: ¿Mis clientes tienen que pagar algo?
+- paragraph: Harbiz es 100% gratuito para tus clientes. En el caso de que entren en el modelo suscripción a través del módulo de pagos Harbiz, te pagan por tu servicio lo mismo que si lo hicieran por fuera de la plataforma.
+- generic: ¿Qué pasa si tengo más de 50 clientes?
+- paragraph: Eso es genial, contacta con nosotros para recibir una oferta personalizada. Cuantos más clientes, menos te cuesta.
+- img "Ilustración de fondo de la sección de preguntas frecuentes"
+- contentinfo:
+  - link "Logotipo Harbiz en el footer enlazando a la página de inicio":
+    - /url: /?r=0
+    - img "Logotipo Harbiz en el footer enlazando a la página de inicio"
+  - heading "La app todo-en-uno para entrenadores y centros" [level=2]
+  - generic: Más de 10.000 profesionales ya confían en Harbiz
+  - heading "Prueba Harbiz gratis durante 14 días" [level=5]
+  - paragraph: Sin permanencia · Sin tarjeta · Sin límites
+  - link "Empieza gratis":
+    - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+  - strong: Producto
+  - link "Precios":
+    - /url: /tarifas
+  - link "Entrenamientos y planes":
+    - /url: /funcionalidades/coaching/creador-de-rutinas
+  - link "Gestión del negocio":
+    - /url: /funcionalidades/management/gestion-de-clientes
+  - link "Harbiz AI":
+    - /url: /funcionalidades/coaching/harbiz-ai
+  - link "App All in One":
+    - /url: /funcionalidades/marketing/crecimiento
+  - strong: Soluciones
+  - link "Entrenadores personales":
+    - /url: /app-entrenamiento-personal
+  - link "Centros y estudios":
+    - /url: /estudios-de-fitness
+  - link "Nutrición":
+    - /url: /nutricion
+  - link "Fisioterapia":
+    - /url: /fisioterapia
+  - link "Yoga, pilates y wellness":
+    - /url: /yoga-y-pilates
+  - strong: Recursos y ayuda
+  - link "Opiniones":
+    - /url: /casos-de-exito
+  - link "FAQ / Respuestas rápidas":
+    - /url: /respuestas
+  - link "Recursos":
+    - /url: /recursos
+  - link "Blog":
+    - /url: /blog
+  - link "Ofertas de empleo":
+    - /url: https://careers.harbiz.io/
+  - link:
+    - /url: https://www.facebook.com/Harbiz.es
+  - link:
+    - /url: https://www.linkedin.com/company/harbiz/
+  - link:
+    - /url: https://www.instagram.com/harbiz.es/
+  - link:
+    - /url: https://api.whatsapp.com/send?phone=34621380339&text=Hola!&_gl=1*1o9t5c5*_gcl_au*OTkxMTQ0OTgyLjE3MTY3OTU4Mjg.*_ga*MjUxOTA2NDkzLjE3MTY3OTU4Mjg.*_ga_DGSWP5C8PM*MTcyMDQ0MjMxMi41LjEuMTcyMDQ0MzM0My4zNy4wLjA.
+  - link "Calle de Núñez de Balboa, 120, Chamartín 28006 Madrid":
+    - /url: https://g.co/kgs/Sup9u8r
+    - text: Calle de Núñez de Balboa, 120,
+    - text: Chamartín
+    - text: 28006 Madrid
+  - link "+34 644 760 015":
+    - /url: tel:+34644760015
+  - link "info@harbiz.io":
+    - /url: mailto:info@harbiz.io
+  - img "Premio Deloitte Technology Fast 50 otorgado a Harbiz"
+  - img "Reconocimiento empresarial obtenido por Harbiz"
+  - paragraph: Pregunta a la IA por qué usar Harbiz
+  - paragraph: Descubre cómo funciona Harbiz, qué beneficios tiene para tu negocio y cómo empezar.
+  - link "ChatGPT":
+    - /url: https://chatgpt.com/?prompt=Como+entrenador+personal%2C+%C2%BFpor+qu%C3%A9+deber%C3%ADa+usar+Harbiz%3F+Expl%C3%ADcame+c%C3%B3mo+funciona%2C+cu%C3%A1les+son+sus+principales+beneficios+para+gestionar+clientes%2C+pagos%2C+sesiones+y+retenci%C3%B3n%2C+y+c%C3%B3mo+puedo+empezar.
+    - text: ChatGPT
+  - link "Claude":
+    - /url: https://claude.ai/new?q=Como%20entrenador%20personal%2C%20%C2%BFpor%20qu%C3%A9%20deber%C3%ADa%20usar%20Harbiz%3F%20Expl%C3%ADcame%20c%C3%B3mo%20funciona%2C%20cu%C3%A1les%20son%20sus%20principales%20beneficios%20para%20gestionar%20clientes%2C%20pagos%2C%20sesiones%20y%20retenci%C3%B3n%2C%20y%20c%C3%B3mo%20puedo%20empezar.
+    - text: Claude
+  - link "Perplexity":
+    - /url: https://www.perplexity.ai/search/new?q=Como%20entrenador%20personal%2C%20%C2%BFpor%20qu%C3%A9%20deber%C3%ADa%20usar%20Harbiz%3F%20Expl%C3%ADcame%20c%C3%B3mo%20funciona%2C%20cu%C3%A1les%20son%20sus%20principales%20beneficios%20para%20gestionar%20clientes%2C%20pagos%2C%20sesiones%20y%20retenci%C3%B3n%2C%20y%20c%C3%B3mo%20puedo%20empezar.
+    - text: Perplexity
+  - link "Gemini":
+    - /url: https://www.google.com/search?udm=50&aep=11&q=Como%20entrenador%20personal%2C%20%C2%BFpor%20qu%C3%A9%20deber%C3%ADa%20usar%20Harbiz%3F%20Expl%C3%ADcame%20c%C3%B3mo%20funciona%2C%20cu%C3%A1les%20son%20sus%20principales%20beneficios%20para%20gestionar%20clientes%2C%20pagos%2C%20sesiones%20y%20retenci%C3%B3n%2C%20y%20c%C3%B3mo%20puedo%20empezar.
+    - text: Gemini
+  - link "Política de Privacidad":
+    - /url: /politica-de-privacidad
+  - link "Términos y Condiciones":
+    - /url: /terminos-y-condiciones
+  - link "Aviso Legal":
+    - /url: /aviso-legal
+  - link "Acceder":
+    - /url: https://app.harbiz.io/acceso-usuarios-plataforma
+  - generic: © 2026 Harbiz. All rights reserved.
+- generic "Help":
+  - img "Help"
+- paragraph: Quieres usar Harbiz en tu negocio? Abre whatsapp aquí
+- generic "Help":
+  - img "Help"
+- generic: Harbiz Team
+- generic: En linea
+- generic: Harbiz Team
+- paragraph:
+  - strong: ¡Hola! 😀 ¿Tienes dudas sobre Harbiz para tu negocio?
+- paragraph
+- paragraph: Nuestro equipo puede ayudarte a entender cómo funciona la plataforma, ver funcionalidades y resolver dudas sobre precios o cómo empezar.
+- paragraph
+- paragraph:
+  - emphasis: (Este chat es para profesionales interesados en usar Harbiz)
+- generic: 17:15
+- link "Chatea con nosotros!":
+  - /url: https://api.whatsapp.com/send?phone=644071123&text=
+  - text: Chatea con nosotros!
+- generic "edit":
+- iframe
+- button "Open Intercom Messenger":

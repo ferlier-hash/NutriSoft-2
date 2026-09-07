@@ -23,8 +23,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-[linear-gradient(90deg,#AEE5E8_0%,#CDEAF5_52%,#F5E6A4_100%)] text-[#151B22] font-semibold hover:opacity-95 shadow-xs',
-    brand: 'bg-[#55AEB8] text-[#151B22] font-semibold hover:bg-[#357984] hover:text-white shadow-xs',
+      'bg-[image:var(--grad-primary-button)] text-[#151B22] font-semibold hover:opacity-95 shadow-xs',
+    brand: 'bg-brand-primary text-[#151B22] font-semibold hover:bg-brand-strong hover:text-white shadow-xs',
     secondary: 'bg-[#F2F7F8] text-[#151B22] hover:bg-[#E2E9EC] border border-[#E2E9EC]',
     outline: 'border border-[#CCD9DE] text-[#151B22] hover:bg-[#F2F7F8]',
     ghost: 'text-[#66727D] hover:text-[#151B22] hover:bg-[#F2F7F8]',

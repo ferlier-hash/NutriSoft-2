@@ -4,7 +4,7 @@ import { useMock } from '../../provider';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
-import { formatShortDate } from '../../../lib/dateUtils';
+import { formatFullDateTime, formatRelativeTime, formatShortDate } from '../../../lib/dateUtils';
 import { Stethoscope, ChevronRight, Search } from 'lucide-react';
 
 export const NutritionistsListPage: React.FC = () => {
@@ -44,18 +44,19 @@ export const NutritionistsListPage: React.FC = () => {
             placeholder="Buscar nutricionista u organización..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984] text-[#151B22]"
+            className="w-full pl-11 pr-4 py-2 text-xs bg-[#F2F7F8] border border-[#E2E9EC] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#357984] text-[#151B22]"
           />
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full min-w-[980px] text-left border-collapse">
             <thead>
               <tr className="border-b border-[#E2E9EC] text-xs text-[#66727D] font-medium">
                 <th scope="col" className="py-3 px-4">Nutricionista</th>
                 <th scope="col" className="py-3 px-4">Organización</th>
                 <th scope="col" className="py-3 px-4">Pacientes Asignados</th>
                 <th scope="col" className="py-3 px-4">Fecha de Alta</th>
+                <th scope="col" className="py-3 px-4">Última actividad</th>
                 <th scope="col" className="py-3 px-4">Estado</th>
                 <th scope="col" className="py-3 px-4 text-right">Acciones</th>
               </tr>
@@ -70,6 +71,10 @@ export const NutritionistsListPage: React.FC = () => {
                   <td className="py-3.5 px-4 text-[#357984] font-medium">{n.organizationName}</td>
                   <td className="py-3.5 px-4 font-semibold text-[#151B22]">{n.assignedPatientsCount}</td>
                   <td className="py-3.5 px-4 text-[#66727D]">{formatShortDate(n.joinedAt)}</td>
+                  <td className="py-3.5 px-4 text-[#66727D] whitespace-nowrap">
+                    <span className="font-medium text-[#44515A]">{formatFullDateTime(n.lastActiveAt)}</span>
+                    <span className="block text-[11px] text-[#8A959D] mt-0.5">{formatRelativeTime(n.lastActiveAt)}</span>
+                  </td>
                   <td className="py-3.5 px-4">
                     <Badge variant={n.status === 'active' ? 'active' : 'suspended'}>
                       {n.status === 'active' ? 'Activo' : 'Suspendido'}

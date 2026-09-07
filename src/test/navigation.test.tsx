@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { useState } from 'react';
 import { MockProvider } from '../app/provider';
 import { ToastProvider } from '../components/ui/Toast';
 
@@ -11,8 +12,11 @@ import { PatientLayout } from '../app/layouts/PatientLayout';
 import { AdminOverviewPage } from '../app/routes/admin/AdminOverviewPage';
 import { OrganizationsPage } from '../app/routes/admin/OrganizationsPage';
 import { ProfessionalDashboard } from '../app/routes/professional/ProfessionalDashboard';
+import { AgendaPage } from '../app/routes/professional/AgendaPage';
+import { ProfessionalSettingsPage } from '../app/routes/professional/ProfessionalSettingsPage';
 import { PatientDashboard } from '../app/routes/patient/PatientDashboard';
 import { NotFoundPage } from '../app/routes/NotFoundPage';
+import userEvent from '@testing-library/user-event';
 
 describe('Navegación, Layouts y UX Accesible (Fase 1.1.2)', () => {
   it('1. Carga directa de /admin renderiza AdminLayout y AdminOverviewPage con portal admin', () => {
@@ -110,5 +114,35 @@ describe('Navegación, Layouts y UX Accesible (Fase 1.1.2)', () => {
 
     expect(screen.getByRole('link', { name: 'Volver a mi portal de paciente' })).toBeInTheDocument();
     expect(screen.queryByText('Volver al panel administrador')).not.toBeInTheDocument();
+  });
+
+  it('5. Configuración profesional guarda moneda/precio sugerido y lo precarga en Agenda', async () => {
+    const user = userEvent.setup();
+    function SettingsAgendaHarness() {
+      const [page, setPage] = useState<'settings' | 'agenda'>('settings');
+      return (
+        <>
+          <button type="button" onClick={() => setPage('agenda')}>Ir a agenda</button>
+          {page === 'settings' ? <ProfessionalSettingsPage /> : <AgendaPage />}
+        </>
+      );
+    }
+
+    render(
+      <MockProvider>
+        <ToastProvider>
+          <SettingsAgendaHarness />
+        </ToastProvider>
+      </MockProvider>
+    );
+
+    await user.selectOptions(screen.getByLabelText('Moneda predeterminada'), 'USD');
+    await user.clear(screen.getByLabelText('Precio virtual'));
+    await user.type(screen.getByLabelText('Precio virtual'), '40');
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    await user.click(screen.getByRole('button', { name: 'Ir a agenda' }));
+    await user.click(screen.getByRole('button', { name: 'Nueva cita' }));
+
+    expect(screen.getByLabelText('Importe (USD)')).toHaveValue(40);
   });
 });

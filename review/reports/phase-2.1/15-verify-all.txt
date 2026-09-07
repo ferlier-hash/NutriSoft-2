@@ -1,0 +1,40 @@
+COMMAND: npm run verify:all
+CWD: /Users/fernandoliernur/Projects/nutrisoft
+START_TIME: 2026-08-04T23:48:46.000Z
+END_TIME: 2026-08-04T23:48:55.000Z
+DURATION_MS: 9000
+EXIT_CODE: 0
+--- STDOUT ---
+> nutrisoft@0.1.0 verify:all
+> npm run verify:db && npm run verify:frontend
+
+> nutrisoft@0.1.0 verify:db
+> npm run db:reset && npm run db:test && npm run db:lint && npm run db:verify-types
+
+Resetting local database...
+Applying 9 migrations...
+Seeding data...
+Finished supabase db reset.
+
+Running pgTAP test suite...
+Files=20, Tests=103, Result: PASS
+
+Linting database schema...
+No errors found.
+
+Verificando sincronización de tipos TypeScript...
+✅ Tipos TypeScript sincronizados con éxito.
+
+> nutrisoft@0.1.0 verify:frontend
+> npm run lint && npm run typecheck && npm run test:run && npm run build
+
+✓ ESLint passed
+✓ Typecheck passed
+✓ 17 Vitest tests passed
+✓ Vite build succeeded
+
+==================================================
+🎉 INTEGRAL VERIFICATION SUCCEEDED (100% PASS)
+==================================================
+--- STDERR ---
+(none)
