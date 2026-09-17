@@ -24,15 +24,17 @@ export function RealAppointmentPreferencesSettings({ organizationId }: { organiz
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const load = async () => {
-    setLoading(true); setError('');
-    const { data, error: problem } = await getSupabaseClient().schema('api').rpc('get_my_appointment_preferences', { p_org: organizationId });
-    const parsed = schema.safeParse(data);
-    if (problem || !parsed.success) setError('No pudimos cargar tus preferencias. Reintentá antes de editar.');
-    else setPreferences(parsed.data);
-    setLoading(false);
-  };
-  useEffect(() => { void load(); }, [organizationId]);
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true); setError('');
+      const { data, error: problem } = await getSupabaseClient().schema('api').rpc('get_my_appointment_preferences', { p_org: organizationId });
+      const parsed = schema.safeParse(data);
+      if (problem || !parsed.success) setError('No pudimos cargar tus preferencias. Reintentá antes de editar.');
+      else setPreferences(parsed.data);
+      setLoading(false);
+    };
+    void load();
+  }, [organizationId]);
   const save = async (event: React.FormEvent) => {
     event.preventDefault(); setSaving(true); setError(''); setSuccess('');
     const { data, error: problem } = await getSupabaseClient().schema('api').rpc('save_my_appointment_preferences', {
@@ -45,7 +47,7 @@ export function RealAppointmentPreferencesSettings({ organizationId }: { organiz
     setSaving(false);
   };
   return <Card className="space-y-4"><div className="flex items-start gap-3"><CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-brand-strong"/><div><h2 className="font-bold">Preferencias de citas e ingresos</h2><p className="mt-1 text-sm text-text-secondary">Valores sugeridos al crear una cita. Podés modificarlos antes de guardar cada turno; el historial conserva sus propios importes y moneda.</p></div></div>
-    {loading ? <p role="status" className="text-sm text-text-secondary">Cargando preferencias…</p> : <form className="space-y-4" onSubmit={(event) => void save(event)}><fieldset disabled={saving} className="grid gap-3 sm:grid-cols-2"><label className="form-label">Moneda predeterminada<select className="form-control" value={preferences.currency} onChange={(event) => setPreferences({ ...preferences, currency: event.target.value as Preferences['currency'] })}>{currencies.map(([value,label]) => <option key={value} value={value}>{value} · {label}</option>)}</select></label><label className="form-label">Duración sugerida<select className="form-control" value={preferences.durationMinutes} onChange={(event) => setPreferences({ ...preferences, durationMinutes: Number(event.target.value) })}>{[15,30,45,60,75,90].map((value) => <option key={value} value={value}>{value} min</option>)}</select></label><label className="form-label">Precio sugerido · virtual<input className="form-control" type="number" min="0" max="9999999999.99" step="0.01" value={preferences.virtualPrice} onChange={(event) => setPreferences({ ...preferences, virtualPrice: Number(event.target.value) })}/></label><label className="form-label">Precio sugerido · presencial<input className="form-control" type="number" min="0" max="9999999999.99" step="0.01" value={preferences.inPersonPrice} onChange={(event) => setPreferences({ ...preferences, inPersonPrice: Number(event.target.value) })}/></label></fieldset><Button type="submit" disabled={saving}>{saving ? 'Guardando…' : <><Save className="h-4 w-4"/>Guardar preferencias</>}</Button></form>}
+    {loading ? <p role="status" className="text-sm text-text-secondary">Cargando preferencias…</p> : <form className="scroll-pb-28 space-y-4" onSubmit={(event) => void save(event)}><fieldset disabled={saving} className="grid gap-3 sm:grid-cols-2"><label className="form-label">Moneda predeterminada<select className="form-control" value={preferences.currency} onChange={(event) => setPreferences({ ...preferences, currency: event.target.value as Preferences['currency'] })}>{currencies.map(([value,label]) => <option key={value} value={value}>{value} · {label}</option>)}</select></label><label className="form-label">Duración sugerida<select className="form-control" value={preferences.durationMinutes} onChange={(event) => setPreferences({ ...preferences, durationMinutes: Number(event.target.value) })}>{[15,30,45,60,75,90].map((value) => <option key={value} value={value}>{value} min</option>)}</select></label><label className="form-label">Precio sugerido · virtual<input className="form-control" type="number" min="0" max="9999999999.99" step="0.01" value={preferences.virtualPrice} onChange={(event) => setPreferences({ ...preferences, virtualPrice: Number(event.target.value) })}/></label><label className="form-label">Precio sugerido · presencial<input className="form-control" type="number" min="0" max="9999999999.99" step="0.01" value={preferences.inPersonPrice} onChange={(event) => setPreferences({ ...preferences, inPersonPrice: Number(event.target.value) })}/></label></fieldset><div className="sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-10 -mx-4 -mb-4 border-t border-border-subtle bg-surface/95 px-4 py-3 backdrop-blur sm:bottom-0"><Button type="submit" className="w-full sm:w-auto" disabled={saving}>{saving ? 'Guardando…' : <><Save className="h-4 w-4"/>Guardar preferencias</>}</Button></div></form>}
     {error && <p role="alert" className="text-sm text-critical">{error}</p>}{success && <p role="status" className="text-sm text-brand-strong">{success}</p>}
   </Card>;
 }

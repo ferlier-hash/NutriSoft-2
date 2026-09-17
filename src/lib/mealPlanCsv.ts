@@ -1,0 +1,20 @@
+import type {ClinicalMealPlanContent} from '../data/clinical-meal-plans.types';
+
+export type MealPlanImportResult={content?:ClinicalMealPlanContent;errors:string[];rows:number};
+const headers=['dia','titulo_dia','comida','alimento','cantidad','alternativas'] as const;
+function rows(text:string){const result:string[][]=[];let row:string[]=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const char=text[i]!;if(char==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(char===','&&!quoted){row.push(cell);cell='';}else if((char==='\n'||char==='\r')&&!quoted){if(char==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(value=>value.trim()))result.push(row);row=[];cell='';}else cell+=char;}row.push(cell);if(row.some(value=>value.trim()))result.push(row);return result;}
+export function parseMealPlanCsv(text:string):MealPlanImportResult{
+ const parsed=rows(text.replace(/^\uFEFF/,''));if(!parsed.length)return{errors:['El archivo está vacío.'],rows:0};
+ const actual=parsed[0]!.map(value=>value.trim().toLocaleLowerCase('es'));const errors:string[]=[];
+ headers.forEach((header,index)=>{if(actual[index]!==header)errors.push(`La columna ${index+1} debe llamarse “${header}”.`);});if(errors.length)return{errors,rows:Math.max(0,parsed.length-1)};
+ const days=new Map<number,{id:string;title?:string;meals:Map<string,{id:string;type:string;alternatives?:string;items:Array<{id:string;description:string;quantity?:string}>}>}>();
+ parsed.slice(1).forEach((values,index)=>{const line=index+2;const day=Number(values[0]?.trim()),title=values[1]?.trim()??'',meal=values[2]?.trim()??'',food=values[3]?.trim()??'',quantity=values[4]?.trim()??'',alternatives=values[5]?.trim()??'';
+  if(!Number.isInteger(day)||day<1||day>30){errors.push(`Fila ${line}: “dia” debe ser un entero entre 1 y 30.`);return;}if(!meal)errors.push(`Fila ${line}: falta “comida”.`);if(!food)errors.push(`Fila ${line}: falta “alimento”.`);if(meal.length>80||food.length>300||quantity.length>120||alternatives.length>500||title.length>120)errors.push(`Fila ${line}: uno de los textos supera el máximo permitido.`);if(!meal||!food)return;
+  const dayRow=days.get(day)??{id:crypto.randomUUID(),...(title?{title}:{}),meals:new Map()};if(title&&dayRow.title&&dayRow.title!==title)errors.push(`Fila ${line}: el día ${day} tiene títulos diferentes.`);if(title&&!dayRow.title)dayRow.title=title;
+  const mealKey=meal.toLocaleLowerCase('es');const mealRow=dayRow.meals.get(mealKey)??{id:crypto.randomUUID(),type:meal,items:[]};if(alternatives&&mealRow.alternatives&&mealRow.alternatives!==alternatives)errors.push(`Fila ${line}: “${meal}” tiene alternativas diferentes.`);if(alternatives&&!mealRow.alternatives)mealRow.alternatives=alternatives;mealRow.items.push({id:crypto.randomUUID(),description:food,...(quantity?{quantity}:{})});dayRow.meals.set(mealKey,mealRow);days.set(day,dayRow);
+ });
+ const ordered=[...days.entries()].sort(([a],[b])=>a-b);if(ordered.length<7||ordered.length>30)errors.push('El plan debe contener entre 7 y 30 días diferentes.');ordered.forEach(([day,value])=>{if(value.meals.size>4)errors.push(`Día ${day}: admite como máximo 4 comidas.`);});
+ if(errors.length)return{errors:[...new Set(errors)].slice(0,50),rows:parsed.length-1};
+ return{rows:parsed.length-1,errors:[],content:{days:ordered.map(([,day])=>({id:day.id,...(day.title?{title:day.title}:{}),meals:[...day.meals.values()]}))}};
+}
+export const mealPlanCsvTemplate='dia,titulo_dia,comida,alimento,cantidad,alternativas\n1,,Desayuno,Yogur natural,1 pote,Puede reemplazarse por leche\n1,,Desayuno,Avena,3 cucharadas,\n1,,Almuerzo,Pollo con verduras,1 plato,\n2,,Desayuno,Tostadas integrales,2 unidades,\n2,,Almuerzo,Ensalada completa,1 plato,\n3,,Desayuno,Fruta,1 unidad,\n3,,Almuerzo,Pasta integral,1 plato,\n4,,Desayuno,Yogur natural,1 pote,\n4,,Almuerzo,Pescado con vegetales,1 plato,\n5,,Desayuno,Avena con fruta,1 porción,\n5,,Almuerzo,Arroz con legumbres,1 plato,\n6,,Desayuno,Tostadas con queso,2 unidades,\n6,,Almuerzo,Pollo con ensalada,1 plato,\n7,,Desayuno,Yogur con avena,1 porción,\n7,,Almuerzo,Tortilla de vegetales,1 porción,\n';

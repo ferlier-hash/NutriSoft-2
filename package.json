@@ -10,9 +10,11 @@
     "dev": "vite",
     "dev:share": "vite --host",
     "build": "tsc -b && vite build",
+    "verify:bundle": "node scripts/verify-bundle-budget.js",
     "lint": "eslint .",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
+    "test:critical-flows": "vitest run src/test/userFlowIntegration.test.tsx src/test/navigation.test.tsx src/test/realProfessionalShell.test.tsx src/test/mobileRealExperience.test.tsx src/test/patientTasksAndAdherence.test.tsx",
     "preview": "vite preview",
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
@@ -23,9 +25,10 @@
     "db:types": "node scripts/generate-types.js",
     "db:verify-types": "node scripts/verify-types.js",
     "verify:auth": "node scripts/verify-auth-e2e.js",
-    "verify:frontend": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "verify:clinical": "node scripts/verify-clinical-e2e.js",
+    "verify:frontend": "npm run lint && npm run typecheck && npm run test:critical-flows && npm run test && npm run build && npm run verify:bundle",
     "verify:database": "npm run db:reset && npm run db:test && npm run db:lint && npm run db:verify-types",
-    "verify:all": "npm run verify:frontend && npm run verify:database && npm run verify:auth"
+    "verify:all": "npm run verify:frontend && npm run verify:database && npm run verify:auth && npm run verify:clinical"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -35,6 +38,8 @@
     "@radix-ui/react-toast": "^1.2.23",
     "@supabase/supabase-js": "^2.112.3",
     "clsx": "^2.1.1",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "lucide-react": "^0.427.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

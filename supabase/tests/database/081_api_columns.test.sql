@@ -12,7 +12,7 @@ SELECT hasnt_column('api', 'patient_directory', 'nutrition_goal', 'api.patient_d
 SELECT hasnt_column('api', 'patient_directory', 'current_plan_name', 'api.patient_directory no expone current_plan_name');
 
 -- 3. Confirmar columnas de api.attention_inbox
-SELECT columns_are('api', 'attention_inbox', ARRAY['id', 'organization_id', 'patient_id', 'response_id', 'rule_code', 'priority', 'recommended_action', 'status', 'created_at', 'patient_first_name', 'patient_last_name']);
+SELECT columns_are('api', 'attention_inbox', ARRAY['id', 'organization_id', 'patient_id', 'response_id', 'rule_code', 'priority', 'recommended_action', 'status', 'created_at', 'patient_first_name', 'patient_last_name', 'acknowledged_at', 'resolved_at', 'resolution_notes', 'energy', 'adherence', 'help_requested', 'notes', 'question_answers', 'alert_matches', 'questions']);
 
 -- 4. Confirmar que api.check_in_assignments NO expone created_by al paciente
 SELECT hasnt_column('api', 'check_in_assignments', 'created_by', 'api.check_in_assignments no expone created_by');

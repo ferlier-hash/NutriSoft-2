@@ -15,3 +15,14 @@ it('activa sólo rutas conectadas y cierra el menú móvil al navegar', async ()
   await user.click(menu.getByRole('link', { name: 'Pacientes' }));
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
+
+it('prioriza Inicio, Pacientes, Agenda y Bandeja en la barra inferior profesional', () => {
+  render(<MemoryRouter><RealProfessionalShell /></MemoryRouter>);
+  const quickNav = within(screen.getByRole('navigation', { name: 'Accesos rápidos' }));
+  expect(quickNav.getByRole('link', { name: 'Inicio' })).toHaveAttribute('href', '/professional');
+  expect(quickNav.getByRole('link', { name: 'Pacientes' })).toHaveAttribute('href', '/professional/patients');
+  expect(quickNav.getByRole('link', { name: 'Agenda' })).toHaveAttribute('href', '/professional/agenda');
+  expect(quickNav.getByRole('link', { name: 'Bandeja' })).toHaveAttribute('href', '/professional/inbox');
+  expect(quickNav.getByRole('button', { name: 'Más' })).toBeInTheDocument();
+  expect(quickNav.queryByRole('link', { name: 'Planes alimentarios' })).not.toBeInTheDocument();
+});

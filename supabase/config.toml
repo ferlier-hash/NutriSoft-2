@@ -387,6 +387,18 @@ deno_version = 2
 [functions.google-calendar-oauth]
 verify_jwt = false
 
+# Invocación autenticada por usuario; la función vuelve a verificar propiedad.
+[functions.file-security-worker]
+verify_jwt = false
+
+# Invocada sólo por Cron/operaciones con un secreto independiente.
+[functions.file-security-cleanup]
+verify_jwt = false
+
+# Invocada diariamente por Cron con un secreto independiente.
+[functions.checkin-scheduler]
+verify_jwt = false
+
 [edge_runtime.secrets]
 # Sólo en desarrollo local: Supabase inyecta los valores desde el entorno al
 # iniciar el runtime. Los secretos viven en functions/.env.local, nunca aquí.

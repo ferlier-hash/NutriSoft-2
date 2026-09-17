@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowLeft, ArrowUp, Check, ChevronDown, Copy, GripVertical, MessageSquareText, Minus, Plus, Save, Send, Trash2, UserRound } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
@@ -24,7 +24,7 @@ export function RealMealPlanEditorPage() {
   const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [assignOpen, setAssignOpen] = useState(false); const [patientId, setPatientId] = useState(''); const [kind, setKind] = useState<'primary' | 'complement'>('primary');
   const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set()); const [draggedDayId, setDraggedDayId] = useState<string | null>(null);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     if (!planId) return; setLoading(true); setError(null);
     try {
       const [plans, activity, people, library] = await Promise.all([loadProfessionalMealPlans(), loadMealPlanActivity(planId), loadProfessionalPatients(), loadLibrary()]);
@@ -33,8 +33,8 @@ export function RealMealPlanEditorPage() {
       setPlan(found); setTitle(found.title); setContent(cloneContent(found.content)); setActivities(activity); setPatients(people); setPatientId(found.patientId ?? people[0]?.id ?? '');
       setExpandedDays(previous => previous.size ? previous : new Set(found.content.days.map(day => day.id)));
     } catch { setError('No pudimos abrir este plan o ya no tenés acceso.'); } finally { setLoading(false); }
-  };
-  useEffect(() => { void refresh(); }, [planId]);
+  }, [planId]);
+  useEffect(() => { void refresh(); }, [refresh]);
 
   const pending = useMemo(() => activities.filter(item => item.patientComment && !item.reviewedAt), [activities]);
   const activityByMeal = useMemo(() => new Map(activities.map(item => [`${item.dayId}:${item.mealId}`, item])), [activities]);

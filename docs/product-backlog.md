@@ -61,16 +61,17 @@ Pulido, optimización o ampliaciones que no justifican retrasar el corte actual.
 | Resolver vulnerabilidades de dependencias antes de auth | P1 | Media/Alta | Antes de Fase 3 | Completado el 2026-08-14: React Router 7.18.2, Nano ID corregido y `npm audit` en cero |
 | Configurar contrato de ambientes y secretos públicos | P1 | Baja | Inicio de Fase 3 | Completado el 2026-08-14 con `.env.example`, validación Zod y documentación |
 | Implementar autenticación y route guards reales | P0 | Alta | Fase 3.1 | Corte local completado y E2E PASS: sesión, pantallas, guards, contexto backend y limpieza de cuenta; faltan invitaciones/SMTP y staging |
-| Conectar repositorios Supabase sin mostrar mocks en sesiones reales | P0 | Alta | Fase 3.2 | Admin read-only completado. Repositorio real de planes y actividad tipado; faltan pantallas reales Profesional/Paciente y demás dominios |
+| Conectar repositorios Supabase sin mostrar mocks en sesiones reales | P0 | Alta | Fase 3.2 | Recorridos centrales Admin, Profesional y Paciente completados en REAL local; faltan dominios explícitamente planificados y despliegue remoto |
 | Dividir `MockProvider` en contratos, selectores, repositorios y servicios | P1 | Media | Antes de conectar datos reales | En progreso: contratos, selectores y primer repositorio Admin real extraídos; siguientes repositorios pendientes |
-| Incorporar E2E por rol y observabilidad central | P1 | Media | Antes del piloto | Pendiente |
-| Persistir perfil profesional, invitaciones y planes alimentarios | P0 | Alta | Siguiente corte de datos reales | Núcleo real de planes, versiones, asignación, duplicación, publicación y actividad completado localmente; perfil, invitaciones, email e integración visual real pendientes |
-| Completar editor multidía de planes y enlaces a recetas | P2 | Media | Después de validar el primer corte visual | Completado en demo: editor 7–30 días y enlaces autorizados a recetas publicadas; persistencia real pendiente dentro del corte de datos |
-| Exclusividad de plan por paciente y comentarios por comida | P1 | Media/Alta | Antes de persistir planes reales | Constraint, RLS, RPC, publicación versionada, retiro, duplicación limpia y comentarios completados localmente; falta integración UI real y transferencia explícita ante reasignación |
-| Próximos pasos y cumplimiento cotidiano del paciente | P1 | Media | Antes de persistir el portal clínico | Completado en demo: lista individual 7–15 días, comentarios, plan completo, checks por comida y reporte contextual; falta persistencia/auditoría real |
-| Supervisión general de check-ins del profesional | P1 | Media | Antes de persistir el portal clínico | Completado en demo: última respuesta por paciente autorizado, filtros de fecha/prioridad, orden y acceso al historial; falta repositorio real |
+| Incorporar E2E por rol y observabilidad central | P1 | Media | Antes del piloto | Auth/Admin y aislamiento clínico Profesional/Paciente E2E local automatizados; falta observabilidad central y ampliar E2E a escrituras clínicas antes del piloto |
+| Persistir perfil profesional, invitaciones y planes alimentarios | P0 | Alta | Siguiente corte de datos reales | Completado en REAL local; entrega remota de invitaciones condicionada a SMTP y staging |
+| Completar editor multidía, enlaces a recetas e importación CSV | P2 | Media | — | Completado en REAL local con plantilla, validación por fila y borrador revisable |
+| Evaluar importación asistida desde PDF/Word | P3 | Alta | Después de elegir proveedor y política de tratamiento documental | Futuro; CSV es el único formato REAL aceptado actualmente |
+| Exclusividad de plan por paciente y comentarios por comida | P1 | Media/Alta | Antes de persistir planes reales | Constraint, RLS, RPC e integración UI REAL completados; transferencia explícita ante una futura reasignación permanece fuera del flujo actual |
+| Próximos pasos y cumplimiento cotidiano del paciente | P1 | Media | Antes de persistir el portal clínico | Completado en demo y REAL local con aislamiento, checks y comentarios |
+| Supervisión general de check-ins del profesional | P1 | Media | Antes de persistir el portal clínico | Completado en demo y REAL local con filtros, historial y Bandeja autorizada; falta recorrido manual integral |
 | Definir backups, PITR, RPO/RTO y restauración | P1 | Media | Antes de producción | Pendiente |
-| Reducir bundle inicial de frontend | P3 | Media | Después de integrar rutas reales | Backlog |
+| Reducir bundle inicial de frontend | P3 | Media | Después de integrar rutas reales | Completado el 2026-09-14: carga diferida por ruta y DEMO separado; bundle inicial 1.528,19→463,47 kB, con regresión y navegación REAL verificadas |
 
 ## Bandeja de pedidos del usuario
 

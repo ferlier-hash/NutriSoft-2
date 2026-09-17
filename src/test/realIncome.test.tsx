@@ -8,6 +8,7 @@ it('mantiene el formulario y el identificador del reintento tras error',async()=
  rpc.mockResolvedValue({error:{message:'Sin conexión'}});
  render(<RealIncomePage/>);const user=userEvent.setup();
  await user.click(await screen.findByRole('button',{name:/Laura Prueba/}));
+ expect(screen.getByRole('button',{name:'Registrar cobro'}).parentElement).toHaveClass('sticky','bottom-0');
  await user.click(screen.getByRole('button',{name:'Registrar cobro'}));
  expect(await screen.findByRole('alert')).toHaveTextContent('Sin conexión');
  const request=rpc.mock.calls[0]![1].p_request;
@@ -34,6 +35,7 @@ it('permite guardar un precio mayor desde el popup sin registrar un cobro',async
  render(<RealIncomePage/>);const user=userEvent.setup();
  await user.click(await screen.findByRole('button',{name:/Laura Prueba/}));
  await user.click(screen.getByRole('button',{name:'Editar precio de la cita'}));
+ expect(screen.getByRole('button',{name:'Guardar precio'}).parentElement).toHaveClass('sticky','bottom-0');
  await user.clear(screen.getByRole('spinbutton',{name:'Precio de la cita (ARS)'}));
  await user.type(screen.getByRole('spinbutton',{name:'Precio de la cita (ARS)'}),'150');
  await user.click(screen.getByRole('button',{name:'Guardar precio'}));

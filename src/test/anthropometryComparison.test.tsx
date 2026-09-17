@@ -16,8 +16,10 @@ it('compara hasta tres revisiones contra la primera elegida, sin duplicados', as
   await user.selectOptions(selects[1]!, 'a');
   await user.selectOptions(selects[2]!, 'c');
   const table = within(screen.getByRole('table'));
-  expect(table.getByText('+2 kg')).toBeInTheDocument();
-  expect(table.getByText('+1 kg')).toBeInTheDocument();
+  expect(table.getByText(/\+2 kg · \+2,74%/)).toBeInTheDocument();
+  expect(table.getByText(/\+1 kg · \+1,37%/)).toBeInTheDocument();
+  expect(screen.getByText('métricas medidas')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Descargar PDF' })).toBeEnabled();
   expect(within(selects[1]!).getByRole('option', { name: /10\/8\/2026/ })).toBeDisabled();
   await user.click(screen.getByRole('button', { name: 'Limpiar comparación' }));
   expect(screen.queryByRole('table')).not.toBeInTheDocument();

@@ -14,5 +14,10 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
+    testTimeout: 10_000,
+    // JSDOM consumes enough CPU/memory that unrestricted file parallelism makes
+    // interaction-heavy tests exceed their timeout on smaller development hosts.
+    // Keep the strict per-test timeout and bound concurrency for reproducibility.
+    maxWorkers: 4,
   },
 });

@@ -10,6 +10,7 @@ it('no impone horarios iniciales y permite guardar franjas propias',async()=>{
  rpc.mockImplementation((name:string)=>Promise.resolve(name==='get_my_schedule_settings'?{data:{settings:null,updated_at:null},error:null}:{data:'2026-09-03T18:00:00Z',error:null}));
  render(<RealScheduleSettings organizationId="org"/>);const user=userEvent.setup();
  const check=await screen.findByLabelText('Limitar nuevos turnos a estas franjas');expect(check).not.toBeChecked();
+ expect(screen.getByRole('button',{name:'Guardar horarios y reglas'}).parentElement).toHaveClass('sticky');
  await user.click(check);await user.click(screen.getByRole('button',{name:'Agregar franja de Lunes'}));
  await user.click(screen.getByRole('button',{name:'Guardar horarios y reglas'}));
  expect(rpc).toHaveBeenCalledWith('save_my_schedule_settings',expect.objectContaining({p_org:'org',p_expected:undefined,p_settings:expect.objectContaining({enforceHours:true,intervals:[{day:1,start:'09:00',end:'13:00'}]})}));

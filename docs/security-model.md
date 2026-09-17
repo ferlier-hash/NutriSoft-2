@@ -70,6 +70,8 @@
 
 Antropometría real local: las revisiones sólo se leen con asignación clínica activa y membresía profesional activa en el consultorio; Platform Admin está excluido explícitamente. Corregir/eliminar requiere además ser autor. Campos personalizados son privados del profesional por consultorio, no se admiten claves ajenas. Las vistas usan `security_invoker`, el rol autenticado sólo tiene SELECT protegido por RLS sobre tablas y toda escritura usa RPC. Las pruebas de antropometría verifican permisos, fecha civil y archivo sin pérdida de datos. La auditoría no incluye valores ni notas.
 
+Reportes clínicos REAL no introduce una vista agregadora ni almacenamiento adicional: compone exclusivamente lecturas clínicas ya autorizadas para el nutricionista actualmente asignado. Platform Admin, owner no clínico, assistant y profesionales sin asignación continúan recibiendo cero filas en cada fuente y no poseen ruta al módulo. El PDF se genera en memoria en el navegador y no se persiste ni entrega automáticamente. Las notas de check-in requieren inclusión explícita.
+
 1. Las citas operativas y los movimientos de cobro tienen RLS, niegan DML directo a `authenticated` y se escriben sólo por RPC autorizada.
 2. Una cita pertenece a un consultorio, paciente y nutricionista asignado. Una restricción de base impide horarios superpuestos para la misma profesional.
 3. Las notas profesionales viven en `appointment_private_notes`, separadas de la cita administrativa. Sólo el nutricionista clínicamente asignado las puede leer; nunca owner no clínico, assistant, Platform Admin, otro profesional ni paciente.

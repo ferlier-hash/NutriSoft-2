@@ -1,10 +1,11 @@
 BEGIN;
+SELECT set_config('app.test_local_date', ((now() AT TIME ZONE 'America/Argentina/Cordoba')::date)::text, true);
 SELECT no_plan();
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims','{"sub":"b2222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
 CREATE TEMP TABLE price_test AS SELECT api.create_appointment('11111111-1111-4111-8111-111111111111','f1111111-1111-4111-8111-111111111111','b2222222-2222-4222-8222-222222222222',now()+interval '138 days',45::smallint,'America/Argentina/Cordoba','in_person',10000::numeric,'ARS',NULL::text) AS id;
 SELECT lives_ok($$SELECT api.update_income_appointment_price(id,updated_at,15000) FROM api.appointments WHERE id=(SELECT id FROM price_test)$$,'Price can increase from 10000 to 15000');
-SELECT lives_ok($$SELECT api.record_income_movement(id,gen_random_uuid(),15000,CURRENT_DATE,'cash') FROM price_test$$,'New price permits 15000 payment');
+SELECT lives_ok($$SELECT api.record_income_movement(id,gen_random_uuid(),15000,current_setting('app.test_local_date')::date,'cash') FROM price_test$$,'New price permits 15000 payment');
 SELECT lives_ok($$SELECT api.update_income_appointment_price(id,updated_at,5000) FROM api.appointments WHERE id=(SELECT id FROM price_test)$$,'Price may decrease below collected amount');
 SELECT is((SELECT sum(amount) FROM api.income_movements WHERE appointment_id=(SELECT id FROM price_test)),15000::numeric,'Existing payment unchanged');
 SELECT is((SELECT count(*) FROM api.income_movements WHERE appointment_id=(SELECT id FROM price_test) AND movement_kind='refund'),0::bigint,'No automatic refund');

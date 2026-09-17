@@ -92,7 +92,7 @@ export interface UpdatePracticeSettingsInput {
   checkInSettings: ProfessionalPracticeSettings['checkInSettings'];
   anthropometricCustomFields?: AnthropometricCustomField[];
 }
-export interface UpdateOrganizationBrandingInput extends OrganizationBranding {}
+export type UpdateOrganizationBrandingInput = OrganizationBranding;
 
 export interface NewOrganizationInput {
   name: string;

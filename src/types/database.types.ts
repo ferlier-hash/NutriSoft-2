@@ -1553,7 +1553,19 @@ export type Database = {
         }
         Returns: boolean
       }
+      claim_secure_upload_for_service: {
+        Args: { p_upload_id: string }
+        Returns: {
+          declared_mime: string
+          declared_size: number
+          kind: string
+          organization_id: string
+          owner_user_id: string
+          quarantine_path: string
+        }[]
+      }
       complete_patient_invitation: { Args: never; Returns: boolean }
+      confirm_secure_upload: { Args: { p_upload_id: string }; Returns: string }
       consume_google_calendar_oauth_state: {
         Args: { p_state_hash: string }
         Returns: {
@@ -1656,6 +1668,17 @@ export type Database = {
         Args: { p_source_meal_plan_id: string; p_title?: string }
         Returns: string
       }
+      finish_secure_upload_for_service: {
+        Args: {
+          p_clean: boolean
+          p_failure_code: string
+          p_final_path: string
+          p_scanner: string
+          p_scanner_version: string
+          p_upload_id: string
+        }
+        Returns: undefined
+      }
       get_admin_metrics: { Args: never; Returns: Json }
       get_appointment_for_google_sync: {
         Args: { p_appointment_id: string }
@@ -1673,6 +1696,7 @@ export type Database = {
           virtual_meeting_url: string
         }[]
       }
+      get_checkin_automation: { Args: { p_org: string }; Returns: Json }
       get_checkin_questions: { Args: { p_org: string }; Returns: Json }
       get_current_access_context: { Args: never; Returns: Json }
       get_free_checkin: { Args: { p_patient: string }; Returns: Json }
@@ -1694,6 +1718,49 @@ export type Database = {
       }
       get_my_appointment_preferences: { Args: { p_org: string }; Returns: Json }
       get_my_branding: { Args: never; Returns: Json }
+      get_my_library_settings: {
+        Args: { p_organization_id: string }
+        Returns: {
+          accepted: boolean
+          accepted_at: string
+          available_bytes: number
+          limit_bytes: number
+          policy_version: string
+          used_bytes: number
+        }[]
+      }
+      get_my_patient_invitations: {
+        Args: never
+        Returns: {
+          accepted_at: string
+          created_at: string
+          email: string
+          expires_at: string
+          first_name: string
+          id: string
+          last_name: string
+          organization_id: string
+          patient_id: string
+          resent_at: string
+          revoked_at: string
+          status: string
+        }[]
+      }
+      get_my_professional_patients: {
+        Args: never
+        Returns: {
+          birth_date: string
+          city: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          organization_id: string
+          phone: string
+          status: string
+          updated_at: string
+        }[]
+      }
       get_my_professional_profile: { Args: { p_org: string }; Returns: Json }
       get_my_schedule_settings: { Args: { p_org: string }; Returns: Json }
       get_patient_appointment_policy: {
@@ -1704,9 +1771,29 @@ export type Database = {
         Args: { p_email: string; p_org_id: string }
         Returns: string
       }
+      get_secure_upload_status: {
+        Args: { p_upload_id: string }
+        Returns: {
+          failure_code: string
+          final_path: string
+          status: string
+        }[]
+      }
+      list_secure_upload_cleanup_for_service: {
+        Args: { p_limit?: number }
+        Returns: {
+          bucket_id: string
+          object_path: string
+          upload_id: string
+        }[]
+      }
       mark_appointment_notification_read: {
         Args: { p_notification_id: string }
         Returns: boolean
+      }
+      mark_secure_upload_deleted_for_service: {
+        Args: { p_upload_id: string }
+        Returns: undefined
       }
       publish_meal_plan: { Args: { p_meal_plan_id: string }; Returns: string }
       record_appointment_payment: {
@@ -1740,6 +1827,10 @@ export type Database = {
         }
         Returns: string
       }
+      renew_patient_invitation_for_service: {
+        Args: { p_patient: string }
+        Returns: undefined
+      }
       request_patient_appointment_change: {
         Args: {
           p_appointment_id: string
@@ -1759,6 +1850,21 @@ export type Database = {
           p_starts_at: string
         }
         Returns: string
+      }
+      reserve_secure_upload: {
+        Args: {
+          p_filename: string
+          p_kind: string
+          p_mime: string
+          p_organization_id: string
+          p_size: number
+        }
+        Returns: {
+          bucket_id: string
+          object_path: string
+          status: string
+          upload_id: string
+        }[]
       }
       resolve_alert: {
         Args: { p_alert_id: string; p_notes?: string }
@@ -1794,6 +1900,18 @@ export type Database = {
         Args: { p_activity_id: string }
         Returns: boolean
       }
+      revoke_my_patient_invitation: {
+        Args: { p_invitation: string }
+        Returns: undefined
+      }
+      run_checkin_automation_for_service: {
+        Args: { p_run_on?: string }
+        Returns: {
+          assigned: number
+          skipped_configuration: number
+          skipped_pending: number
+        }[]
+      }
       save_anthropometric_field: {
         Args: {
           p_field_id: string
@@ -1804,6 +1922,14 @@ export type Database = {
           p_unit: string
         }
         Returns: string
+      }
+      save_checkin_automation_global: {
+        Args: { p_enabled: boolean; p_expected?: string; p_org: string }
+        Returns: string
+      }
+      save_checkin_patient_frequency: {
+        Args: { p_frequency: string; p_org: string; p_patient: string }
+        Returns: undefined
       }
       save_checkin_questions: {
         Args: { p_expected?: string; p_org: string; p_questions: Json }
@@ -1927,6 +2053,18 @@ export type Database = {
           p_meal_plan_id: string
         }
         Returns: string
+      }
+      set_my_library_responsibility: {
+        Args: {
+          p_accepted: boolean
+          p_organization_id: string
+          p_policy_version: string
+        }
+        Returns: undefined
+      }
+      set_my_patient_status: {
+        Args: { p_patient: string; p_status: string }
+        Returns: undefined
       }
       set_organization_status: {
         Args: { p_org_id: string; p_status: string }

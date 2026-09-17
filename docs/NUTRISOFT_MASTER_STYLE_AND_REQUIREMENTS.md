@@ -1,8 +1,8 @@
 # NutriSoft — Documento Maestro de Estilo, Producto y Continuidad
 
-**Versión:** 1.20  
-**Fecha de corte:** 21 de agosto de 2026  
-**Estado del producto:** Fase 3.1 local verificada end-to-end y Fase 3.2 en progreso. Admin conserva su superficie real read-only. Planes alimentarios ya dispone de primer recorrido real local para Profesional y Paciente; Agenda ya cuenta con una primera pantalla real local y sincronización degradable hacia Google Calendar. Citas e Ingresos reales todavía están pendientes. Las demás rutas clínicas continúan bloqueadas en sesiones reales hasta contar con su propia integración; el modo demostración permanece completo y separado.  
+**Versión:** 1.21
+**Fecha de corte:** 14 de septiembre de 2026
+**Estado del producto:** experiencia REAL local autenticada disponible para los recorridos centrales de Profesional y Paciente: Inicio, perfil profesional, pacientes y ficha, seguimiento cotidiano, Bandeja, Agenda, Citas del paciente, Ingresos, planes alimentarios, recetario, recursos, próximos pasos, check-ins, recomendaciones, Reportes clínicos, configuración y Marca CUSTOM. Admin conserva su superficie REAL de sólo lectura y el modo demostración permanece separado. Sigue planificado el historial profesional independiente de Citas; la solicitud inicial de cita desde Paciente todavía no está conectada en REAL. No existe aún despliegue productivo: Supabase remoto, SMTP, dominio, observabilidad, backups operados y validaciones externas continúan pendientes.
 **Propósito:** ser la fuente de verdad para continuar, migrar, rediseñar o auditar NutriSoft sin perder decisiones importantes.
 
 > Este documento debe leerse antes de realizar cambios de producto, UI, datos, permisos o arquitectura. No sustituye los contratos técnicos específicos; los referencia y explica en contexto.
@@ -90,11 +90,11 @@ El Platform Admin administra cuentas, consultorios, planes, pagos, vencimientos,
 - Fase 1 — Prototipo visual: cerrada y estabilizada como `v0.1.0-prototype`.
 - Fase 2.1 — Backend foundation seguro y multi-tenant: verificado localmente con Supabase.
 - Fase 2.2 — Cierre funcional del prototipo: alertas con ciclo completo, recomendaciones trazables y publicación controlada de recursos/recetas, verificados en modo mock.
-- Frontend actual: modo mock funcional mediante `MockProvider` y primera superficie Admin real de sólo lectura, claramente separada.
+- Frontend actual: modo mock funcional mediante `MockProvider` y portales REAL locales autenticados para Admin, Profesional y Paciente, claramente separados del contenido ficticio.
 - Fase 3.0 — Hardening previo: iniciada el 14 de agosto de 2026; dependencias auditadas sin vulnerabilidades conocidas y contrato de ambientes/secretos configurado.
 - Fase 3.1 — Autenticación: corte local implementado y verificado end-to-end con cliente Supabase bajo demanda, pantallas de acceso/recuperación, route guards y contexto seguro calculado desde `auth.uid()`.
-- Fase 3.2 — Datos reales: resumen y directorio Admin de sólo lectura implementados y verificados; perfil propio, métricas agregadas, búsqueda y filtro por estado.
-- Siguiente bloque recomendado: diseñar la persistencia comercial con las decisiones confirmadas y resolver moneda, impuestos, días 29–31, gracia y efecto de cambios de precio antes de habilitar cobros reales.
+- Fase 3.2 — Datos reales: recorridos locales principales implementados y verificados con Supabase local, RLS/RPC, aislamiento multi-tenant y pruebas de regresión. Esto no equivale a disponibilidad productiva.
+- Siguiente bloque recomendado: cerrar recorridos manuales Paciente→Profesional y preparar staging/producción conforme a [Despliegue, recuperación y operación](./production-deployment-and-operations.md).
 
 ### 4.2 Stack vigente
 
@@ -152,40 +152,43 @@ npm run verify:all
 | Admin | `/admin/nutritionists` | Simulado | Lista de nutricionistas. |
 | Admin | `/admin/nutritionists/:nutritionistId` | Simulado | Perfil del nutricionista en tarjetas. |
 | Admin | `/admin/nutritionists/:nutritionistId/patients/:patientId` | Simulado | Acceso contextual y limitado desde el profesional. |
-| Profesional | `/professional` | Simulado en demo / real limitado | En sesión real abre la biblioteca de planes propia; las demás áreas continúan en preparación. |
+| Profesional | `/professional` | Simulado en demo / real local | Inicio operativo con pacientes, avisos, pedidos de ayuda, próximas citas y accesos rápidos. |
 | Profesional | `/professional/agenda` | Simulado en demo / primera integración real local | Alta, corrección, cancelación y reprogramación trazable de citas; Google Calendar refleja sólo eventos genéricos de las citas confirmadas. |
 | Profesional | `/professional/appointments` | Simulado en demo / planificado en real | Historial de citas, filtros, estados y notas privadas del profesional. |
 | Profesional | `/professional/income` | Demo y REAL local implementados | Cobros, reembolsos, correcciones trazables, filtros y métricas por moneda. |
-| Profesional | `/professional/inbox` | Simulado | Bandeja de atención. |
-| Profesional | `/professional/checkins` | Simulado | Último check-in por paciente, filtros, prioridad orientativa y acceso al historial. |
-| Profesional | `/professional/settings` | Simulado en demo / OAuth Google local conectado | Configuración operativa de moneda, duración/precios sugeridos y estado seguro de conexión con Google Calendar. |
-| Profesional | `/professional/patients` | Simulado en demo / primera invitación real local | La profesional invita un paciente por nombre, apellido y correo; el vínculo queda preparado de forma segura. |
-| Profesional | `/professional/patients/:patientId` | Simulado | Perfil operativo del paciente. |
-| Profesional | `/professional/profile` | Simulado | Perfil contextual del profesional. |
+| Profesional | `/professional/inbox` | Simulado en demo / REAL local | Bandeja autorizada con reconocimiento, resolución, nota opcional, estados y contador de avisos. |
+| Profesional | `/professional/checkins` | Simulado en demo / REAL local | Seguimiento autorizado por paciente, filtros, señales operativas y acceso al historial. |
+| Profesional | `/professional/settings` | Simulado en demo / REAL local | Configuración de agenda, citas e ingresos, Google Calendar, check-ins, Antropometría y Marca CUSTOM. |
+| Profesional | `/professional/patients` | Simulado en demo / real local | Directorio por consultorio, búsqueda y estados; invitaciones administrables; archivo y reactivación reversibles. |
+| Profesional | `/professional/patients/:patientId` | Simulado en demo / real local | Perfil clínico autorizado con planes, check-ins, peso, antropometría y últimos cinco turnos. |
+| Profesional | `/professional/profile` | Simulado en demo / REAL local | Perfil contextual propio con datos profesionales y matrícula opcional completa. |
 | Profesional | `/professional/meal-plans` | Simulado en demo / real local | Biblioteca, creación y duplicación de planes propios. |
 | Profesional | `/professional/meal-plans/:planId` | Simulado en demo / real local | Editor multidía, asignación, publicación, retiro y revisión de comentarios. |
-| Profesional | `/professional/recommendations` | Simulado | Biblioteca privada y asignación de frases motivacionales. |
-| Profesional | `/professional/next-steps` | Simulado | Listas individuales de próximos pasos y seguimiento de checks/comentarios. |
-| Profesional | `/professional/resources` | Simulado | Recursos propios. |
-| Profesional | `/professional/recipes` | Simulado | Recetario propio. |
-| Profesional | `/professional/recipes/:recipeId` | Simulado | Detalle autorizado de una receta propia publicada o en edición. |
+| Profesional | `/professional/recommendations` | Simulado en demo / real local | Biblioteca privada y asignación de frases motivacionales. |
+| Profesional | `/professional/reports` | Planificado en demo / REAL local | Constructor de reportes clínicos por paciente y período, con secciones seleccionables, vista previa y exportación PDF privada. |
+| Profesional | `/professional/next-steps` | Simulado en demo / REAL local | Listas individuales de próximos pasos y seguimiento de checks/comentarios. |
+| Profesional | `/professional/resources` | Simulado en demo / real local | Biblioteca privada de PDFs y enlaces propios, con filtros, edición y ciclo editorial. |
+| Profesional | `/professional/recipes` | Simulado en demo / real local | Recetario privado por profesional y consultorio, con búsqueda, filtros, creación, edición, duplicación y ciclo editorial. |
+| Profesional | `/professional/recipes/:recipeId` | Simulado en demo / real local | Detalle autorizado de una receta propia, incluso al abrirla desde un plan alimentario. |
 | Paciente | `/patient` | Simulado en demo / real local | En sesión real muestra sólo los planes vigentes, su cumplimiento y comentarios. |
 | Paciente | `/patient/request-appointment` | Simulado en demo / planificado en real | Solicitud autenticada de cita contra disponibilidad del profesional asignado; requiere confirmación profesional. |
-| Paciente | `/patient/check-in/:assignmentId` | Simulado | Formulario de check-in aislado. |
-| Paciente | `/patient/recipes/:recipeId` | Simulado | Detalle de una receta publicada y disponible para el paciente. |
-| Paciente | `/patient/recipes` | Simulado | Recetario completo de recetas publicadas y autorizadas para el paciente. |
-| Paciente | `/patient/resources` | Simulado | Biblioteca completa de recursos publicados disponibles para el paciente. |
+| Paciente | `/patient/check-in/:assignmentId` | Simulado en demo / REAL local | Check-in libre o formulario autorizado basado en el snapshot vigente, con envío idempotente. |
+| Paciente | `/patient/appointments` | Simulado en demo / REAL local | Citas propias y solicitudes de cambio, sin exposición de importes ni notas privadas. |
+| Paciente | `/patient/measurements` | Simulado en demo / REAL local | Registro y consulta del peso cotidiano propio, separado de Antropometría profesional. |
+| Paciente | `/patient/recipes/:recipeId` | Simulado en demo / REAL local | Detalle de una receta publicada y autorizada para el paciente. |
+| Paciente | `/patient/recipes` | Simulado en demo / REAL local | Recetario de publicaciones autorizadas con presentación móvil específica. |
+| Paciente | `/patient/resources` | Simulado en demo / real local | Biblioteca de recursos publicados por profesionales asignados y autorizados. |
 | Desarrollo | `/design-system` | Implementado sólo DEV | Catálogo visual. Debe devolver 404 en producción. |
 
 ### 5.2 Navegación planificada
 
 - Profesional desktop: Inicio, Mi perfil, Pacientes, Bandeja de atención, Agenda, Citas, Ingresos, Planes alimentarios, Recetario, Próximos pasos, Recursos, Check-ins, Recomendaciones, Reportes y Configuración.
-- Reportes permanece planificado como módulo de informes por paciente/período, con secciones seleccionables, vista previa y exportación PDF.
-- La personalización de marca está implementada en demo exclusivamente para Custom: nombre visible, logo opcional, diez presets de color, datos de contacto y cabecera opcional del portal Paciente. La marca pertenece al consultorio y se hereda de forma consistente en los portales Profesional y Paciente. La página pública por profesional–consultorio sigue futura.
-- La selección de color ofrece una vista previa ilustrativa con diseño de plataforma, logo y cabeceras independientes, alternable entre Profesional y Paciente. Sólo «Guardar marca» aplica el borrador a los portales del consultorio; probar una paleta no modifica la identidad guardada. Los estados semánticos conservan sus colores. Disponible en demo Custom, no constituye una migración de marca a real. Criterios: diez opciones accesibles por teclado, vista adaptable a ancho móvil y cabeceras sin intercambio entre roles.
-- Las cabeceras de Profesional y Paciente se configuran de forma independiente en demo para Custom, y pueden usar imágenes diferentes. La profesional se muestra en Inicio, con vista previa y opción de quitarla desde Configuración. Ambas aceptan sólo JPG, PNG o WebP de hasta 2 MB por archivo; se recomienda 1600 × 600 px (proporción 8:3) y recorte centrado responsivo. Una cabecera vacía no reutiliza la del otro portal. No se permiten CSS, fuentes ni layouts arbitrarios. Si el consultorio baja de Custom, la configuración se conserva pero deja de aplicarse.
+- Reportes está implementado en REAL local por paciente/período, con secciones seleccionables, vista previa y exportación PDF; plantillas guardadas, snapshots y entrega trazable continúan futuras.
+- La personalización de marca está implementada en demo y REAL local para consultorios con CUSTOM habilitado: nombre visible, logo opcional, diez presets de color, contactos y cabeceras independientes para Profesional y Paciente. La marca pertenece al consultorio y se hereda de forma consistente. La página pública por profesional–consultorio sigue futura.
+- La selección de color ofrece una vista previa ilustrativa con diseño de plataforma, logo y cabeceras independientes, alternable entre Profesional y Paciente. Sólo «Guardar marca» aplica el borrador; probar una paleta no modifica la identidad guardada. Los estados semánticos conservan sus colores. En REAL, el guardado usa versión previa y Storage privado.
+- Las cabeceras de Profesional y Paciente se configuran de forma independiente para CUSTOM y pueden usar imágenes diferentes. Ambas aceptan sólo JPG, PNG o WebP de hasta 2 MB por archivo; se recomienda 1600 × 600 px (proporción 8:3) y recorte centrado responsivo. Una cabecera vacía no reutiliza la del otro portal. No se permiten CSS, fuentes ni layouts arbitrarios. Si el consultorio pierde CUSTOM, la configuración se conserva pero deja de aplicarse.
 - Admin: Facturación y Configuración.
-- Paciente: Recomendaciones continúa planificada; Recursos ya está disponible como destino de navegación inferior.
+- Paciente: la recomendación activa ya se destaca en el inicio REAL; Recursos está disponible como destino de navegación inferior.
 - Las opciones futuras se muestran deshabilitadas con badge “Próximamente”; no deben parecer clicables.
 
 ### 5.3 Regla de acceso contextual del Admin
@@ -569,7 +572,7 @@ Modal `Registrar pago`:
 
 ### 12.9 Lista y perfil de nutricionistas
 
-Estado actual: simulado.
+Estado actual: implementado en demo y como Inicio profesional REAL local autenticado.
 
 - Lista con nutricionista, organización, pacientes asignados, fecha de alta, última actividad, estado y acción.
 - Última actividad muestra día, horario y valor relativo.
@@ -592,7 +595,7 @@ Estado actual: simulado.
 
 ### 13.1.1 Perfil profesional
 
-Estado: primera entrega simulada implementada; persistencia real pendiente.
+Estado: implementado en demo y REAL local con persistencia contextual autorizada.
 
 - Perfil por vinculación profesional-consultorio; una misma identidad puede tener datos diferentes en organizaciones distintas.
 - Obligatorios para operar: nombre, apellido y email.
@@ -655,7 +658,7 @@ Estado: configuración operativa simulada implementada; persistencia real, OAuth
 
 ### 13.3 Bandeja de atención
 
-Estado actual: simulada con reglas determinísticas y ciclo funcional cerrado en Fase 2.2.
+Estado actual: implementada en demo y REAL local con reglas determinísticas, ciclo reconocido/resuelto y permisos clínicos reforzados.
 
 Debe responder:
 
@@ -675,7 +678,7 @@ Estados: sin resolver, reconocida y resuelta. Reconocer conserva autor y fecha s
 
 ### 13.4 Pacientes
 
-Estado actual: simulado.
+Estado actual: implementado en demo y REAL local; la entrega remota de invitaciones depende de SMTP productivo.
 
 - Mostrar clínica únicamente de pacientes asignados al nutricionista activo y del mismo consultorio. Los no asignados pueden aparecer sólo en directorio básico.
 - El alta se inicia por invitación por email, no creando acceso activo automáticamente.
@@ -689,7 +692,7 @@ Estado actual: simulado.
 
 ### 13.5 Check-ins
 
-Estado actual: flujo, configuración general y módulo de seguimiento implementados en modo simulado; persistencia real pendiente.
+Estado actual: implementado en demo y REAL local con biblioteca configurable, snapshots, check-in libre, historial autorizado y reglas de aviso. Automatización por frecuencia continúa planificada.
 
 - El profesional asigna un check-in a un paciente propio.
 - El paciente responde energía 1–5, adherencia 1–5, pedido de ayuda y notas opcionales de hasta 500 caracteres.
@@ -705,10 +708,12 @@ Estado actual: flujo, configuración general y módulo de seguimiento implementa
 - La prioridad es determinística y orientativa: alta si solicita ayuda o energía/adherencia es 1–2; media si alguna es 3; normal en los demás casos; nunca se presenta como diagnóstico.
 - Cada fila enlaza directamente con la pestaña de historial completo de check-ins del paciente autorizado.
 - El módulo incorpora un resumen semanal de seguimiento: agrupa inactividad sin duplicar pacientes en 3–4, 5–9 y 10+ días desde la última actividad registrada, y ofrece acceso directo a la ficha autorizada. Es una señal operativa; no constituye alerta clínica ni diagnóstico.
+- El inicio REAL presenta cuatro métricas de los últimos siete días: pacientes con actividad, check-ins respondidos, pedidos de ayuda y pacientes con tres o más días sin actividad. “Sin actividad registrada” no se presenta como “portal sin activar”, porque son estados diferentes.
+- El listado profesional usa filas compactas con último origen de actividad, pedido de ayuda y accesos a seguimiento y ficha clínica.
 
 ### 13.6 Recomendaciones
 
-Estado actual: biblioteca motivacional y asignación simuladas; emisión clínica desde perfil conservada.
+Estado actual: demo conservada y biblioteca motivacional real local conectada, con asignación, portal paciente y auditoría.
 
 - Texto obligatorio, creado por profesional autorizado.
 - En el flujo 2.2 se vincula automáticamente con la respuesta de check-in más reciente del paciente cuando existe; si no existe, queda identificada como recomendación general.
@@ -719,14 +724,19 @@ Estado actual: biblioteca motivacional y asignación simuladas; emisión clínic
 - Cada frase indica los pacientes que la tienen aplicada y puede asignarse a varios pacientes en una sola acción.
 - Cada paciente admite una sola frase motivacional activa: una nueva asignación reemplaza la anterior.
 - El paciente ve la frase activa en su muro principal; eliminarla de la biblioteca también la retira de los muros asociados.
-- La implementación actual opera con datos simulados. Persistencia, historial de cambios y auditoría real continúan pendientes de backend.
+- La ruta REAL usa una página propia por renglones, búsqueda, filtro por asignación y selector de pacientes con búsqueda y contador.
+- Creación, edición, duplicación, eliminación y asignación persisten mediante RPC; la auditoría registra la operación sin copiar el texto ni identidades clínicas en sus detalles.
+- La recomendación activa se destaca en el inicio REAL del paciente. El historial detallado de versiones continúa planificado.
 
 ### 13.7 Recursos / Biblioteca
 
-Estado actual: demo conservada y biblioteca real local conectada: alta, edición, publicación/retiro, filtros, acceso paciente y PDF privado hasta 10 MB. Escaneo antimalware y limpieza de cargas abandonadas pendientes antes de producción.
+Estado actual: demo conservada y biblioteca real local conectada: alta, edición, publicación/retiro, filtros, acceso paciente y PDF privado hasta 10 MB. Pipeline de cuarentena, bloqueo de publicación, worker y limpieza implementados localmente; falta desplegar y verificar el scanner privado y el Cron antes de producción.
 
 - Botón principal para agregar recurso.
 - Biblioteca preparada para decenas de contenidos: fichas compactas, legibles y organizadas en tres columnas en desktop habitual y cuatro en pantallas amplias.
+- En Recursos, el listado profesional se presenta por renglones compactos para escanear título, categoría, tipo, estado y acciones con mayor densidad; en móvil cada renglón reorganiza sus acciones sin ocultar información esencial.
+- Antes de agregar o reemplazar PDFs o enlaces, el profesional debe aceptar en Configuración una declaración versionada de responsabilidad sobre derechos, licencias, autorizaciones y datos personales. La revocación conserva lo existente y bloquea nuevas cargas.
+- Biblioteca muestra almacenamiento usado y disponible. El límite inicial implementado es 250 MB por profesional y consultorio para PDFs; los enlaces no consumen cuota y el servidor aplica el límite.
 - Cada recurso propio puede editar título, categoría, tipo y archivo/enlace sin recrearlo; conserva estado editorial y actualiza `updatedAt`.
 - Tipos iniciales: documento y enlace/video.
 - Campos: título, categoría y archivo o URL.
@@ -764,7 +774,7 @@ IA futura para recetas:
 
 ### 13.9 Antropometría y evolución
 
-Estado: primera entrega simulada implementada; persistencia real y exportación clínica pendientes.
+Estado: implementado en REAL local, incluida exportación clínica comparativa a PDF; el módulo transversal de Reportes continúa planificado.
 
 - El registro cotidiano de evolución es exclusivamente de peso, realizado de forma opcional por paciente o nutricionista asignado, con fecha editable hacia atrás y origen (`paciente` o `profesional`). Altura, cintura y cadera pertenecen a los datos antropométricos iniciales del perfil y no se solicitan en cada carga.
 - La ficha profesional incorporará una pestaña independiente llamada `Antropometría`. No reemplaza `Seguimiento`: Seguimiento conserva el peso cotidiano que carga el paciente; Antropometría reúne revisiones realizadas por la profesional.
@@ -784,17 +794,19 @@ Estado: primera entrega simulada implementada; persistencia real y exportación 
 
 ### 13.10 Reportes
 
-Estado: futuro diferido por decisión de producto; no forma parte del cierre funcional actual.
+Estado: primer módulo REAL local implementado para construcción y exportación; plantillas persistidas, snapshots y entrega trazable continúan futuros.
 
-- Seleccionar paciente, período y plantilla.
-- Activar, desactivar, editar y ordenar secciones.
+- Seleccionar paciente y período; las plantillas guardadas continúan futuras.
+- Activar o desactivar secciones. Edición libre y reordenamiento continúan futuros.
 - Preview y PDF coherentes.
 - Secciones posibles: identidad, resumen, peso, medidas, antropometría, macros, adherencia, bienestar, plan, consultas, notas, recomendaciones y firma.
-- Guardar snapshot de datos, versión, autor y registro de entrega.
+- Guardar snapshot de datos, versión, autor y registro de entrega continúa futuro; la primera entrega genera el documento sólo en el navegador.
 
 ### 13.11 Planes alimentarios y adherencia
 
-Estado: biblioteca y editor multidía implementados tanto en modo simulado como en el recorrido real local. El recorrido real persiste borradores/versiones y muestra cumplimiento y comentarios por comida; los enlaces interactivos a recetas siguen implementados sólo en la demo hasta conectar la biblioteca real. Importación pendiente.
+Estado: biblioteca y editor multidía implementados tanto en modo simulado como en el recorrido real local. El recorrido real persiste borradores/versiones, muestra cumplimiento y comentarios por comida y enlaza únicamente recetas reales publicadas y autorizadas. Importación pendiente.
+
+Paridad visual REAL revisada el 2026-09-10: la biblioteca incorpora buscador con limpieza y estado vacío propio, resumen separado de principales/complementos activos, conteo de comidas y elementos, paciente y tipo de asignación visibles por plan, comentarios pendientes y creación configurable entre 7 y 30 días. Para escalar a bibliotecas extensas, los planes se presentan como filas compactas de lectura jerárquica —identidad/estado, métricas, paciente y acciones— que se apilan en móvil sin ocultar información crítica. Importación continúa señalada como próxima y no permite cargar archivos todavía.
 
 - La pantalla principal reúne todos los planes individuales del profesional; cada tarjeta resume duración, cantidad de comidas/elementos, su único paciente vinculado y comentarios pendientes de revisión.
 - La biblioteca incluye buscador con limpieza rápida. Debe encontrar planes por título, paciente vinculado, estado y texto administrativo relevante, con estado vacío por filtro sin ocultar la acción de limpiar.
@@ -851,7 +863,7 @@ Estado actual: simulado y mobile-first.
 
 ### 14.4 Antropometría y progreso
 
-Estado: alcance ampliado implementado en demo y pantalla profesional de Antropometría conectada a Supabase local. Acceso desde Pacientes → Abrir antropometría; Configuración administra campos adicionales reales. Permite crear, corregir y eliminar revisiones propias, conservar fecha civil, seleccionar columnas, comparar dos revisiones y graficar una métrica por período. Persistencia real local verificada con pruebas transaccionales, sin resetear datos de prueba existentes.
+Estado: alcance ampliado implementado en demo y pantalla profesional de Antropometría conectada a Supabase local. Acceso desde Pacientes → Abrir antropometría; Configuración administra campos adicionales reales. Permite crear, corregir y eliminar revisiones propias, conservar fecha civil, seleccionar columnas, comparar hasta tres revisiones, generar un informe PDF y graficar una métrica por período. Persistencia real local verificada con pruebas transaccionales, sin resetear datos de prueba existentes.
 
 - Paciente y profesional pueden registrar; toda medición conserva autor, fecha, hora y origen.
 - El peso cotidiano pertenece a Seguimiento; las revisiones antropométricas son una tabla profesional independiente, con una fila por fecha y métricas opcionales por columna.
@@ -1167,7 +1179,7 @@ Aceptación local: fecha elegida preservada; futuro rechazado; RPC duplicada no 
 
 ### Ficha unificada y referencia inicial REAL — 2026-09-02
 
-La ruta profesional de paciente real reúne Información básica, Plan alimentario (acceso al editor y cumplimiento existente), Historial de check-ins, Seguimiento de peso, Antropometría, Recomendaciones y Próximos pasos. Reutiliza módulos reales; no importa mocks ni convierte revisiones en pesos cotidianos. El directorio recupera nombre/contacto, ciudad/estado y «Abrir ficha». La ficha DEMO conserva su ruta y sus funciones previas.
+La ruta profesional de paciente real reúne Información básica, Plan alimentario (acceso al editor y cumplimiento existente), Historial de check-ins, Seguimiento de peso y Antropometría. Recomendaciones y Próximos pasos se administran exclusivamente desde sus bibliotecas profesionales específicas para evitar navegación duplicada. No importa mocks ni convierte revisiones en pesos cotidianos. El directorio recupera nombre/contacto, ciudad/estado y «Abrir ficha». La ficha DEMO conserva su ruta y sus funciones previas.
 
 Datos iniciales opcionales persistidos aparte: fecha de referencia, altura, peso inicial, cintura, cadera y peso objetivo. Paciente titular y profesional asignado pueden corregir la referencia; sólo el paciente declara/cambia el objetivo. Guardar no crea una medición cotidiana ni modifica revisiones. El cambio desde inicio usa último peso cotidiano menos referencia inicial, independiente del filtro. Se rechazan futuro, valores no positivos/fuera de límites y versiones concurrentes obsoletas. Auditoría sin valores. No hay diagnóstico, proyección ni importación de datos supuestos. Datos de contacto se consultan; edición de identidad no forma parte de este incremento.
 
@@ -1175,13 +1187,13 @@ Datos iniciales opcionales persistidos aparte: fecha de referencia, altura, peso
 
 Antropometría REAL permite seleccionar hasta tres revisiones fechadas distintas en un bloque independiente del historial y del filtro del gráfico. La primera selección define la referencia; cada columna adicional muestra valor y diferencia neutral respecto de ella. Sin valor inicial se informa falta de referencia. Las filas dejan de incluir el checkbox Comparar y reducen su espacio vertical, manteniendo NOTA y edición/eliminación autorizadas. No cambia datos, permisos ni la comparación DEMO.
 
-El menú profesional REAL adopta la disposición lateral y los iconos de DEMO en escritorio (desde 1024 px). En móvil/tablet ofrece accesos inferiores y menú completo modal con foco controlado. Sólo activa rutas reales conectadas; perfil, bandeja, citas, ingresos y reportes permanecen señalados como pendientes. Seguimiento conserva su nombre y destino real; no simula el Inicio DEMO. La navegación del paciente no cambia en este incremento. Aceptación: hasta tres selecciones sin duplicados, referencia según orden elegido, ausencia de desborde del documento y rutas activas sin MockProvider.
+El menú profesional REAL adopta la disposición lateral y los iconos de DEMO en escritorio (desde 1024 px). En móvil/tablet ofrece accesos inferiores y menú completo modal con foco controlado. Esta decisión fue ampliada posteriormente: perfil, Bandeja e Ingresos ya están conectados en REAL; permanecen pendientes el historial profesional independiente de Citas y Reportes. Seguimiento conserva su nombre y destino real. Aceptación: hasta tres selecciones sin duplicados, referencia según orden elegido, ausencia de desborde del documento y rutas activas sin MockProvider.
 
 ### Marca CUSTOM — primer corte REAL local
 
 Implementado: habilitación comercial separada por consultorio, sin suscripciones ni cobros; edición exclusivamente por responsable activo. Configuración ofrece nombre, texto, contactos, diez paletas con preview, logo y dos cabeceras independientes. Guarda rutas de Storage privado, nunca base64. JPG/PNG/WebP hasta 2 MB; UI valida decodificación y máximo 20 megapíxeles. URL firmada de cinco minutos, renovación periódica; no se permite sobrescribir objetos. Guardar usa versión previa para rechazar cambios concurrentes. Retirar habilitación conserva configuración pero no la aplica. La sesión profesional corriente de Andrea no es responsable y no recibe permisos nuevos.
 
-La identidad y colores se aplican automáticamente cuando la sesión tiene un único consultorio autorizado. Con varios se conserva identidad neutral; la selección contextual de marca multi-consultorio queda pendiente, aunque cada responsable puede editar sus consultorios desde el selector de Configuración. La cabecera profesional aparece en Seguimiento/inicio y la del paciente en su inicio. Contactos y texto se conservan en configuración; su presentación completa en cabeceras queda pendiente. No hay página pública ni dominio personalizado. Activación local explícita sólo para Clínica Bienestar, fuera de las migraciones reutilizables. Pendientes de cierre: validación visual autenticada como responsable y de imágenes en ambos portales, limpieza segura de archivos no usados y endurecimiento de procesamiento de imágenes antes de producción.
+La identidad y colores se aplican automáticamente cuando la sesión tiene un único consultorio autorizado. Con varios se conserva identidad neutral; la selección contextual de marca multi-consultorio queda pendiente, aunque cada responsable puede editar sus consultorios desde el selector de Configuración. La cabecera profesional aparece en Inicio y la del paciente en su inicio; contactos y texto ya se presentan en ambas. No hay página pública ni dominio personalizado. Activación local explícita sólo para Clínica Bienestar, fuera de las migraciones reutilizables. Pendientes de cierre: validación física con imágenes en móvil/tablet, limpieza segura de archivos no usados y endurecimiento de procesamiento de imágenes antes de producción.
 
 ### Ingresos REAL — primer recorrido conectado
 
@@ -1199,13 +1211,41 @@ Aceptación: corrección y reintento sin duplicados, original conservado, reembo
 
 **Regla final:** si un cambio se ve mejor pero debilita claridad, accesibilidad, privacidad, consistencia o estabilidad, no es una mejora para NutriSoft.
 
+### Optimización móvil REAL — Profesional y Paciente, 2026-09-13
+
+Decisión aprobada: Profesional y Paciente se consideran experiencias mobile-first porque ambos roles pueden operar principalmente desde teléfono. Profesional incorpora un Inicio REAL accionable en `/professional`, en lugar de abrir Planes alimentarios como destino implícito. Resume pacientes activos, pacientes con avisos pendientes, pedidos de ayuda y el total de próximas citas sin inferencias clínicas. Además muestra hasta cuatro pacientes que requieren atención con motivo operativo y prioridad, las tres citas inmediatas, actividad reciente unificada de check-ins, peso y próximos pasos, y accesos rápidos. Cada elemento deriva a la ficha o sección autorizada correspondiente; los estados vacíos no sugieren ausencia de dificultades clínicas. La barra inferior prioriza Inicio, Pacientes, Agenda, Bandeja y Más, y muestra el conteo de avisos pendientes. El menú completo permanece disponible y la navegación desktop conserva sidebar.
+
+Paciente deja de mostrar todos los destinos en una cabecera que podía crecer en varias filas. Usa cabecera compacta y barra inferior con safe area para Inicio, Seguimiento, Citas, Recetas y Más; Recursos, registro de peso y cierre de sesión viven en Más. El seguimiento ya no muestra un selector redundante de ficha. En el plan alimentario, los comentarios se despliegan bajo demanda y cada día muestra progreso de comidas, reduciendo longitud sin ocultar indicaciones.
+
+Los filtros secundarios de Recetario, Recursos, Recomendaciones e Ingresos se agrupan detrás de un control explícito en móvil, conservando buscador, conteo de filtros activos y presentación completa en desktop. Los botones pequeños mantienen área táctil de 44 px en móvil y recuperan densidad compacta desde `sm`. Criterios: navegación siempre alcanzable con una mano, contenido no tapado por barras fijas, acciones principales visibles, controles secundarios progresivos, sin desborde horizontal y sin cambios de permisos o persistencia clínica.
+
+Segunda pasada validada el 2026-09-14: las acciones por fila de Recetario, Recursos y Recomendaciones se agrupan en móvil bajo un único control `Acciones`, que abre una hoja accesible con todos los comandos y conserva la botonera directa desde `sm`. Los filtros de Check-ins, tanto en la vista general como dentro de la ficha, también usan revelado progresivo con contador de filtros activos. Revisión autenticada a 390 × 844 px: Recursos, Recomendaciones y Check-ins sin desborde horizontal; apertura del menú de recurso verificada con Descargar, Editar y cambio de estado disponibles.
+
+Tercera pasada móvil, 2026-09-14: la ficha profesional del paciente usa un selector de sección único en teléfonos y conserva pestañas directas desde tablet, evitando varias filas de controles sin perder estado en la URL. Recetario y Recursos REAL del paciente dejan la grilla genérica y usan renglones específicos: recetas con miniatura, categoría, duración y porciones; recursos con tipo, categoría, nombre de archivo y una acción primaria de descarga o apertura. Las filas completas de recetas abren el detalle, todos los targets son táctiles y los estados vacíos distinguen ausencia de publicaciones de una búsqueda sin resultados. Es una mejora de presentación sobre las mismas lecturas autorizadas; no cambia RLS, publicación ni alcance clínico.
+
+Cuarta pasada móvil, 2026-09-14: los formularios extensos REAL de horarios, preferencias de citas e Ingresos mantienen su acción de guardado visible mediante una barra inferior adherente. En páginas profesionales se ubica por encima de la navegación móvil y dentro de diálogos se adhiere al borde del contenido desplazable; el formulario reserva espacio de scroll para que el teclado y la barra no oculten los últimos campos. Recetario conserva el mismo patrón ya implementado. Las métricas de Bandeja y los tres rangos de inactividad pasan de tres columnas comprimidas a dos columnas en teléfonos, con el tercer indicador a ancho completo; desde `sm` recuperan tres columnas. No cambia cálculo, persistencia, permisos ni semántica de los indicadores.
+
+Pasada visual integral REAL, 2026-09-14: se recorrieron con sesión autenticada 15 destinos profesionales y 7 destinos del paciente en viewports de 390 × 844 y 375 × 844 px. Inicio, Seguimiento, Perfil, Pacientes y ficha, Bandeja, Agenda, Ingresos, Planes, Recetario, Próximos pasos, Recursos, Check-ins, Recomendaciones y Configuración profesional, junto con Inicio, Seguimiento, check-in libre, Citas, Peso, Recetario y Recursos del paciente, no presentan desborde horizontal ni alertas inesperadas. Se corrigió el cálculo de ancho mínimo de las grillas del Inicio profesional, se amplió a 44 px el acceso táctil de identidad del paciente y se eliminó la acción duplicada de limpiar filtros en el estado vacío de la biblioteca. La consola quedó sin errores durante el recorrido. Esta aceptación cubre presentación y navegación local REAL; no sustituye validaciones futuras con dispositivos físicos, conectividad degradada ni infraestructura productiva.
+
+Estabilidad de pruebas frontend, 2026-09-14: Vitest conserva el límite estricto de 10 segundos por prueba y limita la concurrencia a cuatro workers para evitar contención de CPU/memoria entre entornos JSDOM. La suite integral queda reproducible en equipos de desarrollo de distinta capacidad sin ocultar regresiones mediante timeouts amplios. `test:critical-flows` ejecuta primero los recorridos de mayor riesgo —flujo profesional/paciente, navegación por rol, shell REAL móvil, seguimiento y adherencia— y `verify:frontend` exige luego la suite completa y el build. El E2E local de Auth/Admin continúa en `verify:auth`; el E2E clínico REAL con base local permanece como puerta separada antes del piloto y no se presenta como resuelto por pruebas con repositorios simulados.
+
+Optimización del bundle, 2026-09-14: App, layouts y páginas de ruta usan carga diferida con un estado accesible de espera. El proveedor y los datos DEMO quedan en un chunk propio y no forman parte del JavaScript inicial REAL; cada pantalla profesional, paciente o administrativa se descarga al visitarla. El artefacto inicial de producción pasó de 1.528,19 kB (395,94 kB gzip) a 463,47 kB (143,14 kB gzip), una reducción aproximada del 70 % sin elevar el límite de advertencia. `verify:bundle` impone un presupuesto automático de 500 kB al entrypoint y forma parte de `verify:frontend`. Recetario REAL fue verificado mediante navegación autenticada después de la división. La optimización no cambia permisos, datos ni contratos; futuras mediciones en teléfonos físicos y redes degradadas siguen siendo recomendables antes del piloto.
+
+### Pacientes REAL — cierre operativo local 2026-09-13
+
+Pacientes dispone de contexto explícito de consultorio para profesionales con varias membresías, directorio compacto con búsqueda, conteos y filtros Activos/Archivados/Todos, e invitaciones con estados Pendiente/Aceptada/Vencida/Cancelada. Las pendientes o vencidas pueden reenviarse y renovar su vigencia por siete días; cancelar revoca el acceso preparado y archiva la ficha sin eliminar historial. La entrega remota continúa condicionada a SMTP de producción; en local se usa Mailpit y enlace de activación de desarrollo.
+
+La ficha individual muestra los últimos cinco turnos en modo informativo, sin importes ni edición. Los enlaces con pestaña inválida vuelven de forma segura a Información básica. Archivar/reactivar es una transición reversible, exclusiva del nutricionista activo asignado en el consultorio activo, y deja auditoría sin contenido clínico. Archivar bloquea la operación clínica y el portal por las reglas de acceso existentes, pero conserva asignación e historia para permitir reactivación. Una invitación cancelada no puede reactivarse como ficha activa sin un nuevo flujo de invitación. Transferencia o reasignación entre profesionales permanece futura y requiere RPC separada, consentimiento operativo y definición de custodia del historial; no se incorporó como efecto lateral del archivo.
+
 ### Precio de cita desde Ingresos REAL — 2026-09-03
 
 Decisión del usuario: permitir corregir libremente el precio acordado desde el popup de Ingresos, separado del importe del cobro. Implementado «Editar precio de la cita»: importe desde cero, hasta dos decimales y límite técnico numeric(12,2), sin límite basado en el precio previo. Misma autorización operativa de la cita; paciente y Platform Admin excluidos. RPC con bloqueo, control de versión y auditoría del precio anterior/nuevo. No cambia fecha, modalidad, estado, moneda ni decisión sin cargo; no modifica movimientos. Bajar el precio bajo el neto cobrado está permitido y muestra la diferencia, sin devolución automática. Cobrar por encima del nuevo saldo sigue bloqueado: primero se corrige el precio. Aceptación: 10.000 → 15.000 permite cobrar 15.000; reducción bajo cobrado conserva dinero/historial; importes negativos y versiones desactualizadas se rechazan. Pruebas de base transaccionales y formulario sin registrar cobros del usuario.
 
 ### CUSTOM REAL — presentación de contactos y recarga, 2026-09-03
 
-Implementado para consultorio único autorizado con CUSTOM habilitado: texto breve, nombre y contactos en la cabecera de inicio de ambos portales, aunque no tenga imagen. Teléfono y email válidos usan esquemas tel/mailto; otros textos se muestran sin convertirlos en enlaces arbitrarios. Disposición apilada en móvil, ajustable en escritorio, sin modificar datos ni permisos. Cabeceras independientes conservadas. Identidad neutral del paciente dice Portal del paciente. Recargar marca guardada descarta borrador incluso con versión sin cambios; guardar confirma éxito tras RPC. Aceptación automatizada: contactos sin imagen, cabeceras independientes, marca deshabilitada, permisos de edición y sesión multi-consultorio neutral. Pendiente revisión visual autenticada del editor y decisión de contexto multi-consultorio; no se considera cierre total CUSTOM ni preparación de imágenes para producción.
+Implementado para consultorio único autorizado con CUSTOM habilitado: texto breve, nombre y contactos en la cabecera de inicio de ambos portales, aunque no tenga imagen. Teléfono y email válidos usan esquemas tel/mailto; otros textos se muestran sin convertirlos en enlaces arbitrarios. Disposición apilada en móvil, ajustable en escritorio, sin modificar datos ni permisos. Cabeceras independientes conservadas. Identidad neutral del paciente dice Portal del paciente. Recargar marca guardada descarta borrador incluso con versión sin cambios; guardar confirma éxito tras RPC. Aceptación automatizada: contactos sin imagen, cabeceras independientes, marca deshabilitada, permisos de edición y sesión multi-consultorio neutral.
+
+Revisión visual autenticada de escritorio completada el 2026-09-10 con cuenta responsable: el editor agrupa identidad/contacto, imágenes y color/vista previa; incorpora previsualización individual de logo y cabeceras, acciones de carga/reemplazo claras y barra de guardado persistente adaptable. Storage local quedó habilitado y saludable. La sesión multi-consultorio continúa neutral por seguridad: elegir un consultorio en el editor no filtra datos ni cambia la identidad global. Restan la validación con imágenes aportadas por el usuario en móvil/tablet y la limpieza automatizada de archivos abandonados antes de producción.
 
 ### Check-in configurable REAL — 2026-09-03
 
@@ -1215,7 +1255,9 @@ Lectura profesional del historial: cada check-in es una tarjeta plegable indepen
 
 Historial individual: filtros Todos/Hoy/7 días/15 días/Mes/Personalizado inclusivo, prioridad y orden por fecha aplicados a cada check-in del paciente seleccionado; sin resultados muestra estado vacío. La fecha de filtro es respuesta o creación si no fue respondido. Muestras locales explícitamente solicitadas para Laura: seis respuestas ficticias separadas del historial previo, etiquetadas en notas, con dos avisos de ejemplo; no se incorporan a migraciones de producción.
 
-Claridad de historial (2026-09-04): el editor general sólo aparece en Configuración. La ficha del paciente muestra historial de respuestas, estados y enlace a configuración general; no muestra editor ni asignación. El módulo general de Check-ins conserva asignación manual por compatibilidad. Decisión aprobada: frecuencia diaria/semanal a elección del profesional, general para sus pacientes; automatización y selector de frecuencia todavía pendientes de implementación, no se presentan como activos.
+Claridad de historial (2026-09-04): el editor general sólo aparece en Configuración. La ficha del paciente muestra historial de respuestas, estados y enlace a configuración general; no muestra editor ni asignación. El módulo general de Check-ins conserva asignación manual por compatibilidad.
+
+Automatización local (2026-09-15): cada nutricionista elige explícitamente por paciente frecuencia diaria, semanal o pausada; diaria aparece como sugerencia inicial pero no activa nada hasta guardarla. Existe además una pausa global. Un job diario procesa las fechas sin hora exacta, congela las preguntas vigentes en cada nueva asignación y nunca crea más de un pendiente: si ya existe uno, omite ese ciclo, registra el salto técnico y avanza la próxima fecha. Pacientes o membresías inactivas, tenant ajeno y Platform Admin quedan excluidos. Cambiar frecuencia no altera ni elimina asignaciones históricas. La base, UI y Edge Function están implementadas localmente; para producción resta configurar `CHECKIN_SCHEDULER_SECRET` y el Cron diario.
 
 ### Bandeja REAL — 2026-09-04
 
@@ -1225,7 +1267,7 @@ Ajuste UX: sólo tres preguntas preestablecidas al iniciar una biblioteca sin gu
 
 Implementado en local (migración 46): biblioteca por nutricionista activo y consultorio, general para sus pacientes. Todas las preguntas, incluidas energía y adherencia, se pueden editar, incluir/excluir, ordenar y archivar; sugerencias iniciales editables, nuevas preguntas y respuestas escala 1–5, sí/no, opciones o texto breve. Se elige obligatoriedad. Archivar conserva historia. Esta decisión reemplaza la obligatoriedad fija de energía/adherencia para nuevas asignaciones después de guardar la biblioteca; DEMO y formularios legacy conservan su flujo anterior.
 
-Campana BellRing con explicación visible y máximo dos preguntas con alerta (se permite cero), validado también en servidor. Escala usa umbral explícito; opciones/sí-no usan valores elegidos. Texto libre no genera interpretación automática. Una respuesta que coincide crea aviso consolidado CUSTOM_CHECKIN y prioridad alta en Check-ins, con respuestas señaladas en historial; no es diagnóstico ni aviso de emergencia. La Bandeja REAL completa sigue pendiente.
+Campana BellRing con explicación visible y máximo dos preguntas con alerta (se permite cero), validado también en servidor. Escala usa umbral explícito; opciones/sí-no usan valores elegidos. Texto libre no genera interpretación automática. Una respuesta que coincide crea aviso consolidado CUSTOM_CHECKIN y prioridad alta en Check-ins, con respuestas señaladas en historial; no es diagnóstico ni aviso de emergencia. La Bandeja REAL ya permite reconocer y resolver el aviso; resta validar manualmente el recorrido completo Paciente→Profesional.
 
 Cada asignación conserva preguntas y reglas; editar biblioteca no altera formularios enviados ni respuestas. Biblioteca vacía puede guardarse pero impide nuevas asignaciones. Control de versión evita sobrescritura concurrente. Paciente sólo responde su asignación pendiente no vencida; Platform Admin no accede a contenido clínico. Aceptación: 122 pruebas frontend, 51 pruebas DB de este flujo y regresión seleccionada, build correcto; configuración revisada a 390 px sin overflow documental. No se guardaron preferencias de prueba del usuario. Recorrido manual completo con cuenta paciente permanece por revisar.
 
@@ -1250,3 +1292,53 @@ Implementado localmente para nutricionista activo por consultorio: moneda predet
 Implementado localmente para nutricionista activo y su consultorio: el perfil separa identidad de cuenta (nombre completo, correo sólo de lectura y teléfono) de práctica contextual (especialidad, zona horaria y matrícula opcional). Especialidad sólo orienta la experiencia, no certifica; matrícula exige número, provincia/estado y país juntos, y no es verificada por NutriSoft. La práctica se guarda por consultorio; identidad no se duplica entre consultorios. Platform Admin, paciente, responsable no clínico y asistente no pueden consultar ni modificar este perfil mediante estas RPC.
 
 El correo no se edita directamente: requerirá un flujo específico de verificación de correo antes de estar disponible. La sesión activa puede actualizar contraseña con confirmación local, mínimo diez caracteres y control para mostrar/ocultar durante la escritura; nunca se conserva ni muestra la contraseña previa. Guardar perfil valida versión concurrente y deja auditoría de presencia de campos, sin teléfonos ni matrícula. No se alteran pacientes, citas ni historiales existentes.
+
+Cierre visual local — 2026-09-10: el perfil muestra explícitamente el consultorio cuya práctica se está editando y, si la persona pertenece como nutricionista activo a más de uno, permite seleccionar el contexto antes de modificarlo. Detecta cambios sin guardar, habilita acciones sólo cuando corresponde, permite descartarlos, advierte al abandonar la página y valida en cliente que la matrícula opcional se complete como conjunto. Las acciones permanecen visibles de forma responsiva. El cambio de correo con verificación continúa planificado y no debe presentarse como implementado.
+
+### Recetario profesional REAL — cierre visual local 2026-09-12
+
+El Recetario REAL usa la biblioteca educativa segura existente, pero dispone de una superficie profesional propia y escalable: resumen de publicaciones, borradores y retiros; búsqueda; filtros por categoría y estado; filas compactas; detalle estructurado; alta, edición, duplicación y transiciones editoriales explícitas. Con múltiples membresías nutricionistas activas permite elegir el consultorio para crear contenido y filtra la biblioteca por ese contexto; nunca mezcla bibliotecas de otros profesionales.
+
+Una receta nueva puede guardarse privada o publicarse. Publicar la habilita para vincularla a planes alimentarios y para pacientes autorizados por asignación; retirar deja de exponerla sin borrar la entidad ni su historial. Editar conserva el estado vigente y exige la versión recibida para evitar sobrescrituras concurrentes. Los enlaces desde planes conservan las identidades existentes. Decisión final del usuario: las fotografías se admiten únicamente mediante URL HTTPS opcional; NutriSoft no carga ni almacena imágenes del recetario. La IA de formateo continúa futura y no debe presentarse como implementada.
+
+### Recursos profesionales REAL — cierre visual local 2026-09-13
+
+La biblioteca profesional de Recursos dispone de una superficie REAL dedicada para PDFs privados y enlaces HTTPS: resumen por cantidad/tipo/publicación, búsqueda, filtros por tipo y estado, contexto de consultorio, tarjetas compactas preparadas para decenas de contenidos, alta, edición, publicación, retiro, restauración, apertura de enlaces y descarga autenticada de documentos. Al editar un PDF puede conservarse el archivo actual o reemplazarse; el estado editorial no cambia de manera implícita.
+
+Cada recurso pertenece al nutricionista autor y al consultorio seleccionado. Borradores y retirados permanecen privados; sólo una publicación es visible para pacientes con asignación activa al autor en el mismo tenant. Retirar revoca su visibilidad sin borrar el registro ni el archivo histórico. Platform Admin, responsable no clínico, assistant, otro profesional y pacientes ajenos continúan excluidos. Los PDFs aceptan hasta 10 MB y se almacenan en bucket privado sin URL pública.
+
+### Seguridad de archivos — base local 2026-09-15
+
+Las nuevas cargas de PDFs, logos y cabeceras usan una reserva vinculada al usuario y consultorio, ingresan a un bucket privado de cuarentena y no pueden escribirse directamente en los buckets definitivos. El servidor vuelve a validar tipo, tamaño, cuota, responsabilidad aceptada y permisos. Sólo un worker con `service_role` puede reclamar una carga, colocar el resultado procesado en el bucket final y marcarlo limpio; triggers impiden vincular o publicar una ruta nueva sin esa constancia. Platform Admin permanece excluido y los registros técnicos no contienen contenido clínico ni nombres en auditoría.
+
+Las imágenes se decodifican, limitan a 20 megapíxeles, reducen según su uso y recodifican a WebP en el cliente antes de la cuarentena; el procesador privado debe volver a decodificarlas y devolver bytes saneados. Los PDFs requieren análisis antimalware y validación estructural. Reservas y cargas fallidas vencen a las 24 horas. Archivos finales reemplazados quedan elegibles para borrado después de 7 días sólo si ninguna biblioteca o marca los referencia. La cuota predeterminada sigue siendo 250 MB por profesional y consultorio e incluye objetos finales más reservas activas.
+
+Estado honesto: esquema, permisos, cliente, worker Edge y limpieza quedaron implementados localmente. La activación REAL de cargas sigue bloqueada hasta desplegar un servicio privado compatible con `FILE_SECURITY_SCANNER_URL`, configurar secretos y programar `file-security-cleanup`; nunca se simula un resultado limpio si el servicio falta. Los archivos históricos vinculados se conservan sin reclasificarlos como escaneados y deben analizarse o migrarse antes de habilitar cargas en producción.
+
+### Importación y cumplimiento de planes — 2026-09-15
+
+Planes alimentarios acepta importación CSV mediante una plantilla descargable con encabezados fijos: `dia`, `titulo_dia`, `comida`, `alimento`, `cantidad` y `alternativas`. Se admiten hasta 1 MB, entre 7 y 30 días y hasta cuatro comidas por día. La vista previa informa fila y causa de cada error, no crea contenido parcial y permite corregir externamente y volver a seleccionar el archivo sin cerrar el flujo. Una importación válida crea exclusivamente un borrador independiente, sin paciente, asignación ni publicación automática; el profesional debe revisarlo en el editor normal. PDF/Word asistido queda registrado como futuro y no se presenta como disponible.
+
+El paciente puede declarar por comida Cumplida, Parcial o No cumplida, además de retirar la marca. Son estados descriptivos, no diagnósticos, y reutilizan el modelo REAL ya persistido; comentarios y revisión profesional se conservan. El profesional ve estos estados en el plan sin alterar versiones ni historiales.
+
+### Reorganización de Seguimiento REAL — 2026-09-13
+
+Decisión aprobada: Seguimiento profesional es exclusivamente un tablero transversal de actividad, inactividad y pedidos de ayuda. Ya no contiene pestañas internas de Peso, Check-ins, Próximos pasos o Recomendaciones. Check-ins conserva su vista global independiente porque permite revisar prioridades entre pacientes; Próximos pasos y Recomendaciones conservan sus bibliotecas específicas. Peso cotidiano sólo se consulta dentro de la ficha del paciente, junto con el contexto clínico y Antropometría.
+
+Cada fila de Seguimiento ofrece accesos explícitos a los check-ins del paciente, su seguimiento de peso y su ficha. La ficha individual conserva Historial de check-ins y Seguimiento de peso, pero deja de duplicar las bibliotecas de Recomendaciones y Próximos pasos. El portal Paciente mantiene su agrupación cotidiana propia porque allí el contexto siempre corresponde a la persona autenticada.
+
+### Informe comparativo de Antropometría REAL — 2026-09-14
+
+La comparación de Antropometría funciona como generador de informe clínico dentro de la ficha autorizada. Permite elegir dos o tres revisiones sin duplicados, fijar la primera como referencia y ver por métrica los valores, la diferencia absoluta y la variación porcentual matemática. Resume el intervalo entre fechas, la cantidad de métricas presentes y cuántas tienen datos completos en todas las revisiones elegidas.
+
+El PDF se genera localmente en el navegador y se descarga con identidad del paciente, profesional y consultorio, tabla comparativa, paginado y marca de documento clínico confidencial. Si el consultorio tiene logo CUSTOM configurado, se obtiene mediante una URL privada temporal y se incorpora al documento en memoria; si no existe o no puede cargarse, se usa un isotipo geométrico neutral sin nombre de producto hasta definir la identidad definitiva de la plataforma. Las notas de revisión se excluyen por defecto y sólo se incorporan mediante una opción explícita. La interfaz y el documento describen cambios sin clasificarlos como favorables o desfavorables, sin diagnóstico ni proyección. No se crea persistencia adicional, no se envía el contenido a terceros y se conservan el acceso clínico vigente y el aislamiento multi-tenant de la ficha de origen.
+
+### Reportes clínicos REAL — primer constructor local, 2026-09-14
+
+La ruta profesional `/professional/reports` permite elegir un paciente activo autorizado, un período civil y cualquiera de seis secciones: información/referencia, Antropometría, peso cotidiano, check-ins, planes alimentarios y citas recientes. La vista previa responde inmediatamente a la selección, distingue secciones sin registros y muestra el total incluido. Las notas de check-in permanecen excluidas por defecto y requieren habilitación explícita.
+
+El PDF replica la estructura informativa, incorpora profesional, consultorio, paciente, período, paginado y logo CUSTOM privado cuando existe; sin marca usa identidad geométrica neutral y no fija el nombre provisorio del producto. La generación ocurre en memoria y no guarda snapshot ni envía el documento. El módulo compone exclusivamente repositorios y vistas clínicas ya protegidas: no crea un acceso agregador, no relaja RLS y no existe dentro del portal Platform Admin. Plantillas, edición/reordenamiento libre, firma, persistencia versionada y registro de entrega continúan futuros y no se presentan como implementados.
+
+### Landing comercial separada — prototipo de conversión, 2026-09-15
+
+Se crea `landing/` como espacio independiente del producto autenticado para explorar la comunicación pública y comercial de NutriSoft. La segunda pasada prioriza conversión a conversación por WhatsApp: promesa específica, problema cotidiano, mecanismo de solución, módulos, segmentación por tipo de práctica, privacidad, objeciones, preguntas frecuentes y CTA repetidos. Usa la paleta y personalidad oficiales, presenta la promesa para nutricionistas, consultorios y pacientes, y comunica privacidad por diseño sin exponer datos clínicos. No se conecta todavía a autenticación, datos, pagos, CRM ni formularios de producción. No incluye precios, testimonios, métricas ni promesas de disponibilidad no validadas; las capacidades descritas deben conservar el estado honesto de la documentación maestra. El número comercial se configura en un único placeholder dentro de `landing/index.html` antes de publicar.

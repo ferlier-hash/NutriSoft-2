@@ -22,7 +22,13 @@ Deno.serve(async (request) => { try {
     // Sólo para el entorno local: permite continuar una invitación ya creada
     // sin exponer enlaces de autenticación en el producto real.
     const isLocal = url.includes('localhost') || url.includes('127.0.0.1') || url.includes('kong:8000');
-    if (!isLocal) return Response.json({patient_id:existingPatientId,status:'pending',existing:true},{headers:cors(request)});
+    if (!isLocal) {
+      const {error:mailError}=await service.auth.resetPasswordForEmail(normalized);
+      if(mailError) throw new Error('No pudimos reenviar el correo de activación.');
+      const {error:renewError}=await service.schema('api').rpc('renew_patient_invitation_for_service',{p_patient:existingPatientId});
+      if(renewError) throw new Error('No pudimos renovar la vigencia de la invitación.');
+      return Response.json({patient_id:existingPatientId,status:'pending',existing:true},{headers:cors(request)});
+    }
     const {data:recovery,error:recoveryError}=await service.auth.admin.generateLink({
       type:'recovery',
       email:normalized,
@@ -30,6 +36,8 @@ Deno.serve(async (request) => { try {
     });
     const activationUrl=recovery?.properties?.action_link;
     if(recoveryError||!activationUrl) throw new Error('No pudimos regenerar el enlace de activación local.');
+    const {error:renewError}=await service.schema('api').rpc('renew_patient_invitation_for_service',{p_patient:existingPatientId});
+    if(renewError) throw new Error('No pudimos renovar la vigencia de la invitación.');
     return Response.json({patient_id:existingPatientId,status:'pending',existing:true,activation_url:activationUrl},{headers:cors(request)});
   }
   const {data:invited,error:inviteError}=await service.auth.admin.inviteUserByEmail(normalized,{data:{full_name:`${first_name.trim()} ${last_name.trim()}`},redirectTo:'http://127.0.0.1:5174/?auth=invite'});

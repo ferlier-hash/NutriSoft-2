@@ -21,6 +21,8 @@ Migración 43: `correct_income_payment(p_payment,p_expected,p_request,p_amount,p
 ## Biblioteca educativa — real local
 
 - `api.content_library`: recetas, PDF y enlaces autorizados por RLS. Autor nutricionista activo por consultorio; paciente sólo publicaciones de profesionales con asignación activa. Admin, owner no clínico y assistant excluidos.
+- `api.get_my_library_settings` y `api.set_my_library_responsibility`: aceptación versionada y auditable de responsabilidad sobre licencias y contenidos, exigida por servidor antes de agregar o reemplazar recursos.
+- Los PDFs privados tienen una cuota inicial de 250 MB por nutricionista y consultorio. Supabase calcula uso y disponibilidad; los enlaces HTTPS no consumen almacenamiento.
 - `save_library_content`: alta/corrección y estados draft/published/retired, identidad desde sesión; edición exige timestamp previo para rechazar sobrescrituras concurrentes. Duplicación crea nueva identidad en borrador desde la UI.
 - Bucket privado `educational-documents`: PDF hasta 10 MB; ruta usuario/consultorio/UUID, carga por autor activo. Descarga autenticada sujeta a publicación/asignación, sin URL pública. No sobrescritura ni borrado directo. Archivos huérfanos por cargas abandonadas requieren futura limpieza; escaneo antimalware pendiente antes de producción.
 - Enlaces de recetas en versiones de planes validados en servidor contra publicación, autor y consultorio. Detalle aplica RLS incluso si la receta se retira posteriormente.
@@ -85,6 +87,14 @@ Referencia inicial (migración 38): `clinical_patient_profiles` entrega identida
 
 Migraciones 36–37: lecturas `api.daily_patients`, `daily_weights`, `daily_checkins`, `daily_lists`, `daily_task_activity`, `daily_phrases`, `daily_phrase_assignments`, `daily_checkin_settings` con RLS. Mutaciones exclusivamente RPC: `record_daily_weight`, `assign_daily_checkin`, `submit_daily_checkin`, `save_daily_checkin_settings`, `save_daily_list`, `set_daily_list_assignment`, `respond_daily_task`, `save_daily_phrase`, `assign_daily_phrase`. Peso usa request UUID idempotente. Listas/frases requieren `p_expected` para edición; listas no se reasignan entre pacientes. Sin DML clínico directo ni claves privilegiadas en cliente.
 
+Migración 52: `save_daily_phrase` y `assign_daily_phrase` auditan alta, edición, eliminación y asignación sin copiar el mensaje ni identidades de pacientes a `audit_logs.details`.
+
 ## Mi perfil profesional REAL
 
 Migración 50: `get_my_professional_profile(p_org)` y `save_my_professional_profile(p_org,p_profile,p_expected_account,p_expected_practice)` exponen y guardan exclusivamente el perfil del nutricionista autenticado y activo en el consultorio solicitado. Separan `app.profiles` (nombre/teléfono) de `app.professional_profiles` contextual (especialidad, zona horaria y matrícula). No aceptan actor externo, no devuelven información a Platform Admin y no permiten DML directo autenticado. Guardar valida matrícula completa o vacía, zona horaria existente y versiones de cuenta/práctica; auditoría conserva sólo presencia de campos. El correo no forma parte de esta escritura y el cambio de contraseña usa el flujo autenticado de Supabase.
+
+## Pacientes REAL
+
+Migración 53: `get_my_professional_patients()` devuelve fichas mínimas activas y archivadas exclusivamente al nutricionista activo asignado, incluso cuando el estado archivado ya bloquea las superficies clínicas. `get_my_patient_invitations()` devuelve sólo invitaciones creadas por la identidad actual y deriva `expired` cuando vence su plazo de siete días. `revoke_my_patient_invitation` cancela una invitación pendiente, revoca el acceso preparado y archiva la ficha en una transacción. `set_my_patient_status` permite archivar/reactivar al nutricionista asignado; no borra ni transfiere historia y rechaza reactivar una invitación cancelada. Toda transición sensible queda auditada sin datos clínicos.
+
+El servicio usa `renew_patient_invitation_for_service` únicamente con `service_role` para renovar una invitación pendiente después de generar o enviar un nuevo enlace. `complete_patient_invitation` sólo acepta invitaciones pendientes no vencidas. `patient_recent_appointments` sigue siendo la fuente read-only de hasta cinco turnos por paciente/profesional, sin importes. Platform Admin está excluido de todas estas operaciones clínicas.

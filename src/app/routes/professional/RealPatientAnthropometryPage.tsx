@@ -6,9 +6,14 @@ import { Button } from '../../../components/ui/Button';
 import { Dialog } from '../../../components/ui/Dialog';
 import { anthropometryMetrics, displayMeasurementDate, localDate, measurementRange } from '../../../lib/anthropometry';
 import { loadAnthropometryPatients, loadAnthropometryFields, loadAnthropometry, saveAnthropometry, deleteAnthropometry, type AnthropometryPatient, type AnthropometryField, type AnthropometryRevision } from '../../../data/supabase/anthropometry.repository';
+import { useOptionalAuth } from '../../../auth/AuthProvider';
+import { loadRealBrandAssets, useRealBranding } from '../../../components/domain/RealBranding';
 
 export function RealPatientAnthropometryPage({embedded=false}:{embedded?:boolean}) {
   const { patientId = '' } = useParams();
+  const auth = useOptionalAuth();
+  const branding = useRealBranding();
+  const [reportLogoUrl, setReportLogoUrl] = useState<string>();
   const [patient, setPatient] = useState<AnthropometryPatient | null>(null);
   const [fields, setFields] = useState<AnthropometryField[]>([]);
   const [rows, setRows] = useState<AnthropometryRevision[]>([]);
@@ -31,6 +36,13 @@ export function RealPatientAnthropometryPage({embedded=false}:{embedded?:boolean
     }
     void load(); return () => { active = false; };
   }, [patientId, retry]);
+  useEffect(() => {
+    let active = true;
+    const row = branding.rows.find(item => item.organization_id === patient?.organization_id && item.enabled);
+    setReportLogoUrl(undefined);
+    if (row?.settings.logoPath) void loadRealBrandAssets(row.settings).then(assets => { if (active) setReportLogoUrl(assets.logoDataUrl); });
+    return () => { active = false; };
+  }, [branding.rows, patient?.organization_id]);
   const metrics = [...anthropometryMetrics, ...fields.map(f => ({ key: f.id, label: f.label, unit: f.unit }))];
   const metric = metrics.find(m => m.key === metricKey) ?? metrics[1]!;
   const range = measurementRange(period, from, to); const validRange = Boolean(range.from && range.to && range.from <= range.to);
@@ -67,7 +79,7 @@ export function RealPatientAnthropometryPage({embedded=false}:{embedded?:boolean
       {!validRange ? <p role="alert">Indicá un rango válido: Desde debe ser anterior o igual a Hasta.</p> : chartRows.length ? <div className="overflow-x-auto"><div className="flex gap-4 h-52 items-end pt-5" role="img" aria-label={`Evolución de ${metric.label}; ${chartRows.length} registros. Valores detallados en el historial.`}>{chartRows.map(r => <div key={r.id} className="min-w-20 flex-1 flex flex-col items-center justify-end h-full"><span className="text-xs font-semibold mb-2">{r.values[metric.key]} {metric.unit}</span><div className="bg-brand-primary rounded-t-lg w-10" style={{ height: max === min ? 90 : 36 + (r.values[metric.key]! - min) / (max - min) * 100 }} /><span className="text-[11px] mt-2 whitespace-nowrap">{displayMeasurementDate(r.recorded_on)}</span></div>)}</div></div> : <p className="p-6 text-center text-text-secondary">No hay valores de esta métrica en el período elegido.</p>}
       <p className="text-xs text-text-secondary">Valores registrados, sin juicios ni proyecciones. La escala se ajusta al período.</p>
     </Card>
-    <AnthropometryComparison key={patientId} rows={rows} metrics={metrics} />
+    <AnthropometryComparison key={patientId} rows={rows} metrics={metrics} patientName={`${patient.first_name} ${patient.last_name}`} professionalName={auth?.profile?.fullName} organizationName={auth?.accessContext?.memberships.find(membership => membership.organization_id === patient.organization_id)?.organization_name} logoUrl={reportLogoUrl} />
     <Card className="space-y-4"><div className="flex flex-wrap justify-between gap-3"><h2 className="font-bold">Historial · {rows.length} revisiones</h2><Link className="text-sm text-brand-strong underline" to="/professional/settings">Configurar campos personalizados</Link></div>
       <details><summary className="cursor-pointer text-sm py-2">Elegir columnas visibles</summary><div className="flex flex-wrap gap-3">{metrics.map(m => <label key={m.key} className="inline-flex items-center gap-2 text-sm min-h-11"><input type="checkbox" checked={visible === null || visible.includes(m.key)} onChange={e => setVisible(keys => e.target.checked ? [...(keys ?? metrics.map(i => i.key)), m.key] : (keys ?? metrics.map(i => i.key)).filter(k => k !== m.key))} />{m.label}</label>)}</div></details>
       {!rows.length ? <p className="text-text-secondary">Todavía no hay mediciones. Podés registrar sólo los valores disponibles en la consulta.</p> : <><div className="hidden md:block overflow-x-auto"><table className="w-full text-sm"><thead><tr><th scope="col" className="p-3 text-left">Fecha</th>{tableMetrics.map(m => <th key={m.key} scope="col" className="p-3 text-left min-w-28">{m.label} ({m.unit})</th>)}<th scope="col" className="p-3 text-left">Acciones</th></tr></thead><tbody>{[...rows].reverse().map(r => <tr key={r.id} className="border-t border-border-subtle"><td className="px-3 py-1.5 whitespace-nowrap"><div className="flex items-center gap-2">{displayMeasurementDate(r.recorded_on)}<MeasurementNote note={r.note} /></div></td>{tableMetrics.map(m => <td key={m.key} className="px-3 py-1.5">{r.values[m.key] ?? '—'}</td>)}<td className="px-3 py-1.5 min-w-48">{actions(r)}</td></tr>)}</tbody></table></div><div className="md:hidden space-y-3">{[...rows].reverse().map(r => <div key={r.id} className="rounded-xl border border-border-subtle p-4 space-y-3"><h3 className="font-semibold">{displayMeasurementDate(r.recorded_on)}</h3><dl className="grid grid-cols-2 gap-3 text-sm">{tableMetrics.filter(m => r.values[m.key] !== undefined).map(m => <div key={m.key}><dt className="text-text-secondary">{m.label}</dt><dd className="font-semibold">{r.values[m.key]} {m.unit}</dd></div>)}</dl><MeasurementNote note={r.note} />{actions(r)}</div>)}</div></>}

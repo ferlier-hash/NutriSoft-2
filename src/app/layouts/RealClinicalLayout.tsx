@@ -1,11 +1,13 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { CalendarDays, ClipboardList, LogOut, Settings, UserRound, Users } from 'lucide-react';
+import { Activity, CalendarDays, ClipboardList, CookingPot, FileText, Home, LogOut, Menu, UserRound } from 'lucide-react';
 import { useAuth } from '../../auth/AuthProvider';
 import { Button } from '../../components/ui/Button';
 import { RealDailyHome } from '../../components/domain/RealDailyHome';
 import { useLocation } from 'react-router-dom';
 import { RealProfessionalShell } from './RealProfessionalShell';
 import { RealBrandingProvider, RealBrandIdentity, RealBrandHeader } from '../../components/domain/RealBranding';
+import { Dialog } from '../../components/ui/Dialog';
+import { useState } from 'react';
 
 export function RealClinicalLayout({ portal }: { portal: 'professional' | 'patient' }) {
   return <RealBrandingProvider><ClinicalContent portal={portal}/></RealBrandingProvider>;
@@ -16,31 +18,27 @@ function ClinicalContent({ portal }: { portal: 'professional' | 'patient' }) {
   const isProfessional = portal === 'professional';
   const home = isProfessional ? '/professional/meal-plans' : '/patient';
   if (isProfessional) return <RealProfessionalShell />;
-  return <div className="min-h-screen bg-bg-app">
+  return <PatientMobileShell home={home} profileName={profile?.fullName} signOut={signOut} locationPath={location.pathname}/>;
+}
+
+function PatientMobileShell({home,profileName,signOut,locationPath}:{home:string;profileName?:string;signOut:()=>Promise<void>;locationPath:string}){
+  const [menuOpen,setMenuOpen]=useState(false);
+  const links=[{to:'/patient',label:'Inicio',Icon:Home,end:true},{to:'/patient/followup',label:'Seguimiento',Icon:Activity},{to:'/patient/appointments',label:'Citas',Icon:CalendarDays}];
+  return <div className="min-h-screen bg-bg-app pb-20">
     <header className="sticky top-0 z-30 border-b border-border-subtle bg-surface/95 backdrop-blur px-4 sm:px-6 py-3">
-      <div className="mx-auto flex flex-wrap max-w-6xl items-center justify-between gap-3">
-        <NavLink to={home} className="flex items-center gap-2 text-sm font-bold text-text-primary">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+        <NavLink to={home} className="flex min-h-11 items-center gap-2 text-sm font-bold text-text-primary">
           <RealBrandIdentity patient />
         </NavLink>
-        <nav aria-label="Navegación clínica real" className="flex flex-wrap items-center gap-1">
-          <NavLink to={`/${portal}/followup`} className={({isActive})=>`min-h-11 rounded-xl px-3 inline-flex items-center text-xs font-semibold ${isActive?'bg-surface-tinted text-brand-strong':'text-text-secondary hover:bg-surface-subtle'}`}>Seguimiento</NavLink>
-          {['recipes','resources'].map((section,index)=><NavLink key={section} to={`/${portal}/${section}`} className={({isActive})=>`min-h-11 rounded-xl px-3 inline-flex items-center text-xs font-semibold ${isActive?'bg-surface-tinted text-brand-strong':'text-text-secondary hover:bg-surface-subtle'}`}>{index?'Recursos':'Recetario'}</NavLink>)}
-          <NavLink to={home} end className={({ isActive }) => `min-h-11 rounded-xl px-3 inline-flex items-center gap-2 text-xs font-semibold ${isActive ? 'bg-surface-tinted text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}>
-            <ClipboardList className="h-4 w-4" />{isProfessional ? 'Planes' : 'Mi plan'}
-          </NavLink>
-          {!isProfessional && <NavLink to="/patient/appointments" className={({ isActive }) => `min-h-11 rounded-xl px-3 inline-flex items-center gap-2 text-xs font-semibold ${isActive ? 'bg-surface-tinted text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}><CalendarDays className="h-4 w-4" />Citas</NavLink>}
-          {isProfessional && <NavLink to="/professional/agenda" className={({ isActive }) => `min-h-11 rounded-xl px-3 inline-flex items-center gap-2 text-xs font-semibold ${isActive ? 'bg-surface-tinted text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}>
-            <CalendarDays className="h-4 w-4" />Agenda
-          </NavLink>}
-          {isProfessional && <NavLink to="/professional/patients" className={({ isActive }) => `min-h-11 rounded-xl px-3 inline-flex items-center gap-2 text-xs font-semibold ${isActive ? 'bg-surface-tinted text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}><Users className="h-4 w-4" />Pacientes</NavLink>}
-          {isProfessional && <NavLink to="/professional/settings" className={({ isActive }) => `min-h-11 rounded-xl px-3 inline-flex items-center gap-2 text-xs font-semibold ${isActive ? 'bg-surface-tinted text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}>
-            <Settings className="h-4 w-4" />Configuración
-          </NavLink>}
-          <span className="hidden sm:inline-flex items-center gap-1.5 px-3 text-xs text-text-secondary"><UserRound className="h-4 w-4" />{profile?.fullName}</span>
-          <Button variant="ghost" size="sm" aria-label="Cerrar sesión" onClick={() => void signOut()}><LogOut className="h-4 w-4" /></Button>
-        </nav>
+        <button type="button" className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-text-secondary hover:bg-surface-subtle" aria-label="Abrir menú del paciente" onClick={()=>setMenuOpen(true)}><Menu className="h-5 w-5"/></button>
       </div>
     </header>
-    <main>{!isProfessional&&location.pathname==='/patient'&&<><RealBrandHeader patient/><div className="max-w-md mx-auto px-4 pt-4"><RealDailyHome/></div></>}<Outlet /></main>
+    <main>{locationPath==='/patient'&&<><RealBrandHeader patient/><div className="max-w-md mx-auto px-4 pt-4"><RealDailyHome/></div></>}<Outlet /></main>
+    <nav aria-label="Navegación del paciente" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border-subtle bg-surface pb-[env(safe-area-inset-bottom)]">
+      {links.map(({to,label,Icon,end})=><NavLink key={to} to={to} end={end} className={({isActive})=>`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] ${isActive?'bg-surface-tinted text-brand-strong':'text-text-secondary'}`}><Icon className="h-5 w-5"/>{label}</NavLink>)}
+      <NavLink to="/patient/recipes" className={({isActive})=>`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] ${isActive?'bg-surface-tinted text-brand-strong':'text-text-secondary'}`}><CookingPot className="h-5 w-5"/>Recetas</NavLink>
+      <button type="button" className="flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] text-text-secondary" onClick={()=>setMenuOpen(true)}><Menu className="h-5 w-5"/>Más</button>
+    </nav>
+    <Dialog isOpen={menuOpen} onClose={()=>setMenuOpen(false)} title="Tu cuenta" description="Accesos personales y contenido compartido por tu profesional."><nav className="space-y-1"><p className="mb-3 flex items-center gap-2 rounded-xl bg-surface-subtle p-3 text-sm"><UserRound className="h-4 w-4 text-brand-strong"/>{profileName}</p><NavLink to="/patient/resources" onClick={()=>setMenuOpen(false)} className="flex min-h-12 items-center gap-3 rounded-xl px-3 text-sm font-semibold hover:bg-surface-subtle"><FileText className="h-4 w-4 text-brand-strong"/>Recursos</NavLink><NavLink to="/patient/measurements" onClick={()=>setMenuOpen(false)} className="flex min-h-12 items-center gap-3 rounded-xl px-3 text-sm font-semibold hover:bg-surface-subtle"><ClipboardList className="h-4 w-4 text-brand-strong"/>Registrar peso</NavLink><Button className="mt-3 w-full" variant="ghost" onClick={()=>void signOut()}><LogOut className="mr-2 h-4 w-4"/>Cerrar sesión</Button></nav></Dialog>
   </div>;
 }

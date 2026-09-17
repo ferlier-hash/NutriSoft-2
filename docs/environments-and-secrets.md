@@ -54,6 +54,8 @@ Esos valores deben residir en el gestor de secretos del entorno de ejecución o 
 - La contraseña exige al menos 12 caracteres, mayúsculas, minúsculas, números y símbolos.
 - El cambio de contraseña sensible exige autenticación reciente.
 - Las confirmaciones de correo permanecen deshabilitadas únicamente en local; staging y producción deberán exigir confirmación y SMTP real.
-- Una sesión Admin real usa el repositorio read-only de Fase 3.2; las demás superficies todavía muestran un estado de integración y nunca contenido mock sin identificar.
+- Las sesiones reales de Admin, Profesional y Paciente usan exclusivamente repositorios y rutas REAL conectadas o muestran de forma explícita que una función sigue pendiente; nunca presentan contenido mock como real.
 - `npm run verify:auth` inicia únicamente el gateway/API local requeridos, crea una identidad ficticia temporal, verifica login, perfil propio, contexto autorizado, métricas, directorio Admin, logout y limpieza antes de informar `PASS`.
 - El flujo E2E local fue verificado el 14 de agosto de 2026. Esto no sustituye la validación de invitaciones, entrega SMTP y redirecciones en staging.
+
+La secuencia completa de staging, producción, rollback, backups e incidentes está definida en [Despliegue, recuperación y operación](./production-deployment-and-operations.md).

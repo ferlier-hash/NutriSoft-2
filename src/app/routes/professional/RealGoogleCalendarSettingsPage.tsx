@@ -1,4 +1,4 @@
-import { CalendarDays, CheckCircle2, ChevronDown, ClipboardList, CreditCard, ExternalLink, HeartPulse, Palette, ShieldCheck, Clock3 } from 'lucide-react';
+import { CalendarDays, CheckCircle2, ChevronDown, ClipboardList, CreditCard, ExternalLink, HeartPulse, Library, Palette, ShieldCheck, Clock3 } from 'lucide-react';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useAuth } from '../../../auth/AuthProvider';
 import { getSupabaseClient } from '../../../auth/supabase-client';
@@ -11,6 +11,7 @@ import { CheckinSettings } from '../shared/RealDailyFollowupPage';
 import { RealBrandingSettings } from '../../../components/domain/RealBranding';
 import { RealScheduleSettings } from '../../../components/domain/RealScheduleSettings';
 import { RealAppointmentPreferencesSettings } from '../../../components/domain/RealAppointmentPreferencesSettings';
+import { RealLibraryResponsibilitySettings } from '../../../components/domain/RealLibraryResponsibilitySettings';
 
 type ConnectionStatus = 'loading' | 'not_connected' | 'connected' | 'error';
 type CalendarOption = { id: string; summary: string; primary?: boolean };
@@ -164,10 +165,11 @@ export function RealGoogleCalendarSettingsPage() {
           <h2 className="font-bold text-text-primary">Lo esencial, a mano</h2>
           <p className="mt-1 text-sm text-text-secondary">Abrí sólo el tema que necesitás. Tus cambios se guardan por separado.</p>
         </div>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2">
           <button type="button" onClick={() => openSettingsSection('settings-schedule')} className="min-h-16 rounded-xl bg-surface/80 p-3 text-left text-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"><b className="block text-text-primary">Agenda</b><span className="text-text-secondary">Horarios y reglas</span></button>
           <button type="button" onClick={() => openSettingsSection('settings-google')} className="min-h-16 rounded-xl bg-surface/80 p-3 text-left text-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"><b className="block text-text-primary">Google Calendar</b><span className="text-text-secondary">{connected ? (calendarSelected ? 'Calendario elegido' : 'Elegí un calendario') : 'Pendiente de conexión'}</span></button>
           <button type="button" onClick={() => openSettingsSection('settings-preferences')} className="min-h-16 rounded-xl bg-surface/80 p-3 text-left text-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"><b className="block text-text-primary">Citas e ingresos</b><span className="text-text-secondary">Moneda, duración y precios</span></button>
+          <button type="button" onClick={() => openSettingsSection('settings-library')} className="min-h-16 rounded-xl bg-surface/80 p-3 text-left text-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"><b className="block text-text-primary">Biblioteca</b><span className="text-text-secondary">Licencias y habilitación</span></button>
         </div>
       </Card>
       <SettingsSection id="settings-schedule" icon={<Clock3 className="h-5 w-5" />} title="Agenda y reglas" description="Horarios, descansos, bloqueos, vacaciones y plazos." open>
@@ -175,6 +177,9 @@ export function RealGoogleCalendarSettingsPage() {
       </SettingsSection>
       <SettingsSection id="settings-preferences" icon={<CreditCard className="h-5 w-5" />} title="Preferencias de citas e ingresos" description="Moneda, duración y precios sugeridos para nuevas citas." open>
         {organization ? <RealAppointmentPreferencesSettings key={`preferences-${organization.organization_id}`} organizationId={organization.organization_id} /> : <p className="text-sm text-text-secondary">No encontramos un consultorio activo.</p>}
+      </SettingsSection>
+      <SettingsSection id="settings-library" icon={<Library className="h-5 w-5" />} title="Biblioteca de recursos" description="Responsabilidad, licencias y habilitación de nuevas cargas.">
+        {organization ? <RealLibraryResponsibilitySettings key={`library-${organization.organization_id}`} organizationId={organization.organization_id} /> : <p className="text-sm text-text-secondary">No encontramos un consultorio activo.</p>}
       </SettingsSection>
       <SettingsSection id="settings-google" icon={<CalendarDays className="h-5 w-5" />} title="Google Calendar" description="Cuenta, calendario seleccionado y sincronización de tus citas." status={connected ? 'Conectado' : 'Pendiente'} open={!connected}>
       <Card highlighted className="space-y-5">
