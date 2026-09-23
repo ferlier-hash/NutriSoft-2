@@ -2,9 +2,9 @@ name: NutriSoft · CI reproducible
 
 on:
   pull_request:
-    branches: [main]
+    branches: [phase-1.1-stabilization]
   push:
-    branches: [main]
+    branches: [phase-1.1-stabilization]
   workflow_dispatch:
 
 permissions:
