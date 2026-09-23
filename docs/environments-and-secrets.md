@@ -18,7 +18,9 @@ Las variables que comienzan con `VITE_` se incorporan al bundle y son visibles p
 - `VITE_ENABLE_DEMO_MODE`: habilita el proveedor mock únicamente en desarrollo controlado.
 - `VITE_SUPABASE_URL`: URL pública del proyecto correspondiente al ambiente.
 - `VITE_SUPABASE_ANON_KEY`: clave pública/anon de Supabase; la autorización efectiva depende de RLS.
-- `VITE_SENTRY_DSN`: DSN público de observabilidad, cuando se configure.
+- `VITE_SENTRY_DSN`: DSN público de observabilidad, cuando se configure. Activa Sentry sólo fuera de local; no habilita PII, Replay ni propagación de trazas a terceros.
+
+El token privado para publicar source maps nunca usa el prefijo `VITE_`: pertenece exclusivamente al gestor de secretos del CI y los mapas no deben quedar en el artefacto público.
 
 ## Secretos prohibidos en el frontend
 
@@ -59,3 +61,9 @@ Esos valores deben residir en el gestor de secretos del entorno de ejecución o 
 - El flujo E2E local fue verificado el 14 de agosto de 2026. Esto no sustituye la validación de invitaciones, entrega SMTP y redirecciones en staging.
 
 La secuencia completa de staging, producción, rollback, backups e incidentes está definida en [Despliegue, recuperación y operación](./production-deployment-and-operations.md).
+
+## CI y staging remoto
+
+El workflow `ci-reproducible.yml` ejecuta `npm ci` con Node 24.13.1, verificación frontend, reconstrucción/pruebas/lint de Supabase y escaneo básico de secretos. El workflow `deploy-staging.yml` sólo se ejecuta manualmente, requiere escribir `DEPLOY-STAGING` y usa el environment protegido `staging`.
+
+El environment `staging` debe contener únicamente estos secretos de GitHub: `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD` y `SUPABASE_PROJECT_REF`. El token debe ser técnico y con alcance mínimo; nunca se copia al repositorio ni al frontend. Antes de habilitar el workflow se debe comprobar que `SUPABASE_PROJECT_REF` identifica el proyecto `nutrisoft-staging` y que sus Auth, Storage, SMTP y Edge Functions tienen configuración propia de staging.
