@@ -1,0 +1,39 @@
+name: NutriSoft · CI reproducible
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify frontend, database and security
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Verify frontend
+        run: npm run verify:frontend
+      - name: Verify database and RLS
+        run: npm run verify:database
+      - name: Verify tracked files contain no known secrets
+        run: |
+          if git grep -nE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR-' -- ':!review/reports/**'; then
+            echo 'Potential secret found in tracked files.'
+            exit 1
+          fi
