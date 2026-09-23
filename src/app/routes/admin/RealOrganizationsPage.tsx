@@ -5,6 +5,8 @@ import { Button } from '../../../components/ui/Button';
 import type { RealAdminOrganization } from '../../../data/admin-overview.types';
 import { loadRealAdminOrganizations } from '../../../data/supabase/admin-overview.repository';
 import { formatFullDateTime, formatShortDate } from '../../../lib/dateUtils';
+import type { CommercialPlanSlug, RealOrganizationSubscription } from '../../../data/commercial-plan.types';
+import { loadRealOrganizationSubscriptions, saveRealOrganizationSubscription } from '../../../data/supabase/commercial-plan.repository';
 
 type DirectoryState =
   | { status: 'loading' }
@@ -22,6 +24,8 @@ export function RealOrganizationsPage({
   const [attempt, setAttempt] = useState(0);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [subscriptions, setSubscriptions] = useState<RealOrganizationSubscription[]>([]);
+  const [savingId, setSavingId] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -31,6 +35,10 @@ export function RealOrganizationsPage({
       .catch(() => active && setState({ status: 'error' }));
     return () => { active = false; };
   }, [attempt, loadOrganizations]);
+
+  useEffect(() => { void loadRealOrganizationSubscriptions().then(setSubscriptions).catch(() => setSubscriptions([])); }, [attempt]);
+  const subscriptionByOrganization = useMemo(() => new Map(subscriptions.map(item => [item.organizationId, item])), [subscriptions]);
+  const updatePlan = async (organizationId: string, plan: CommercialPlanSlug) => { setSavingId(organizationId); try { await saveRealOrganizationSubscription(organizationId, plan); const fresh = await loadRealOrganizationSubscriptions(); setSubscriptions(fresh); } finally { setSavingId(null); } };
 
   const filtered = useMemo(() => {
     if (state.status !== 'success') return [];
@@ -52,7 +60,7 @@ export function RealOrganizationsPage({
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-strong">Cuentas y acceso</p>
         <h2 className="mt-2 flex items-center gap-2 text-3xl font-bold text-text-primary"><Building2 className="h-7 w-7 text-brand-strong" aria-hidden="true" /> Consultorios registrados</h2>
-        <p className="mt-2 text-sm text-text-secondary">Directorio administrativo real. Los planes, pagos y responsables todavía no están conectados.</p>
+        <p className="mt-2 text-sm text-text-secondary">Directorio administrativo real con suscripción y límites técnicos. Los pagos todavía se registran por separado.</p>
       </div>
 
       {state.status === 'loading' && <div role="status" className="rounded-2xl border border-border-subtle bg-surface p-8 text-sm text-text-secondary">Cargando consultorios reales…</div>}
@@ -90,13 +98,15 @@ export function RealOrganizationsPage({
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[820px] border-collapse text-left">
-                <thead className="bg-surface-subtle"><tr className="text-[11px] uppercase tracking-wide text-text-secondary"><th scope="col" className="table-cell-admin">Consultorio</th><th scope="col" className="table-cell-admin">Identificador</th><th scope="col" className="table-cell-admin">Estado</th><th scope="col" className="table-cell-admin">Fecha de alta</th><th scope="col" className="table-cell-admin">Última actualización</th></tr></thead>
+                <thead className="bg-surface-subtle"><tr className="text-[11px] uppercase tracking-wide text-text-secondary"><th scope="col" className="table-cell-admin">Consultorio</th><th scope="col" className="table-cell-admin">Identificador</th><th scope="col" className="table-cell-admin">Estado</th><th scope="col" className="table-cell-admin">Plan</th><th scope="col" className="table-cell-admin">Profesionales</th><th scope="col" className="table-cell-admin">Fecha de alta</th><th scope="col" className="table-cell-admin">Última actualización</th></tr></thead>
                 <tbody className="divide-y divide-border-subtle text-xs">
                   {filtered.map(organization => (
                     <tr key={organization.id} className="transition-colors hover:bg-surface-subtle/70">
                       <td className="table-cell-admin font-semibold text-text-primary">{organization.name}</td>
                       <td className="table-cell-admin text-text-secondary">{organization.slug}</td>
                       <td className="table-cell-admin"><Badge variant={organization.status === 'active' ? 'active' : 'suspended'}>{organization.status === 'active' ? 'Activo' : 'Suspendido'}</Badge></td>
+                      <td className="table-cell-admin"><select aria-label={`Plan de ${organization.name}`} className="form-control min-w-28" disabled={savingId === organization.id} value={subscriptionByOrganization.get(organization.id)?.plan ?? 'pro'} onChange={event => void updatePlan(organization.id, event.target.value as CommercialPlanSlug)}><option value="pro">PRO</option><option value="ultra">ULTRA</option><option value="custom">CUSTOM</option></select></td>
+                      <td className="table-cell-admin text-text-secondary">{subscriptionByOrganization.get(organization.id) ? `${subscriptionByOrganization.get(organization.id)!.includedProfessionals + subscriptionByOrganization.get(organization.id)!.extraProfessionals} incluidos` : 'Sin configurar'}</td>
                       <td className="table-cell-admin text-text-secondary">{formatShortDate(organization.createdAt)}</td>
                       <td className="table-cell-admin text-text-secondary"><time dateTime={organization.updatedAt}>{formatFullDateTime(organization.updatedAt)}</time></td>
                     </tr>

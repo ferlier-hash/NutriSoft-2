@@ -16,6 +16,16 @@ Migración 43: `correct_income_payment(p_payment,p_expected,p_request,p_amount,p
 
 ## Marca CUSTOM local
 
+## Suscripciones comerciales y audiencia de boletines
+
+`app.plan_catalog` define PRO, ULTRA y CUSTOM con herencia conceptual, límites técnicos y precios opcionales. Los precios permanecen nulos hasta que se defina la política comercial; esta capa no procesa pagos.
+
+`app.organization_subscriptions` guarda una suscripción por consultorio, su estado, adicionales de profesionales y períodos opcionales. Bajar de plan no elimina información: las futuras operaciones deben consultar los entitlements y bloquear sólo nuevas acciones fuera del límite.
+
+`api.get_plan_catalog()` expone el catálogo activo. `api.get_my_organization_subscription(p_org)` expone los límites del consultorio autorizado. `api.set_organization_subscription(...)` sólo puede ejecutarse desde Platform Admin y deja historial en `app.organization_subscription_events`.
+
+`api.get_professional_newsletter_contacts()` devuelve únicamente nombre y correo de profesionales/owners activos a Platform Admin. No incluye pacientes, datos clínicos, métricas identificables ni contenido asistencial.
+
 `get_my_branding()` devuelve únicamente consultorios activos autorizados del usuario, habilitación, permiso de edición, settings y versión. `save_organization_branding` exige responsable activo y entitlement de backend, valida campos/paleta/rutas propias y versión previa. No otorga clínica. Storage privado `consultorio-branding`: imágenes hasta 2 MB, INSERT por responsable, SELECT de imágenes guardadas por miembros/pacientes autorizados y de borradores por responsable. Sin UPDATE/DELETE de objetos por cliente. Capacidad comercial no editable por usuarios; no implica facturación implementada. URLs firmadas de 5 minutos: una ya emitida puede seguir disponible hasta vencer tras retirar la habilitación.
 
 ## Biblioteca educativa — real local
