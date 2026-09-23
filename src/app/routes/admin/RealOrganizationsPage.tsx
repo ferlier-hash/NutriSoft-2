@@ -6,7 +6,8 @@ import type { RealAdminOrganization } from '../../../data/admin-overview.types';
 import { loadRealAdminOrganizations } from '../../../data/supabase/admin-overview.repository';
 import { formatFullDateTime, formatShortDate } from '../../../lib/dateUtils';
 import type { CommercialPlanSlug, RealOrganizationSubscription } from '../../../data/commercial-plan.types';
-import { loadRealOrganizationSubscriptions, saveRealOrganizationSubscription } from '../../../data/supabase/commercial-plan.repository';
+import { loadProfessionalNewsletterContacts, loadRealOrganizationSubscriptions, saveRealOrganizationSubscription } from '../../../data/supabase/commercial-plan.repository';
+import type { ProfessionalNewsletterContact } from '../../../data/commercial-plan.types';
 
 type DirectoryState =
   | { status: 'loading' }
@@ -26,6 +27,8 @@ export function RealOrganizationsPage({
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [subscriptions, setSubscriptions] = useState<RealOrganizationSubscription[]>([]);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [contacts, setContacts] = useState<ProfessionalNewsletterContact[] | null>(null);
+  const [contactsLoading, setContactsLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -39,6 +42,8 @@ export function RealOrganizationsPage({
   useEffect(() => { void loadRealOrganizationSubscriptions().then(setSubscriptions).catch(() => setSubscriptions([])); }, [attempt]);
   const subscriptionByOrganization = useMemo(() => new Map(subscriptions.map(item => [item.organizationId, item])), [subscriptions]);
   const updatePlan = async (organizationId: string, plan: CommercialPlanSlug) => { setSavingId(organizationId); try { await saveRealOrganizationSubscription(organizationId, plan); const fresh = await loadRealOrganizationSubscriptions(); setSubscriptions(fresh); } finally { setSavingId(null); } };
+  const loadContacts = async () => { setContactsLoading(true); try { setContacts(await loadProfessionalNewsletterContacts()); } finally { setContactsLoading(false); } };
+  const downloadContacts = () => { if (!contacts) return; const csv = ['nombre,email', ...contacts.map(contact => `${JSON.stringify(contact.fullName)},${JSON.stringify(contact.email)}`)].join('\n'); const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'profesionales-boletines.csv'; anchor.click(); URL.revokeObjectURL(url); };
 
   const filtered = useMemo(() => {
     if (state.status !== 'success') return [];
@@ -117,6 +122,14 @@ export function RealOrganizationsPage({
           )}
         </section>
       )}
+
+      <section className="rounded-2xl border border-border-subtle bg-surface p-5 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div><h3 className="text-base font-bold text-text-primary">Contactos para boletines</h3><p className="mt-1 max-w-2xl text-xs leading-relaxed text-text-secondary">Sólo profesionales y responsables activos. Esta lista no incluye pacientes ni información clínica.</p></div>
+          <div className="flex gap-2"><Button type="button" variant="secondary" size="sm" onClick={() => void loadContacts()} disabled={contactsLoading}>{contactsLoading ? 'Cargando…' : 'Cargar contactos'}</Button>{contacts && <Button type="button" variant="secondary" size="sm" onClick={downloadContacts}>Descargar CSV</Button>}</div>
+        </div>
+        {contacts && <div className="mt-4 overflow-x-auto"><table className="w-full min-w-[420px] border-collapse text-left text-xs"><thead className="bg-surface-subtle"><tr className="text-[11px] uppercase tracking-wide text-text-secondary"><th className="table-cell-admin">Nombre</th><th className="table-cell-admin">Email</th></tr></thead><tbody className="divide-y divide-border-subtle">{contacts.map(contact => <tr key={contact.email}><td className="table-cell-admin font-semibold text-text-primary">{contact.fullName}</td><td className="table-cell-admin text-text-secondary">{contact.email}</td></tr>)}</tbody></table></div>}
+      </section>
     </div>
   );
 }
