@@ -35,7 +35,7 @@ jobs:
         run: npm run build
       - name: Verify tracked files contain no known secrets
         run: |
-          if git grep -nE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR-' -- ':!review/reports/**'; then
+          if git grep -nE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR-' -- ':!review/reports/**' ':!.github/workflows/ci-reproducible.yml'; then
             echo 'Potential secret found in tracked files.'
             exit 1
           fi
