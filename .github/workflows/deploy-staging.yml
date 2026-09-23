@@ -7,6 +7,11 @@ on:
         description: 'Escribí DEPLOY-STAGING para confirmar la migración remota'
         required: true
         type: string
+      source_ref:
+        description: 'Rama o commit que contiene la aplicación y las migraciones'
+        required: true
+        default: codex/travel-handoff-2026-09-07
+        type: string
 
 permissions:
   contents: read
@@ -23,6 +28,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24.13.1
