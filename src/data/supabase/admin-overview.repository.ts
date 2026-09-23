@@ -7,6 +7,11 @@ const metricsSchema = z.object({
   organizations_suspended: z.number().int().nonnegative(),
   nutritionists_total: z.number().int().nonnegative(),
   patients_total: z.number().int().nonnegative(),
+  subscriptions_by_plan: z.record(z.number().int().nonnegative()).default({}),
+  subscriptions_by_status: z.record(z.number().int().nonnegative()).default({}),
+  included_professionals_total: z.number().int().nonnegative().default(0),
+  extra_professionals_total: z.number().int().nonnegative().default(0),
+  custom_enabled_total: z.number().int().nonnegative().default(0),
 });
 
 const organizationSchema = z.object({
@@ -55,6 +60,11 @@ export function parseRealAdminMetrics(metricsData: unknown): RealAdminMetrics {
     organizationsSuspended: metrics.data.organizations_suspended,
     nutritionistsTotal: metrics.data.nutritionists_total,
     patientsTotal: metrics.data.patients_total,
+    subscriptionsByPlan: metrics.data.subscriptions_by_plan,
+    subscriptionsByStatus: metrics.data.subscriptions_by_status,
+    includedProfessionalsTotal: metrics.data.included_professionals_total,
+    extraProfessionalsTotal: metrics.data.extra_professionals_total,
+    customEnabledTotal: metrics.data.custom_enabled_total,
   };
 }
 

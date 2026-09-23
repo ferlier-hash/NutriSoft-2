@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Building2, RefreshCw, ShieldCheck, Stethoscope, Users } from 'lucide-react';
+import { Building2, RefreshCw, ShieldCheck, Stethoscope, Users, BarChart3, Sparkles } from 'lucide-react';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import type { RealAdminOverview } from '../../../data/admin-overview.types';
@@ -78,6 +78,11 @@ function AdminOverviewContent({ data }: { data: RealAdminOverview }) {
             <p className="mt-1 text-xs text-text-tertiary">{note}</p>
           </article>
         ))}
+      </section>
+
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4" aria-label="Métricas comerciales">
+        <article className="rounded-2xl border border-border-subtle bg-surface p-5 shadow-sm"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-brand-soft text-brand-strong flex items-center justify-center"><BarChart3 className="w-5 h-5" aria-hidden="true" /></div><div><h3 className="font-semibold text-text-primary">Distribución de suscripciones</h3><p className="text-xs text-text-secondary">Consultorios por plan comercial</p></div></div><div className="mt-5 grid grid-cols-3 gap-3">{(['pro','ultra','custom'] as const).map(plan => <div key={plan} className="rounded-xl bg-surface-subtle p-3"><p className="text-[11px] font-bold uppercase text-text-secondary">{plan}</p><p className="mt-1 text-2xl font-bold text-text-primary">{data.metrics.subscriptionsByPlan?.[plan] ?? 0}</p></div>)}</div></article>
+        <article className="rounded-2xl border border-border-subtle bg-surface p-5 shadow-sm"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-brand-soft text-brand-strong flex items-center justify-center"><Sparkles className="w-5 h-5" aria-hidden="true" /></div><div><h3 className="font-semibold text-text-primary">Capacidad contratada</h3><p className="text-xs text-text-secondary">Agregados comerciales, sin datos clínicos</p></div></div><dl className="mt-5 grid grid-cols-2 gap-4 text-sm"><div><dt className="text-text-secondary">Profesionales incluidos</dt><dd className="mt-1 text-xl font-bold text-text-primary">{data.metrics.includedProfessionalsTotal ?? 0}</dd></div><div><dt className="text-text-secondary">Adicionales contratados</dt><dd className="mt-1 text-xl font-bold text-text-primary">{data.metrics.extraProfessionalsTotal ?? 0}</dd></div><div><dt className="text-text-secondary">CUSTOM activos</dt><dd className="mt-1 text-xl font-bold text-text-primary">{data.metrics.customEnabledTotal ?? 0}</dd></div><div><dt className="text-text-secondary">En período de gracia</dt><dd className="mt-1 text-xl font-bold text-text-primary">{data.metrics.subscriptionsByStatus?.grace ?? 0}</dd></div></dl></article>
       </section>
 
       <section className="mt-6 overflow-hidden rounded-2xl border border-border-subtle bg-surface shadow-sm">

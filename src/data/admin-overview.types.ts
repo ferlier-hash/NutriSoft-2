@@ -4,6 +4,11 @@ export interface RealAdminMetrics {
   organizationsSuspended: number;
   nutritionistsTotal: number;
   patientsTotal: number;
+  subscriptionsByPlan?: Record<string, number>;
+  subscriptionsByStatus?: Record<string, number>;
+  includedProfessionalsTotal?: number;
+  extraProfessionalsTotal?: number;
+  customEnabledTotal?: number;
 }
 
 export interface RealAdminOrganization {
