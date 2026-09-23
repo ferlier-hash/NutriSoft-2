@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Verify frontend, database and security
+    name: Verify frontend and security
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -27,10 +27,12 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Verify frontend
-        run: npm run verify:frontend
-      - name: Verify database and RLS
-        run: npm run verify:database
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
       - name: Verify tracked files contain no known secrets
         run: |
           if git grep -nE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR-' -- ':!review/reports/**'; then

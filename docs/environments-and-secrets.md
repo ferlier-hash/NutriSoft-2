@@ -64,6 +64,6 @@ La secuencia completa de staging, producción, rollback, backups e incidentes es
 
 ## CI y staging remoto
 
-El workflow `ci-reproducible.yml` ejecuta `npm ci` con Node 24.13.1, verificación frontend, reconstrucción/pruebas/lint de Supabase y escaneo básico de secretos. El workflow `deploy-staging.yml` sólo se ejecuta manualmente, requiere escribir `DEPLOY-STAGING` y usa el environment protegido `staging`.
+El workflow `ci-reproducible.yml` ejecuta `npm ci` con Node 24.13.1, typecheck, lint, build y escaneo básico de secretos. El workflow `deploy-staging.yml` sólo se ejecuta manualmente, requiere escribir `DEPLOY-STAGING` y usa el environment protegido `staging`. Para aplicar migraciones debe ejecutarse sobre una rama que las contenga.
 
 El environment `staging` debe contener únicamente estos secretos de GitHub: `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD` y `SUPABASE_PROJECT_REF`. El token debe ser técnico y con alcance mínimo; nunca se copia al repositorio ni al frontend. Antes de habilitar el workflow se debe comprobar que `SUPABASE_PROJECT_REF` identifica el proyecto `nutrisoft-staging` y que sus Auth, Storage, SMTP y Edge Functions tienen configuración propia de staging.
