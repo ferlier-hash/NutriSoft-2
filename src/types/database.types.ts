@@ -1545,6 +1545,10 @@ export type Database = {
         }
         Returns: string
       }
+      cancel_organization_subscription_schedule: {
+        Args: { p_schedule_id: string }
+        Returns: boolean
+      }
       cancel_professional_appointment: {
         Args: {
           p_amount?: number
@@ -1565,6 +1569,17 @@ export type Database = {
         }[]
       }
       complete_patient_invitation: { Args: never; Returns: boolean }
+      configure_organization_subscription: {
+        Args: {
+          p_effective_on: string
+          p_extra_pdf_bytes: number
+          p_extra_professionals: number
+          p_organization_id: string
+          p_plan_slug: string
+          p_status: string
+        }
+        Returns: string
+      }
       confirm_secure_upload: { Args: { p_upload_id: string }; Returns: string }
       consume_google_calendar_oauth_state: {
         Args: { p_state_hash: string }
@@ -1741,15 +1756,38 @@ export type Database = {
           stored_pdf_bytes: number
         }[]
       }
+      get_admin_organization_subscription_history: {
+        Args: { p_organization_id: string }
+        Returns: {
+          effective_on: string
+          entry_state: string
+          event_id: string
+          event_kind: string
+          extra_professionals: number
+          library_extra_bytes_per_professional: number
+          next_plan_slug: string
+          next_status: string
+          occurred_at: string
+          previous_plan_slug: string
+          previous_status: string
+        }[]
+      }
       get_admin_organization_subscriptions: {
         Args: never
         Returns: {
           custom_branding_enabled: boolean
           extra_professionals: number
           included_professionals: number
+          library_extra_bytes_per_professional: number
           max_active_patients: number
           organization_id: string
           plan_slug: string
+          plan_version: number
+          scheduled_change_id: string
+          scheduled_effective_on: string
+          scheduled_extra_professionals: number
+          scheduled_library_extra_bytes_per_professional: number
+          scheduled_plan_slug: string
           status: string
           storage_limit_bytes: number
         }[]
@@ -1780,6 +1818,7 @@ export type Database = {
           subscription_status: string
         }[]
       }
+      get_admin_plan_configuration: { Args: never; Returns: Json }
       get_admin_platform_billing_report: {
         Args: { p_from: string; p_to: string }
         Returns: {
@@ -2164,6 +2203,26 @@ export type Database = {
           skipped_configuration: number
           skipped_pending: number
         }[]
+      }
+      save_admin_addon_configuration: {
+        Args: {
+          p_professional_addon_active: boolean
+          p_storage_active: boolean
+          p_storage_unit_bytes: number
+        }
+        Returns: boolean
+      }
+      save_admin_plan_configuration: {
+        Args: {
+          p_active: boolean
+          p_custom_branding_enabled: boolean
+          p_extra_professional_enabled: boolean
+          p_included_professionals: number
+          p_max_active_patients: number
+          p_plan_slug: string
+          p_storage_limit_bytes: number
+        }
+        Returns: number
       }
       save_anthropometric_field: {
         Args: {

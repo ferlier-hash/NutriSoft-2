@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { RealAdminOrganizationUsage } from '../admin-usage.types';
+import { loadRealOrganizationSubscriptions } from './commercial-plan.repository';
 
 const usageRow = z.object({
   organization_id: z.string().uuid(),
@@ -39,29 +40,35 @@ const quotaRow = z.object({
 export async function loadRealAdminOrganizationUsage(from: string, to: string): Promise<RealAdminOrganizationUsage[]> {
   const { getSupabaseClient } = await import('../../auth/supabase-client');
   const supabase = getSupabaseClient();
-  const [result, quotaResult] = await Promise.all([
+  const [result, quotaResult, subscriptions] = await Promise.all([
     supabase.schema('api').rpc('get_admin_organization_usage_report' as never, { p_from: from, p_to: to } as never),
     supabase.schema('api').rpc('get_admin_library_quota_report' as never),
+    loadRealOrganizationSubscriptions(),
   ]);
   if (result.error || quotaResult.error) throw new Error('No pudimos cargar el reporte de consumo.');
   const parsed = z.array(usageRow).safeParse(result.data);
   const parsedQuotas = z.array(quotaRow).safeParse(quotaResult.data);
   if (!parsed.success || !parsedQuotas.success) throw new Error('El servicio devolvió un reporte de consumo inválido.');
   const quotas = new Map(parsedQuotas.data.map(row => [row.organization_id, row]));
+  const subscriptionByOrg = new Map(subscriptions.map(subscription => [subscription.organizationId, subscription]));
 
-  return parsed.data.map(row => ({
+  return parsed.data.map(row => {
+    const subscription = subscriptionByOrg.get(row.organization_id);
+    const includedProfessionals = subscription?.includedProfessionals;
+    const extraProfessionals = subscription?.plan === 'pro' ? subscription.extraProfessionals : 0;
+    return ({
     organizationId: row.organization_id,
     organizationName: row.organization_name,
     organizationSlug: row.organization_slug,
     organizationStatus: row.organization_status,
-    plan: row.plan_slug,
-    subscriptionStatus: row.subscription_status,
+    plan: subscription?.plan ?? row.plan_slug,
+    subscriptionStatus: subscription?.status ?? row.subscription_status,
     activePatients: row.active_patients,
-    maxActivePatients: row.max_active_patients,
+    maxActivePatients: subscription ? subscription.maxActivePatients ?? null : row.max_active_patients,
     activeProfessionals: row.active_professionals,
-    professionalCapacity: row.professional_capacity,
+    professionalCapacity: includedProfessionals === undefined ? row.professional_capacity : includedProfessionals + extraProfessionals,
     storedPdfBytes: row.stored_pdf_bytes,
-    planStorageLimitBytes: row.plan_storage_limit_bytes,
+    planStorageLimitBytes: subscription ? subscription.storageLimitBytes ?? null : row.plan_storage_limit_bytes,
     uploadEnabledProfessionals: quotas.get(row.organization_id)?.upload_enabled_professionals ?? 0,
     effectiveLibraryQuotaBytes: quotas.get(row.organization_id)?.effective_library_quota_bytes ?? 0,
     professionalsNearLibraryQuota: quotas.get(row.organization_id)?.professionals_near_library_quota ?? 0,
@@ -75,5 +82,6 @@ export async function loadRealAdminOrganizationUsage(from: string, to: string): 
     checkinResponsesInPeriod: row.checkin_responses_in_period,
     publishedMealPlanVersionsInPeriod: row.published_meal_plan_versions_in_period,
     incomeByCurrency: row.income_by_currency.map(income => ({ currency: income.currency, payments: income.payments, refunds: income.refunds, net: income.net, paymentCount: income.payment_count, refundCount: income.refund_count })),
-  }));
+  });
+  });
 }

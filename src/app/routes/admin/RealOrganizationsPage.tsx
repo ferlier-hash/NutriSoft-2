@@ -6,8 +6,8 @@ import { Button } from '../../../components/ui/Button';
 import type { RealAdminOrganization } from '../../../data/admin-overview.types';
 import { loadRealAdminOrganizations } from '../../../data/supabase/admin-overview.repository';
 import { formatFullDateTime, formatShortDate } from '../../../lib/dateUtils';
-import type { CommercialPlanSlug, RealOrganizationSubscription } from '../../../data/commercial-plan.types';
-import { loadProfessionalNewsletterContacts, loadRealOrganizationSubscriptions, saveRealOrganizationSubscription } from '../../../data/supabase/commercial-plan.repository';
+import type { RealOrganizationSubscription } from '../../../data/commercial-plan.types';
+import { loadProfessionalNewsletterContacts, loadRealOrganizationSubscriptions } from '../../../data/supabase/commercial-plan.repository';
 import type { ProfessionalNewsletterContact } from '../../../data/commercial-plan.types';
 
 type DirectoryState =
@@ -27,7 +27,6 @@ export function RealOrganizationsPage({
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [subscriptions, setSubscriptions] = useState<RealOrganizationSubscription[]>([]);
-  const [savingId, setSavingId] = useState<string | null>(null);
   const [contacts, setContacts] = useState<ProfessionalNewsletterContact[] | null>(null);
   const [contactsLoading, setContactsLoading] = useState(false);
 
@@ -42,7 +41,6 @@ export function RealOrganizationsPage({
 
   useEffect(() => { void loadRealOrganizationSubscriptions().then(setSubscriptions).catch(() => setSubscriptions([])); }, [attempt]);
   const subscriptionByOrganization = useMemo(() => new Map(subscriptions.map(item => [item.organizationId, item])), [subscriptions]);
-  const updatePlan = async (organizationId: string, plan: CommercialPlanSlug) => { setSavingId(organizationId); try { await saveRealOrganizationSubscription(organizationId, plan); const fresh = await loadRealOrganizationSubscriptions(); setSubscriptions(fresh); } finally { setSavingId(null); } };
   const loadContacts = async () => { setContactsLoading(true); try { setContacts(await loadProfessionalNewsletterContacts()); } finally { setContactsLoading(false); } };
   const downloadContacts = () => { if (!contacts) return; const csv = ['nombre,email', ...contacts.map(contact => `${JSON.stringify(contact.fullName)},${JSON.stringify(contact.email)}`)].join('\n'); const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'profesionales-boletines.csv'; anchor.click(); URL.revokeObjectURL(url); };
 
@@ -111,7 +109,7 @@ export function RealOrganizationsPage({
                       <td className="table-cell-admin font-semibold text-text-primary"><Link className="rounded text-brand-strong hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" to={`/admin/organizations/${organization.id}`}>{organization.name}<span className="sr-only"> — abrir detalle</span></Link></td>
                       <td className="table-cell-admin text-text-secondary">{organization.slug}</td>
                       <td className="table-cell-admin"><Badge variant={organization.status === 'active' ? 'active' : 'suspended'}>{organization.status === 'active' ? 'Activo' : 'Suspendido'}</Badge></td>
-                      <td className="table-cell-admin"><select aria-label={`Plan de ${organization.name}`} className="form-control min-w-28" disabled={savingId === organization.id} value={subscriptionByOrganization.get(organization.id)?.plan ?? 'pro'} onChange={event => void updatePlan(organization.id, event.target.value as CommercialPlanSlug)}><option value="pro">PRO</option><option value="ultra">ULTRA</option><option value="custom">CUSTOM</option></select></td>
+                      <td className="table-cell-admin"><Link to={`/admin/organizations/${organization.id}`} className="font-semibold text-brand-strong hover:underline">{subscriptionByOrganization.get(organization.id)?.plan.toUpperCase() ?? 'Sin configurar'}{subscriptionByOrganization.get(organization.id)?.scheduledChange ? ` · cambio ${subscriptionByOrganization.get(organization.id)!.scheduledChange!.effectiveOn}` : ''}</Link></td>
                       <td className="table-cell-admin text-text-secondary">{subscriptionByOrganization.get(organization.id) ? `${subscriptionByOrganization.get(organization.id)!.includedProfessionals + subscriptionByOrganization.get(organization.id)!.extraProfessionals} incluidos` : 'Sin configurar'}</td>
                       <td className="table-cell-admin text-text-secondary">{formatShortDate(organization.createdAt)}</td>
                       <td className="table-cell-admin text-text-secondary"><time dateTime={organization.updatedAt}>{formatFullDateTime(organization.updatedAt)}</time></td>

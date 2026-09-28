@@ -4,7 +4,6 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthProvider';
 import { Button } from '../../components/ui/Button';
 
-const pendingItems = [{ label: 'Configuración', icon: Settings }];
 
 export function RealAdminLayout() {
   const { profile, signOut } = useAuth();
@@ -72,12 +71,12 @@ export function RealAdminLayout() {
             >
               <ClipboardList className="w-4 h-4" aria-hidden="true" /> Auditoría
             </NavLink>
-            {pendingItems.map(({ label, icon: Icon }) => (
-              <div key={label} aria-disabled="true" className="flex min-h-[44px] items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-text-tertiary opacity-70">
-                <span className="flex items-center gap-3"><Icon className="w-4 h-4" aria-hidden="true" />{label}</span>
-                <span className="text-[10px] font-semibold">Integrando</span>
-              </div>
-            ))}
+            <NavLink
+              to="/admin/settings"
+              className={({ isActive }) => `flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold' : 'text-text-secondary hover:bg-surface-subtle'}`}
+            >
+              <Settings className="w-4 h-4" aria-hidden="true" /> Configuración
+            </NavLink>
           </nav>
         </div>
 

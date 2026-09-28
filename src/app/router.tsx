@@ -19,6 +19,7 @@ const RealAdminOverviewPage = lazy(() => import('./routes/admin/RealAdminOvervie
 const RealAdminUsagePage = lazy(() => import('./routes/admin/RealAdminUsagePage').then(module => ({ default: module.RealAdminUsagePage })));
 const RealAdminProfessionalsPage = lazy(() => import('./routes/admin/RealAdminProfessionalsPage').then(module => ({ default: module.RealAdminProfessionalsPage })));
 const RealAdminAuditPage = lazy(() => import('./routes/admin/RealAdminAuditPage').then(module => ({ default: module.RealAdminAuditPage })));
+const RealAdminSettingsPage = lazy(() => import('./routes/admin/RealAdminSettingsPage').then(module => ({ default: module.RealAdminSettingsPage })));
 const RealOrganizationsPage = lazy(() => import('./routes/admin/RealOrganizationsPage').then(module => ({ default: module.RealOrganizationsPage })));
 const RealAdminOrganizationDetailPage = lazy(() => import('./routes/admin/RealAdminOrganizationDetailPage').then(module => ({ default: module.RealAdminOrganizationDetailPage })));
 const OrganizationsPage = lazy(() => import('./routes/admin/OrganizationsPage').then(module => ({ default: module.OrganizationsPage })));
@@ -92,6 +93,7 @@ export const router = createHashRouter([
       { path: 'organizations', element: publicEnvironment.demoMode ? <OrganizationsPage /> : <RealOrganizationsPage /> },
       { path: 'usage', element: publicEnvironment.demoMode ? realDataPending : <RealAdminUsagePage /> },
       { path: 'audit', element: publicEnvironment.demoMode ? realDataPending : <RealAdminAuditPage /> },
+      { path: 'settings', element: publicEnvironment.demoMode ? realDataPending : <RealAdminSettingsPage /> },
       { path: 'organizations/:organizationId', element: publicEnvironment.demoMode ? <OrganizationDetailPage /> : <RealAdminOrganizationDetailPage /> },
       { path: 'nutritionists', element: publicEnvironment.demoMode ? <NutritionistsListPage /> : <RealAdminProfessionalsPage /> },
       { path: 'nutritionists/:nutritionistId', element: publicEnvironment.demoMode ? <NutritionistDetailPage /> : realDataPending },
