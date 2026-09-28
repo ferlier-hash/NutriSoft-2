@@ -1,5 +1,9 @@
 # Backlog de producto y arquitectura
 
+### Implementado local — primera brecha DEMO → REAL cerrada: Citas (2026-09-21)
+
+La ruta `/professional/appointments` ya no queda pendiente en REAL. Consume `api.appointments` y `api.patient_directory` con filtros por paciente, estado, pago, modalidad y período; muestra historial, importe, Meet cuando existe y deriva las acciones operativas a Agenda. No duplica escrituras ni expone notas privadas: esas capacidades quedan sujetas a las RPC correspondientes de Agenda. La aceptación inicial cubre acceso desde navegación REAL, aislamiento por organización, estado vacío, filtros y responsive; la paridad completa de notas/acciones permanece dentro del cierre específico de Citas.
+
 Este documento organiza pedidos sin mezclar cambios rápidos con decisiones que
 afectan seguridad, datos o arquitectura. Ningún ítem pasa a implementación sin
 alcance y criterio de aceptación claros.
@@ -14,9 +18,13 @@ Configuración y Agenda comparten franjas/descansos, pausas, bloqueos/vacaciones
 
 Completados los pendientes del 02/09: indicadores de proyectado y no cobrado por cancelaciones/ausencias sin cargo; corrección de cobros sin motivo obligatorio, separada de reembolso y con original inmutable; meses vacíos y netos negativos bajo cero en el gráfico. Probados cálculos, reintentos, revisión concurrente y permisos en local; revisión de pantalla/formulario en escritorio y móvil sin alterar cobros existentes. Queda la revisión del usuario. Citas todavía necesita su pantalla REAL; las vistas compartidas ya reflejan correcciones. No implica despliegue de producción ni procesamiento de dinero.
 
-### Pendiente explícito — cierre CUSTOM REAL (2026-09-02)
+### Implementado local — cierre CUSTOM REAL (2026-09-18)
 
-Retomado el 03/09: texto y contactos visibles en las cabeceras de inicio de ambos portales incluso sin imagen; teléfono/email con enlaces seguros, recarga efectiva del borrador y confirmación de guardado. La primera versión REAL está implementada, pero no se declara completa. Restan: marca contextual para sesiones con varios consultorios y revisión visual del editor e imágenes con sesión de responsable en escritorio, móvil y tablet. Las pantallas agregadas conservan marca neutral: seleccionar marca no equivale a filtrar datos. Conservar la edición exclusiva del responsable y la habilitación backend; no cambiar roles para facilitar la prueba. Antes de producción también revisar procesamiento de imágenes y limpieza de archivos no utilizados.
+La experiencia Custom REAL queda cerrada en código local: imágenes en bucket privado mediante URL firmada de cinco minutos, carga por cuarentena y aceptación exclusiva de archivos saneados; logo y cabeceras independientes; reemplazos no referenciados elegibles para limpieza automatizada. El job de limpieza procesa hasta cinco lotes, informa examinados/eliminados/fallidos y no marca registros como eliminados si Storage o la actualización de estado fallan.
+
+Al reemplazar o quitar una imagen, primero se guarda la nueva configuración y recién después se elimina físicamente el archivo anterior. Storage vuelve a comprobar que la ruta ya no esté referenciada antes de aceptar el borrado. Si la solicitud inmediata se interrumpe, el archivo queda inaccesible y vencido para que el job periódico complete la eliminación; nunca se borra la imagen vigente antes de confirmar el guardado.
+
+En sesiones con varios consultorios el editor exige elegir el consultorio concreto, identifica que el cambio afecta sólo a esa entidad y protege borradores antes de cambiar. Las vistas que agregan información de más de un consultorio conservan marca neutral: elegir una marca nunca se interpreta como filtro de datos. Se mantienen edición exclusiva del responsable, habilitación backend y aislamiento multi-tenant. Hay aceptación automatizada del editor a 390 × 844 y 768 × 1024 sin desborde horizontal, con selector multi-consultorio y protección del borrador. La activación operativa del job periódico y sus secretos se realiza al desplegar infraestructura productiva; no se presenta como activa en local.
 
 ### Pendiente explícito — prueba de cambio de cita REAL (2026-09-02)
 
@@ -60,17 +68,17 @@ Pulido, optimización o ampliaciones que no justifican retrasar el corte actual.
 | Cerrar contratos funcionales 2.2 del frontend mock | P0 | Media | Antes de Fase 3 | Completado y verificado localmente el 2026-08-14 |
 | Resolver vulnerabilidades de dependencias antes de auth | P1 | Media/Alta | Antes de Fase 3 | Completado el 2026-08-14: React Router 7.18.2, Nano ID corregido y `npm audit` en cero |
 | Configurar contrato de ambientes y secretos públicos | P1 | Baja | Inicio de Fase 3 | Completado el 2026-08-14 con `.env.example`, validación Zod y documentación |
-| Implementar autenticación y route guards reales | P0 | Alta | Fase 3.1 | Corte local completado y E2E PASS: sesión, pantallas, guards, contexto backend y limpieza de cuenta; faltan invitaciones/SMTP y staging |
+| Implementar autenticación y route guards reales | P0 | Alta | Fase 3.1 | Corte local completado y E2E PASS: sesión, pantallas, guards, contexto backend y limpieza de cuenta; proyecto de staging creado, faltan migraciones, configuración, invitaciones/SMTP y validación remota |
 | Conectar repositorios Supabase sin mostrar mocks en sesiones reales | P0 | Alta | Fase 3.2 | Recorridos centrales Admin, Profesional y Paciente completados en REAL local; faltan dominios explícitamente planificados y despliegue remoto |
 | Dividir `MockProvider` en contratos, selectores, repositorios y servicios | P1 | Media | Antes de conectar datos reales | En progreso: contratos, selectores y primer repositorio Admin real extraídos; siguientes repositorios pendientes |
-| Incorporar E2E por rol y observabilidad central | P1 | Media | Antes del piloto | Auth/Admin y aislamiento clínico Profesional/Paciente E2E local automatizados; falta observabilidad central y ampliar E2E a escrituras clínicas antes del piloto |
+| Incorporar E2E por rol y observabilidad central | P1 | Media | Antes del piloto | Playwright REAL local cubre creación de plan, respuesta de check-in, antropometría, cita, cobro y denegaciones de assistant, owner no clínico, Platform Admin y profesional no asignado; Sentry staging creado, endurecido y con 2FA obligatoria. Pendientes DSN/dominio en hosting, source maps privados, backend remoto y ampliar variantes/destructivos de cada flujo. |
 | Persistir perfil profesional, invitaciones y planes alimentarios | P0 | Alta | Siguiente corte de datos reales | Completado en REAL local; entrega remota de invitaciones condicionada a SMTP y staging |
 | Completar editor multidía, enlaces a recetas e importación CSV | P2 | Media | — | Completado en REAL local con plantilla, validación por fila y borrador revisable |
 | Evaluar importación asistida desde PDF/Word | P3 | Alta | Después de elegir proveedor y política de tratamiento documental | Futuro; CSV es el único formato REAL aceptado actualmente |
 | Exclusividad de plan por paciente y comentarios por comida | P1 | Media/Alta | Antes de persistir planes reales | Constraint, RLS, RPC e integración UI REAL completados; transferencia explícita ante una futura reasignación permanece fuera del flujo actual |
 | Próximos pasos y cumplimiento cotidiano del paciente | P1 | Media | Antes de persistir el portal clínico | Completado en demo y REAL local con aislamiento, checks y comentarios |
 | Supervisión general de check-ins del profesional | P1 | Media | Antes de persistir el portal clínico | Completado en demo y REAL local con filtros, historial y Bandeja autorizada; falta recorrido manual integral |
-| Definir backups, PITR, RPO/RTO y restauración | P1 | Media | Antes de producción | Pendiente |
+| Definir backups, PITR, RPO/RTO y restauración | P1 | Media | Antes de producción | Política aprobada: RPO 1 h, RTO 4 h, backup diario 30 días, copia mensual 12 meses y prueba mensual; configuración y primera restauración pendientes de staging/producción |
 | Reducir bundle inicial de frontend | P3 | Media | Después de integrar rutas reales | Completado el 2026-09-14: carga diferida por ruta y DEMO separado; bundle inicial 1.528,19→463,47 kB, con regresión y navegación REAL verificadas |
 
 ## Bandeja de pedidos del usuario

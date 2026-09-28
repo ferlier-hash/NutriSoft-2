@@ -1,4 +1,4 @@
-# Contrato de la API — NutriSoft (Fase 2.1)
+# Contrato de la API — Nutrify (Fase 2.1)
 
 ## Horarios y reglas REAL — migración 45
 
@@ -18,6 +18,8 @@ Migración 43: `correct_income_payment(p_payment,p_expected,p_request,p_amount,p
 
 ## Suscripciones comerciales y audiencia de boletines
 
+`api.get_admin_professionals(p_query,p_status,p_limit,p_offset)` lista membresías `nutritionist` sólo a Platform Admin, con perfil básico, consultorio, estado, fecha de alta y conteo de asignaciones activas (sin identidades de pacientes ni datos clínicos). `api.set_admin_professional_membership_status(p_organization_id,p_user_id,p_status)` suspende/reactiva una membresía de un consultorio y conserva auditoría; la suspensión se rechaza si el profesional mantiene pacientes asignados o si hay transferencias con lectura de 14 días vigente. Las asignaciones deben transferirse por `api.transfer_patient_to_professional`. `api.set_admin_professional_account_suspension(p_user_id,p_is_suspended)` bloquea/restablece globalmente una cuenta profesional de modo reversible sin alterar membresías ni borrar datos. Ambas escrituras exigen Platform Admin. El bloqueo se valida en las primitivas de autorización server-side; no equivale a cerrar la sesión de Supabase ya emitida. La auditoría allowlisted incluye ambas acciones sin revelar identidades afectadas.
+
 `app.plan_catalog` define PRO, ULTRA y CUSTOM con herencia conceptual, límites técnicos y precios opcionales. Los precios permanecen nulos hasta que se defina la política comercial; esta capa no procesa pagos.
 
 `app.organization_subscriptions` guarda una suscripción por consultorio, su estado, adicionales de profesionales y períodos opcionales. Bajar de plan no elimina información: las futuras operaciones deben consultar los entitlements y bloquear sólo nuevas acciones fuera del límite.
@@ -25,6 +27,14 @@ Migración 43: `correct_income_payment(p_payment,p_expected,p_request,p_amount,p
 `api.get_plan_catalog()` expone el catálogo activo. `api.get_my_organization_subscription(p_org)` expone los límites del consultorio autorizado. `api.set_organization_subscription(...)` sólo puede ejecutarse desde Platform Admin y deja historial en `app.organization_subscription_events`.
 
 `api.get_professional_newsletter_contacts()` devuelve únicamente nombre y correo de profesionales/owners activos a Platform Admin. No incluye pacientes, datos clínicos, métricas identificables ni contenido asistencial.
+
+`api.get_admin_organization_usage_report(p_from,p_to)` devuelve una fila numérica por consultorio sólo a Platform Admin: estado/plan y capacidades actuales (pacientes con acceso, profesionales, PDFs, asignaciones de plan alimentario, configuración de marca CUSTOM y conexiones de Google Calendar) más actividad entre timestamps (`p_from` inclusivo, `p_to` exclusivo): citas, citas completadas, respuestas de check-in, versiones de plan publicadas e importes/cantidades cobrados y devueltos agrupados por moneda. Valida un rango máximo de 366 días. No entrega datos individuales ni contenido. No persiste snapshots históricos: las métricas de capacidad son actuales, no históricas. El porcentaje PDF es referencia comercial; las cargas siguen sujetas a una cuota técnica por profesional de 250 MB iniciales por consultorio. Ingresos son sólo registros manuales, sin procesamiento y sin conversión entre monedas.
+
+`api.get_admin_library_quota_report()` añade por consultorio perfiles profesionales activos con aceptación de biblioteca, suma de cuotas PDF individuales vigentes y cantidad de profesionales al 80% o sobre su propia cuota. Es agregado, sólo Platform Admin y no implica cuota compartida.
+
+`api.get_admin_audit_events(p_from,p_to,p_event_type,p_query,p_limit,p_offset)` alimenta `/admin/audit`. Sólo acepta sesión Platform Admin; admite hasta 366 días, tipos permitidos y páginas de 1–100. Devuelve alta/cambio de estado de consultorio, cambio de suscripción o cambio de acceso profesional con fecha, consultorio/alcance, valores previos/nuevos y profesionales adicionales. No devuelve `actor_id`, perfil, email, motivo libre, identidad afectada ni datos clínicos. Platform Admin conserva cero filas en lectura directa de `app.audit_logs`. Las acciones actuales se agregan a la bitácora inmutable; eventos previos de suscripción se migran sin incluir `reason`.
+
+`/admin/organizations/:organizationId` (REAL local) compone lecturas administrativas existentes, sin exponer una nueva vista general: `api.admin_organizations` (fila mínima), `api.get_admin_organization_usage_report`, `api.get_admin_library_quota_report`, `api.get_admin_organization_subscriptions`, `api.get_admin_professionals`, `api.get_admin_platform_revenue_report`, `api.get_admin_platform_billing_report` y `api.get_admin_platform_receipts`. El cliente limita los datos a la organización abierta; cada RPC mantiene su propia verificación Platform Admin. La ficha no hace consultas de pacientes, perfiles clínicos, citas identificables, contenido ni archivos. El cambio operativo de estado usa `api.set_organization_status` (Platform Admin, `auth.uid()` y auditoría existentes). No se creó un contrato nuevo ni un camino de escritura paralelo. El detalle informa capacidad vigente y actividad de los últimos 12 meses; ingresos y cobros se mantienen separados de los que profesionales registran por sus pacientes.
 
 `get_my_branding()` devuelve únicamente consultorios activos autorizados del usuario, habilitación, permiso de edición, settings y versión. `save_organization_branding` exige responsable activo y entitlement de backend, valida campos/paleta/rutas propias y versión previa. No otorga clínica. Storage privado `consultorio-branding`: imágenes hasta 2 MB, INSERT por responsable, SELECT de imágenes guardadas por miembros/pacientes autorizados y de borradores por responsable. Sin UPDATE/DELETE de objetos por cliente. Capacidad comercial no editable por usuarios; no implica facturación implementada. URLs firmadas de 5 minutos: una ya emitida puede seguir disponible hasta vencer tras retirar la habilitación.
 
@@ -55,6 +65,16 @@ Migración 43: `correct_income_payment(p_payment,p_expected,p_request,p_amount,p
 
 ### Funciones RPC Transaccionales:
 - `api.get_admin_metrics()`: Devuelve JSON desidentificado con conteos agregados.
+- `api.get_admin_organization_usage_report(p_from,p_to)`: Capacidades y actividad agregadas por consultorio para Platform Admin, con montos agrupados por moneda y sin contenido individual.
+- `api.get_admin_audit_events(p_from,p_to,p_event_type,p_query,p_limit,p_offset)`: Historial administrativo permitido (altas, estado y plan) sólo para Platform Admin. Devuelve columnas allowlisted; nunca identidad del actor, razones libres ni eventos clínicos/tenant.
+- `api.get_admin_organization_retention_report(p_months)`: Serie mensual agregada por cohorte consecutiva, sólo Platform Admin; informa retención y agregados de uso/actividad, sin filas por consultorio ni identidades.
+- `api.get_admin_platform_revenue_report(p_from,p_to)`: Tarifas vigentes e historial comercial manual, más cobros recibidos agregados por consultorio y moneda, sólo Platform Admin.
+- `api.get_admin_platform_receipts(p_from,p_to,p_limit,p_offset)`: Historial paginado de cobros manuales de Nutrify, incluidos registros anulados, sólo Platform Admin.
+- `api.set_admin_organization_commercial_term(...)`: Versiona tarifa mensual/anual negociada por consultorio, moneda y fecha de vigencia flexible. Conserva programaciones reemplazadas; no permite superponer períodos ya cobrados.
+- `api.record_admin_organization_commercial_receipt(...)`: Registra manualmente un monto recibido para el ciclo completo calculado desde el anclaje del consultorio (día flexible mensual/anual); request UUID idempotente, sin ejecutar procesamiento externo.
+- `api.void_admin_organization_commercial_receipt(p_receipt_id)`: Anulación lógica de un registro errado, conservando el rastro.
+- `api.get_admin_platform_billing_report(p_from,p_to)`: Devuelve ciclos completos, importe esperado/recibido/saldo, estado de pago y vencimiento para Platform Admin; rango máximo de 366 días. El vencimiento inicial es el inicio del ciclo y el estado de prórroga es manual.
+- `api.extend_admin_commercial_billing_due_date(p_term_id,p_period_start,p_new_due_date)`: Otorga una prórroga por ciclo no pagado, con nueva fecha posterior al vencimiento anterior y no pasada. Registra actor/fecha/hora en historial append-only y bitácora. Sin acceso directo a la tabla.
 - `api.get_current_access_context()`: Devuelve el contexto mínimo del usuario actual (`platform_role`, membresías propias y accesos de paciente propios), calculado únicamente desde `auth.uid()`.
 - `api.create_organization(p_name, p_slug)`: Crea organización (solo platform_admin).
 - `api.set_organization_status(p_org_id, p_status)`: Activa/suspende organización (solo platform_admin).

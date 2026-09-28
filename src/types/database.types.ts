@@ -1668,6 +1668,14 @@ export type Database = {
         Args: { p_source_meal_plan_id: string; p_title?: string }
         Returns: string
       }
+      extend_admin_commercial_billing_due_date: {
+        Args: {
+          p_new_due_date: string
+          p_period_start: string
+          p_term_id: string
+        }
+        Returns: string
+      }
       finish_secure_upload_for_service: {
         Args: {
           p_clean: boolean
@@ -1679,7 +1687,181 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_admin_audit_events: {
+        Args: {
+          p_event_type?: string
+          p_from: string
+          p_limit?: number
+          p_offset?: number
+          p_query?: string
+          p_to: string
+        }
+        Returns: {
+          event_id: string
+          event_type: string
+          extra_professionals: number
+          new_value: string
+          occurred_at: string
+          organization_id: string
+          organization_name: string
+          organization_slug: string
+          previous_value: string
+          total_count: number
+        }[]
+      }
+      get_admin_library_quota_report: {
+        Args: never
+        Returns: {
+          effective_library_quota_bytes: number
+          organization_id: string
+          professionals_near_library_quota: number
+          professionals_over_library_quota: number
+          upload_enabled_professionals: number
+        }[]
+      }
       get_admin_metrics: { Args: never; Returns: Json }
+      get_admin_organization_retention_report: {
+        Args: { p_months?: number }
+        Returns: {
+          active_customers: number
+          active_patients: number
+          active_professionals: number
+          activity_from: string
+          activity_to: string
+          appointments: number
+          captured_at: string
+          checkin_responses: number
+          churned_customers: number
+          completed_appointments: number
+          previous_active_customers: number
+          published_meal_plan_versions: number
+          retained_customers: number
+          retention_rate: number
+          snapshot_month: string
+          stored_pdf_bytes: number
+        }[]
+      }
+      get_admin_organization_subscriptions: {
+        Args: never
+        Returns: {
+          custom_branding_enabled: boolean
+          extra_professionals: number
+          included_professionals: number
+          max_active_patients: number
+          organization_id: string
+          plan_slug: string
+          status: string
+          storage_limit_bytes: number
+        }[]
+      }
+      get_admin_organization_usage_report: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          active_meal_plan_assignments: number
+          active_patients: number
+          active_professionals: number
+          appointments_in_period: number
+          branding_assets_count: number
+          branding_settings_fields_count: number
+          checkin_responses_in_period: number
+          completed_appointments_in_period: number
+          connected_google_calendars: number
+          income_by_currency: Json
+          max_active_patients: number
+          organization_id: string
+          organization_name: string
+          organization_slug: string
+          organization_status: string
+          plan_slug: string
+          plan_storage_limit_bytes: number
+          professional_capacity: number
+          published_meal_plan_versions_in_period: number
+          stored_pdf_bytes: number
+          subscription_status: string
+        }[]
+      }
+      get_admin_platform_billing_report: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          balance: number
+          base_due_date: string
+          billing_frequency: string
+          currency: string
+          due_date: string
+          due_status: string
+          expected_amount: number
+          extension_count: number
+          latest_extension_at: string
+          organization_id: string
+          organization_name: string
+          organization_slug: string
+          payment_status: string
+          period_end: string
+          period_start: string
+          plan_slug: string
+          received_amount: number
+          term_id: string
+        }[]
+      }
+      get_admin_platform_receipts: {
+        Args: {
+          p_from: string
+          p_limit?: number
+          p_offset?: number
+          p_to: string
+        }
+        Returns: {
+          amount: number
+          billing_frequency: string
+          currency: string
+          organization_id: string
+          organization_name: string
+          period_end: string
+          period_start: string
+          receipt_id: string
+          received_on: string
+          status: string
+          total_count: number
+          voided_at: string
+        }[]
+      }
+      get_admin_platform_revenue_report: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          billing_frequency: string
+          current_plan: string
+          effective_from: string
+          organization_id: string
+          organization_name: string
+          organization_slug: string
+          received_by_currency: Json
+          term_amount: number
+          term_currency: string
+          term_history: Json
+          term_id: string
+          term_plan: string
+        }[]
+      }
+      get_admin_professionals: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_query?: string
+          p_status?: string
+        }
+        Returns: {
+          account_suspended: boolean
+          assigned_patient_count: number
+          created_at: string
+          email: string
+          full_name: string
+          membership_status: string
+          organization_id: string
+          organization_name: string
+          total_count: number
+          user_id: string
+        }[]
+      }
       get_appointment_for_google_sync: {
         Args: { p_appointment_id: string }
         Returns: {
@@ -1729,6 +1911,10 @@ export type Database = {
           used_bytes: number
         }[]
       }
+      get_my_organization_subscription: {
+        Args: { p_org: string }
+        Returns: Json
+      }
       get_my_patient_invitations: {
         Args: never
         Returns: {
@@ -1767,9 +1953,42 @@ export type Database = {
         Args: { p_appointment: string }
         Returns: Json
       }
+      get_patient_appointment_slots: {
+        Args: { p_duration_minutes?: number }
+        Returns: {
+          ends_at: string
+          modality_in_person: boolean
+          modality_virtual: boolean
+          starts_at: string
+        }[]
+      }
+      get_patient_transfer_candidates: {
+        Args: { p_patient: string }
+        Returns: {
+          display_name: string
+          user_id: string
+        }[]
+      }
       get_pending_patient_invitation_for_service: {
         Args: { p_email: string; p_org_id: string }
         Returns: string
+      }
+      get_plan_catalog: {
+        Args: never
+        Returns: unknown[]
+        SetofOptions: {
+          from: "*"
+          to: "plan_catalog"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      get_professional_newsletter_contacts: {
+        Args: never
+        Returns: {
+          email: string
+          full_name: string
+        }[]
       }
       get_secure_upload_status: {
         Args: { p_upload_id: string }
@@ -1791,11 +2010,28 @@ export type Database = {
         Args: { p_notification_id: string }
         Returns: boolean
       }
+      mark_brand_asset_deleted: {
+        Args: { p_org: string; p_path: string }
+        Returns: undefined
+      }
       mark_secure_upload_deleted_for_service: {
         Args: { p_upload_id: string }
         Returns: undefined
       }
       publish_meal_plan: { Args: { p_meal_plan_id: string }; Returns: string }
+      record_admin_organization_commercial_receipt: {
+        Args: {
+          p_amount: number
+          p_currency: string
+          p_organization_id: string
+          p_period_end: string
+          p_period_start: string
+          p_received_on: string
+          p_request_id: string
+          p_term_id: string
+        }
+        Returns: string
+      }
       record_appointment_payment: {
         Args: {
           p_amount: number
@@ -1830,6 +2066,23 @@ export type Database = {
       renew_patient_invitation_for_service: {
         Args: { p_patient: string }
         Returns: undefined
+      }
+      replace_google_calendar_busy_intervals_for_service: {
+        Args: {
+          p_calendar_id: string
+          p_intervals: Json
+          p_nutritionist_user_id: string
+          p_organization_id: string
+        }
+        Returns: number
+      }
+      request_patient_appointment: {
+        Args: {
+          p_duration_minutes: number
+          p_modality: string
+          p_starts_at: string
+        }
+        Returns: string
       }
       request_patient_appointment_change: {
         Args: {
@@ -2013,6 +2266,25 @@ export type Database = {
         }
         Returns: undefined
       }
+      set_admin_organization_commercial_term: {
+        Args: {
+          p_amount: number
+          p_billing_frequency: string
+          p_currency: string
+          p_effective_from: string
+          p_organization_id: string
+          p_plan_slug: string
+        }
+        Returns: string
+      }
+      set_admin_professional_account_suspension: {
+        Args: { p_is_suspended: boolean; p_user_id: string }
+        Returns: boolean
+      }
+      set_admin_professional_membership_status: {
+        Args: { p_organization_id: string; p_status: string; p_user_id: string }
+        Returns: boolean
+      }
       set_daily_list_assignment: {
         Args: {
           p_active: boolean
@@ -2070,6 +2342,16 @@ export type Database = {
         Args: { p_org_id: string; p_status: string }
         Returns: boolean
       }
+      set_organization_subscription: {
+        Args: {
+          p_extra_professionals?: number
+          p_org: string
+          p_plan_slug: string
+          p_reason?: string
+          p_status?: string
+        }
+        Returns: undefined
+      }
       store_google_calendar_connection: {
         Args: {
           p_access_token_expires_at: string
@@ -2115,6 +2397,10 @@ export type Database = {
         Args: { p_answers: Json; p_assignment: string }
         Returns: string
       }
+      transfer_patient_to_professional: {
+        Args: { p_new_professional: string; p_patient: string }
+        Returns: Json
+      }
       update_income_appointment_price: {
         Args: { p_amount: number; p_appointment: string; p_expected: string }
         Returns: string
@@ -2132,6 +2418,10 @@ export type Database = {
           p_starts_at: string
           p_time_zone: string
         }
+        Returns: boolean
+      }
+      void_admin_organization_commercial_receipt: {
+        Args: { p_receipt_id: string }
         Returns: boolean
       }
     }

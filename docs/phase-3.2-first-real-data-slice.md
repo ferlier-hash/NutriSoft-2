@@ -1,4 +1,4 @@
-# NutriSoft — Contrato del primer corte de datos reales (Fase 3.2)
+# Nutrify — Contrato del primer corte de datos reales (Fase 3.2)
 
 **Estado:** aprobado para implementación local el 14 de agosto de 2026.
 

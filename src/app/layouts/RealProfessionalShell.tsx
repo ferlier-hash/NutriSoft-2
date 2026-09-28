@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { RealBrandIdentity, RealBrandHeader } from '../../components/domain/RealBranding';
+import { ActiveOrganizationSelector, RealBrandIdentity, RealBrandHeader } from '../../components/domain/RealBranding';
 import { Activity, CalendarDays, ClipboardCheck, ClipboardList, CookingPot, CreditCard, FileText, Home, Inbox, Library, ListChecks, LogOut, Menu, Settings, Sparkles, UserRound, Users } from 'lucide-react';
 import { useAuth } from '../../auth/AuthProvider';
 import { Dialog } from '../../components/ui/Dialog';
@@ -14,7 +14,7 @@ const items = [
   { label: 'Pacientes', path: 'patients', icon: Users },
   { label: 'Bandeja de atención', path: 'inbox', icon: Inbox },
   { label: 'Agenda', path: 'agenda', icon: CalendarDays },
-  { label: 'Citas', path: 'appointments', icon: CalendarDays, pending: true },
+  { label: 'Citas', path: 'appointments', icon: CalendarDays },
   { label: 'Ingresos', path: 'income', icon: CreditCard },
   { label: 'Planes alimentarios', path: 'meal-plans', icon: ClipboardList },
   { label: 'Recetario', path: 'recipes', icon: CookingPot },
@@ -31,8 +31,7 @@ export function RealProfessionalShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [alertCount,setAlertCount]=useState(0);
   useEffect(()=>{let active=true;const load=async()=>{try{const {count}=await getSupabaseClient().schema('api').from('attention_inbox').select('id',{count:'exact',head:true}).in('status',['unresolved','acknowledged']);if(active)setAlertCount(count??0);}catch{/* La navegación sigue disponible si la bandeja no responde. */}};void load();const focus=()=>void load();window.addEventListener('focus',focus);return()=>{active=false;window.removeEventListener('focus',focus);};},[]);
-  const navigation = () => <nav aria-label="Menú profesional" className="space-y-1">{items.map(({ label, path, icon: Icon, pending }) => pending ?
-    <div key={path} aria-disabled="true" className="flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm text-text-tertiary"><Icon aria-hidden="true" className="h-4 w-4 shrink-0" /><span className="flex-1">{label}</span><span className="text-[10px]">Pendiente</span></div> :
+  const navigation = () => <nav aria-label="Menú profesional" className="space-y-1">{items.map(({ label, path, icon: Icon }) =>
     <NavLink key={path||'home'} end={!path} to={path?`/professional/${path}`:'/professional'} onClick={() => setMenuOpen(false)} className={({ isActive }) => `flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium ${isActive ? 'bg-[image:var(--grad-nav-active)] text-brand-strong' : 'text-text-secondary hover:bg-surface-subtle'}`}><Icon aria-hidden="true" className="h-4 w-4 shrink-0" /><span className="flex-1">{label}</span>{path==='inbox'&&alertCount>0&&<span className="rounded-full bg-critical px-2 py-0.5 text-[10px] font-bold text-white" aria-label={`${alertCount} avisos pendientes`}>{alertCount}</span>}</NavLink>
   )}</nav>;
   return <div className="min-h-screen bg-bg-app lg:pl-64">
@@ -41,7 +40,7 @@ export function RealProfessionalShell() {
       <div className="border-t border-border-subtle p-4"><p className="break-words text-xs font-semibold">{profile?.fullName}</p><Button variant="ghost" size="sm" onClick={() => void signOut()}><LogOut aria-hidden="true" className="mr-2 h-4 w-4" />Cerrar sesión</Button></div>
     </aside>
     <header className="sticky top-0 z-30 flex min-h-16 items-center justify-between gap-3 border-b border-border-subtle bg-surface/95 px-4 backdrop-blur sm:px-6">
-      <div className="lg:hidden"><RealBrandIdentity /></div><p className="hidden text-sm font-semibold lg:block">Espacio profesional</p>
+      <div className="lg:hidden"><RealBrandIdentity /></div><div className="hidden items-center gap-4 lg:flex"><p className="text-sm font-semibold">Espacio profesional</p><ActiveOrganizationSelector portal="professional"/></div>
       <p className="hidden max-w-sm truncate text-xs text-text-secondary sm:block">{profile?.fullName}</p>
       <Button className="lg:hidden" variant="ghost" aria-label="Abrir menú" onClick={() => setMenuOpen(true)}><Menu aria-hidden="true" className="h-5 w-5" /></Button>
     </header>

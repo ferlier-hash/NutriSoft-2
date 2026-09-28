@@ -1,10 +1,11 @@
-# Landing comercial de NutriSoft
+# Landing comercial de Nutrify
 
 Espacio separado del producto clínico para explorar la landing pública de ventas.
 
 ## Estado
 
-- Prototipo visual comercial orientado a conversación por WhatsApp.
+- Prototipo visual comercial de Nutrify, orientado a conversación por WhatsApp.
+- La identidad visual usa el isotipo N turquesa/lima, azul profundo de contraste y acentos lima inspirados en el manual de marca recibido.
 - Estructura inspirada en patrones de páginas de venta de SaaS: promesa específica, problema, mecanismo, módulos, segmentación, privacidad, objeciones, FAQ y CTA repetidos.
 - No conectado a autenticación, datos clínicos, pagos ni formularios de producción.
 - Las capacidades mencionadas como disponibles corresponden al entorno local REAL descrito en la documentación del proyecto.

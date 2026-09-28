@@ -80,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
             N
           </div>
           <div>
-            <span className="font-bold text-base text-text-primary tracking-tight">NutriSoft</span>
+            <span className="font-bold text-base text-text-primary tracking-tight">Nutrify</span>
             <span className="text-[10px] text-text-secondary block font-medium">
               {portal === 'admin'
                 ? 'Platform Admin'
@@ -150,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portal }) => {
               {portal === 'admin' ? 'Platform Admin' : currentDemoNutritionist ? currentDemoNutritionist.name : 'Lic. Andrea N.'}
             </p>
             <p className="text-[10px] text-text-secondary truncate">
-              {portal === 'admin' ? 'admin@nutrisoft.app' : currentDemoNutritionist ? currentDemoNutritionist.email : 'andrea@clinicabienestar.com'}
+              {portal === 'admin' ? 'admin@example.com' : currentDemoNutritionist ? currentDemoNutritionist.email : 'andrea@clinicabienestar.com'}
             </p>
           </div>
         </div>

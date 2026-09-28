@@ -1,4 +1,4 @@
-# NutriSoft — Plataforma Clínica para Nutricionistas
+# Nutrify — Plataforma Clínica para Nutricionistas
 
 ## 📌 Estado del Proyecto
 

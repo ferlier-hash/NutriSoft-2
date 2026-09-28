@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { RealBrandingProvider, RealBrandingSettings, RealBrandHeader, RealBrandIdentity } from '../components/domain/RealBranding';
+vi.mock('../auth/AuthProvider',()=>({useAuth:()=>({accessContext:null})}));
 const {rpc,signedUrl}=vi.hoisted(()=>({rpc:vi.fn(),signedUrl:vi.fn(async(path:string)=>({data:{signedUrl:`https://example.com/${path}`},error:null}))}));
 vi.mock('../auth/supabase-client',()=>({getSupabaseClient:()=>({schema:()=>({rpc}),storage:{from:()=>({createSignedUrl:signedUrl})}})}));
 beforeEach(()=>{rpc.mockReset();});
@@ -33,6 +34,20 @@ it('mantiene neutral una sesión con varios consultorios',async()=>{
  await screen.findByLabelText('Consultorio para personalizar');
  expect(screen.getByText('Portal del paciente')).toBeInTheDocument();
  expect(screen.queryByRole('region')).not.toBeInTheDocument();
+});
+it('protege el borrador al cambiar de consultorio',async()=>{
+ const confirm=vi.spyOn(window,'confirm').mockReturnValueOnce(false).mockReturnValueOnce(true);
+ rpc.mockResolvedValue({data:[row,{...row,organization_id:'otra',name:'Otra clínica'}],error:null});
+ render(<RealBrandingProvider><RealBrandingSettings/></RealBrandingProvider>);
+ const user=userEvent.setup();const selector=await screen.findByLabelText('Consultorio para personalizar');
+ await user.type(screen.getByLabelText('Texto breve'),'Cambio pendiente');
+ await user.selectOptions(selector,'otra');
+ expect(selector).toHaveValue('org');
+ await user.selectOptions(selector,'otra');
+ expect(selector).toHaveValue('otra');
+ expect(screen.getByLabelText('Nombre visible')).toHaveValue('Otra clínica');
+ expect(confirm).toHaveBeenCalledTimes(2);
+ confirm.mockRestore();
 });
 it('recargar descarta el borrador aunque la versión guardada no haya cambiado',async()=>{
  rpc.mockResolvedValue({data:[row],error:null});

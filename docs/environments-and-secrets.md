@@ -1,4 +1,4 @@
-# NutriSoft — Ambientes, configuración y secretos
+# Nutrify — Ambientes, configuración y secretos
 
 ## Ambientes obligatorios
 
@@ -67,3 +67,10 @@ La secuencia completa de staging, producción, rollback, backups e incidentes es
 El workflow `ci-reproducible.yml` ejecuta `npm ci` con Node 24.13.1, verificación frontend, reconstrucción/pruebas/lint de Supabase y escaneo básico de secretos. El workflow `deploy-staging.yml` sólo se ejecuta manualmente, requiere escribir `DEPLOY-STAGING` y usa el environment protegido `staging`.
 
 El environment `staging` debe contener únicamente estos secretos de GitHub: `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD` y `SUPABASE_PROJECT_REF`. El token debe ser técnico y con alcance mínimo; nunca se copia al repositorio ni al frontend. Antes de habilitar el workflow se debe comprobar que `SUPABASE_PROJECT_REF` identifica el proyecto `nutrisoft-staging` y que sus Auth, Storage, SMTP y Edge Functions tienen configuración propia de staging.
+
+El workflow manual `e2e-admin-staging.yml` construye la app REAL en el runner de GitHub y ejecuta Playwright contra la Supabase remota de staging; no publica ni despliega el frontend en un hosting. Usa sólo estos valores del environment `staging`:
+
+- Variables: `STAGING_SUPABASE_PROJECT_REF`, `STAGING_SUPABASE_URL` y `STAGING_SUPABASE_ANON_KEY` (la clave pública puede ser una variable).
+- Secretos: `STAGING_E2E_ADMIN_EMAIL`, `STAGING_E2E_ADMIN_PASSWORD`, `STAGING_E2E_NONADMIN_EMAIL` y `STAGING_E2E_NONADMIN_PASSWORD`.
+
+Las cuentas deben ser sintéticas, distintas y estar creadas previamente en Supabase Auth; una debe poseer el rol `platform_admin` y la otra no. No se crea ni modifica información en el test. La URL HTTPS debe coincidir exactamente con `<STAGING_SUPABASE_PROJECT_REF>.supabase.co`; el dispatch requiere escribir `RUN-STAGING-ADMIN-E2E`. Nunca se reutilizan cuentas productivas. Las trazas, videos y capturas están deshabilitadas en este proyecto para evitar persistir sesiones en artefactos de diagnóstico.

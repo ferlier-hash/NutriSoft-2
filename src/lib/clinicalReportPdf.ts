@@ -1,7 +1,7 @@
 import autoTable from 'jspdf-autotable';
 import { jsPDF } from 'jspdf';
 import { anthropometryMetrics, displayMeasurementDate } from './anthropometry';
-import { clinicalReportSections, inClinicalReportPeriod, type ClinicalReport } from './clinicalReport';
+import { clinicalReportFacts, clinicalReportSections, inClinicalReportPeriod, reportNextSteps, type ClinicalReport } from './clinicalReport';
 
 const dateTime = (value: string) => new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 const number = (value: number | null | undefined, unit = '') => value == null ? '—' : `${new Intl.NumberFormat('es-AR', { maximumFractionDigits: 2 }).format(value)}${unit ? ` ${unit}` : ''}`;
@@ -16,10 +16,28 @@ export async function downloadClinicalReportPdf(report: ClinicalReport) {
   doc.setTextColor(21,27,34);doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text('Reporte clínico',16,18);
   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(53,121,132);doc.text(report.organizationName||'Informe clínico',16,27);
   doc.setTextColor(102,114,125);doc.text(`Paciente: ${report.data.patient.first_name} ${report.data.patient.last_name}`,16,35);doc.text(`Período: ${displayMeasurementDate(report.from)} — ${displayMeasurementDate(report.to)} · Profesional: ${report.professionalName||'Profesional tratante'}`,16,42);
+  doc.setFontSize(7.5);doc.text(`Generado: ${new Intl.DateTimeFormat('es-AR',{dateStyle:'medium',timeStyle:'short'}).format(new Date())} · Uso interno`,16,47);
   let y=57;
   const table=(title:string,head:string[],body:(string|number)[][])=>{if(!body.length)return;doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(21,27,34);doc.text(title,16,y);autoTable(doc,{startY:y+3,head:[head],body,margin:{left:16,right:16,bottom:20},styles:{fontSize:8,cellPadding:2.5,lineColor:[226,233,236],lineWidth:.2},headStyles:{fillColor:[53,121,132],textColor:255},alternateRowStyles:{fillColor:[247,249,250]}});y=(doc as typeof doc&{lastAutoTable:{finalY:number}}).lastAutoTable.finalY+9;};
+  const paragraph=(title:string,text:string)=>{if(!text.trim())return;const lines=doc.splitTextToSize(text.trim(),width-32) as string[];if(y+10+lines.length*4.5>276){doc.addPage();y=18;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(21,27,34);doc.text(title,16,y);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(54,65,75);doc.text(lines,16,y+6,{lineHeightFactor:1.35});y+=10+lines.length*4.5;};
   const {data}=report;
-  if(report.sections.includes('profile')) table('Información y referencia',['Dato','Valor'],[['Correo',data.patient.email||'Sin informar'],['Teléfono',data.patient.phone||'Sin informar'],['Ciudad',data.patient.city||'Sin informar'],['Fecha de nacimiento',data.patient.birth_date?displayMeasurementDate(data.patient.birth_date):'Sin informar'],['Altura inicial',number(data.initial?.height_cm,'cm')],['Peso inicial',number(data.initial?.initial_weight_kg,'kg')],['Peso objetivo',number(data.initial?.target_weight_kg,'kg')]]);
+  const facts=clinicalReportFacts(report);
+  if(report.objective.trim())paragraph('Objetivo del reporte',report.objective);
+  table('Resumen factual del período',['Indicador','Registro'],[['Antropometría',`${facts.anthropometryCount} revisiones`],['Peso cotidiano',facts.latestWeight?`${facts.weightCount} registros · último ${number(facts.latestWeight.weight_kg,'kg')}${facts.weightChange==null?'':` · cambio ${facts.weightChange>0?'+':''}${number(facts.weightChange,'kg')}`}`:'Sin registros'],['Check-ins',`${facts.checkinCount} respuestas · ${facts.helpRequestCount} pedidos de ayuda`],['Consultas',`${facts.appointmentCount} en el período`],['Planes publicados',String(facts.activePlanCount)]]);
+  paragraph('Resumen profesional',report.professionalSummary);
+  const steps=reportNextSteps(report.nextSteps);if(steps.length)paragraph('Próximos pasos',steps.map((step,index)=>`${index+1}. ${step}`).join('\n'));
+  const profileRows: (string | number)[][] = [
+    ...(report.includeContactDetails ? [
+      ['Correo',data.patient.email||'Sin informar'],
+      ['Teléfono',data.patient.phone||'Sin informar'],
+      ['Ciudad',data.patient.city||'Sin informar'],
+    ] : []),
+    ['Fecha de nacimiento',data.patient.birth_date?displayMeasurementDate(data.patient.birth_date):'Sin informar'],
+    ['Altura inicial',number(data.initial?.height_cm,'cm')],
+    ['Peso inicial',number(data.initial?.initial_weight_kg,'kg')],
+    ['Peso objetivo',number(data.initial?.target_weight_kg,'kg')],
+  ];
+  if(report.sections.includes('profile')) table('Información y referencia',['Dato','Valor'],profileRows);
   if(report.sections.includes('anthropometry')){const metrics=[...anthropometryMetrics,...data.anthropometryFields.map(field=>({key:field.id,label:field.label,unit:field.unit}))];table('Antropometría',['Fecha',...metrics.map(metric=>`${metric.label} (${metric.unit})`)],data.anthropometry.filter(row=>inClinicalReportPeriod(row.recorded_on,report.from,report.to)).map(row=>[displayMeasurementDate(row.recorded_on),...metrics.map(metric=>number(row.values[metric.key]))]));}
   if(report.sections.includes('weight'))table('Peso cotidiano',['Fecha','Peso','Origen'],data.weights.filter(row=>inClinicalReportPeriod(row.recorded_on,report.from,report.to)).map(row=>[displayMeasurementDate(row.recorded_on),number(row.weight_kg,'kg'),row.origin==='patient'?'Paciente':'Profesional']));
   if(report.sections.includes('checkins'))table('Check-ins',['Fecha','Energía','Adherencia','Ayuda',...(report.includeNotes?['Notas']:[])],data.checkins.filter(row=>inClinicalReportPeriod(row.submitted_at??row.created_at,report.from,report.to)).map(row=>[dateTime(row.submitted_at??row.created_at),number(row.energy),number(row.adherence),row.help_requested?'Sí':'No',...(report.includeNotes?[row.notes||'—']:[])]));

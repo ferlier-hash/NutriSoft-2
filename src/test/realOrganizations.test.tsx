@@ -1,5 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
+import type { ComponentProps } from 'react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { RealOrganizationsPage } from '../app/routes/admin/RealOrganizationsPage';
 import type { RealAdminOrganization } from '../data/admin-overview.types';
@@ -23,11 +25,15 @@ const organizations: RealAdminOrganization[] = [
   },
 ];
 
+function renderDirectory(props: ComponentProps<typeof RealOrganizationsPage>) {
+  return render(<MemoryRouter><RealOrganizationsPage {...props} /></MemoryRouter>);
+}
+
 describe('directorio real de consultorios', () => {
   it('busca y filtra localmente sin repetir la consulta autorizada', async () => {
     const user = userEvent.setup();
     const loader = vi.fn().mockResolvedValue(organizations);
-    render(<RealOrganizationsPage loadOrganizations={loader} />);
+    renderDirectory({ loadOrganizations: loader });
     expect(await screen.findByText('Clínica Bienestar')).toBeInTheDocument();
 
     await user.type(screen.getByLabelText('Buscar consultorio'), 'pausado');
@@ -43,7 +49,7 @@ describe('directorio real de consultorios', () => {
 
   it('ofrece limpiar filtros cuando no hay coincidencias', async () => {
     const user = userEvent.setup();
-    render(<RealOrganizationsPage loadOrganizations={vi.fn().mockResolvedValue(organizations)} />);
+    renderDirectory({ loadOrganizations: vi.fn().mockResolvedValue(organizations) });
     await screen.findByText('Clínica Bienestar');
     await user.type(screen.getByLabelText('Buscar consultorio'), 'inexistente');
     expect(screen.getByText('No encontramos consultorios con esos filtros')).toBeInTheDocument();
@@ -52,7 +58,7 @@ describe('directorio real de consultorios', () => {
   });
 
   it('muestra un vacío inicial sin acciones de escritura', async () => {
-    render(<RealOrganizationsPage loadOrganizations={vi.fn().mockResolvedValue([])} />);
+    renderDirectory({ loadOrganizations: vi.fn().mockResolvedValue([]) });
     expect(await screen.findByText('Todavía no hay consultorios')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /nuevo consultorio/i })).not.toBeInTheDocument();
   });
@@ -60,7 +66,7 @@ describe('directorio real de consultorios', () => {
   it('permite recuperar un error sin revelar detalles internos', async () => {
     const user = userEvent.setup();
     const loader = vi.fn().mockRejectedValueOnce(new Error('detalle interno')).mockResolvedValueOnce(organizations);
-    render(<RealOrganizationsPage loadOrganizations={loader} />);
+    renderDirectory({ loadOrganizations: loader });
     const alert = await screen.findByRole('alert');
     expect(within(alert).queryByText('detalle interno')).not.toBeInTheDocument();
     await user.click(within(alert).getByRole('button', { name: 'Reintentar' }));

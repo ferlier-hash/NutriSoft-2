@@ -1,4 +1,4 @@
-# NutriSoft — Contrato funcional y de seguridad de autenticación (Fase 3.1)
+# Nutrify — Contrato funcional y de seguridad de autenticación (Fase 3.1)
 
 **Estado:** aprobado para implementación local el 14 de agosto de 2026.
 

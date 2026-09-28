@@ -1,4 +1,4 @@
-# NutriSoft — Decisiones previas al modelo comercial real (Fase 3.2.2)
+# Nutrify — Decisiones previas al modelo comercial real (Fase 3.2.2)
 
 **Estado:** fundamentos aprobados el 14 de agosto de 2026; restan políticas económicas antes de implementar cobros reales.
 

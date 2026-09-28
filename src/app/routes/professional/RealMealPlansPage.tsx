@@ -22,6 +22,7 @@ import { useToast } from '../../../components/ui/Toast';
 import type { ClinicalMealPlanContent, RealProfessionalMealPlan } from '../../../data/clinical-meal-plans.types';
 import { createMealPlan, duplicateMealPlan, loadProfessionalMealPlans } from '../../../data/supabase/clinical-meal-plans.repository';
 import { MealPlanImportDialog } from '../../../components/domain/MealPlanImportDialog';
+import { useRealBranding } from '../../../components/domain/RealBranding';
 
 const statusLabel = { draft: 'Borrador', published: 'Publicado', archived: 'Archivado' } as const;
 
@@ -44,6 +45,7 @@ function searchableText(plan: RealProfessionalMealPlan) {
 
 export function RealMealPlansPage() {
   const { accessContext } = useAuth();
+  const { activeOrganizationId } = useRealBranding();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [plans, setPlans] = useState<RealProfessionalMealPlan[]>([]);
@@ -56,7 +58,7 @@ export function RealMealPlansPage() {
   const [creating, setCreating] = useState(false);
   const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
   const [importOpen, setImportOpen] = useState(false);
-  const organizationId = accessContext?.memberships.find(item => item.role === 'nutritionist' && item.organization_status === 'active')?.organization_id;
+  const organizationId = accessContext?.memberships.find(item => item.organization_id === activeOrganizationId && item.role === 'nutritionist' && item.organization_status === 'active')?.organization_id ?? accessContext?.memberships.find(item => item.role === 'nutritionist' && item.organization_status === 'active')?.organization_id;
 
   const refresh = useCallback(async () => {
     setLoading(true);

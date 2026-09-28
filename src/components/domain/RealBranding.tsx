@@ -7,7 +7,8 @@ import type { OrganizationBranding } from '../../types';
 import { BrandingColorPreview } from './BrandingColorPreview';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { sanitizeBrandImage, secureUpload, type SecureUploadKind } from '../../data/supabase/secure-upload.repository';
+import { deleteReplacedBrandAssets, sanitizeBrandImage, secureUpload, type SecureUploadKind } from '../../data/supabase/secure-upload.repository';
+import { useAuth } from '../../auth/AuthProvider';
 
 const settingSchema = z.object({ displayName: z.string().optional(), tagline: z.string().optional(), colorPreset: z.enum(['aqua','ocean','forest','violet','coral','teal','indigo','rose','olive','slate']).optional(), contactPhone:z.string().optional(),contactEmail:z.string().optional(),contactAddress:z.string().optional(),logoPath:z.string().optional(),patientHeaderPath:z.string().optional(),professionalHeaderPath:z.string().optional() });
 const rowSchema = z.object({ organization_id:z.string(),name:z.string(),enabled:z.boolean(),can_edit:z.boolean(),settings:settingSchema,updated_at:z.string().nullable() });
@@ -15,7 +16,8 @@ type BrandRow = z.infer<typeof rowSchema>;
 type Settings = z.infer<typeof settingSchema>;
 type Assets = Pick<OrganizationBranding,'logoDataUrl'|'patientHeaderImageDataUrl'|'professionalHeaderImageDataUrl'>;
 const assetKeys = {logoPath:'logoDataUrl',patientHeaderPath:'patientHeaderImageDataUrl',professionalHeaderPath:'professionalHeaderImageDataUrl'} as const;
-const BrandContext = createContext<{rows:BrandRow[];reload:()=>Promise<void>;error:string;loading:boolean;brand?:OrganizationBranding}>({rows:[],reload:async()=>{},error:'',loading:true});
+type BrandContextValue={rows:BrandRow[];reload:()=>Promise<void>;error:string;loading:boolean;brand?:OrganizationBranding;activeOrganizationId?:string;setActiveOrganizationId:(id:string)=>void};
+const BrandContext = createContext<BrandContextValue>({rows:[],reload:async()=>{},error:'',loading:true,setActiveOrganizationId:()=>{}});
 export async function loadRealBrandAssets(settings:Settings):Promise<Assets> {
   const result:Assets = {};
   for(const [key,target] of Object.entries(assetKeys)) {
@@ -27,22 +29,33 @@ export async function loadRealBrandAssets(settings:Settings):Promise<Assets> {
   return result;
 }
 export function RealBrandingProvider({children}:{children:ReactNode}) {
+  const {accessContext}=useAuth();
   const [rows,setRows]=useState<BrandRow[]>([]); const [error,setError]=useState(''); const [loading,setLoading]=useState(true); const [assets,setAssets]=useState<Assets>({});
+  const organizationIds=Array.from(new Set([...(accessContext?.memberships.filter(m=>m.membership_status==='active'&&m.organization_status==='active'&&(m.role==='nutritionist'||m.role==='organization_owner')).map(m=>m.organization_id)??[]),...(accessContext?.patient_accesses.filter(a=>a.access_status==='active'&&a.patient_status==='active'&&a.organization_status==='active').map(a=>a.organization_id)??[])]));
+  const storageKey=`nutrisoft.activeOrganization.${accessContext?.user_id??'anonymous'}`; const organizationKey=organizationIds.join('|'); const [activeOrganizationId,setActiveOrganizationIdState]=useState<string|undefined>();
+  useEffect(()=>{const ids=organizationKey?organizationKey.split('|'):[];const stored=window.localStorage.getItem(storageKey);setActiveOrganizationIdState(stored&&ids.includes(stored)?stored:ids.length===1?ids[0]:undefined);},[storageKey,organizationKey]);
+  const setActiveOrganizationId=(id:string)=>{if(organizationIds.includes(id)){window.localStorage.setItem(storageKey,id);setActiveOrganizationIdState(id);}};
   async function reload() {
     try { const {data,error:problem}=await getSupabaseClient().schema('api').rpc('get_my_branding'); if(problem) throw problem; setRows(z.array(rowSchema).parse(data)); setError(''); }
     catch {setRows([]);setError('No pudimos consultar la marca. Reintentá.');} finally {setLoading(false);}
   }
   useEffect(()=>{void reload();const timer=setInterval(()=>void reload(),240000);return()=>clearInterval(timer);},[]);
   // No inferir un consultorio si la sesión puede operar más de uno.
-  const current=rows.length===1&&rows[0]?.enabled?rows[0]:undefined;
+  const current=activeOrganizationId?rows.find(row=>row.organization_id===activeOrganizationId&&row.enabled):rows.length===1&&rows[0]?.enabled?rows[0]:undefined;
   useEffect(()=>{let active=true;setAssets({});if(current) void loadRealBrandAssets(current.settings).then(value=>{if(active)setAssets(value);});return()=>{active=false;};},[current]);
   const brand:OrganizationBranding|undefined=current?{...current.settings,displayName:current.settings.displayName||current.name,colorPreset:current.settings.colorPreset||'aqua',...assets}:undefined;
-  return <BrandContext.Provider value={{rows,reload,error,loading,brand}}><div style={organizationBrandingStyle(brand)}>{children}</div></BrandContext.Provider>;
+  return <BrandContext.Provider value={{rows,reload,error,loading,brand,activeOrganizationId,setActiveOrganizationId}}><div style={organizationBrandingStyle(brand)}>{children}</div></BrandContext.Provider>;
 }
 export function useRealBranding() { return useContext(BrandContext); }
+export function ActiveOrganizationSelector({portal}:{portal:'professional'|'patient'}) {
+ const {accessContext}=useAuth(); const {rows,activeOrganizationId,setActiveOrganizationId}=useRealBranding();
+ const options=portal==='professional'?(accessContext?.memberships.filter(m=>m.membership_status==='active'&&m.organization_status==='active'&&(m.role==='nutritionist'||m.role==='organization_owner')).map(m=>({id:m.organization_id,name:m.organization_name}))??[]):(accessContext?.patient_accesses.filter(a=>a.access_status==='active'&&a.patient_status==='active'&&a.organization_status==='active').map(a=>({id:a.organization_id,name:rows.find(r=>r.organization_id===a.organization_id)?.name??'Consultorio'}))??[]);
+ const unique=Array.from(new Map(options.map(item=>[item.id,item])).values()); if(unique.length<2)return null;
+ return <label className="form-label max-w-xs text-xs">Consultorio activo<select aria-label="Consultorio activo" className="form-control mt-1" value={activeOrganizationId&&unique.some(item=>item.id===activeOrganizationId)?activeOrganizationId:''} onChange={event=>setActiveOrganizationId(event.target.value)}><option value="" disabled>Elegí un consultorio</option>{unique.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>;
+}
 export function RealBrandIdentity({patient=false}:{patient?:boolean}) {
   const {brand}=useContext(BrandContext);
-  return <div className="flex min-w-0 items-center gap-2">{brand?.logoDataUrl?<img src={brand.logoDataUrl} alt="Logo del consultorio" className="h-9 w-9 shrink-0 rounded-xl object-contain"/>:<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-soft font-bold">N</span>}<div className="min-w-0"><p className="break-words text-sm font-bold">{brand?.displayName||'NutriSoft'}</p><p className="text-[10px] text-text-secondary">{brand?'Con NutriSoft':patient?'Portal del paciente':'Portal profesional'}</p></div></div>;
+  return <div className="flex min-w-0 items-center gap-2">{brand?.logoDataUrl?<img src={brand.logoDataUrl} alt="Logo del consultorio" className="h-9 w-9 shrink-0 rounded-xl object-contain"/>:<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-soft font-bold">N</span>}<div className="min-w-0"><p className="break-words text-sm font-bold">{brand?.displayName||'Nutrify'}</p><p className="text-[10px] text-text-secondary">{brand?'Con Nutrify':patient?'Portal del paciente':'Portal profesional'}</p></div></div>;
 }
 export function RealBrandHeader({patient=false}:{patient?:boolean}) {
  const {brand}=useContext(BrandContext); const src=patient?brand?.patientHeaderImageDataUrl:brand?.professionalHeaderImageDataUrl;
@@ -64,33 +77,37 @@ export function RealBrandHeader({patient=false}:{patient?:boolean}) {
  </div></section>;
 }
 export function RealBrandingSettings() {
- const {rows,reload,error,loading}=useContext(BrandContext); const [org,setOrg]=useState(''); const [revision,setRevision]=useState(0); const [saved,setSaved]=useState(false); const row=rows.find(r=>r.organization_id===org)??rows[0];
+ const {rows,reload,error,loading}=useContext(BrandContext); const [org,setOrg]=useState(''); const [revision,setRevision]=useState(0); const [saved,setSaved]=useState(false); const [dirty,setDirty]=useState(false); const row=rows.find(r=>r.organization_id===org)??rows[0];
  async function refreshEditor(wasSaved=false){await reload();setRevision(v=>v+1);setSaved(wasSaved);}
+ function selectOrganization(next:string){
+   if(dirty&&!window.confirm('Hay cambios sin guardar. ¿Querés descartarlos y cambiar de consultorio?'))return;
+   setOrg(next);setDirty(false);setSaved(false);
+ }
  if(loading)return <Card><p role="status">Cargando marca…</p></Card>;
  if(error)return <Card><p role="alert">{error}</p><Button onClick={()=>void reload()}>Reintentar</Button></Card>;
  if(!row)return null;
- return <div className="space-y-3">{rows.length>1&&<><label className="form-label">Consultorio para personalizar<select className="form-control" value={row.organization_id} onChange={e=>setOrg(e.target.value)}>{rows.map(r=><option key={r.organization_id} value={r.organization_id}>{r.name}</option>)}</select></label><p className="text-xs">En sesiones con varios consultorios la navegación conserva la marca neutral para evitar mezclas.</p></>}
+ return <div className="min-w-0 space-y-3">{rows.length>1&&<Card className="space-y-2"><label className="form-label">Consultorio para personalizar<select className="form-control" value={row.organization_id} onChange={e=>selectOrganization(e.target.value)}>{rows.map(r=><option key={r.organization_id} value={r.organization_id}>{r.name}</option>)}</select></label><p className="text-xs text-text-secondary">Estás editando únicamente este consultorio. Las vistas que reúnen información de varios consultorios conservan la identidad neutral para evitar mezclas.</p></Card>}
  {saved&&<p role="status" className="text-sm text-brand-strong">Marca guardada. Ya se aplica a los portales de este consultorio.</p>}
- <BrandEditor key={`${row.organization_id}:${row.updated_at}:${revision}`} row={row} reload={refreshEditor}/></div>;
+ <BrandEditor key={`${row.organization_id}:${row.updated_at}:${revision}`} row={row} reload={refreshEditor} onDirtyChange={setDirty}/></div>;
 }
-function BrandEditor({row,reload}:{row:BrandRow;reload:(saved?:boolean)=>Promise<void>}) {
+function BrandEditor({row,reload,onDirtyChange}:{row:BrandRow;reload:(saved?:boolean)=>Promise<void>;onDirtyChange:(dirty:boolean)=>void}) {
  const [settings,setSettings]=useState<Settings>({...row.settings,displayName:row.settings.displayName||row.name,colorPreset:row.settings.colorPreset||'aqua'});
- const [assets,setAssets]=useState<Assets>({}); const [busy,setBusy]=useState(false); const [message,setMessage]=useState('');
+ const [assets,setAssets]=useState<Assets>({}); const [busy,setBusy]=useState(false); const [message,setMessage]=useState(''); const [notice,setNotice]=useState('');
  useEffect(()=>{let active=true;void loadRealBrandAssets(row.settings).then(v=>{if(active)setAssets(v);});return()=>{active=false;};},[row.settings]);
  if(!row.enabled)return <Card><h2 className="font-bold">Marca del consultorio</h2><p className="text-sm">Exclusiva de Custom. Al deshabilitarla, los archivos y la configuración se conservan pero dejan de aplicarse.</p></Card>;
  if(!row.can_edit)return <Card><h2 className="font-bold">Marca del consultorio · Custom</h2><p className="text-sm">Sólo el responsable de {row.name} puede modificar logo, colores y cabeceras.</p></Card>;
  async function upload(file:File|undefined,key:keyof typeof assetKeys) {
-   if(!file)return;setMessage('');
+   if(!file)return;setMessage('');setNotice('');
    if(file.size>2097152||!['image/jpeg','image/png','image/webp'].includes(file.type)){setMessage('Usá JPG, PNG o WebP de hasta 2 MB.');return;}
    setBusy(true);
    try {
      const kinds:Record<keyof typeof assetKeys,SecureUploadKind>={logoPath:'branding_logo',patientHeaderPath:'branding_patient_header',professionalHeaderPath:'branding_professional_header'};
      const safeFile=await sanitizeBrandImage(file,kinds[key] as Exclude<SecureUploadKind,'library_pdf'>);
      const path=await secureUpload(safeFile,row.organization_id,kinds[key]);
-     const next={...settings,[key]:path};setSettings(next);setAssets(await loadRealBrandAssets(next));
+     const next={...settings,[key]:path};setSettings(next);onDirtyChange(true);setAssets(await loadRealBrandAssets(next));
    }catch(e){setMessage(e instanceof Error?e.message:'Imagen no válida.');}finally{setBusy(false);}
  }
- async function save(){setBusy(true);setMessage('');try{const {error}=await getSupabaseClient().schema('api').rpc('save_organization_branding',{p_org:row.organization_id,p_settings:settings,p_expected:row.updated_at??undefined});if(error)throw new Error('No se guardó. Revisá los campos; si otra persona modificó la marca, recargá.');await reload(true);}catch(e){setMessage((e as Error).message);}finally{setBusy(false);}}
+ async function save(){setBusy(true);setMessage('');setNotice('');try{const {error}=await getSupabaseClient().schema('api').rpc('save_organization_branding',{p_org:row.organization_id,p_settings:settings,p_expected:row.updated_at??undefined});if(error)throw new Error('No se guardó. Revisá los campos; si otra persona modificó la marca, recargá.');const replaced=(Object.keys(assetKeys) as (keyof typeof assetKeys)[]).flatMap(key=>{const previous=row.settings[key];return previous&&previous!==settings[key]?[previous]:[];});const cleanup=await deleteReplacedBrandAssets(row.organization_id,replaced);onDirtyChange(false);await reload(true);if(cleanup.pending)setNotice('La marca se guardó. La imagen anterior quedó inaccesible y se eliminará automáticamente en la próxima limpieza.');}catch(e){setMessage((e as Error).message);}finally{setBusy(false);}}
  const uploadOptions = [
    ['logoPath','Logo','Identidad principal','512 × 512 px'],
    ['professionalHeaderPath','Cabecera profesional','Inicio del profesional','1600 × 600 px'],
@@ -104,7 +121,7 @@ function BrandEditor({row,reload}:{row:BrandRow;reload:(saved?:boolean)=>Promise
      <div className="space-y-3">
        <div className="flex items-center gap-2"><Building2 className="h-4 w-4 text-brand-strong"/><h3 id="brand-identity-title" className="text-sm font-bold">Identidad y contacto</h3></div>
        <div className="grid gap-3 sm:grid-cols-2">
-         {([['displayName','Nombre visible'],['tagline','Texto breve'],['contactPhone','Teléfono'],['contactEmail','Email'],['contactAddress','Dirección o modalidad']] as const).map(([key,label])=><label className={`form-label ${key==='contactAddress'?'sm:col-span-2':''}`} key={key}>{label}<input className="form-control" maxLength={key==='displayName'?80:300} value={settings[key]||''} onChange={e=>setSettings(v=>({...v,[key]:e.target.value}))}/></label>)}
+         {([['displayName','Nombre visible'],['tagline','Texto breve'],['contactPhone','Teléfono'],['contactEmail','Email'],['contactAddress','Dirección o modalidad']] as const).map(([key,label])=><label className={`form-label min-w-0 ${key==='contactAddress'?'sm:col-span-2':''}`} key={key}>{label}<input className="form-control min-w-0" maxLength={key==='displayName'?80:300} value={settings[key]||''} onChange={e=>{setSettings(v=>({...v,[key]:e.target.value}));onDirtyChange(true);}}/></label>)}
        </div>
      </div>
 
@@ -115,7 +132,7 @@ function BrandEditor({row,reload}:{row:BrandRow;reload:(saved?:boolean)=>Promise
            const preview=assets[assetKeys[key]];
            return <div key={key} className="overflow-hidden rounded-xl border border-border-subtle bg-surface-subtle">
              <div className={`grid place-items-center overflow-hidden bg-brand-soft ${key==='logoPath'?'h-28':'aspect-[8/3] min-h-28'}`}>{preview?<img src={preview} alt={`Vista previa de ${label.toLowerCase()}`} className="h-full w-full object-cover"/>:<ImageIcon className="h-7 w-7 text-brand-strong/50"/>}</div>
-             <div className="space-y-2 p-3"><div><p className="text-xs font-bold">{label}</p><p className="text-[11px] text-text-secondary">{description} · {recommended}</p></div><label className="inline-flex min-h-9 cursor-pointer items-center rounded-lg border border-border-subtle bg-surface px-3 text-xs font-semibold hover:border-border-hover">{settings[key]?'Reemplazar':'Seleccionar imagen'}<input className="sr-only" type="file" accept="image/jpeg,image/png,image/webp" onChange={e=>void upload(e.target.files?.[0],key)}/></label>{settings[key]&&<Button variant="ghost" size="sm" onClick={()=>{setSettings(v=>({...v,[key]:''}));setAssets(v=>({...v,[assetKeys[key]]:undefined}));}}>Quitar</Button>}</div>
+             <div className="space-y-2 p-3"><div><p className="text-xs font-bold">{label}</p><p className="text-[11px] text-text-secondary">{description} · {recommended}</p></div><label className="inline-flex min-h-9 cursor-pointer items-center rounded-lg border border-border-subtle bg-surface px-3 text-xs font-semibold hover:border-border-hover">{settings[key]?'Reemplazar':'Seleccionar imagen'}<input className="sr-only" type="file" accept="image/jpeg,image/png,image/webp" onChange={e=>void upload(e.target.files?.[0],key)}/></label>{settings[key]&&<Button variant="ghost" size="sm" onClick={()=>{setSettings(v=>({...v,[key]:''}));setAssets(v=>({...v,[assetKeys[key]]:undefined}));onDirtyChange(true);}}>Quitar</Button>}</div>
            </div>;
          })}
        </div>
@@ -123,12 +140,13 @@ function BrandEditor({row,reload}:{row:BrandRow;reload:(saved?:boolean)=>Promise
 
      <div className="space-y-3">
        <div className="flex items-center gap-2"><Palette className="h-4 w-4 text-brand-strong"/><h3 id="brand-colors-title" className="text-sm font-bold">Color y vista previa</h3></div>
-       <BrandingColorPreview branding={{...settings,displayName:settings.displayName||'',colorPreset:settings.colorPreset||'aqua',...assets}} onChange={colorPreset=>setSettings(v=>({...v,colorPreset}))}/>
+       <BrandingColorPreview branding={{...settings,displayName:settings.displayName||'',colorPreset:settings.colorPreset||'aqua',...assets}} onChange={colorPreset=>{setSettings(v=>({...v,colorPreset}));onDirtyChange(true);}}/>
      </div>
 
      {message&&<p role="alert" className="rounded-xl border border-semantic-critical/30 bg-semantic-critical-bg p-3 text-sm text-semantic-critical">{message}</p>}
+     {notice&&<p role="status" className="rounded-xl border border-border-subtle bg-surface-tinted p-3 text-sm text-text-secondary">{notice}</p>}
      <div className="sticky bottom-0 -mx-4 -mb-4 flex flex-col-reverse gap-2 border-t border-border-subtle bg-surface/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:-mb-6 sm:flex-row sm:justify-end sm:px-6">
-       <Button variant="ghost" disabled={busy} onClick={()=>void reload()}><RotateCcw className="h-4 w-4"/>Recargar marca guardada</Button>
+       <Button variant="ghost" disabled={busy} onClick={()=>{onDirtyChange(false);void reload();}}><RotateCcw className="h-4 w-4"/>Recargar marca guardada</Button>
        <Button disabled={busy||!settings.displayName?.trim()} onClick={()=>void save()}><Save className="h-4 w-4"/>{busy?'Guardando…':'Guardar marca'}</Button>
      </div>
    </fieldset>

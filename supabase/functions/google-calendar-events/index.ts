@@ -91,7 +91,7 @@ Deno.serve(async (request) => {
       if (!removal.ok && removal.status !== 404) throw new Error('Google no permitió actualizar la modalidad de la cita. Podés reintentarla desde Agenda.');
     }
     const existingEventId = recreateWithoutMeet ? null : appointment.google_calendar_event_id;
-    const eventPayload: Record<string, unknown> = { summary: 'Consulta NutriSoft', start: { dateTime: appointment.starts_at, timeZone: appointment.time_zone }, end: { dateTime: appointment.ends_at, timeZone: appointment.time_zone } };
+    const eventPayload: Record<string, unknown> = { summary: 'Consulta Nutrify', start: { dateTime: appointment.starts_at, timeZone: appointment.time_zone }, end: { dateTime: appointment.ends_at, timeZone: appointment.time_zone } };
     if (appointment.modality === 'virtual' && !appointment.virtual_meeting_url) eventPayload.conferenceData = { createRequest: { requestId: crypto.randomUUID(), conferenceSolutionKey: { type: 'hangoutsMeet' } } };
     stage = existingEventId ? 'update_google_event' : 'create_google_event';
     const baseUrl = existingEventId ? `${CALENDAR_API}/${calendarId}/events/${encodeURIComponent(existingEventId)}` : `${CALENDAR_API}/${calendarId}/events`;

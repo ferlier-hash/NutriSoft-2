@@ -55,7 +55,7 @@ export const AdminOverviewPage: React.FC = () => {
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-strong">Super Admin · Vista comercial</p>
           <h2 className="text-3xl font-bold text-text-primary mt-2">Resumen General de Plataforma</h2>
           <p className="text-sm text-text-secondary mt-2 max-w-2xl">
-            Estado operativo y comercial de NutriSoft. Las métricas son agregadas y no exponen información clínica identificable.
+            Estado operativo y comercial de Nutrify. Las métricas son agregadas y no exponen información clínica identificable.
           </p>
         </div>
         <Button variant="primary" onClick={() => setIsAddOpen(true)} className="gap-2 self-start lg:self-auto">

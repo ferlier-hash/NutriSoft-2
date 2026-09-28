@@ -26,10 +26,10 @@ export const Dialog: React.FC<DialogProps> = ({
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[#151B22]/40 backdrop-blur-xs animate-fade-in" />
         <DialogPrimitive.Content
           aria-describedby={descriptionId}
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] sm:w-full max-w-lg max-h-[85vh] overflow-y-auto bg-surface border border-border-subtle rounded-2xl shadow-xl p-6 outline-none"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] sm:w-full max-w-lg max-h-[85vh] overflow-y-auto bg-surface border border-border-subtle rounded-2xl shadow-xl p-4 sm:p-6 outline-none"
         >
-          <div className="flex items-center justify-between pb-4 border-b border-border-subtle">
-            <div>
+          <div className="flex items-start justify-between gap-3 pb-4 border-b border-border-subtle">
+            <div className="min-w-0">
               <DialogPrimitive.Title className="text-lg font-bold text-text-primary">
                 {title}
               </DialogPrimitive.Title>
@@ -46,7 +46,7 @@ export const Dialog: React.FC<DialogProps> = ({
 
             <DialogPrimitive.Close
               aria-label="Cerrar ventana modal"
-              className="p-2 text-text-secondary hover:text-text-primary hover:bg-surface-subtle rounded-full transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"
+              className="shrink-0 p-2 text-text-secondary hover:text-text-primary hover:bg-surface-subtle rounded-full transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-strong"
             >
               <X className="w-5 h-5" />
             </DialogPrimitive.Close>

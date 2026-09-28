@@ -1,4 +1,4 @@
-# NutriSoft — Bandeja de ideas y funciones futuras
+# Nutrify — Bandeja de ideas y funciones futuras
 
 **Propósito:** conservar todas las ideas de producto sin incorporarlas antes de que la arquitectura, los permisos y los datos estén preparados.
 

@@ -15,6 +15,10 @@
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:critical-flows": "vitest run src/test/userFlowIntegration.test.tsx src/test/navigation.test.tsx src/test/realProfessionalShell.test.tsx src/test/mobileRealExperience.test.tsx src/test/patientTasksAndAdherence.test.tsx",
+    "test:e2e:clinical": "npm run db:reset && playwright test e2e/clinical-actions.spec.ts",
+    "test:e2e:clinical:ui": "playwright test e2e/clinical-actions.spec.ts --ui",
+    "test:e2e:custom": "npm run db:reset && playwright test e2e/custom-experience.spec.ts",
+    "test:e2e:admin:staging": "playwright test e2e/admin-staging.spec.ts --project=admin-staging",
     "preview": "vite preview",
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
@@ -28,7 +32,7 @@
     "verify:clinical": "node scripts/verify-clinical-e2e.js",
     "verify:frontend": "npm run lint && npm run typecheck && npm run test:critical-flows && npm run test && npm run build && npm run verify:bundle",
     "verify:database": "npm run db:reset && npm run db:test && npm run db:lint && npm run db:verify-types",
-    "verify:all": "npm run verify:frontend && npm run verify:database && npm run verify:auth && npm run verify:clinical"
+    "verify:all": "npm run verify:frontend && npm run verify:database && npm run verify:auth && npm run verify:clinical && npm run test:e2e:clinical && npm run test:e2e:custom"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -36,6 +40,7 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-switch": "^1.3.7",
     "@radix-ui/react-toast": "^1.2.23",
+    "@sentry/react": "^10.75.0",
     "@supabase/supabase-js": "^2.112.3",
     "clsx": "^2.1.1",
     "jspdf": "^4.2.1",
@@ -50,6 +55,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

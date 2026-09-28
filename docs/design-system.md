@@ -1,6 +1,6 @@
-# Design System: NutriSoft
+# Design System: Nutrify
 
-Este documento establece la especificación completa del Sistema de Diseño para **NutriSoft**, una plataforma SaaS de nutrición en Latinoamérica orientada a la simplicidad, sofisticación y alta productividad.
+Este documento establece la especificación completa del Sistema de Diseño para **Nutrify**, una plataforma SaaS de nutrición en Latinoamérica orientada a la simplicidad, sofisticación y alta productividad.
 
 ---
 

@@ -8,6 +8,7 @@ import { localDate } from '../../../lib/anthropometry';
 import { RealIncomeChart } from '../../../components/domain/RealIncomeChart';
 import { civilDate, incomeMetrics, incomeMonths, monthlyIncome } from '../../../lib/realIncome';
 import { MobileFilters } from '../../../components/ui/MobileFilters';
+import { useRealBranding } from '../../../components/domain/RealBranding';
 
 type Cita={updated_at:string;id:string;patient_id:string;starts_at:string;time_zone:string;quoted_amount:number;currency:string;payment_status:string;status:string;modality:string};
 type Movement={id:string;appointment_id:string;amount:number;currency:string;movement_kind:string;method:string;note:string|null;occurred_at:string;refunded_payment_id:string|null;revision_id?:string;correction_count?:number;original_amount?:number};
@@ -15,6 +16,7 @@ type Person={id:string;first_name:string;last_name:string};
 const labels:Record<string,string>={paid:'Pagado',partial:'Parcial',pending:'Pendiente',no_charge:'Sin cargo',refunded:'Reembolsado'};
 const money=(value:number,currency:string)=>new Intl.NumberFormat('es-AR',{style:'currency',currency}).format(value);
 export function RealIncomePage(){
+ const {activeOrganizationId}=useRealBranding();
  const [citas,setCitas]=useState<Cita[]>([]);const [movements,setMovements]=useState<Movement[]>([]);const [people,setPeople]=useState<Person[]>([]);
  const [loading,setLoading]=useState(true);const [error,setError]=useState('');const [currency,setCurrency]=useState('');
  const [patient,setPatient]=useState('');const [payment,setPayment]=useState('');const [modality,setModality]=useState('');
@@ -24,11 +26,13 @@ export function RealIncomePage(){
  const [correction,setCorrection]=useState('');
  const [priceOpen,setPriceOpen]=useState(false);const [price,setPrice]=useState('');
  async function load(){setLoading(true);try{
-  const api=getSupabaseClient().schema('api');const [a,m,p]=await Promise.all([api.from('appointments').select('id,patient_id,starts_at,time_zone,quoted_amount,currency,payment_status,status,modality,updated_at').order('starts_at',{ascending:false}),api.from('income_movements').select('*').order('occurred_at'),api.from('patient_directory').select('id,first_name,last_name')]);
+  const api=getSupabaseClient().schema('api');const appointmentsQuery=api.from('appointments').select('id,patient_id,starts_at,time_zone,quoted_amount,currency,payment_status,status,modality,updated_at');const movementsQuery=api.from('income_movements').select('*');const peopleQuery=api.from('patient_directory').select('id,first_name,last_name');if(activeOrganizationId){appointmentsQuery.eq('organization_id',activeOrganizationId);peopleQuery.eq('organization_id',activeOrganizationId);}const [a,m,p]=await Promise.all([appointmentsQuery.order('starts_at',{ascending:false}),movementsQuery.order('occurred_at'),peopleQuery]);
   if(a.error||m.error||p.error)throw new Error('No pudimos cargar Ingresos. Reintentá.');
   setCitas(a.data as Cita[]);setMovements(m.data as Movement[]);setPeople(p.data as Person[]);setError('');
  }catch(e){setError((e as Error).message);}finally{setLoading(false);}}
- useEffect(()=>{void load();},[]);
+ // La carga depende exclusivamente del consultorio activo; `load` es una función local intencionalmente no memorizada.
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ useEffect(()=>{void load();},[activeOrganizationId]);
  const currencies=[...new Set(citas.map(a=>a.currency))].sort();const curr=currencies.includes(currency)?currency:currencies[0]||'ARS';
  const name=(id:string)=>{const p=people.find(v=>v.id===id);return p?`${p.first_name} ${p.last_name}`:'Paciente';};
  const net=(id:string)=>movements.filter(m=>m.appointment_id===id).reduce((sum,m)=>sum+(m.movement_kind==='refund'?-m.amount:m.amount),0);
@@ -58,7 +62,7 @@ export function RealIncomePage(){
   const {error}=editing?await api.rpc('correct_income_payment',{p_payment:editing.id,p_expected:editing.revision_id||editing.id,p_request:request,p_amount:Number(amount),p_date:date,p_method:method,p_note:note}):await api.rpc('record_income_movement',{p_appointment:selected.id,p_request:request,p_amount:Number(amount),p_date:date,p_method:method,p_note:note,...(refund?{p_refund:refund}:{})});
   if(error)throw new Error(error.message);setActive('');await load();
  }catch(e){setFormError((e as Error).message);}finally{setBusy(false);}}
- return <div className="mx-auto max-w-7xl space-y-5 p-4 sm:p-6"><div className="flex gap-2 items-center"><CircleDollarSign className="text-brand-strong"/><h1 className="text-2xl font-bold">Ingresos</h1></div><p className="text-sm text-text-secondary">Cobros manuales de tus citas. NutriSoft no procesa pagos ni emite comprobantes.</p>
+ return <div className="mx-auto max-w-7xl space-y-5 p-4 sm:p-6"><div className="flex gap-2 items-center"><CircleDollarSign className="text-brand-strong"/><h1 className="text-2xl font-bold">Ingresos</h1></div><p className="text-sm text-text-secondary">Cobros manuales de tus citas. Nutrify no procesa pagos ni emite comprobantes.</p>
  {error&&<Card><p role="alert">{error}</p><Button onClick={()=>void load()}>Reintentar</Button></Card>}{loading?<p role="status">Cargando ingresos…</p>:!error&&<>
  <Card><MobileFilters activeCount={[currency,patient,payment,modality].filter(Boolean).length} className="gap-3 sm:grid-cols-2 lg:grid-cols-4"><label className="form-label">Moneda<select className="form-control" value={curr} onChange={e=>setCurrency(e.target.value)}>{(currencies.length?currencies:['ARS']).map(c=><option key={c}>{c}</option>)}</select></label><label className="form-label">Paciente<select className="form-control" value={patient} onChange={e=>setPatient(e.target.value)}><option value="">Todos</option>{people.map(p=><option key={p.id} value={p.id}>{name(p.id)}</option>)}</select></label><label className="form-label">Pago<select className="form-control" value={payment} onChange={e=>setPayment(e.target.value)}><option value="">Todos</option>{Object.entries(labels).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label><label className="form-label">Modalidad<select className="form-control" value={modality} onChange={e=>setModality(e.target.value)}><option value="">Todas</option><option value="virtual">Virtual</option><option value="in_person">Presencial</option></select></label></MobileFilters></Card>
  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">{[['Cobrado neto',metrics.paid,'Cobros menos devoluciones, con correcciones aplicadas.'],['Pendiente',metrics.pending,'Saldo por cobrar de citas pendientes o parciales.'],['Proyectado',metrics.projected,'Importe total de próximas citas solicitadas o confirmadas; puede incluir anticipos ya cobrados.'],['No cobrado por cancelación',metrics.lost,'Importe de citas canceladas o ausentes resueltas sin cargo.'],['Parciales por completar',metrics.partial,'Parte del saldo pendiente de citas con pago parcial; no se suma nuevamente.']].map(([label,value,hint])=><Card key={label}><p className="text-sm text-text-secondary">{label}</p><p className="text-xl font-bold break-words">{money(Number(value),curr)}</p><p className="mt-2 text-xs text-text-secondary">{hint}</p></Card>)}</div><p className="text-xs text-text-secondary">Resumen de todo el historial con los filtros superiores. El período siguiente afecta sólo al gráfico. Estos indicadores no se suman entre sí.</p>

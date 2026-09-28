@@ -249,7 +249,7 @@ export function IncomePage() {
           <CircleDollarSign className="w-6 h-6 text-brand-strong" />
           <h1 className="text-2xl font-bold text-text-primary">Ingresos</h1>
         </div>
-        <p className="text-sm text-text-secondary mt-1">Registrá cobros manuales de tus citas. NutriSoft no procesa pagos ni emite comprobantes.</p>
+        <p className="text-sm text-text-secondary mt-1">Registrá cobros manuales de tus citas. Nutrify no procesa pagos ni emite comprobantes.</p>
       </div>
       <Button onClick={() => openPayment()} disabled={chargeable.length === 0}><Plus className="w-4 h-4" />Registrar cobro</Button>
     </div>

@@ -72,7 +72,7 @@ export const RecommendationsPage: React.FC = () => {
         <Card><Users className="w-4 h-4 text-brand-strong" /><p className="text-[11px] text-text-secondary mt-3">Pacientes disponibles</p><p className="text-xl font-bold mt-1">{professionalPatients.length}</p></Card>
       </section>
 
-      <div className="rounded-2xl border border-[#BDE9EA] bg-[#E9F8F7] p-4 text-xs text-text-secondary"><strong className="text-text-primary">Una frase por paciente.</strong> Al aplicar una nueva, NutriSoft reemplaza automáticamente la anterior. Una misma frase puede compartirse con varios pacientes.</div>
+      <div className="rounded-2xl border border-[#BDE9EA] bg-[#E9F8F7] p-4 text-xs text-text-secondary"><strong className="text-text-primary">Una frase por paciente.</strong> Al aplicar una nueva, Nutrify reemplaza automáticamente la anterior. Una misma frase puede compartirse con varios pacientes.</div>
 
       <section className="space-y-3" aria-label="Biblioteca de frases">
         {professionalMotivationalPhrases.map(phrase => {

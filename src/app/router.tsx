@@ -16,7 +16,11 @@ const PatientLayout = lazy(() => import('./layouts/PatientLayout').then(module =
 const RealClinicalLayout = lazy(() => import('./layouts/RealClinicalLayout').then(module => ({ default: module.RealClinicalLayout })));
 const AdminOverviewPage = lazy(() => import('./routes/admin/AdminOverviewPage').then(module => ({ default: module.AdminOverviewPage })));
 const RealAdminOverviewPage = lazy(() => import('./routes/admin/RealAdminOverviewPage').then(module => ({ default: module.RealAdminOverviewPage })));
+const RealAdminUsagePage = lazy(() => import('./routes/admin/RealAdminUsagePage').then(module => ({ default: module.RealAdminUsagePage })));
+const RealAdminProfessionalsPage = lazy(() => import('./routes/admin/RealAdminProfessionalsPage').then(module => ({ default: module.RealAdminProfessionalsPage })));
+const RealAdminAuditPage = lazy(() => import('./routes/admin/RealAdminAuditPage').then(module => ({ default: module.RealAdminAuditPage })));
 const RealOrganizationsPage = lazy(() => import('./routes/admin/RealOrganizationsPage').then(module => ({ default: module.RealOrganizationsPage })));
+const RealAdminOrganizationDetailPage = lazy(() => import('./routes/admin/RealAdminOrganizationDetailPage').then(module => ({ default: module.RealAdminOrganizationDetailPage })));
 const OrganizationsPage = lazy(() => import('./routes/admin/OrganizationsPage').then(module => ({ default: module.OrganizationsPage })));
 const OrganizationDetailPage = lazy(() => import('./routes/admin/OrganizationDetailPage').then(module => ({ default: module.OrganizationDetailPage })));
 const NutritionistsListPage = lazy(() => import('./routes/admin/NutritionistsListPage').then(module => ({ default: module.NutritionistsListPage })));
@@ -29,6 +33,7 @@ const PatientsPage = lazy(() => import('./routes/professional/PatientsPage').the
 const RealPatientsPage = lazy(() => import('./routes/professional/RealPatientsPage').then(module => ({ default: module.RealPatientsPage })));
 const PatientDetailPage = lazy(() => import('./routes/professional/PatientDetailPage').then(module => ({ default: module.PatientDetailPage })));
 const RealPatientDetailPage = lazy(() => import('./routes/professional/RealPatientDetailPage').then(module => ({ default: module.RealPatientDetailPage })));
+const RealPatientAppointmentRequestPage = lazy(() => import('./routes/patient/RealPatientAppointmentRequestPage').then(module => ({ default: module.RealPatientAppointmentRequestPage })));
 const ResourcesPage = lazy(() => import('./routes/professional/ResourcesPage').then(module => ({ default: module.ResourcesPage })));
 const RealResourcesPage = lazy(() => import('./routes/professional/RealResourcesPage').then(module => ({ default: module.RealResourcesPage })));
 const RecipesPage = lazy(() => import('./routes/professional/RecipesPage').then(module => ({ default: module.RecipesPage })));
@@ -45,6 +50,7 @@ const NextStepsPage = lazy(() => import('./routes/professional/NextStepsPage').t
 const CheckInsPage = lazy(() => import('./routes/professional/CheckInsPage').then(module => ({ default: module.CheckInsPage })));
 const AgendaPage = lazy(() => import('./routes/professional/AgendaPage').then(module => ({ default: module.AgendaPage })));
 const RealAgendaPage = lazy(() => import('./routes/professional/RealAgendaPage').then(module => ({ default: module.RealAgendaPage })));
+const RealAppointmentsPage = lazy(() => import('./routes/professional/RealAppointmentsPage').then(module => ({ default: module.RealAppointmentsPage })));
 const AppointmentsPage = lazy(() => import('./routes/professional/AppointmentsPage').then(module => ({ default: module.AppointmentsPage })));
 const IncomePage = lazy(() => import('./routes/professional/IncomePage').then(module => ({ default: module.IncomePage })));
 const RealIncomePage = lazy(() => import('./routes/professional/RealIncomePage').then(module => ({ default: module.RealIncomePage })));
@@ -84,8 +90,10 @@ export const router = createHashRouter([
     children: [
       { index: true, element: publicEnvironment.demoMode ? <AdminOverviewPage /> : <RealAdminOverviewPage /> },
       { path: 'organizations', element: publicEnvironment.demoMode ? <OrganizationsPage /> : <RealOrganizationsPage /> },
-      { path: 'organizations/:organizationId', element: publicEnvironment.demoMode ? <OrganizationDetailPage /> : realDataPending },
-      { path: 'nutritionists', element: publicEnvironment.demoMode ? <NutritionistsListPage /> : realDataPending },
+      { path: 'usage', element: publicEnvironment.demoMode ? realDataPending : <RealAdminUsagePage /> },
+      { path: 'audit', element: publicEnvironment.demoMode ? realDataPending : <RealAdminAuditPage /> },
+      { path: 'organizations/:organizationId', element: publicEnvironment.demoMode ? <OrganizationDetailPage /> : <RealAdminOrganizationDetailPage /> },
+      { path: 'nutritionists', element: publicEnvironment.demoMode ? <NutritionistsListPage /> : <RealAdminProfessionalsPage /> },
       { path: 'nutritionists/:nutritionistId', element: publicEnvironment.demoMode ? <NutritionistDetailPage /> : realDataPending },
       { path: 'nutritionists/:nutritionistId/patients/:patientId', element: publicEnvironment.demoMode ? <AdminPatientDetailPage /> : realDataPending },
       {
@@ -119,7 +127,7 @@ export const router = createHashRouter([
       { path: 'next-steps', element: publicEnvironment.demoMode ? <NextStepsPage /> : <RealDailyFollowupPage section="steps" standalone /> },
       { path: 'checkins', element: publicEnvironment.demoMode ? <CheckInsPage /> : <RealDailyFollowupPage section="checkins" standalone /> },
       { path: 'agenda', element: publicEnvironment.demoMode ? <AgendaPage /> : <RealAgendaPage /> },
-      { path: 'appointments', element: publicEnvironment.demoMode ? <AppointmentsPage /> : realDataPending },
+      { path: 'appointments', element: publicEnvironment.demoMode ? <AppointmentsPage /> : <RealAppointmentsPage /> },
       { path: 'income', element: publicEnvironment.demoMode ? <IncomePage /> : <RealIncomePage /> },
       { path: 'reports', element: publicEnvironment.demoMode ? realDataPending : <RealClinicalReportsPage /> },
       { path: 'settings', element: publicEnvironment.demoMode ? <ProfessionalSettingsPage /> : <RealGoogleCalendarSettingsPage /> },
@@ -132,7 +140,7 @@ export const router = createHashRouter([
       { index: true, element: publicEnvironment.demoMode ? <PatientDashboard /> : <RealPatientHomePage /> },
       { path: 'followup', element: <RealDailyFollowupPage patient /> },
       { path: 'check-in/:assignmentId', element: publicEnvironment.demoMode ? <CheckInPage /> : <RealDailyFollowupPage patient section="checkins" /> },
-      { path: 'request-appointment', element: publicEnvironment.demoMode ? <PatientAppointmentRequestPage /> : realDataPending },
+      { path: 'request-appointment', element: publicEnvironment.demoMode ? <PatientAppointmentRequestPage /> : <RealPatientAppointmentRequestPage /> },
       { path: 'appointments', element: publicEnvironment.demoMode ? <PatientAppointmentsPage /> : <RealPatientAppointmentsPage /> },
       { path: 'measurements', element: publicEnvironment.demoMode ? <PatientMeasurementsPage /> : <RealDailyFollowupPage patient section="weight" /> },
       { path: 'recipes', element: publicEnvironment.demoMode ? <PatientRecipesPage /> : <RealLibraryPage recipes={true} patient={true} /> },

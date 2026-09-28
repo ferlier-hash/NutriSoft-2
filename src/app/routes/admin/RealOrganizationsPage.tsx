@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Building2, RefreshCw, Search } from 'lucide-react';
+import { Building2, ExternalLink, RefreshCw, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import type { RealAdminOrganization } from '../../../data/admin-overview.types';
@@ -103,17 +104,18 @@ export function RealOrganizationsPage({
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[820px] border-collapse text-left">
-                <thead className="bg-surface-subtle"><tr className="text-[11px] uppercase tracking-wide text-text-secondary"><th scope="col" className="table-cell-admin">Consultorio</th><th scope="col" className="table-cell-admin">Identificador</th><th scope="col" className="table-cell-admin">Estado</th><th scope="col" className="table-cell-admin">Plan</th><th scope="col" className="table-cell-admin">Profesionales</th><th scope="col" className="table-cell-admin">Fecha de alta</th><th scope="col" className="table-cell-admin">Última actualización</th></tr></thead>
+                <thead className="bg-surface-subtle"><tr className="text-[11px] uppercase tracking-wide text-text-secondary"><th scope="col" className="table-cell-admin">Consultorio</th><th scope="col" className="table-cell-admin">Identificador</th><th scope="col" className="table-cell-admin">Estado</th><th scope="col" className="table-cell-admin">Plan</th><th scope="col" className="table-cell-admin">Profesionales</th><th scope="col" className="table-cell-admin">Fecha de alta</th><th scope="col" className="table-cell-admin">Última actualización</th><th scope="col" className="table-cell-admin"><span className="sr-only">Detalle</span></th></tr></thead>
                 <tbody className="divide-y divide-border-subtle text-xs">
                   {filtered.map(organization => (
                     <tr key={organization.id} className="transition-colors hover:bg-surface-subtle/70">
-                      <td className="table-cell-admin font-semibold text-text-primary">{organization.name}</td>
+                      <td className="table-cell-admin font-semibold text-text-primary"><Link className="rounded text-brand-strong hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" to={`/admin/organizations/${organization.id}`}>{organization.name}<span className="sr-only"> — abrir detalle</span></Link></td>
                       <td className="table-cell-admin text-text-secondary">{organization.slug}</td>
                       <td className="table-cell-admin"><Badge variant={organization.status === 'active' ? 'active' : 'suspended'}>{organization.status === 'active' ? 'Activo' : 'Suspendido'}</Badge></td>
                       <td className="table-cell-admin"><select aria-label={`Plan de ${organization.name}`} className="form-control min-w-28" disabled={savingId === organization.id} value={subscriptionByOrganization.get(organization.id)?.plan ?? 'pro'} onChange={event => void updatePlan(organization.id, event.target.value as CommercialPlanSlug)}><option value="pro">PRO</option><option value="ultra">ULTRA</option><option value="custom">CUSTOM</option></select></td>
                       <td className="table-cell-admin text-text-secondary">{subscriptionByOrganization.get(organization.id) ? `${subscriptionByOrganization.get(organization.id)!.includedProfessionals + subscriptionByOrganization.get(organization.id)!.extraProfessionals} incluidos` : 'Sin configurar'}</td>
                       <td className="table-cell-admin text-text-secondary">{formatShortDate(organization.createdAt)}</td>
                       <td className="table-cell-admin text-text-secondary"><time dateTime={organization.updatedAt}>{formatFullDateTime(organization.updatedAt)}</time></td>
+                      <td className="table-cell-admin"><Link aria-label={`Ver detalle de ${organization.name}`} className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg text-brand-strong hover:bg-surface-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" to={`/admin/organizations/${organization.id}`}><ExternalLink className="h-4 w-4" aria-hidden="true" /></Link></td>
                     </tr>
                   ))}
                 </tbody>

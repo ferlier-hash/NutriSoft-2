@@ -139,7 +139,7 @@ export function ProfessionalProfilePage() {
             <Info className="w-4 h-4 text-brand-strong mt-0.5" />
             <div>
               <h2 className="text-lg font-bold text-text-primary">Matrícula opcional</h2>
-              <p className="text-xs text-text-secondary mt-1">NutriSoft registra estos datos, pero no verifica la matrícula. Si completás uno, necesitaremos los tres.</p>
+              <p className="text-xs text-text-secondary mt-1">Nutrify registra estos datos, pero no verifica la matrícula. Si completás uno, necesitaremos los tres.</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

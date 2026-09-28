@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { RealDailyHome } from '../../components/domain/RealDailyHome';
 import { useLocation } from 'react-router-dom';
 import { RealProfessionalShell } from './RealProfessionalShell';
-import { RealBrandingProvider, RealBrandIdentity, RealBrandHeader } from '../../components/domain/RealBranding';
+import { ActiveOrganizationSelector, RealBrandingProvider, RealBrandIdentity, RealBrandHeader } from '../../components/domain/RealBranding';
 import { Dialog } from '../../components/ui/Dialog';
 import { useState } from 'react';
 
@@ -30,6 +30,7 @@ function PatientMobileShell({home,profileName,signOut,locationPath}:{home:string
         <NavLink to={home} className="flex min-h-11 items-center gap-2 text-sm font-bold text-text-primary">
           <RealBrandIdentity patient />
         </NavLink>
+        <ActiveOrganizationSelector portal="patient" />
         <button type="button" className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-text-secondary hover:bg-surface-subtle" aria-label="Abrir menú del paciente" onClick={()=>setMenuOpen(true)}><Menu className="h-5 w-5"/></button>
       </div>
     </header>

@@ -1,4 +1,4 @@
-# NutriSoft — Directorio real de consultorios (Fase 3.2.1)
+# Nutrify — Directorio real de consultorios (Fase 3.2.1)
 
 **Estado:** aprobado para implementación local el 14 de agosto de 2026.
 

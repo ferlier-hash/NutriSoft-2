@@ -1,5 +1,5 @@
 -- Migration: 20260821000017_appointments_income_foundation.sql
--- Description: Núcleo seguro de Agenda, Citas e Ingresos. NutriSoft es la fuente de verdad.
+-- Description: Núcleo seguro de Agenda, Citas e Ingresos. Nutrify es la fuente de verdad.
 
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
@@ -309,4 +309,4 @@ GRANT EXECUTE ON FUNCTION api.resolve_appointment_billing(uuid, text, numeric) T
 GRANT EXECUTE ON FUNCTION api.mark_appointment_notification_read(uuid) TO authenticated;
 
 COMMENT ON TABLE app.appointment_private_notes IS 'Contenido clínico privado: sólo lo ve el profesional asignado activo.';
-COMMENT ON TABLE app.appointment_payment_movements IS 'Registro manual inmutable; NutriSoft no procesa dinero.';
+COMMENT ON TABLE app.appointment_payment_movements IS 'Registro manual inmutable; Nutrify no procesa dinero.';

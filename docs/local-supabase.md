@@ -1,4 +1,4 @@
-# Guía de Desarrollo Local con Supabase — NutriSoft (Fase 2.1)
+# Guía de Desarrollo Local con Supabase — Nutrify (Fase 2.1)
 
 ## 🛠️ Comandos de Verificación y Generación de Reportes
 

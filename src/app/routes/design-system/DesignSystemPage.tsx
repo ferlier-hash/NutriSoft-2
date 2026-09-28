@@ -24,7 +24,7 @@ export const DesignSystemPage: React.FC = () => {
   return (
     <div className="p-8 space-y-10 max-w-6xl mx-auto bg-[#F7F9FA] text-[#151B22]">
       <div>
-        <h1 className="text-3xl font-bold text-[#151B22]">Sistema de Diseño NutriSoft</h1>
+        <h1 className="text-3xl font-bold text-[#151B22]">Sistema de Diseño Nutrify</h1>
         <p className="text-sm text-[#66727D] mt-1">
           Catálogo interactivo de tokens, componentes y patrones visuales (Concepto A).
         </p>

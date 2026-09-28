@@ -1,4 +1,4 @@
--- Agenda real: NutriSoft conserva la fuente de verdad; Google es una proyección externa.
+-- Agenda real: Nutrify conserva la fuente de verdad; Google es una proyección externa.
 
 ALTER TABLE app.appointments
   ADD COLUMN IF NOT EXISTS rescheduled_from_appointment_id uuid NULL REFERENCES app.appointments(id) ON DELETE RESTRICT;

@@ -1,8 +1,8 @@
-# NutriSoft — Despliegue, recuperación y operación
+# Nutrify — Despliegue, recuperación y operación
 
 ## Estado y alcance
 
-Este documento define el procedimiento obligatorio para llevar NutriSoft desde el entorno local a staging y producción. No declara que esos ambientes existan. Al 14 de septiembre de 2026, el producto está verificado localmente; todavía deben elegirse y configurarse hosting, proyecto Supabase remoto, dominio, SMTP y observabilidad.
+Este documento define el procedimiento obligatorio para llevar Nutrify desde el entorno local a staging y producción. Existe un proyecto Supabase exclusivo de staging, `nutrisoft-staging`, aprovisionado en São Paulo. El workflow de migraciones y el nuevo E2E remoto de Admin están preparados en GitHub Actions, pero el entorno no se considera validado hasta desplegar migraciones, configurar las cuentas de prueba y obtener una ejecución E2E satisfactoria. Producción, hosting, dominio, SMTP y observabilidad continúan pendientes.
 
 La guía no contiene secretos ni valores productivos. Los comandos son referencias para la persona o automatización autorizada; nunca deben ejecutarse contra producción sin identificar previamente proyecto, ambiente, revisión y responsable.
 
@@ -82,7 +82,7 @@ Si falla una puerta, el release se detiene. No se corrige manualmente producció
 - Paciente: Inicio, citas propias, seguimiento, peso, plan publicado, receta y recurso autorizados.
 - Seguridad: paciente ajeno, profesional no asignado, owner no clínico y Platform Admin reciben denegación en superficies clínicas.
 - Archivos: objetos privados sin URL pública; acceso sólo mediante autorización vigente.
-- Integraciones: una falla de Google no bloquea ni revierte la cita guardada en NutriSoft.
+- Integraciones: una falla de Google no bloquea ni revierte la cita guardada en Nutrify.
 
 Las verificaciones destructivas o que creen comunicaciones reales deben realizarse con cuentas de prueba aprobadas y nunca con pacientes reales.
 
@@ -111,7 +111,7 @@ Ante una migración parcialmente aplicada, detener nuevas escrituras afectadas, 
 - Probar restauración periódicamente en un proyecto aislado, nunca sobre producción activa.
 - Después de restaurar: rotar secretos si hubo exposición, validar migraciones, RLS, conteos agregados, Auth, Storage y Edge Functions antes de reabrir el servicio.
 
-Objetivos RPO/RTO no están definidos todavía. Deben acordarse antes del piloto productivo según criticidad, costo y compromisos comerciales; no deben inventarse en la documentación.
+La [política de backups y recuperación ante incidentes](./backup-and-incident-recovery-policy.md) aprueba para el piloto un RPO de 1 hora, RTO de 4 horas, backups diarios por 30 días, copia mensual por 12 meses y restauración de prueba mensual. Estos objetivos todavía no están operativos: deben validarse contra el proveedor y plan elegidos mediante una restauración aislada antes de admitir datos reales.
 
 ## Gestión de incidentes
 
@@ -161,11 +161,12 @@ Cada despliegue debe conservar, fuera del código y sin secretos:
 ## Pendientes para activar esta guía
 
 - Selección de proveedores y dominios.
-- Proyectos Supabase separados para staging y producción.
+- Completar configuración y validación del proyecto Supabase de staging; crear producción sólo después de aprobar staging.
 - SMTP y remitente verificado.
-- Política de backups, RPO y RTO aprobada.
-- Observabilidad y canal de incidentes.
+- Implementación y prueba verificable de la política aprobada de backups, RPO y RTO.
+- Activar y probar la instrumentación de observabilidad preparada; configurar canal privado y destinatarios de alertas.
 - CI/CD con aprobaciones y artefactos inmutables.
+- Completar la validación REAL de Admin en Supabase staging con el workflow manual de sólo lectura y registrar el SHA/resultados del run.
 - Despliegue y validación del scanner privado, sus secretos y el Cron de limpieza.
 
-Hasta completar esos puntos, NutriSoft debe describirse como REAL local verificado, no como plataforma publicada en producción.
+Hasta completar esos puntos, Nutrify debe describirse como REAL local verificado, no como plataforma publicada en producción.

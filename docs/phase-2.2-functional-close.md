@@ -1,4 +1,4 @@
-# NutriSoft — Acta de cierre funcional Fase 2.2
+# Nutrify — Acta de cierre funcional Fase 2.2
 
 **Fecha:** 14 de agosto de 2026  
 **Estado:** cierre local verificado  

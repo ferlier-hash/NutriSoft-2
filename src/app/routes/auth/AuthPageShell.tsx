@@ -18,7 +18,7 @@ export function AuthPageShell({
             <ShieldCheck className="w-6 h-6" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-brand-strong">NutriSoft</p>
+            <p className="text-xs font-semibold text-brand-strong">Nutrify</p>
             <p className="text-[11px] text-text-secondary">Acceso seguro</p>
           </div>
         </div>

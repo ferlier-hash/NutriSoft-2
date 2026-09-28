@@ -1,9 +1,9 @@
-# NutriSoft — Documento Maestro de Estilo, Producto y Continuidad
+# Nutrify — Documento Maestro de Estilo, Producto y Continuidad
 
-**Versión:** 1.21
-**Fecha de corte:** 14 de septiembre de 2026
-**Estado del producto:** experiencia REAL local autenticada disponible para los recorridos centrales de Profesional y Paciente: Inicio, perfil profesional, pacientes y ficha, seguimiento cotidiano, Bandeja, Agenda, Citas del paciente, Ingresos, planes alimentarios, recetario, recursos, próximos pasos, check-ins, recomendaciones, Reportes clínicos, configuración y Marca CUSTOM. Admin conserva su superficie REAL de sólo lectura y el modo demostración permanece separado. Sigue planificado el historial profesional independiente de Citas; la solicitud inicial de cita desde Paciente todavía no está conectada en REAL. Existe un proyecto Supabase de staging aprovisionado pero aún vacío y no validado. No existe despliegue productivo: SMTP, dominio, observabilidad, backups operados y validaciones externas continúan pendientes.
-**Propósito:** ser la fuente de verdad para continuar, migrar, rediseñar o auditar NutriSoft sin perder decisiones importantes.
+**Versión:** 1.26
+**Fecha de corte:** 28 de septiembre de 2026
+**Estado del producto:** experiencia REAL local autenticada disponible para los recorridos centrales de Profesional y Paciente: Inicio, perfil profesional, pacientes y ficha, seguimiento cotidiano, Bandeja, Agenda, Citas del paciente, Ingresos, planes alimentarios, recetario, recursos, próximos pasos, check-ins, recomendaciones, Reportes clínicos, configuración y Marca CUSTOM. Admin dispone de métricas globales y por consultorio, detalle REAL por consultorio, gestión de membresías profesionales, auditoría de plataforma y registro comercial manual con acceso exclusivo Platform Admin; no procesa pagos. El modo demostración permanece separado. Sigue planificado el historial profesional independiente de Citas; la solicitud inicial de cita desde Paciente todavía no está conectada en REAL. Existe un proyecto Supabase de staging aprovisionado pero aún vacío y no validado. No existe despliegue productivo: SMTP, dominio, observabilidad, backups operados y validaciones externas continúan pendientes.
+**Propósito:** ser la fuente de verdad para continuar, migrar, rediseñar o auditar Nutrify sin perder decisiones importantes.
 
 > Este documento debe leerse antes de realizar cambios de producto, UI, datos, permisos o arquitectura. No sustituye los contratos técnicos específicos; los referencia y explica en contexto.
 
@@ -38,14 +38,14 @@ Si dos fuentes parecen contradecirse, resolver en este orden:
 
 ## 2. Visión del producto
 
-NutriSoft es una plataforma SaaS clínica y operativa para nutricionistas, consultorios y pacientes en Latinoamérica. Debe reducir carga administrativa, ordenar el seguimiento y elevar la calidad percibida sin deshumanizar la atención ni automatizar decisiones clínicas de forma opaca.
+Nutrify es una plataforma SaaS clínica y operativa para nutricionistas, consultorios y pacientes en Latinoamérica. Debe reducir carga administrativa, ordenar el seguimiento y elevar la calidad percibida sin deshumanizar la atención ni automatizar decisiones clínicas de forma opaca.
 
 ### 2.1 Promesa central
 
 - Para el consultorio: administración clara de profesionales, pacientes, planes, pagos, vencimientos y permisos.
 - Para el nutricionista: una práctica ordenada por prioridad, con menos trabajo repetitivo y contexto clínico accesible.
 - Para el paciente: una experiencia móvil simple, cercana y comprensible para responder, consultar y sentirse acompañado.
-- Para NutriSoft: una operación comercial agregada que nunca expone información clínica identificable al Platform Admin.
+- Para Nutrify: una operación comercial agregada que nunca expone información clínica identificable al Platform Admin.
 
 ### 2.2 Principios no negociables
 
@@ -146,10 +146,12 @@ npm run verify:all
 | Acceso | `/reset-password` | Implementado detrás de modo real | Configuración o cambio de contraseña mediante sesión válida. |
 | Acceso | `/access-pending` | Implementado detrás de modo real | Cuenta sin rol o acceso vigente. |
 | Acceso | `/account-suspended` | Implementado detrás de modo real | Bloqueo por organización suspendida. |
-| Admin | `/admin` | Simulado en demo / real read-only | Demo comercial completo; en sesión real muestra perfil, métricas agregadas y directorio mínimo desde Supabase. |
-| Admin | `/admin/organizations` | Simulado en demo / real read-only | Demo con gestión completa; sesión real con directorio, búsqueda y filtro por estado. |
-| Admin | `/admin/organizations/:organizationId` | Simulado | Perfil del consultorio. |
-| Admin | `/admin/nutritionists` | Simulado | Lista de nutricionistas. |
+| Admin | `/admin` | Simulado en demo / REAL local | Demo comercial completa; sesión real muestra perfil, métricas agregadas y directorio mínimo desde Supabase. |
+| Admin | `/admin/organizations` | Simulado en demo / REAL local | Directorio con creación de consultorios, búsqueda, estado y configuración de plan comercial; cambios protegidos por Platform Admin y auditados. |
+| Admin | `/admin/usage` | Bloqueado en demo / REAL local | Tablero numérico filtrable de capacidad, almacenamiento, actividad y retención agregada, más configuración versionada de tarifas acordadas y registro/anulación manual de cobros de Nutrify. No procesa pagos. Sin pacientes/perfiles individuales ni contenido clínico. |
+| Admin | `/admin/audit` | Bloqueado en demo / REAL local read-only | Historial inmutable y filtrable de altas/cambios de estado de consultorios, planes y acceso profesional. Actor genérico Platform Admin; no expone identidades afectadas, eventos clínicos, motivos libres ni contenido asistencial. |
+| Admin | `/admin/organizations/:organizationId` | Simulado en demo / REAL local | Ficha administrativa del consultorio: datos generales, plan/capacidad/consumo, roster profesional con conteos agregados, tarifas/versiones, ciclos y cobros manuales, y acceso a reporte, gestión y auditoría. Incluye acción auditada de suspensión/reactivación. Sin perfiles de responsables, pacientes ni contenido clínico. |
+| Admin | `/admin/nutritionists` | Demo simulado / REAL local | Directorio por membresía: identidad profesional básica, consultorio, estado, conteo agregado de asignaciones y suspensión/reactivación de membresía o bloqueo global reversible. No permite acceder a pacientes ni datos clínicos. |
 | Admin | `/admin/nutritionists/:nutritionistId` | Simulado | Perfil del nutricionista en tarjetas. |
 | Admin | `/admin/nutritionists/:nutritionistId/patients/:patientId` | Simulado | Acceso contextual y limitado desde el profesional. |
 | Profesional | `/professional` | Simulado en demo / real local | Inicio operativo con pacientes, avisos, pedidos de ayuda, próximas citas y accesos rápidos. |
@@ -537,6 +539,14 @@ Estado actual: simulado en formato de tarjetas.
 - Facturación/pagos: registrar pago e historial.
 - Almacenamiento: usado, límite y porcentaje; Custom puede ser flexible.
 
+### 12.6.1 Ficha REAL del consultorio — 2026-09-28
+
+Implementada en modo REAL local bajo `/admin/organizations/:organizationId`. La ficha compone contratos allowlisted existentes: identidad/estado/fechas desde `api.admin_organizations`, uso y capacidades agregados, capacidad de plan, equipo desde el directorio administrativo de membresías profesionales, tarifas versionadas, ciclos y recibos manuales, y enlaces a Reportes, Profesionales y Auditoría. La suspensión/reactivación operativa utiliza `api.set_organization_status`, requiere confirmación y conserva la auditoría existente; no reactiva ni modifica el estado de cobro.
+
+El equipo muestra sólo profesionales con nombre/email básicos, estado de membresía y conteo agregado de asignaciones activas; no muestra identidad de pacientes. Responsables no profesionales, invitaciones pendientes y contacto/ubicación del consultorio no se presentan como si existieran: los contratos reales vigentes no ofrecen una fuente autorizada para esos campos. La edición del plan/tarifa/cobro/prórroga continúa en sus superficies existentes para evitar formularios o escrituras duplicadas. El acceso a Auditoría es global; un filtro textual del cliente no equivale a una consulta server-side dedicada por consultorio.
+
+La ficha informa capacidad presente y actividad de los últimos 12 meses; no inventa snapshots previos. Incluye las acciones administrativas recientes recuperadas del feed allowlisted filtrado por identificador único de consultorio. La suma de cuotas PDF individuales se etiqueta como dato técnico agregado, nunca como cuota compartida. Ingresos y cobros se mantienen separados del dinero que profesionales registran por citas. Platform Admin conserva prohibición absoluta de leer pacientes identificables, notas, respuestas, mediciones, planes, eventos de agenda por persona o archivos concretos. Uso REAL local no significa despliegue ni staging validado.
+
 ### 12.7 Invitaciones
 
 Responsable adicional:
@@ -600,7 +610,7 @@ Estado: implementado en demo y REAL local con persistencia contextual autorizada
 - Perfil por vinculación profesional-consultorio; una misma identidad puede tener datos diferentes en organizaciones distintas.
 - Obligatorios para operar: nombre, apellido y email.
 - Teléfono visible para administración y pacientes propios.
-- Matrícula opcional, única y no verificada por NutriSoft. Si se informa: número, provincia y país; no se registra entidad emisora.
+- Matrícula opcional, única y no verificada por Nutrify. Si se informa: número, provincia y país; no se registra entidad emisora.
 - Una especialidad seleccionable por vinculación. La lista es una taxonomía de producto y no acredita certificación.
 - Zona horaria configurable por profesional.
 
@@ -614,7 +624,7 @@ Estado: núcleo de datos local y recorridos simulados implementados; OAuth local
 - Próximas citas, disponibilidad y estados.
 - En fases posteriores: tipos de consulta, sedes, profesionales, reservas públicas, recordatorios y sincronización externa.
 - La agenda debe seguir funcionando si falla una integración de calendario externa.
-- Google Calendar es la primera integración externa de Agenda: cada profesional conecta un único calendario elegido mediante OAuth de alcance mínimo. Toda cita confirmada en NutriSoft se refleja allí como `Consulta NutriSoft`, sin nombre del paciente, notas ni detalles clínicos; los eventos externos ocupados —incluidos los de día completo— bloquean disponibilidad y no se importan como citas. NutriSoft consulta sólo el intervalo, identificador técnico, estado y transparencia necesarios para detectar ocupación; nunca persiste ni muestra el título, descripción o asistentes de un evento externo. Si la detección coincide con una cita NutriSoft ya existente, conserva la cita sin modificarla y muestra una advertencia operativa a la profesional.
+- Google Calendar es la primera integración externa de Agenda: cada profesional conecta un único calendario elegido mediante OAuth de alcance mínimo. Toda cita confirmada en Nutrify se refleja allí como `Consulta Nutrify`, sin nombre del paciente, notas ni detalles clínicos; los eventos externos ocupados —incluidos los de día completo— bloquean disponibilidad y no se importan como citas. Nutrify consulta sólo el intervalo, identificador técnico, estado y transparencia necesarios para detectar ocupación; nunca persiste ni muestra el título, descripción o asistentes de un evento externo. Si la detección coincide con una cita Nutrify ya existente, conserva la cita sin modificarla y muestra una advertencia operativa a la profesional.
 - Una cita virtual confirmada muestra al paciente el enlace de Google Meet sólo si fue creado y devuelto por la integración autorizada. Las citas presenciales no muestran enlace alguno; el frontend nunca fabrica una URL de Meet.
 - Citas concentra el historial, filtros por paciente y período, y una nota profesional privada de texto libre por consulta. No duplica Próximos pasos y sólo es visible para el profesional clínicamente asignado; cualquier resumen para paciente se persiste por separado.
 - Citas ofrece filtros combinables de paciente, período (Hoy, 7 días, Mes, Personalizado y Todo), estado de cita, estado de pago y modalidad. El período personalizado define fechas Desde/Hasta inclusivas. La alta y la reprogramación ocurren sólo desde Agenda para evitar flujos duplicados.
@@ -653,7 +663,7 @@ Estado: configuración operativa simulada implementada; persistencia real, OAuth
 - El paciente puede retirar una cita aún solicitada. Para una cita confirmada futura, solicita cancelación o indica un nuevo horario; la cita original permanece vigente hasta que el profesional apruebe o rechace la solicitud. Al aprobar una cancelación, el profesional decide si queda sin cargo o pendiente; el paciente nunca ve importes en este flujo.
 - El profesional elige los avisos internos que desea recibir: solicitudes, cancelaciones, ausencias y comentarios en planes o próximos pasos. Email y WhatsApp siguen siendo futuros.
 - Un cambio de moneda sólo afecta citas y cobros nuevos. Los registros históricos conservan su moneda; si existen varias, Ingresos las separa y ofrece selección de moneda sólo en ese caso.
-- Google Calendar aparece como bloque preparado: NutriSoft a Google, bloqueo de eventos externos y Meet automático. La conexión real OAuth se mantiene planificada y no debe simular credenciales ni tokens.
+- Google Calendar aparece como bloque preparado: Nutrify a Google, bloqueo de eventos externos y Meet automático. La conexión real OAuth se mantiene planificada y no debe simular credenciales ni tokens.
 - Configuración debe mostrar el calendario actualmente elegido. Cambiar calendario reutiliza la conexión de Google; cambiar cuenta vuelve a OAuth, borra la selección previa y exige elegir un calendario de la nueva cuenta. Ninguna cita existente se mueve entre calendarios automáticamente.
 
 ### 13.3 Bandeja de atención
@@ -837,7 +847,7 @@ Paridad visual REAL revisada el 2026-09-10: la biblioteca incorpora buscador con
 - Cada comida admite un comentario opcional del paciente de hasta 500 caracteres. Pertenece al plan, asignación, día, comida y paciente correspondientes y conserva sólo su valor y fecha más recientes.
 - Todo comentario nuevo genera un indicador operativo no diagnóstico en `Planes alimentarios`, visible en navegación, resumen y tarjeta del plan. No ingresa en la Bandeja de atención clínica salvo que una regla futura explícita lo justifique.
 - Dentro del plan, el profesional ve comentario, paciente, día, comida y fecha, y puede marcarlo como revisado. El paciente puede editarlo o vaciarlo en cualquier momento mientras la comida o tarea continúe vigente; la edición no conserva versiones ni auditoría de contenido y vuelve el comentario a estado nuevo.
-- Los comentarios notifican únicamente dentro de NutriSoft en esta etapa. Email y WhatsApp permanecen futuros.
+- Los comentarios notifican únicamente dentro de Nutrify en esta etapa. Email y WhatsApp permanecen futuros.
 - El paciente consulta los 7–30 días mediante secciones desplegables, con todas las comidas, elementos y enlaces autorizados a recetas. El primer día se abre por defecto.
 - La ficha profesional del paciente muestra porcentaje general y desglose por día. El seguimiento vive en esa ficha para mantener contexto y aislamiento; no se agrega a métricas globales ni al Platform Admin.
 - El paciente puede completar o corregir días anteriores; se conserva auditoría de carga y edición.
@@ -1056,7 +1066,7 @@ Los importes de la tabla son sólo ejemplos. Antes de producción, definir moned
 - `docs/environments-and-secrets.md`: contrato de ambientes, variables públicas y secretos.
 - `docs/phase-3.2.2-commercial-data-decisions.md`: checkpoint obligatorio antes de persistir planes, precios, vencimientos, pagos e invitaciones.
 - `docs/professional-patient-functional-spec.md`: decisiones aprobadas de perfil, invitaciones, planes, agenda, cobros, adherencia, marca y privacidad.
-- `docs/Informe_competitivo_NutriSoft_2026-08-12.docx`: investigación competitiva.
+- `docs/Informe_competitivo_NutriSoft_2026-08-12.docx`: investigación competitiva (nombre histórico del archivo).
 - `/design-system`: catálogo interactivo disponible sólo en desarrollo.
 
 ## 23. Historial de decisiones
@@ -1110,7 +1120,7 @@ Los importes de la tabla son sólo ejemplos. Antes de producción, definir moned
 | 2026-08-21 | Implementar el núcleo real versionado de planes individuales con publicación explícita y seguimiento por comida. | Llevar el flujo clínico prioritario a una base transaccional y aislada antes de habilitar pantallas reales. |
 | 2026-08-21 | Habilitar la primera superficie clínica real limitada a planes alimentarios. | Validar el ciclo profesional–paciente con datos persistentes sin exponer rutas mock en sesiones reales. |
 | 2026-08-21 | Integrar Agenda, Citas e Ingresos sobre una única cita y sincronización degradable con Google Calendar. | Evitar fuentes paralelas, conservar continuidad operativa y dar contexto económico y de seguimiento en la ficha profesional del paciente. |
-| 2026-08-21 | Usar un único calendario Google por profesional como bloqueador de disponibilidad y reflejo de citas NutriSoft. | Evitar conflictos sin importar ni exponer eventos externos como datos clínicos. |
+| 2026-08-21 | Usar un único calendario Google por profesional como bloqueador de disponibilidad y reflejo de citas Nutrify. | Evitar conflictos sin importar ni exponer eventos externos como datos clínicos. |
 | 2026-08-21 | Configurar moneda por vínculo profesional-consultorio y resolver cancelaciones/ausencias dentro de un aviso in-app. | Mantener historial monetario consistente y reducir pasos administrativos en una situación sensible. |
 | 2026-08-21 | Permitir precios puntuales por cita, generar Meet con Google conectado y notificar cambios de cita dentro del portal Paciente. | Adaptarse a la práctica profesional sin procesar pagos ni depender de email para informar cambios básicos. |
 | 2026-08-21 | Implementar el núcleo local de Citas e Ingresos con agenda no solapable, movimientos manuales inmutables y notas clínicas separadas. | Tener una única fuente de verdad para las futuras pantallas sin exponer notas al owner, assistant ni Platform Admin. |
@@ -1144,7 +1154,7 @@ Los importes de la tabla son sólo ejemplos. Antes de producción, definir moned
 | 2026-08-25 | Completar en demo Configuración profesional con franjas múltiples, avisos internos y solicitudes tardías sujetas a aprobación. | Reflejar una práctica real de horarios partidos sin confirmar cambios de citas ni prometer integraciones externas todavía. |
 | 2026-08-25 | Permitir editar y eliminar bloqueos/vacaciones desde Agenda además de Configuración. | Mantener la disponibilidad operable en el contexto del calendario sin eliminar citas ni duplicar reglas. |
 | 2026-08-26 | Preparar OAuth de Google Calendar mediante Edge Function, estado de un solo uso y refresh tokens cifrados fuera del frontend. | Conectar un calendario por profesional sin exponer credenciales, tokens ni detalles de eventos externos. |
-| 2026-08-26 | Excluir sólo el callback OAuth de la verificación JWT automática y exigir estado corto, único y validado por servidor. | Google no puede adjuntar la sesión de NutriSoft al retorno; el estado firmado/persistido limita el callback sin abrir una API anónima general. |
+| 2026-08-26 | Excluir sólo el callback OAuth de la verificación JWT automática y exigir estado corto, único y validado por servidor. | Google no puede adjuntar la sesión de Nutrify al retorno; el estado firmado/persistido limita el callback sin abrir una API anónima general. |
 | 2026-08-26 | Diferenciar cambio de calendario de cambio de cuenta Google. | Evitar que una selección anterior apunte por error a otra cuenta y no mover eventos existentes sin una decisión explícita. |
 | 2026-08-26 | Habilitar la primera Agenda real local y su proyección externa de citas confirmadas. | Permitir operar citas reales sin exponer información clínica en Google ni volver la disponibilidad dependiente de un servicio externo. |
 | 2026-08-26 | Habilitar invitación local real de pacientes desde el portal Profesional. | Crear el vínculo paciente–consultorio–profesional por servidor y usar el correo de invitación de Supabase sin exponer credenciales al navegador. Las invitaciones pendientes son idempotentes: repetir el correo no duplica pacientes ni vínculos. |
@@ -1157,7 +1167,7 @@ Los importes de la tabla son sólo ejemplos. Antes de producción, definir moned
 | 2026-08-25 | Registrar la personalización de marca por consultorio como capacidad futura exclusiva de Custom. | Ofrecer diferenciación comercial sin duplicar temas, comprometer accesibilidad ni mezclar identidades entre consultorios. |
 | 2026-08-26 | Incorporar solicitudes de cancelación y reprogramación del paciente en modo demo. | Mantener la cita original hasta aprobación profesional, preservar trazabilidad y no exponer decisiones de cobro al paciente. |
 | 2026-08-26 | Llevar el editor real de planes a paridad operativa con la demo y permitir plegado independiente por día. | Hacer manejables planes de 7–30 días sin perder edición, duplicado, reordenamiento, alternativas, información general ni visibilidad del cumplimiento y comentarios reales del paciente. |
-| 2026-08-31 | Bloquear disponibilidad con ocupación externa de Google y crear Meet sólo para citas virtuales confirmadas. | Evitar importar contenido externo o alterar citas por automatización; una coincidencia se señala a la profesional para su decisión, mientras NutriSoft conserva la fuente de verdad. |
+| 2026-08-31 | Bloquear disponibilidad con ocupación externa de Google y crear Meet sólo para citas virtuales confirmadas. | Evitar importar contenido externo o alterar citas por automatización; una coincidencia se señala a la profesional para su decisión, mientras Nutrify conserva la fuente de verdad. |
 | 2026-08-31 | Habilitar consulta y solicitud de cambio de citas en el portal Paciente real local. | El paciente accede únicamente a sus propios turnos y al Meet autorizado; cancelar o reprogramar crea una solicitud pendiente sin cambiar la cita original. |
 | 2026-09-01 | Separar Antropometría de Seguimiento y modelarla como tabla de revisiones profesionales con campos configurables. | El peso cotidiano del paciente conserva un recorrido simple, mientras la profesional registra mediciones clínicas completas por fecha sin forzar datos inexistentes ni limitar su práctica. |
 | 2026-09-01 | Implementar en demo la pestaña profesional de Antropometría y los campos personalizados configurables. | Validar primero la lectura de una tabla amplia y un gráfico por métrica/período antes de definir persistencia real, permisos y migración de datos clínicos. |
@@ -1212,7 +1222,7 @@ Métricas siguen el criterio DEMO: Proyectado suma el importe completo de próxi
 
 Aceptación: corrección y reintento sin duplicados, original conservado, reembolso máximo recalculado, vistas compartidas consistentes, permisos negativos, cálculos por fecha civil y meses sin datos. Pruebas de base con rollback y UI con mocks exclusivamente de test; no se cambian cobros locales del usuario para validación. Revisión del usuario pendiente; no equivale a producción publicada.
 
-**Regla final:** si un cambio se ve mejor pero debilita claridad, accesibilidad, privacidad, consistencia o estabilidad, no es una mejora para NutriSoft.
+**Regla final:** si un cambio se ve mejor pero debilita claridad, accesibilidad, privacidad, consistencia o estabilidad, no es una mejora para Nutrify.
 
 ### Optimización móvil REAL — Profesional y Paciente, 2026-09-13
 
@@ -1296,7 +1306,7 @@ Implementado localmente para nutricionista activo por consultorio: moneda predet
 
 ### Mi perfil profesional REAL — 2026-09-04
 
-Implementado localmente para nutricionista activo y su consultorio: el perfil separa identidad de cuenta (nombre completo, correo sólo de lectura y teléfono) de práctica contextual (especialidad, zona horaria y matrícula opcional). Especialidad sólo orienta la experiencia, no certifica; matrícula exige número, provincia/estado y país juntos, y no es verificada por NutriSoft. La práctica se guarda por consultorio; identidad no se duplica entre consultorios. Platform Admin, paciente, responsable no clínico y asistente no pueden consultar ni modificar este perfil mediante estas RPC.
+Implementado localmente para nutricionista activo y su consultorio: el perfil separa identidad de cuenta (nombre completo, correo sólo de lectura y teléfono) de práctica contextual (especialidad, zona horaria y matrícula opcional). Especialidad sólo orienta la experiencia, no certifica; matrícula exige número, provincia/estado y país juntos, y no es verificada por Nutrify. La práctica se guarda por consultorio; identidad no se duplica entre consultorios. Platform Admin, paciente, responsable no clínico y asistente no pueden consultar ni modificar este perfil mediante estas RPC.
 
 El correo no se edita directamente: requerirá un flujo específico de verificación de correo antes de estar disponible. La sesión activa puede actualizar contraseña con confirmación local, mínimo diez caracteres y control para mostrar/ocultar durante la escritura; nunca se conserva ni muestra la contraseña previa. Guardar perfil valida versión concurrente y deja auditoría de presencia de campos, sin teléfonos ni matrícula. No se alteran pacientes, citas ni historiales existentes.
 
@@ -1306,7 +1316,7 @@ Cierre visual local — 2026-09-10: el perfil muestra explícitamente el consult
 
 El Recetario REAL usa la biblioteca educativa segura existente, pero dispone de una superficie profesional propia y escalable: resumen de publicaciones, borradores y retiros; búsqueda; filtros por categoría y estado; filas compactas; detalle estructurado; alta, edición, duplicación y transiciones editoriales explícitas. Con múltiples membresías nutricionistas activas permite elegir el consultorio para crear contenido y filtra la biblioteca por ese contexto; nunca mezcla bibliotecas de otros profesionales.
 
-Una receta nueva puede guardarse privada o publicarse. Publicar la habilita para vincularla a planes alimentarios y para pacientes autorizados por asignación; retirar deja de exponerla sin borrar la entidad ni su historial. Editar conserva el estado vigente y exige la versión recibida para evitar sobrescrituras concurrentes. Los enlaces desde planes conservan las identidades existentes. Decisión final del usuario: las fotografías se admiten únicamente mediante URL HTTPS opcional; NutriSoft no carga ni almacena imágenes del recetario. La IA de formateo continúa futura y no debe presentarse como implementada.
+Una receta nueva puede guardarse privada o publicarse. Publicar la habilita para vincularla a planes alimentarios y para pacientes autorizados por asignación; retirar deja de exponerla sin borrar la entidad ni su historial. Editar conserva el estado vigente y exige la versión recibida para evitar sobrescrituras concurrentes. Los enlaces desde planes conservan las identidades existentes. Decisión final del usuario: las fotografías se admiten únicamente mediante URL HTTPS opcional; Nutrify no carga ni almacena imágenes del recetario. La IA de formateo continúa futura y no debe presentarse como implementada.
 
 ### Recursos profesionales REAL — cierre visual local 2026-09-13
 
@@ -1348,7 +1358,7 @@ El PDF replica la estructura informativa, incorpora profesional, consultorio, pa
 
 ### Landing comercial separada — prototipo de conversión, 2026-09-15
 
-Se crea `landing/` como espacio independiente del producto autenticado para explorar la comunicación pública y comercial de NutriSoft. La segunda pasada prioriza conversión a conversación por WhatsApp: promesa específica, problema cotidiano, mecanismo de solución, módulos, segmentación por tipo de práctica, privacidad, objeciones, preguntas frecuentes y CTA repetidos. Usa la paleta y personalidad oficiales, presenta la promesa para nutricionistas, consultorios y pacientes, y comunica privacidad por diseño sin exponer datos clínicos. No se conecta todavía a autenticación, datos, pagos, CRM ni formularios de producción. La tercera pasada agrega navegación interna por funciones con placeholders de imágenes, un listado compacto de áreas y tres tarjetas de planes (`Basic`, `Pro`, `Ultra`) más una mención de `Custom`; precios, límites comerciales, imágenes finales, testimonios, métricas y promesas de disponibilidad continúan pendientes de validación. La cuarta pasada adopta la marca comercial `Nutrify` y su dirección visual de referencia: isotipo N turquesa/lima, azul profundo de contraste, lima como acento de acción y tono de crecimiento profesional. La quinta pasada incorpora el asset oficial de logo transparente en `landing/branding/nutrify-logo-official.png` para header y footer; el producto interno y sus documentos técnicos conservan `NutriSoft` como nombre del proyecto hasta resolver la migración formal de identidad. La sexta pasada agrega movimiento sutil y accesible: aparición progresiva por scroll, microanimación del hero, estados hover, transición del selector de funciones y soporte explícito para `prefers-reduced-motion`. Las capacidades descritas deben conservar el estado honesto de la documentación maestra. El número comercial se configura en un único placeholder dentro de `landing/index.html` antes de publicar.
+Se crea `landing/` como espacio independiente del producto autenticado para explorar la comunicación pública y comercial de Nutrify. La segunda pasada prioriza conversión a conversación por WhatsApp: promesa específica, problema cotidiano, mecanismo de solución, módulos, segmentación por tipo de práctica, privacidad, objeciones, preguntas frecuentes y CTA repetidos. Usa la paleta y personalidad oficiales, presenta la promesa para nutricionistas, consultorios y pacientes, y comunica privacidad por diseño sin exponer datos clínicos. No se conecta todavía a autenticación, datos, pagos, CRM ni formularios de producción. La tercera pasada agrega navegación interna por funciones con placeholders de imágenes, un listado compacto de áreas y tres tarjetas de planes (`Basic`, `Pro`, `Ultra`) más una mención de `Custom`; precios, límites comerciales, imágenes finales, testimonios, métricas y promesas de disponibilidad continúan pendientes de validación. La cuarta pasada adopta la marca comercial `Nutrify` y su dirección visual de referencia: isotipo N turquesa/lima, azul profundo de contraste, lima como acento de acción y tono de crecimiento profesional. La quinta pasada incorpora el asset oficial de logo transparente en `landing/branding/nutrify-logo-official.png` para header y footer. En la actualización de septiembre de 2026, el nombre temporal anterior se reemplaza en las experiencias Admin, Profesional y Paciente; identificadores técnicos internos que podrían afectar sesiones existentes se conservan. La sexta pasada también agrega movimiento sutil y accesible: aparición progresiva por scroll, microanimación del hero, estados hover, transición del selector de funciones y soporte explícito para `prefers-reduced-motion`. Las capacidades descritas deben conservar el estado honesto de la documentación maestra. El número comercial se configura en un único placeholder dentro de `landing/index.html` antes de publicar.
 
 ### Revisión móvil REAL — 2026-09-17
 
@@ -1386,3 +1396,31 @@ Se aprueba la base técnica de planes comerciales por consultorio: PRO incluye u
 Un paciente activo es aquel que no está archivado y conserva acceso vigente. Al bajar de plan no se elimina información: las nuevas operaciones fuera de límite se bloquean y el acceso autorizado existente permanece en modo lectura cuando corresponda. Los precios mensual/anual quedan configurables y pendientes de definición.
 
 La audiencia futura de boletines se reduce deliberadamente a nombre y correo de profesionales/owners activos. Platform Admin puede obtener esa lista comercial, sin pacientes, historias clínicas, check-ins, mediciones ni contenido asistencial. La mensajería bidireccional y la integración con WhatsApp permanecen futuras.
+
+### Reporte comercial de consumo por consultorio — 2026-09-23
+
+Se implementa `/admin/usage` en REAL local, en sólo lectura, como tablero numérico interactivo; no requiere ni ofrece exportación. Permite filtrar por fechas, nombre/slug, plan y estado; ordenar por alertas, consumo o actividad; y muestra agregados/totales filtrados por consultorio. Capacidad actual: pacientes no archivados con acceso vigente, profesionales/owners activos, límite comercial PDF, cuota técnica agregada de los perfiles que aceptaron la política y profesionales cercanos/sobre su cuota individual, asignaciones activas de planes alimentarios, conexiones de Google Calendar y campos/imágenes de marca CUSTOM configurados. La cuota agregada es informativa y no constituye límite compartido. Actividad fechada: citas iniciadas y completadas, respuestas de check-in, versiones alimentarias publicadas y montos/cantidades de cobros/devoluciones por moneda. Los importes se mantienen separados por moneda, sin conversión. Detalle expandible en escritorio y tarjetas en móvil. No hay pacientes, profesionales ni archivos individualizados. Consultorios sin suscripción aparecen destacados, con atajo para configurarlos, sin capacidad comercial inventada.
+
+El reporte operativo consulta uso en vivo; capacidad actual representa el presente y actividad se limita por fechas. Desde 2026-09-25 se agregan snapshots mensuales inmutables con conteos de uso/actividad y retención, sin reconstruir meses previos. Se muestran separadamente límite comercial por consultorio y cuotas efectivas per-professional aceptadas; el almacenamiento consumido no se agrega falsamente como si una cuota individual fuera compartida. Logos/cabeceras no cuentan como biblioteca PDF. La mensajería/WhatsApp futura no se simula como métrica consumida.
+
+### Usabilidad del reporte Admin — 2026-09-24
+
+Se agrega orden “Atención primero”, filtros directos para planes ausentes y alertas, opción de ordenar por uso de pacientes/profesionales/PDF o actividad, y presentación en tarjetas en móvil. Los consultorios sin plan tienen una llamada visible a configurarlo desde Consultorios. La migración 63 calcula además conteo de profesionales habilitados para carga, cuota PDF efectiva agregada y cantidad cercana/sobre cuota individual, sólo como valores agregados.
+
+### E2E remoto de Platform Admin — 2026-09-24
+
+Se prepara una suite Playwright manual contra el proyecto Supabase `nutrisoft-staging`: cubre resumen, directorio, reportes, serie mensual e ingresos de plataforma con una cuenta sintética Platform Admin; comprueba que una cuenta sintética sin ese rol no entre al portal y limita explícitamente las claves aceptadas en respuestas agregadas y comerciales. La ejecución no escribe datos ni despliega el frontend a un hosting: sirve el bundle REAL temporalmente en el runner de GitHub Actions y valida que su URL HTTPS apunte exactamente al project ref de staging. Se desactivan capturas, video y trazas para no conservar sesiones.
+
+Estado honesto: workflow y casos preparados, no ejecutados contra el servicio remoto. Antes de declarar staging validado deben desplegarse migraciones y configurarse en el environment GitHub `staging` las variables URL/clave pública/project ref y dos cuentas sintéticas distintas con sus roles correspondientes. La evidencia válida será el run exitoso de Actions con SHA identificable; nunca se usan cuentas ni datos de producción.
+
+### Auditoría administrativa visible — 2026-09-24
+
+`/admin/audit` presenta en REAL un historial inmutable y sólo de lectura, con filtros por período, tipo de acción y consultorio, búsqueda y paginación. Incluye alta/cambio de estado de consultorios, cambios de suscripción y cambios de acceso profesional; actor se presenta como “Platform Admin”, sin identidad personal ni profesional afectado. El backend conserva las acciones en `app.audit_logs` y expone una RPC dedicada que sólo permite una lista cerrada de acciones/campos. Se omiten motivos libres y cualquier evento clínico/de pacientes. La prueba pgTAP verifica autorización, filtros, paginación, omisión de evento clínico y que Platform Admin siga sin lectura directa de `audit_logs`.
+
+### Retención mensual e ingresos de Nutrify — 2026-09-25
+
+`/admin/usage` amplía Reportes con cortes mensuales inmutables por consultorio. Un cliente activo es un consultorio con estado activo y suscripción `trialing`, `active` o `grace`. Retención mensual = consultorios activos en el corte anterior que siguen activos en el corte actual / consultorios activos en el corte anterior; bajas son la diferencia de esa cohorte. Se guarda una línea base al aplicar la migración y `pg_cron` captura en UTC el primer día de cada mes. No se inventan cortes históricos: el primero puede ser parcial y la UI muestra fecha exacta. Cada snapshot conserva agregados de pacientes, profesionales, PDFs, citas/completadas, respuestas de check-in y publicaciones; no perfiles, archivos, pacientes ni contenido clínico. Tablas privadas y RPC de lectura sólo para Platform Admin. Si un corte mensual falta, retención se muestra como no disponible, no como 0%.
+
+El bloque separado **Ingresos de Nutrify** guarda por consultorio plan, tarifa especial, moneda, frecuencia mensual/anual y fecha de vigencia libre. Un ciclo mensual completo se cuenta desde la fecha ancla individual hasta el día anterior a su aniversario del mes siguiente (p. ej., del 15 al 14); días 29–31 se ajustan al último día disponible en meses más cortos. Para tarifas anuales se usa su aniversario anual. Cada cambio crea una nueva versión; las programaciones futuras reemplazadas quedan como canceladas en el historial, y ningún cambio puede superponerse con períodos ya cobrados. Las tarifas futuras permanecen visibles como programadas, no como pendientes, y no habilitan registrar cobros antes de su vigencia. Los ciclos completos aparecen en **Facturación y vencimientos**, con esperado, recibido, saldo y estados pagado/parcial/pendiente/en gracia/vencido. El vencimiento base es el inicio de cada ciclo; Platform Admin concede manualmente una prórroga sólo para ese ciclo, eligiendo una fecha posterior al vencimiento actual. La nueva fecha, fecha/hora y actor administrativo quedan auditados; una prórroga no cambia ciclos posteriores. Los cobros efectivamente recibidos se registran a mano; se admite pago parcial, reintento idempotente y anulación conservando evidencia. Los totales se agregan por moneda sin conversión. No se emiten facturas fiscales, no se automatizan cobros ni se procesa dinero. Esta tabla no se mezcla con cobros clínicos que nutricionistas registran para pacientes. Backend valida privilegio Platform Admin, moneda y ciclos completos, y bloquea DML directo. Operación aplicada y comprobada sólo en Supabase local; staging/producción siguen pendientes.
+
+| 2026-09-24 | Adoptar Nutrify como nombre único del producto y sustituir la marca anterior en los portales Admin, Profesional, Paciente, acceso, landing y metadatos. | Unificar marca comercial y experiencia del producto; conservar claves y enums técnicos internos para no invalidar sesiones ni contratos de sincronización existentes. |

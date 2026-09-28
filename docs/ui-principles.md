@@ -1,4 +1,4 @@
-# Principios de Interfaz de Usuario (UI/UX): NutriSoft
+# Principios de Interfaz de Usuario (UI/UX): Nutrify
 
 Este documento define la dirección de UX/UI basada en la maqueta de referencia **Concepto A Minimalista Premium**.
 

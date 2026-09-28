@@ -12,7 +12,7 @@
 4. Agenda, Citas e Ingresos.
 5. Adherencia y antropometría ampliadas.
 
-La primera secuencia constituye el cierre prioritario. Las capturas competitivas son referencias funcionales; toda UI conserva la identidad visual NutriSoft.
+La primera secuencia constituye el cierre prioritario. Las capturas competitivas son referencias funcionales; toda UI conserva la identidad visual Nutrify.
 
 ### Corte simulado disponible
 
@@ -49,34 +49,34 @@ La primera secuencia constituye el cierre prioritario. Las capturas competitivas
 ## 4. Agenda, Citas e Ingresos
 
 - Una cita es la fuente de verdad para calendario, historial e ingresos.
-- Agenda se sincronizará con un único calendario de Google Calendar elegido explícitamente por el profesional mediante OAuth de alcance mínimo. Toda cita creada en NutriSoft se refleja en ese calendario. Los eventos existentes en el calendario elegido bloquean su franja en la disponibilidad de NutriSoft, pero no se convierten automáticamente en citas ni exponen su título, asistentes o descripción dentro de la plataforma. NutriSoft conserva su propia cita como fuente de verdad; si Google Calendar no está disponible, Agenda, Citas e Ingresos siguen operando localmente y la sincronización se reintenta de forma controlada.
+- Agenda se sincronizará con un único calendario de Google Calendar elegido explícitamente por el profesional mediante OAuth de alcance mínimo. Toda cita creada en Nutrify se refleja en ese calendario. Los eventos existentes en el calendario elegido bloquean su franja en la disponibilidad de Nutrify, pero no se convierten automáticamente en citas ni exponen su título, asistentes o descripción dentro de la plataforma. Nutrify conserva su propia cita como fuente de verdad; si Google Calendar no está disponible, Agenda, Citas e Ingresos siguen operando localmente y la sincronización se reintenta de forma controlada.
 - Estados: solicitada, confirmada, completada, cancelada por paciente, cancelada por profesional, reprogramada y ausente.
 - Reservas públicas siempre requieren aprobación manual y usan enlace propio por profesional.
 - Configuración profesional: paciente, duración, precio editable, modalidad, disponibilidad, descansos, feriados, bloqueos, vacaciones, recurrencia y reglas de cancelación/ausencia. Cada cita puede tener un precio diferente por paciente, duración o criterio profesional; Configuración ofrece valores sugeridos reutilizables, pero nunca impide el ajuste puntual.
 - La moneda predeterminada se configura por vinculación profesional-consultorio en Configuración; una misma identidad puede usar una moneda distinta en otro consultorio. Catálogo inicial: ARS, CLP, BRL, USD, MXN, COP, PEN, EUR y UYU. El sistema conserva el código de moneda en cada cita y movimiento para que un cambio posterior de configuración no altere el historial.
 - Duraciones iniciales seleccionables: 15, 30, 45, 60, 75 y 90 minutos. No se permite duración libre en la primera versión.
 - No se permite solapamiento.
-- En modalidad virtual, una vez conectado el calendario Google elegido, NutriSoft genera automáticamente el enlace de Google Meet junto con la cita. Si el profesional aún no conectó Google, la interfaz explica que debe hacerlo antes de confirmar una cita virtual con enlace automático; no inventa ni expone un enlace alternativo.
+- En modalidad virtual, una vez conectado el calendario Google elegido, Nutrify genera automáticamente el enlace de Google Meet junto con la cita. Si el profesional aún no conectó Google, la interfaz explica que debe hacerlo antes de confirmar una cita virtual con enlace automático; no inventa ni expone un enlace alternativo.
 - Notas privadas sólo para profesional asignado; resumen para paciente separado.
 - Cada cita admite un único campo de notas profesionales privadas en texto libre para el seguimiento de la consulta, incluidos observaciones y cómo se sintió el paciente. No son visibles para owner no clínico, secretaria, Platform Admin, otros profesionales no asignados ni el paciente. Si se desea comunicar algo al paciente, se guarda en un resumen separado y autorizado. Los próximos pasos se gestionan exclusivamente en su sección individual y no se duplican dentro de la nota.
 - La sección Citas ofrece historial completo y filtros por paciente y por fecha/período.
 - La ficha del paciente dentro del portal Profesional incluye un resumen no editable de sus últimos cinco turnos: fecha/hora, modalidad, estado de cita y estado de pago, sin mostrar importes. Es una vista derivada de la misma cita, no una fuente de datos separada.
 - Búsqueda por texto completo dentro de registros autorizados.
 - Avisos iniciales in-app y email. WhatsApp: futuro.
-- El paciente recibe avisos dentro de NutriSoft ante cita nueva, cancelación o reprogramación desde la primera versión. Email permanece pendiente y WhatsApp es futuro.
-- NutriSoft es fuente principal; Google Calendar/Meet será integración degradable. GHL continúa en evaluación.
+- El paciente recibe avisos dentro de Nutrify ante cita nueva, cancelación o reprogramación desde la primera versión. Email permanece pendiente y WhatsApp es futuro.
+- Nutrify es fuente principal; Google Calendar/Meet será integración degradable. GHL continúa en evaluación.
 
 ## 5. Cobros manuales
 
 - Estado de cita y pago independientes.
 - Estados: pendiente, pagado, parcial, sin cargo y reembolsado.
-- Una cita admite varios movimientos manuales; NutriSoft no procesa dinero.
+- Una cita admite varios movimientos manuales; Nutrify no procesa dinero.
 - Importe editable por cita; métodos efectivo, transferencia u otro; nota opcional.
 - Ingreso real por fecha de pago. Métricas: cobrado, pendiente, proyectado y perdido; realizadas, canceladas, ausencias y tasa de asistencia.
 - Sin comprobantes, número de operación, recibos ni facturación fiscal en esta etapa.
 - Movimientos y correcciones auditables.
 - Una cita cancelada o una ausencia no genera cobro adicional automáticamente. Ambas generan una alerta operativa para que el profesional decida, por cita, mantener sin cargo, registrar un importe pendiente o cargar un importe parcial/extra. La decisión y cualquier movimiento quedan auditados.
-- La alerta de cancelación o ausencia vive sólo dentro de NutriSoft en esta etapa. Su pop-up permite resolver el caso inmediatamente: sin cargo, pendiente o importe parcial/extra y, cuando corresponda, ingresar el monto en el mismo paso.
+- La alerta de cancelación o ausencia vive sólo dentro de Nutrify en esta etapa. Su pop-up permite resolver el caso inmediatamente: sin cargo, pendiente o importe parcial/extra y, cuando corresponda, ingresar el monto en el mismo paso.
 
 ## 6. Plan alimentario
 

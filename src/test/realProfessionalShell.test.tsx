@@ -8,7 +8,7 @@ it('activa sólo rutas conectadas y cierra el menú móvil al navegar', async ()
   const user = userEvent.setup();
   render(<MemoryRouter><RealProfessionalShell /></MemoryRouter>);
   expect(screen.getByRole('link', { name: 'Ingresos' })).toHaveAttribute('href', '/professional/income');
-  expect(screen.queryByRole('link', { name: 'Citas' })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Citas' })).toHaveAttribute('href', '/professional/appointments');
   expect(screen.getByRole('link', { name: 'Check-ins' })).toHaveAttribute('href', '/professional/checkins');
   await user.click(screen.getByRole('button', { name: 'Abrir menú' }));
   const menu = within(screen.getByRole('dialog'));

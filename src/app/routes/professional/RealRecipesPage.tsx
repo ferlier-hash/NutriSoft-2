@@ -9,6 +9,7 @@ import { Dialog } from '../../../components/ui/Dialog';
 import { useToast } from '../../../components/ui/Toast';
 import { MobileFilters } from '../../../components/ui/MobileFilters';
 import { MobileActions } from '../../../components/ui/MobileActions';
+import { useRealBranding } from '../../../components/domain/RealBranding';
 import { loadLibrary, saveLibrary, type LibraryBody, type LibraryContent } from '../../../data/supabase/library.repository';
 
 const categories = ['Desayunos', 'Almuerzos', 'Cenas', 'Snacks'];
@@ -29,6 +30,7 @@ export function RealRecipesPage() {
   const { recipeId } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { activeOrganizationId } = useRealBranding();
   const organizations = useMemo(() => accessContext?.memberships.filter(membership => membership.role === 'nutritionist' && membership.membership_status === 'active' && membership.organization_status === 'active') ?? [], [accessContext]);
   const [organizationId, setOrganizationId] = useState('');
   const [items, setItems] = useState<Recipe[]>([]);
@@ -42,8 +44,9 @@ export function RealRecipesPage() {
   const [selected, setSelected] = useState<Recipe | null>(null);
 
   useEffect(() => {
-    if (!organizationId && organizations[0]) setOrganizationId(organizations[0].organization_id);
-  }, [organizationId, organizations]);
+    if (activeOrganizationId && organizations.some(item => item.organization_id === activeOrganizationId)) setOrganizationId(activeOrganizationId);
+    else if (!organizationId && organizations[0]) setOrganizationId(organizations[0].organization_id);
+  }, [activeOrganizationId, organizationId, organizations]);
 
   const refresh = useCallback(async () => {
     setLoading(true); setError('');
@@ -97,7 +100,7 @@ export function RealRecipesPage() {
     </section>
 
     <Card className="space-y-3">
-      <MobileFilters activeCount={[search,category,status].filter(Boolean).length} className="gap-3 lg:grid-cols-[minmax(240px,1fr)_220px_220px_auto]">
+      <MobileFilters activeCount={[search,category,status].filter(Boolean).length} className="gap-3 xl:grid-cols-[minmax(240px,1fr)_220px_220px_auto]">
         <label className="relative"><span className="sr-only">Buscar recetas</span><Search className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-text-tertiary"/><input className="form-control pl-10 pr-12" value={search} onChange={event => setSearch(event.target.value)} placeholder="Buscar por nombre, categoría o etiqueta…"/>{search && <button type="button" aria-label="Limpiar búsqueda" onClick={() => setSearch('')} className="absolute right-0 top-0 flex h-11 w-11 items-center justify-center rounded-xl text-text-tertiary hover:bg-surface-subtle"><X className="h-4 w-4"/></button>}</label>
         <select aria-label="Filtrar por categoría" className="form-control" value={category} onChange={event => setCategory(event.target.value)}><option value="">Todas las categorías</option>{Array.from(new Set([...categories, ...scoped.map(item => item.category)])).map(item => <option key={item}>{item}</option>)}</select>
         <select aria-label="Filtrar por estado" className="form-control" value={status} onChange={event => setStatus(event.target.value)}><option value="">Todos los estados</option><option value="published">Publicadas</option><option value="draft">Borradores</option><option value="retired">Retiradas</option></select>

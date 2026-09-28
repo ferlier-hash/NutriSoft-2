@@ -209,7 +209,7 @@ export function RealGoogleCalendarSettingsPage() {
           <section className="space-y-3 rounded-xl border border-border-subtle bg-surface/80 p-4" aria-labelledby="calendar-selector-title">
             <div>
               <h3 id="calendar-selector-title" className="font-semibold text-text-primary">Elegí tu calendario</h3>
-              <p className="mt-1 text-sm text-text-secondary">Sólo se usará para crear tus citas de NutriSoft y bloquear horarios ocupados.</p>
+              <p className="mt-1 text-sm text-text-secondary">Sólo se usará para crear tus citas de Nutrify y bloquear horarios ocupados.</p>
             </div>
             {loadingCalendars ? <p className="text-sm text-text-secondary">Buscando tus calendarios…</p> : calendars.length > 0 ? <>
               <label className="block text-sm font-medium text-text-primary" htmlFor="google-calendar-select">Calendario de Google</label>

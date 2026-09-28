@@ -9,6 +9,7 @@ import { Dialog } from '../../../components/ui/Dialog';
 import { useToast } from '../../../components/ui/Toast';
 import { MobileFilters } from '../../../components/ui/MobileFilters';
 import { MobileActions } from '../../../components/ui/MobileActions';
+import { useRealBranding } from '../../../components/domain/RealBranding';
 import { downloadLibraryPdf, loadLibrary, loadLibrarySettings, saveLibrary, uploadLibraryPdf, type LibraryContent, type LibrarySettings } from '../../../data/supabase/library.repository';
 
 type Resource = LibraryContent & { kind: 'document' | 'video' };
@@ -22,6 +23,7 @@ function formatBytes(value: number) { return value >= 1024*1024 ? `${(value/(102
 export function RealResourcesPage() {
   const { accessContext } = useAuth();
   const { showToast } = useToast();
+  const { activeOrganizationId } = useRealBranding();
   const organizations = useMemo(() => accessContext?.memberships.filter(item => item.role === 'nutritionist' && item.membership_status === 'active' && item.organization_status === 'active') ?? [], [accessContext]);
   const [organizationId, setOrganizationId] = useState('');
   const [resources, setResources] = useState<Resource[]>([]);
@@ -34,7 +36,7 @@ export function RealResourcesPage() {
   const [status, setStatus] = useState('');
   const [editor, setEditor] = useState<Resource | 'new' | null>(null);
 
-  useEffect(() => { if (!organizationId && organizations[0]) setOrganizationId(organizations[0].organization_id); }, [organizationId, organizations]);
+  useEffect(() => { if (activeOrganizationId && organizations.some(item => item.organization_id === activeOrganizationId)) setOrganizationId(activeOrganizationId); else if (!organizationId && organizations[0]) setOrganizationId(organizations[0].organization_id); }, [activeOrganizationId, organizationId, organizations]);
   const refresh = useCallback(async () => {
     setLoading(true); setError('');
     try {

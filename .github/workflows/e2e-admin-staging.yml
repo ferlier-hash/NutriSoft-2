@@ -1,0 +1,67 @@
+name: NutriSoft · E2E Admin staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Escribí RUN-STAGING-ADMIN-E2E para ejecutar las pruebas remotas de sólo lectura'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-admin-e2e
+  cancel-in-progress: false
+
+jobs:
+  admin-e2e:
+    name: Admin E2E contra Supabase staging
+    if: inputs.confirm == 'RUN-STAGING-ADMIN-E2E'
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 20
+    env:
+      VITE_APP_ENV: staging
+      VITE_ENABLE_DEMO_MODE: 'false'
+      VITE_SUPABASE_URL: ${{ vars.STAGING_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.STAGING_SUPABASE_ANON_KEY }}
+      STAGING_SUPABASE_PROJECT_REF: ${{ vars.STAGING_SUPABASE_PROJECT_REF }}
+      STAGING_E2E_APP_ENV: staging
+      STAGING_E2E_ADMIN_EMAIL: ${{ secrets.STAGING_E2E_ADMIN_EMAIL }}
+      STAGING_E2E_ADMIN_PASSWORD: ${{ secrets.STAGING_E2E_ADMIN_PASSWORD }}
+      STAGING_E2E_NONADMIN_EMAIL: ${{ secrets.STAGING_E2E_NONADMIN_EMAIL }}
+      STAGING_E2E_NONADMIN_PASSWORD: ${{ secrets.STAGING_E2E_NONADMIN_PASSWORD }}
+      PLAYWRIGHT_USE_PREVIEW: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - name: Check staging-only configuration
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          test "$CONFIRM" = 'RUN-STAGING-ADMIN-E2E'
+          test -n "$STAGING_SUPABASE_PROJECT_REF"
+          test -n "$VITE_SUPABASE_URL"
+          test -n "$VITE_SUPABASE_ANON_KEY"
+          test -n "$STAGING_E2E_ADMIN_EMAIL"
+          test -n "$STAGING_E2E_ADMIN_PASSWORD"
+          test -n "$STAGING_E2E_NONADMIN_EMAIL"
+          test -n "$STAGING_E2E_NONADMIN_PASSWORD"
+          node --input-type=module -e 'const url = new URL(process.env.VITE_SUPABASE_URL); const expected = `${process.env.STAGING_SUPABASE_PROJECT_REF}.supabase.co`; if (url.protocol !== "https:" || url.hostname !== expected) { console.error("La URL no coincide con el proyecto Supabase de staging configurado."); process.exit(1); }'
+          if [ "$STAGING_E2E_ADMIN_EMAIL" = "$STAGING_E2E_NONADMIN_EMAIL" ]; then
+            echo 'Las cuentas sintéticas Admin y no Admin deben ser diferentes.'
+            exit 1
+          fi
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Build REAL frontend connected only to staging
+        run: npm run build
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run read-only Admin E2E
+        run: npm run test:e2e:admin:staging

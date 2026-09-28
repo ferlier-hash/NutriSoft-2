@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { Building2, LayoutDashboard, LogOut, Settings, Stethoscope } from 'lucide-react';
+import { BarChart3, Building2, ClipboardList, LayoutDashboard, LogOut, Settings, Stethoscope } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthProvider';
 import { Button } from '../../components/ui/Button';
 
-const pendingItems = [
-  { label: 'Nutricionistas', icon: Stethoscope },
-  { label: 'Configuración', icon: Settings },
-];
+const pendingItems = [{ label: 'Configuración', icon: Settings }];
 
 export function RealAdminLayout() {
   const { profile, signOut } = useAuth();
@@ -38,7 +35,7 @@ export function RealAdminLayout() {
           <div className="flex items-center gap-2 px-3 py-4 mb-4">
             <div className="w-9 h-9 rounded-xl bg-[linear-gradient(135deg,#8EDADD_0%,#A9DFF3_55%,#EDE196_100%)] flex items-center justify-center text-text-primary font-bold text-lg">N</div>
             <div>
-              <span className="font-bold text-base text-text-primary">NutriSoft</span>
+              <span className="font-bold text-base text-text-primary">Nutrify</span>
               <span className="text-[10px] text-text-secondary block font-medium">Platform Admin</span>
             </div>
           </div>
@@ -56,6 +53,24 @@ export function RealAdminLayout() {
               className={({ isActive }) => `flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold' : 'text-text-secondary hover:bg-surface-subtle'}`}
             >
               <Building2 className="w-4 h-4" aria-hidden="true" /> Consultorios
+            </NavLink>
+            <NavLink
+              to="/admin/nutritionists"
+              className={({ isActive }) => `flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold' : 'text-text-secondary hover:bg-surface-subtle'}`}
+            >
+              <Stethoscope className="w-4 h-4" aria-hidden="true" /> Profesionales
+            </NavLink>
+            <NavLink
+              to="/admin/usage"
+              className={({ isActive }) => `flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold' : 'text-text-secondary hover:bg-surface-subtle'}`}
+            >
+              <BarChart3 className="w-4 h-4" aria-hidden="true" /> Reporte
+            </NavLink>
+            <NavLink
+              to="/admin/audit"
+              className={({ isActive }) => `flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-[linear-gradient(90deg,#D9F3F2_0%,#E3F1F8_100%)] text-brand-strong font-semibold' : 'text-text-secondary hover:bg-surface-subtle'}`}
+            >
+              <ClipboardList className="w-4 h-4" aria-hidden="true" /> Auditoría
             </NavLink>
             {pendingItems.map(({ label, icon: Icon }) => (
               <div key={label} aria-disabled="true" className="flex min-h-[44px] items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-text-tertiary opacity-70">
@@ -89,7 +104,7 @@ export function RealAdminLayout() {
           </div>
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-[#BDE3CC] bg-[#E8F5EE] px-3 py-1 text-[11px] font-semibold text-[#1E5235]">Datos reales</span>
-            <span className="rounded-full border border-border-subtle bg-surface-subtle px-3 py-1 text-[11px] font-semibold text-text-secondary">Sólo lectura</span>
+            <span className="rounded-full border border-border-subtle bg-surface-subtle px-3 py-1 text-[11px] font-semibold text-text-secondary">Acciones controladas</span>
             <Button type="button" variant="ghost" size="sm" className="md:hidden" disabled={isSigningOut} onClick={() => void handleSignOut()} aria-label="Cerrar sesión">
               <LogOut className="w-4 h-4" aria-hidden="true" />
             </Button>

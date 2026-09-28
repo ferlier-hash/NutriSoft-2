@@ -1,4 +1,4 @@
-# Modelo de Datos — NutriSoft (Fase 2.1)
+# Modelo de Datos — Nutrify (Fase 2.1)
 
 ## 📊 Tablas y Relaciones Multi-Tenant
 

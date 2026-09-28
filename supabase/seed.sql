@@ -22,6 +22,16 @@ VALUES
   ('d5555555-5555-4555-8555-555555555555', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'paciente@suspendida.test', '$2a$10$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOP', NOW(), NULL, NOW(), '{"provider":"email","providers":["email"]}', '{}', false, NOW(), NOW())
 ON CONFLICT (id) DO NOTHING;
 
+-- GoTrue local espera estos tokens como texto al emitir enlaces de sesión.
+-- El seed sólo contiene identidades ficticias y no conserva tokens reutilizables.
+UPDATE auth.users
+SET
+  confirmation_token = '',
+  recovery_token = '',
+  email_change_token_new = '',
+  email_change = ''
+WHERE email LIKE '%@%.test';
+
 -- 2. PERFILES EN app.profiles
 INSERT INTO app.profiles (id, email, full_name, phone)
 VALUES

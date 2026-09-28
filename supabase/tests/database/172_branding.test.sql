@@ -9,6 +9,19 @@ SELECT ok(security.brand_asset_access('11111111-1111-4111-8111-111111111111/test
 SELECT ok(NOT security.brand_asset_access('22222222-2222-4222-8222-222222222222/test.png',true),'Owner cannot upload cross-tenant');
 SELECT throws_ok($$SELECT api.save_organization_branding('11111111-1111-4111-8111-111111111111','{"displayName":"Marca","colorPreset":"aqua","logoPath":"foreign/test.png"}')$$,NULL,NULL,'Foreign image rejected');
 SELECT throws_ok($$SELECT api.save_organization_branding('11111111-1111-4111-8111-111111111111','{"displayName":"Otra","colorPreset":"ocean"}')$$,NULL,NULL,'Stale write denied');
+RESET ROLE;
+INSERT INTO storage.objects(bucket_id,name,metadata) VALUES('consultorio-branding','11111111-1111-4111-8111-111111111111/old.webp','{"size":100,"mimetype":"image/webp"}');
+INSERT INTO app.file_uploads(organization_id,owner_user_id,kind,original_filename,declared_mime,declared_size,quarantine_path,final_bucket,final_path,status)
+VALUES('11111111-1111-4111-8111-111111111111','b1111111-1111-4111-8111-111111111111','branding_logo','old.webp','image/webp',100,'test/old.webp','consultorio-branding','11111111-1111-4111-8111-111111111111/old.webp','clean');
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claims','{"sub":"b1111111-1111-4111-8111-111111111111","role":"authenticated"}',true);
+SELECT lives_ok($$SELECT api.save_organization_branding('11111111-1111-4111-8111-111111111111','{"displayName":"Marca de prueba","colorPreset":"ocean","logoPath":"11111111-1111-4111-8111-111111111111/old.webp"}',(api.get_my_branding()->0->>'updated_at')::timestamptz)$$,'Owner references clean image');
+SELECT ok(NOT security.brand_asset_delete('11111111-1111-4111-8111-111111111111/old.webp'),'Referenced image cannot be deleted');
+SELECT lives_ok($$SELECT api.save_organization_branding('11111111-1111-4111-8111-111111111111','{"displayName":"Marca de prueba","colorPreset":"ocean"}',(api.get_my_branding()->0->>'updated_at')::timestamptz)$$,'Owner removes image reference');
+SELECT ok(security.brand_asset_delete('11111111-1111-4111-8111-111111111111/old.webp'),'Replaced unreferenced image can be deleted');
+RESET ROLE;
+SELECT ok((SELECT expires_at<=clock_timestamp() FROM app.file_uploads WHERE final_path='11111111-1111-4111-8111-111111111111/old.webp'),'Replaced image expires for cleanup fallback');
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims','{"sub":"b2222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
 SELECT ok(NOT security.brand_editor('11111111-1111-4111-8111-111111111111'),'Nutritionist cannot edit');
 SELECT throws_ok($$SELECT api.save_organization_branding('11111111-1111-4111-8111-111111111111','{"displayName":"Otra","colorPreset":"aqua"}')$$,NULL,NULL,'Nutritionist write denied');

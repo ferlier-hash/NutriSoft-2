@@ -21,6 +21,20 @@ export async function secureUpload(file:File,organizationId:string,kind:SecureUp
  return result.data.path;
 }
 
+export async function deleteReplacedBrandAssets(organizationId:string,paths:string[]) {
+ const client=getSupabaseClient();
+ const unique=[...new Set(paths.filter(Boolean))];
+ if(!unique.length)return {removed:0,pending:0};
+ const {error}=await client.storage.from('consultorio-branding').remove(unique);
+ if(error)return {removed:0,pending:unique.length};
+ let removed=0;
+ for(const path of unique){
+  const {error:markError}=await client.schema('api').rpc('mark_brand_asset_deleted',{p_org:organizationId,p_path:path});
+  if(!markError)removed++;
+ }
+ return {removed,pending:unique.length-removed};
+}
+
 export async function sanitizeBrandImage(file:File,kind:Exclude<SecureUploadKind,'library_pdf'>) {
  if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size===0||file.size>2097152) throw new Error('Usá JPG, PNG o WebP de hasta 2 MB.');
  const bitmap=await createImageBitmap(file);

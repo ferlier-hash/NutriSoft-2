@@ -8,7 +8,7 @@ import {RealPatientMealPlansPage} from '../app/routes/patient/RealPatientMealPla
 
 const mealActivity=vi.fn();
 vi.mock('../auth/AuthProvider',()=>({useAuth:()=>({profile:{fullName:'María Paciente'},signOut:vi.fn()})}));
-vi.mock('../components/domain/RealBranding',()=>({RealBrandingProvider:({children}:{children:ReactNode})=><>{children}</>,RealBrandIdentity:()=> <span>NutriSoft</span>,RealBrandHeader:()=>null}));
+vi.mock('../components/domain/RealBranding',()=>({RealBrandingProvider:({children}:{children:ReactNode})=><>{children}</>,RealBrandIdentity:()=> <span>Nutrify</span>,RealBrandHeader:()=>null,ActiveOrganizationSelector:()=>null}));
 vi.mock('../components/domain/RealDailyHome',()=>({RealDailyHome:()=> <div>Resumen cotidiano</div>}));
 vi.mock('../data/supabase/clinical-meal-plans.repository',()=>({
  loadPatientMealPlans:async()=>[{id:'plan',organizationId:'org',patientId:'patient',assignmentId:'assignment',assignmentKind:'primary',versionId:'version',versionNumber:1,title:'Plan semanal',publishedAt:'2026-09-13',content:{days:[{id:'day',title:'Lunes',meals:[{id:'meal',type:'Almuerzo',items:[{id:'item',description:'Ensalada completa'}]}]}]}}],

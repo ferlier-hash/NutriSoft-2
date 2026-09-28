@@ -29,7 +29,7 @@ export function AccessPendingPage() {
       title="Acceso pendiente"
       description="Tu cuenta está identificada, pero todavía no tiene un rol o acceso activo asignado."
     >
-      <p className="rounded-xl bg-surface-subtle p-3 text-xs text-text-secondary">Contactá al responsable de tu consultorio o al soporte de NutriSoft.</p>
+      <p className="rounded-xl bg-surface-subtle p-3 text-xs text-text-secondary">Contactá al responsable de tu consultorio o al soporte de Nutrify.</p>
       {signOutError && <p role="alert" className="mt-3 text-sm text-critical">{signOutError}</p>}
       <Button type="button" variant="secondary" className="mt-4 w-full" disabled={isSigningOut} onClick={() => void handleSignOut()}>{isSigningOut ? 'Cerrando…' : 'Cerrar sesión'}</Button>
     </AuthPageShell>

@@ -2,7 +2,7 @@
 
 ## 🛡️ Resumen Ejecutivo
 
-Esta fase cierra definitivamente el backend seguro de NutriSoft mediante:
+Esta fase cierra definitivamente el backend seguro de Nutrify mediante:
 1. **Privacidad del Platform Admin (ADMIN-01..06):** Eliminación de lectura de perfiles ajenos y datos clínicos.
 2. **Integridad de Recomendaciones (REC-01..08):** Clave foránea compuesta `(organization_id, patient_id, response_id)` hacia `app.check_in_responses` con `ON DELETE RESTRICT` y validación defensiva en RPC.
 3. **Integridad de Asignaciones (ASSIGN-01..07):** Clave foránea compuesta hacia `app.organization_members` con triggers que impiden asignar assistants como nutricionistas o desactivar profesionales con asignaciones activas.
