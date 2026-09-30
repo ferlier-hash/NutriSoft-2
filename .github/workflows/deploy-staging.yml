@@ -47,6 +47,8 @@ jobs:
       - name: Apply migrations to staging
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: supabase db push
+        # Staging has three unapplied historical migrations (57-59) before its
+        # current latest version. Include only local migrations absent remotely.
+        run: supabase db push --include-all
       - name: Record deployed revision
         run: echo "staging deployed $GITHUB_SHA via $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
