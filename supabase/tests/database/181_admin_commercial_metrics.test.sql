@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(32);
+SELECT plan(33);
 
 INSERT INTO app.organizations(id,name,slug,status)
 VALUES('89000000-0000-4000-8000-000000000001','Ingresos E2E temporal','admin-revenue-e2e','active');
@@ -17,9 +17,12 @@ INSERT INTO app.organizations(id,name,slug,status)
 VALUES('89000000-0000-4000-8000-000000000004','Prórroga Manual E2E','admin-due-date-e2e','active');
 INSERT INTO app.organization_subscriptions(organization_id,plan_slug,status,extra_professionals)
 VALUES('89000000-0000-4000-8000-000000000004','pro','active',0);
+INSERT INTO app.organizations(id,name,slug,status)
+VALUES('89000000-0000-4000-8000-000000000005','Sin suscripción E2E','admin-unsubscribed-e2e','active');
 
 SELECT is((SELECT count(*)::integer FROM cron.job WHERE jobname='admin-organization-monthly-snapshot'),1,'monthly snapshot job is scheduled exactly once');
 SELECT ok(app.capture_admin_organization_monthly_snapshot(date '2026-06-01')>0,'snapshot captures aggregate platform state for a month');
+SELECT is((SELECT customer_active FROM app.admin_organization_monthly_snapshots WHERE snapshot_month=date '2026-06-01' AND organization_id='89000000-0000-4000-8000-000000000005'),false,'organization without subscription is recorded as inactive');
 SELECT is(app.capture_admin_organization_monthly_snapshot(date '2026-06-01'),0,'re-running the same month is idempotent and leaves the historical cut unchanged');
 UPDATE app.organizations SET status='suspended' WHERE id='89000000-0000-4000-8000-000000000001';
 SELECT ok(app.capture_admin_organization_monthly_snapshot(date '2026-07-01')>0,'next monthly snapshot captures current aggregate state');
