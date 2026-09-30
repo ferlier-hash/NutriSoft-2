@@ -130,3 +130,19 @@ Migración 50: `get_my_professional_profile(p_org)` y `save_my_professional_prof
 Migración 53: `get_my_professional_patients()` devuelve fichas mínimas activas y archivadas exclusivamente al nutricionista activo asignado, incluso cuando el estado archivado ya bloquea las superficies clínicas. `get_my_patient_invitations()` devuelve sólo invitaciones creadas por la identidad actual y deriva `expired` cuando vence su plazo de siete días. `revoke_my_patient_invitation` cancela una invitación pendiente, revoca el acceso preparado y archiva la ficha en una transacción. `set_my_patient_status` permite archivar/reactivar al nutricionista asignado; no borra ni transfiere historia y rechaza reactivar una invitación cancelada. Toda transición sensible queda auditada sin datos clínicos.
 
 El servicio usa `renew_patient_invitation_for_service` únicamente con `service_role` para renovar una invitación pendiente después de generar o enviar un nuevo enlace. `complete_patient_invitation` sólo acepta invitaciones pendientes no vencidas. `patient_recent_appointments` sigue siendo la fuente read-only de hasta cinco turnos por paciente/profesional, sin importes. Platform Admin está excluido de todas estas operaciones clínicas.
+
+### Citas de paciente y nota privada profesional — migración 78 (local)
+
+- `api.get_patient_appointment_slots(p_organization_id,p_duration_minutes=45)` calcula horarios sólo para la organización expresamente elegida cuando la sesión tiene acceso de paciente vigente y existe asignación primaria/profesional activo no suspendido. Usa la zona horaria profesional y una ventana local de 21 días.
+- `api.request_patient_appointment(p_organization_id,p_starts_at,p_duration_minutes,p_modality)` repite autorización en escritura y crea sólo estado `requested`. No acepta identidad de paciente ni precio del cliente.
+- `api.confirm_patient_requested_appointment(p_appointment_id,p_quoted_amount=NULL)` permite al nutricionista actualmente asignado confirmar solicitudes y fijar opcionalmente el importe; registra aviso interno dirigido al acceso de portal del paciente. No envía email, SMS ni push. Confirmar dos veces falla por transición inválida.
+- `api.save_appointment_private_note(p_appointment_id,p_note,p_expected_updated_at=NULL)` valida asignación activa, texto no vacío de hasta 5000 caracteres y versión esperada. El texto nunca se incluye en la bitácora; RLS conserva lectura exclusiva del profesional asignado.
+- Las cuatro RPC revocan ejecución a `PUBLIC` y `anon`, y se conceden a `authenticated`. Se eliminaron las firmas antiguas que inferían consultorio para evitar una selección ambigua. Migración y pruebas ejecutadas localmente; sin despliegue en staging.
+
+### Cierre REAL de citas — migración 80 (local)
+
+`api.set_professional_appointment_outcome(p_appointment_id,p_status,p_billing_decision=NULL,p_amount=NULL)` permite únicamente `completed` o `no_show` al profesional asignado con autorización clínica vigente. Sólo admite citas `confirmed` cuyo inicio ya ocurrió. Para `no_show` exige decisión manual `no_charge` o `pending`; esta última también requiere monto no negativo. Estado y disposición del importe se actualizan en una transacción y la auditoría no contiene texto clínico. Ejecución revocada a `PUBLIC`/`anon` y concedida a `authenticated`.
+
+### Revalidación de disponibilidad al reservar — migración 81 (local)
+
+`api.request_patient_appointment` vuelve a consultar `api.get_patient_appointment_slots` y sólo acepta un inicio que siga disponible con la duración solicitada. Esto hace cumplir en servidor las franjas horarias, bloqueos, reservas concurrentes y la ventana publicada; el formulario no es la única barrera. La prueba negativa intenta reservar un día no ofrecido. Migración todavía no aplicada a staging.

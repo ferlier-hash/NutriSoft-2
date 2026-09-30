@@ -108,3 +108,13 @@ Reportes clínicos REAL no introduce una vista agregadora ni almacenamiento adic
 4. Owner y assistant pueden consultar la cita operativa y registrar cobros manuales dentro de su tenant, pero no reciben notas privadas.
 5. Los movimientos de cobro son inmutables: una corrección se realiza por movimiento compensatorio. Nutrify registra, no procesa dinero.
 6. Los códigos de moneda se fijan en cada cita y movimiento; no se reescriben si la configuración profesional cambia después.
+
+### Cierre local de reservas y notas privadas — 2026-09-28
+
+La solicitud de cita exige `p_organization_id`: el portal nunca infiere un consultorio cuando la identidad tiene más de uno. Disponibilidad y escritura comprueban acceso actual del paciente, asignación primaria vigente, membresía profesional activa y ausencia de suspensión global; el servidor vuelve a validar al crear. Sólo el profesional asignado puede transicionar una cita solicitada a confirmada. La confirmación avisa al propio acceso de portal del paciente.
+
+La edición de notas clínicas es por RPC transaccional, con control de versión y límite de caracteres. Auditoría conserva sólo tipo de acción y recurso de cita, sin texto clínico. Admin no tiene acceso a la vista de notas y tampoco recibe acceso por ser owner/assistant; RLS sigue siendo la defensa efectiva aunque se altere el cliente. Estas migraciones sólo se aplicaron a Supabase local; staging no está actualizado.
+
+### Cierre REAL de citas — 2026-09-28
+
+`api.set_professional_appointment_outcome` bloquea la fila y vuelve a comprobar la asignación clínica actual. Rechaza estados distintos de `confirmed` y citas futuras. Sólo permite completar o marcar ausencia; esta última exige decisión explícita `no_charge`/`pending`, únicamente como registro manual. La bitácora guarda la transición y decisión, nunca notas. Plataforma Admin y otras membresías no obtienen autorización efectiva. RPC, UI y pruebas están en local; sin despliegue remoto.

@@ -1,9 +1,16 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const origins = new Set(['http://127.0.0.1:5174']);
-const cors = (r: Request) => origins.has(r.headers.get('Origin') ?? '') ? {'Access-Control-Allow-Origin': r.headers.get('Origin')!, Vary:'Origin'} : {};
+const origins = new Set(['http://localhost:5173', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174']);
+const cors = (r: Request) => origins.has(r.headers.get('Origin') ?? '') ? {
+  'Access-Control-Allow-Origin': r.headers.get('Origin')!,
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-client-info',
+  Vary: 'Origin',
+} : {};
+// El callback local autorizado por Supabase Auth vive en 127.0.0.1:5174.
+const redirectUrl = () => 'http://127.0.0.1:5174/?auth=invite';
 const env = (name:string) => { const value=Deno.env.get(name); if(!value) throw new Error('Configuración incompleta.'); return value; };
 Deno.serve(async (request) => { try {
-  if(request.method==='OPTIONS') return new Response(null,{headers:{...cors(request),'Access-Control-Allow-Headers':'authorization,content-type'}});
+  if(request.method==='OPTIONS') return new Response(null,{headers:cors(request)});
   if(request.method!=='POST') return new Response('Método no permitido.',{status:405,headers:cors(request)});
   const authorization=request.headers.get('Authorization'); if(!authorization) throw new Error('No autorizado.');
   const {organization_id,first_name,last_name,email}=await request.json() as Record<string,string>;
@@ -32,7 +39,7 @@ Deno.serve(async (request) => { try {
     const {data:recovery,error:recoveryError}=await service.auth.admin.generateLink({
       type:'recovery',
       email:normalized,
-      options:{redirectTo:'http://127.0.0.1:5174/?auth=invite'},
+      options:{redirectTo:redirectUrl()},
     });
     const activationUrl=recovery?.properties?.action_link;
     if(recoveryError||!activationUrl) throw new Error('No pudimos regenerar el enlace de activación local.');
@@ -40,7 +47,7 @@ Deno.serve(async (request) => { try {
     if(renewError) throw new Error('No pudimos renovar la vigencia de la invitación.');
     return Response.json({patient_id:existingPatientId,status:'pending',existing:true,activation_url:activationUrl},{headers:cors(request)});
   }
-  const {data:invited,error:inviteError}=await service.auth.admin.inviteUserByEmail(normalized,{data:{full_name:`${first_name.trim()} ${last_name.trim()}`},redirectTo:'http://127.0.0.1:5174/?auth=invite'});
+  const {data:invited,error:inviteError}=await service.auth.admin.inviteUserByEmail(normalized,{data:{full_name:`${first_name.trim()} ${last_name.trim()}`},redirectTo:redirectUrl()});
   if(inviteError||!invited.user) {
     if(inviteError?.message==='User already registered') {
       return Response.json({message:'Ya existe una invitación o una cuenta para ese correo. Revisá el Buzón de pruebas o usá otra dirección.'},{status:409,headers:cors(request)});

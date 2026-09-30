@@ -1580,6 +1580,10 @@ export type Database = {
         }
         Returns: string
       }
+      confirm_patient_requested_appointment: {
+        Args: { p_appointment_id: string; p_quoted_amount?: number }
+        Returns: string
+      }
       confirm_secure_upload: { Args: { p_upload_id: string }; Returns: string }
       consume_google_calendar_oauth_state: {
         Args: { p_state_hash: string }
@@ -1993,12 +1997,13 @@ export type Database = {
         Returns: Json
       }
       get_patient_appointment_slots: {
-        Args: { p_duration_minutes?: number }
+        Args: { p_duration_minutes?: number; p_organization_id: string }
         Returns: {
           ends_at: string
           modality_in_person: boolean
           modality_virtual: boolean
           starts_at: string
+          time_zone: string
         }[]
       }
       get_patient_transfer_candidates: {
@@ -2119,6 +2124,7 @@ export type Database = {
         Args: {
           p_duration_minutes: number
           p_modality: string
+          p_organization_id: string
           p_starts_at: string
         }
         Returns: string
@@ -2232,6 +2238,14 @@ export type Database = {
           p_position: number
           p_status?: string
           p_unit: string
+        }
+        Returns: string
+      }
+      save_appointment_private_note: {
+        Args: {
+          p_appointment_id: string
+          p_expected_updated_at?: string
+          p_note: string
         }
         Returns: string
       }
@@ -2410,6 +2424,15 @@ export type Database = {
           p_status?: string
         }
         Returns: undefined
+      }
+      set_professional_appointment_outcome: {
+        Args: {
+          p_amount?: number
+          p_appointment_id: string
+          p_billing_decision?: string
+          p_status: string
+        }
+        Returns: boolean
       }
       store_google_calendar_connection: {
         Args: {
