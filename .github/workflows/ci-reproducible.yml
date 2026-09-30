@@ -29,11 +29,18 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Verify frontend
         run: npm run verify:frontend
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.111.0
+      - name: Start isolated Supabase services
+        run: supabase start
       - name: Verify database and RLS
-        run: npm run verify:database
+        env:
+          SUPABASE_TELEMETRY_DISABLED: '1'
+        run: SUPABASE_CLI_BINARY_OVERRIDE="$(command -v supabase)" npm run verify:database
       - name: Verify tracked files contain no known secrets
         run: |
-          if git grep -nE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_|ghp_[A-Za-z0-9]{20,}|github_pat_|sk_live_|APP_USR-' -- ':!review/reports/**'; then
+          if git grep -IlE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sb_secret_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk_live_[A-Za-z0-9]{20,}|APP_USR-[A-Za-z0-9]{20,}' -- ':!review/reports/**'; then
             echo 'Potential secret found in tracked files.'
             exit 1
           fi

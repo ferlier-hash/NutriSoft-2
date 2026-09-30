@@ -1,0 +1,20 @@
+services:
+  frontend:
+    image: nutrify-staging:${NUTRIFY_REVISION:?Set NUTRIFY_REVISION to the checked-out Git SHA}
+    build:
+      context: ../..
+      dockerfile: deploy/staging/Dockerfile
+      args:
+        STAGING_SUPABASE_PROJECT_REF: ${STAGING_SUPABASE_PROJECT_REF:?Set the staging project ref}
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:?Set the staging URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:?Set the public staging key}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
