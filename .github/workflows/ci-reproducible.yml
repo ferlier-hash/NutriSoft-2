@@ -2,9 +2,9 @@ name: NutriSoft · CI reproducible
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, 'codex/staging-admin-backend-*']
   push:
-    branches: [main]
+    branches: [main, 'codex/staging-admin-backend-*']
   workflow_dispatch:
 
 permissions:
