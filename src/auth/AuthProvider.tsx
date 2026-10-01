@@ -49,6 +49,10 @@ function clearPendingAuthFromUrl() {
   url.searchParams.set('auth', 'invite');
   url.hash = '#/reset-password';
   window.history.replaceState(null, '', url);
+  // replaceState preserves the one-time token out of history but does not emit
+  // navigation events. Reloading after the session is persisted gives the
+  // hash router and auth provider a consistent initial URL/session snapshot.
+  window.location.reload();
 }
 
 const pendingUrlAuth = readPendingAuthFromUrl();
@@ -120,12 +124,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setErrorMessage(null);
     const supabase = await loadSupabaseClient();
 
-    // La activación de una invitación de paciente no confía en datos del navegador:
-    // la RPC usa exclusivamente auth.uid() y es idempotente para sesiones posteriores.
+    // Las activaciones no confían en datos del navegador: ambas RPC validan
+    // auth.uid(), el correo verificado y la invitación vigente desde el servidor.
     const activationResult = await supabase.schema('api').rpc('complete_patient_invitation');
     if (activationResult.error) {
       setStatus('error');
       setErrorMessage('No pudimos completar la activación de la cuenta. Intentá nuevamente.');
+      return;
+    }
+    const professionalActivationResult = await supabase.schema('api').rpc('accept_professional_invitations' as never);
+    if (professionalActivationResult.error) {
+      setStatus('error');
+      setErrorMessage('No pudimos verificar la invitación profesional. Intentá nuevamente.');
       return;
     }
 

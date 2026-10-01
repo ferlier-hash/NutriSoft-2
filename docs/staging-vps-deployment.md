@@ -26,7 +26,7 @@ La imagen sólo se construye si la URL y la clave pública de Supabase staging e
 
 ## Acceso interno
 
-Una conexión SSH con clave puede crear el túnel `ssh -N -L 8080:127.0.0.1:8080 <usuario>@<VPS>`. La app queda disponible en `http://127.0.0.1:8080` del equipo local mientras el túnel esté activo. Antes de probar login y enlaces de Auth, agregar esa URL a las redirecciones permitidas del proyecto Supabase staging. No usar un acceso HTTP público por IP para sesiones autenticadas.
+Una conexión SSH con clave puede crear el túnel `ssh -N -L 8080:127.0.0.1:8080 <usuario>@<VPS>`. La app queda disponible en `http://127.0.0.1:8080` del equipo local mientras el túnel esté activo. Antes de probar login y enlaces de Auth, agregar `http://127.0.0.1:8080/**` a las redirecciones permitidas del proyecto Supabase staging. Para invitaciones profesionales, definir además la variable GitHub `STAGING_AUTH_REDIRECT_URL` como `http://127.0.0.1:8080/?auth=invite`; el workflow la instala como secreto de Edge Function `APP_AUTH_REDIRECT_URL`. Mantener el túnel activo al abrir el enlace recibido por email. No usar un acceso HTTP público por IP para sesiones autenticadas.
 
 ## Reversión
 

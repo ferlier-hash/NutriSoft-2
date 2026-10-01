@@ -1524,6 +1524,7 @@ export type Database = {
       }
     }
     Functions: {
+      accept_professional_invitations: { Args: never; Returns: number }
       acknowledge_alert: { Args: { p_alert_id: string }; Returns: boolean }
       assign_check_in: {
         Args: { p_due_date?: string; p_org_id: string; p_patient_id: string }
@@ -1544,6 +1545,10 @@ export type Database = {
           p_patient_id: string
         }
         Returns: string
+      }
+      cancel_admin_professional_invitation: {
+        Args: { p_invitation_id: string }
+        Returns: undefined
       }
       cancel_organization_subscription_schedule: {
         Args: { p_schedule_id: string }
@@ -1669,6 +1674,23 @@ export type Database = {
           p_time_zone: string
         }
         Returns: string
+      }
+      create_professional_invitation: {
+        Args: {
+          p_email: string
+          p_full_name: string
+          p_organization_id: string
+        }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
+        }[]
       }
       create_recommendation: {
         Args: {
@@ -1883,6 +1905,19 @@ export type Database = {
           term_history: Json
           term_id: string
           term_plan: string
+        }[]
+      }
+      get_admin_professional_invitations: {
+        Args: { p_organization_id: string }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
         }[]
       }
       get_admin_professionals: {
@@ -2433,6 +2468,10 @@ export type Database = {
           p_status: string
         }
         Returns: boolean
+      }
+      set_professional_invitation_delivery: {
+        Args: { p_delivery_status: string; p_invitation_id: string }
+        Returns: undefined
       }
       store_google_calendar_connection: {
         Args: {

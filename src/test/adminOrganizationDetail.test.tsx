@@ -11,6 +11,7 @@ const detail: RealAdminOrganizationDetail = {
   },
   subscription: { organizationId: '11111111-1111-4111-8111-111111111111', plan: 'ultra', status: 'active', extraProfessionals: 0, includedProfessionals: 10, customBrandingEnabled: false },
   professionals: [{ userId: '22222222-2222-4222-8222-222222222222', fullName: 'Lic. Ana Profesional', email: 'ana@example.test', organizationId: '11111111-1111-4111-8111-111111111111', organizationName: 'Consultorio Seguro', membershipStatus: 'active', accountSuspended: false, assignedPatientCount: 12, createdAt: '2026-01-02T00:00:00Z' }],
+  professionalInvitations: [],
   revenue: { organizationId: '11111111-1111-4111-8111-111111111111', organizationName: 'Consultorio Seguro', organizationSlug: 'consultorio-seguro', currentPlan: 'ultra', termId: null, termPlan: null, billingFrequency: null, termAmount: null, termCurrency: null, effectiveFrom: null, termHistory: [], receivedByCurrency: [] },
   billingCycles: [],
   receipts: [],
@@ -31,6 +32,22 @@ describe('Ficha REAL del consultorio en Platform Admin', () => {
     expect(screen.getByText(/Cambio de plan/)).toBeInTheDocument();
     expect(screen.queryByText(/Laura Paciente|nota clínica|plan alimentario de Laura/i)).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Reportes y facturación' })).toHaveAttribute('href', '/admin/usage');
+  });
+
+  it('muestra el envío y vencimiento de invitaciones sin dar acceso antes de confirmar el correo', async () => {
+    const detailWithInvitation = {
+      ...detail,
+      professionalInvitations: [{ invitationId: '44444444-4444-4444-8444-444444444444', organizationId: detail.organization.id,
+        fullName: 'Lic. Invitada', email: 'invitada@example.test', status: 'pending' as const, deliveryStatus: 'sent' as const,
+        createdAt: '2026-09-30T12:00:00Z', expiresAt: '2026-10-07T12:00:00Z' }],
+    };
+    const router = createMemoryRouter([{ path: '/admin/organizations/:organizationId', element: <RealAdminOrganizationDetailPage loadDetail={async () => detailWithInvitation} /> }], { initialEntries: ['/admin/organizations/11111111-1111-4111-8111-111111111111'] });
+    render(<RouterProvider router={router} />);
+
+    expect(await screen.findByRole('heading', { name: 'Invitaciones · no conceden acceso hasta verificar el correo' })).toBeInTheDocument();
+    expect(screen.getByText('invitada@example.test')).toBeInTheDocument();
+    expect(screen.getByText('Pendiente de aceptación')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Invitar profesional/ })).toBeEnabled();
   });
 
   it('no reemplaza la respuesta segura de inexistente/sin acceso por una vista DEMO', async () => {

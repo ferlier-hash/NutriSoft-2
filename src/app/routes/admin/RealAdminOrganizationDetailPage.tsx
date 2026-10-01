@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Activity, ArrowLeft, Building2, CalendarDays, CreditCard, Database, History, RefreshCw, ShieldCheck, Stethoscope, Users } from 'lucide-react';
+import { Activity, ArrowLeft, Building2, CalendarDays, CreditCard, Database, History, MailPlus, RefreshCw, ShieldCheck, Stethoscope, Users, X } from 'lucide-react';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import type { RealAdminOrganizationDetail } from '../../../data/admin-organization-detail.types';
 import type { AdminPlatformBillingCycle } from '../../../data/admin-platform-revenue.types';
-import { loadRealAdminOrganizationDetail, updateRealAdminOrganizationStatus } from '../../../data/supabase/admin-organization-detail.repository';
+import { cancelAdminProfessionalInvitation, loadRealAdminOrganizationDetail, updateRealAdminOrganizationStatus } from '../../../data/supabase/admin-organization-detail.repository';
 import { RealAdminSubscriptionPanel } from './RealAdminSubscriptionPanel';
+import { getSupabaseClient } from '../../../auth/supabase-client';
+import { publicEnvironment } from '../../../config/environment';
 
 type LoadState = { status: 'loading' } | { status: 'error' } | { status: 'missing' } | { status: 'success'; detail: RealAdminOrganizationDetail };
 
@@ -17,6 +19,11 @@ export function RealAdminOrganizationDetailPage({ loadDetail = loadRealAdminOrga
   const [revenuePeriod, setRevenuePeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [statusBusy, setStatusBusy] = useState(false);
   const [statusError, setStatusError] = useState('');
+  const [inviteName, setInviteName] = useState('');
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteBusy, setInviteBusy] = useState(false);
+  const [inviteFeedback, setInviteFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null);
+  const [cancelBusy, setCancelBusy] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -33,7 +40,7 @@ export function RealAdminOrganizationDetailPage({ loadDetail = loadRealAdminOrga
   if (state.status === 'missing') return <div className="mx-auto max-w-3xl space-y-4 p-4 sm:p-6 lg:p-8"><Link to="/admin/organizations" className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-brand-strong"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Volver a consultorios</Link><section className="rounded-2xl border border-border-subtle bg-surface p-8"><h2 className="text-xl font-bold text-text-primary">Consultorio no disponible</h2><p className="mt-2 text-sm text-text-secondary">No existe o tu sesión no tiene acceso al detalle administrativo solicitado.</p></section></div>;
   if (state.status === 'error') return <div className="mx-auto max-w-3xl space-y-4 p-4 sm:p-6 lg:p-8"><Link to="/admin/organizations" className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-brand-strong"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Volver a consultorios</Link><section role="alert" className="rounded-2xl border border-[#F8C4C1] bg-[#FCEBEA] p-5"><h2 className="font-semibold text-[#902A24]">No pudimos cargar la información</h2><p className="mt-1 text-sm text-text-secondary">No se modificó ningún dato. Verificá la conexión e intentá nuevamente.</p><Button type="button" variant="secondary" className="mt-4" onClick={() => setAttempt(value => value + 1)}>Reintentar</Button></section></div>;
 
-  const { organization, usage, professionals, revenue, receipts, recentAudit } = state.detail;
+  const { organization, usage, professionals, professionalInvitations, revenue, receipts, recentAudit } = state.detail;
   const totalProfessionals = state.detail.subscription ? state.detail.subscription.includedProfessionals + state.detail.subscription.extraProfessionals : usage.professionalCapacity;
   const changeStatus = async () => {
     const next = organization.status === 'active' ? 'suspended' : 'active';
@@ -43,6 +50,36 @@ export function RealAdminOrganizationDetailPage({ loadDetail = loadRealAdminOrga
     try { await updateRealAdminOrganizationStatus(organization.id, next); setAttempt(value => value + 1); }
     catch (error) { setStatusError(error instanceof Error ? error.message : 'No se pudo actualizar el estado.'); }
     finally { setStatusBusy(false); }
+  };
+  const sendProfessionalInvitation = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!publicEnvironment.supabaseUrl || !publicEnvironment.supabaseAnonKey) return;
+    setInviteBusy(true); setInviteFeedback(null);
+    try {
+      const { data: { session } } = await getSupabaseClient().auth.getSession();
+      if (!session) throw new Error('La sesión venció. Ingresá nuevamente.');
+      const response = await fetch(new URL('/functions/v1/professional-invitations', publicEnvironment.supabaseUrl), {
+        method: 'POST', headers: { Authorization: `Bearer ${session.access_token}`, apikey: publicEnvironment.supabaseAnonKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ organization_id: organization.id, full_name: inviteName.trim(), email: inviteEmail.trim().toLowerCase() }),
+      });
+      const payload = await response.json() as { message?: string; delivery_status?: string };
+      if (!response.ok) throw new Error(payload.message ?? 'No se pudo enviar la invitación.');
+      setInviteName(''); setInviteEmail('');
+      setInviteFeedback({ kind: 'success', message: payload.delivery_status === 'existing_account'
+        ? 'La persona ya tenía cuenta: enviamos un enlace seguro para entrar y asociarse al consultorio.'
+        : 'Invitación enviada. La membresía se activará cuando confirme el correo.' });
+      setAttempt(value => value + 1);
+    } catch (error) {
+      setInviteFeedback({ kind: 'error', message: error instanceof Error ? error.message : 'No pudimos enviar la invitación.' });
+      setAttempt(value => value + 1);
+    } finally { setInviteBusy(false); }
+  };
+  const cancelInvitation = async (invitationId: string, name: string) => {
+    if (!window.confirm(`¿Cancelar la invitación de ${name}? La persona no podrá asociarse con el enlace recibido.`)) return;
+    setCancelBusy(invitationId); setInviteFeedback(null);
+    try { await cancelAdminProfessionalInvitation(invitationId); setAttempt(value => value + 1); }
+    catch (error) { setInviteFeedback({ kind: 'error', message: error instanceof Error ? error.message : 'No se pudo cancelar la invitación.' }); }
+    finally { setCancelBusy(null); }
   };
   return <div className="mx-auto max-w-[1440px] space-y-6 p-4 sm:p-6 lg:p-8">
     <nav aria-label="Migas de pan" className="flex flex-wrap items-center gap-2 text-xs text-text-secondary"><Link to="/admin/organizations" className="rounded font-semibold text-brand-strong hover:underline focus-visible:outline focus-visible:outline-2">Consultorios</Link><span aria-hidden="true">/</span><span className="font-semibold text-text-primary">{organization.name}</span></nav>
@@ -67,9 +104,19 @@ export function RealAdminOrganizationDetailPage({ loadDetail = loadRealAdminOrga
 
       <section className="rounded-2xl border border-border-subtle bg-surface shadow-sm"><header className="flex flex-col gap-3 border-b border-border-subtle p-5 sm:flex-row sm:items-center sm:justify-between"><div><h3 className="flex items-center gap-2 font-bold text-text-primary"><Stethoscope className="h-5 w-5 text-brand-strong" aria-hidden="true" />Profesionales del consultorio</h3><p className="mt-1 text-xs text-text-secondary">Identidad profesional básica y estado de membresía. El conteo es agregado; no hay nombres ni fichas de pacientes.</p></div><Button asChild type="button" variant="secondary"><Link to="/admin/nutritionists">Gestionar profesionales</Link></Button></header>
       {professionals.length ? <div className="divide-y divide-border-subtle">{professionals.map(professional => <article key={professional.userId} className="grid gap-3 p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"><div className="min-w-0"><h4 className="truncate text-sm font-semibold text-text-primary">{professional.fullName}</h4><a className="break-all text-xs text-brand-strong hover:underline" href={`mailto:${professional.email}`}>{professional.email}</a><p className="mt-1 text-[11px] text-text-tertiary">Vinculado {formatDateTime(professional.createdAt)} · {professional.assignedPatientCount} asignaciones activas agregadas</p></div><div className="flex flex-wrap items-center gap-2"><Badge variant={professional.membershipStatus === 'active' ? 'active' : 'suspended'}>{professional.membershipStatus === 'active' ? 'Membresía activa' : 'Membresía suspendida'}</Badge>{professional.accountSuspended && <Badge variant="high">Cuenta bloqueada</Badge>}</div></article>)}</div> : <p className="p-5 text-sm text-text-secondary">No hay membresías profesionales registradas.</p>}
+      <form onSubmit={event => void sendProfessionalInvitation(event)} className="grid gap-3 border-t border-border-subtle bg-surface-subtle p-4 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)_auto] sm:items-end">
+        <label className="text-xs font-semibold text-text-secondary">Nombre profesional<input required maxLength={120} value={inviteName} onChange={event => setInviteName(event.target.value)} autoComplete="name" className="mt-1 min-h-10 w-full rounded-xl border border-border-subtle bg-surface px-3 text-sm font-normal text-text-primary" placeholder="Nombre y apellido" /></label>
+        <label className="text-xs font-semibold text-text-secondary">Correo de invitación<input required type="email" maxLength={254} value={inviteEmail} onChange={event => setInviteEmail(event.target.value)} autoComplete="email" className="mt-1 min-h-10 w-full rounded-xl border border-border-subtle bg-surface px-3 text-sm font-normal text-text-primary" placeholder="profesional@correo.com" /></label>
+        <Button type="submit" disabled={inviteBusy || organization.status !== 'active'}>{inviteBusy ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> : <MailPlus className="mr-2 h-4 w-4" aria-hidden="true" />}Invitar profesional</Button>
+      </form>
+      {inviteFeedback && <p role={inviteFeedback.kind === 'error' ? 'alert' : 'status'} className={`mx-4 mb-3 rounded-xl p-3 text-sm ${inviteFeedback.kind === 'error' ? 'border border-[#F8C4C1] bg-[#FCEBEA] text-[#902A24]' : 'border border-[#B9E5D1] bg-[#E8F6EF] text-[#16643B]'}`}>{inviteFeedback.message}</p>}
+      {professionalInvitations.length > 0 && <div className="border-t border-border-subtle"><h4 className="p-4 pb-2 text-sm font-semibold text-text-primary">Invitaciones · no conceden acceso hasta verificar el correo</h4><div className="divide-y divide-border-subtle">{professionalInvitations.map(invitation => {
+        const pending = invitation.status === 'pending' && new Date(invitation.expiresAt).getTime() > Date.now();
+        return <article key={invitation.invitationId} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="break-words text-sm font-semibold text-text-primary">{invitation.fullName}</p><p className="break-all text-xs text-text-secondary">{invitation.email}</p><p className="mt-1 text-[11px] text-text-tertiary">{pending ? `Vence ${formatDateTime(invitation.expiresAt)}` : `Creada ${formatDateTime(invitation.createdAt)}`}</p></div><div className="flex flex-wrap items-center gap-2"><Badge variant={pending ? invitation.deliveryStatus === 'failed' ? 'high' : 'medium' : invitation.status === 'accepted' ? 'active' : 'neutral'}>{pending ? invitation.deliveryStatus === 'failed' ? 'Correo no enviado' : invitation.deliveryStatus === 'existing_account' ? 'Enlace de acceso enviado' : invitation.deliveryStatus === 'sent' ? 'Pendiente de aceptación' : 'Preparando correo' : invitation.status === 'accepted' ? 'Aceptada' : invitation.status === 'expired' ? 'Vencida' : 'Cancelada'}</Badge>{pending && <Button type="button" variant="secondary" size="sm" disabled={cancelBusy === invitation.invitationId} onClick={() => void cancelInvitation(invitation.invitationId, invitation.fullName)}><X className="mr-1 h-4 w-4" aria-hidden="true" />Cancelar</Button>}</div></article>;
+      })}</div></div>}
     </section>
 
-    <section className="rounded-2xl border border-border-subtle bg-surface p-5 shadow-sm"><header><h3 className="flex items-center gap-2 font-bold text-text-primary"><CreditCard className="h-5 w-5 text-brand-strong" aria-hidden="true" />Cuenta comercial de Nutrify</h3><p className="mt-1 text-xs text-text-secondary">Tarifas acordadas, vencimientos y cobros registrados manualmente. No procesa pagos ni genera facturas fiscales.</p></header>
+    <section className="rounded-2xl border border-border-subtle bg-surface p-5 shadow-sm"><header><h3 className="flex items-center gap-2 font-bold text-text-primary"><CreditCard className="h-5 w-5 text-brand-strong" aria-hidden="true" />Cuenta comercial de BREIN</h3><p className="mt-1 text-xs text-text-secondary">Tarifas acordadas, vencimientos y cobros registrados manualmente. No procesa pagos ni genera facturas fiscales.</p></header>
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3"><Metric label="Tarifa vigente/programada" value={revenue.termAmount === null ? 'Pendiente de configurar' : `${formatMoney(revenue.termAmount, revenue.termCurrency ?? 'ARS')} / ${revenue.billingFrequency === 'yearly' ? 'año' : 'mes'}`} /><Metric label="Condición" value={`${revenue.termPlan?.toUpperCase() ?? '—'} · ${revenue.effectiveFrom ? `${revenue.effectiveFrom > todayDate() ? 'Programada' : 'Desde'} ${formatDate(revenue.effectiveFrom)}` : 'sin vigencia'}`} /><Metric label="Historial de tarifas" value={`${revenue.termHistory.length} versiones`} /></div>
       {revenue.termHistory.length > 0 && <div className="mt-4 overflow-x-auto rounded-xl border border-border-subtle"><table className="w-full min-w-[650px] border-collapse text-left text-xs"><thead className="bg-surface-subtle"><tr><th className="table-cell-admin">Plan</th><th className="table-cell-admin">Tarifa</th><th className="table-cell-admin">Vigencia</th><th className="table-cell-admin">Estado</th></tr></thead><tbody className="divide-y divide-border-subtle">{revenue.termHistory.map(term => <tr key={term.termId}><td className="table-cell-admin font-semibold">{term.plan.toUpperCase()} · {term.billingFrequency === 'yearly' ? 'anual' : 'mensual'}</td><td className="table-cell-admin">{formatMoney(term.amount, term.currency)}</td><td className="table-cell-admin">{formatDate(term.effectiveFrom)} – {term.effectiveTo ? formatDate(term.effectiveTo) : 'abierta'}</td><td className="table-cell-admin">{term.cancelledAt ? 'Programación cancelada' : term.effectiveFrom > todayDate() ? 'Programada' : term.effectiveTo ? 'Histórica' : 'Vigente'}</td></tr>)}</tbody></table></div>}
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap gap-2" role="group" aria-label="Frecuencia de ciclos comerciales">{(['monthly', 'yearly'] as const).map(frequency => <button key={frequency} type="button" aria-pressed={revenuePeriod === frequency} onClick={() => setRevenuePeriod(frequency)} className={`min-h-10 rounded-xl border px-3 text-xs font-semibold ${revenuePeriod === frequency ? 'border-brand-strong bg-brand-soft text-brand-strong' : 'border-border-subtle text-text-secondary'}`}>{frequency === 'monthly' ? 'Ciclos mensuales' : 'Ciclos anuales'}</button>)}</div><Link className="inline-flex min-h-10 items-center font-semibold text-brand-strong hover:underline" to="/admin/usage">Administrar tarifa, registrar cobros o dar prórroga →</Link></div>
@@ -81,7 +128,7 @@ export function RealAdminOrganizationDetailPage({ loadDetail = loadRealAdminOrga
       {recentAudit.length ? <ol className="mt-4 divide-y divide-border-subtle">{recentAudit.map(event => <li key={event.eventId} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"><div className="min-w-0"><p className="text-sm font-semibold text-text-primary">{auditLabel(event.eventType)}{event.previousValue !== null ? ` · ${auditValue(event.previousValue)} → ${auditValue(event.newValue)}` : ''}</p><p className="mt-1 text-[11px] text-text-tertiary">Platform Admin · {formatDateTime(event.occurredAt)}</p></div></li>)}</ol> : <p className="mt-4 rounded-xl bg-surface-subtle p-4 text-sm text-text-secondary">No hay acciones administrativas registradas para este consultorio durante el período consultado.</p>}
     </section>
 
-    <aside className="flex gap-3 rounded-2xl border border-[#C6D4F8] bg-[#EAEFFC] p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#2D3F99]" aria-hidden="true" /><p className="text-xs leading-5 text-text-secondary"><strong className="text-[#2D3F99]">Privacidad:</strong> esta ficha expone datos administrativos y comerciales del consultorio y métricas agregadas. No permite abrir pacientes ni acceder a respuestas, notas, mediciones, planes o archivos individuales. Los cambios se realizan desde las superficies administrativas existentes y quedan sujetos a sus controles y auditoría.</p></aside>
+    <aside className="flex gap-3 rounded-2xl border border-[#C6D4F8] bg-[#EAEFFC] p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#2D3F99]" aria-hidden="true" /><p className="text-xs leading-5 text-text-secondary"><strong className="text-[#2D3F99]">Privacidad:</strong> esta ficha expone datos administrativos y comerciales del consultorio y métricas agregadas. No permite abrir pacientes ni acceder a respuestas, notas, mediciones, planes o archivos individuales. Las invitaciones no activan una membresía hasta que la cuenta confirme el correo invitado; alta, aceptación y cancelación quedan auditadas sin revelar la identidad del invitado en la auditoría global.</p></aside>
   </div>;
 }
 
@@ -101,8 +148,8 @@ function formatDate(value: string) { return new Intl.DateTimeFormat('es-AR', { d
 function formatDateTime(value: string) { return new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
 function todayDate() { return new Date().toISOString().slice(0, 10); }
 function subscriptionLabel(status: NonNullable<RealAdminOrganizationDetail['usage']['subscriptionStatus']>) { return ({ trialing: 'En prueba', active: 'Activa', grace: 'En gracia', suspended: 'Suspendida', cancelled: 'Cancelada' })[status]; }
-function auditLabel(type: RealAdminOrganizationDetail['recentAudit'][number]['eventType']) { return ({ organization_created: 'Alta de consultorio', organization_status_changed: 'Cambio de estado operativo', subscription_changed: 'Cambio de plan', professional_membership_changed: 'Cambio de membresía profesional', professional_account_suspension_changed: 'Bloqueo global de cuenta' })[type]; }
+function auditLabel(type: RealAdminOrganizationDetail['recentAudit'][number]['eventType']) { return ({ organization_created: 'Alta de consultorio', organization_status_changed: 'Cambio de estado operativo', subscription_changed: 'Cambio de plan', professional_membership_changed: 'Cambio de membresía profesional', professional_account_suspension_changed: 'Bloqueo global de cuenta', professional_invitation_changed: 'Invitación profesional' })[type]; }
 function auditValue(value: string) {
-  const labels: Record<string, string> = { active: 'Activo', inactive: 'Inactivo', suspended: 'Suspendido', trialing: 'En prueba', grace: 'En gracia', cancelled: 'Cancelado' };
+  const labels: Record<string, string> = { active: 'Activo', inactive: 'Inactivo', suspended: 'Suspendido', trialing: 'En prueba', grace: 'En gracia', cancelled: 'Cancelado', pending: 'Pendiente', accepted: 'Aceptada', revoked: 'Cancelada' };
   return value.split(' · ').map(part => labels[part] ?? part.toUpperCase()).join(' · ');
 }

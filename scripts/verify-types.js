@@ -23,16 +23,19 @@ try {
   const currentContent = normalize(readFileSync(currentTypesPath, 'utf-8'));
   const tempContent = normalize(readFileSync(tempTypesPath, 'utf-8'));
 
-  // 4. Eliminar temporal
-  unlinkSync(tempTypesPath);
-
-  // 2. Comparar contenidos
+  // Comparar contenidos antes de eliminar el temporal para poder mostrar el diff.
   if (currentContent !== tempContent) {
     console.error('ERROR: src/types/database.types.ts desincronizado de las migraciones.');
     console.error('Ejecuta `npm run db:types` para regenerar los tipos.');
+    const diff = execSync(`diff -u "${currentTypesPath}" "${tempTypesPath}" || true`, {
+      encoding: 'utf-8',
+    });
+    if (diff) console.error(diff);
+    unlinkSync(tempTypesPath);
     process.exit(1);
   }
 
+  unlinkSync(tempTypesPath);
   console.log('✅ Tipos TypeScript sincronizados con éxito.');
   process.exit(0);
 } catch (err) {
