@@ -1662,19 +1662,6 @@ export type Database = {
         }
         Returns: string
       }
-      create_professional_invitation: {
-        Args: { p_email: string; p_full_name: string; p_organization_id: string }
-        Returns: {
-          created_at: string
-          delivery_status: string
-          email: string
-          expires_at: string
-          full_name: string
-          invitation_id: string
-          organization_id: string
-          status: string
-        }[]
-      }
       create_professional_appointment: {
         Args: {
           p_currency: string
@@ -1687,6 +1674,19 @@ export type Database = {
           p_time_zone: string
         }
         Returns: string
+      }
+      create_professional_invitation: {
+        Args: { p_email: string; p_full_name: string; p_organization_id: string }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
+        }[]
       }
       create_recommendation: {
         Args: {
@@ -1903,6 +1903,19 @@ export type Database = {
           term_plan: string
         }[]
       }
+      get_admin_professional_invitations: {
+        Args: { p_organization_id: string }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
+        }[]
+      }
       get_admin_professionals: {
         Args: {
           p_limit?: number
@@ -1921,19 +1934,6 @@ export type Database = {
           organization_name: string
           total_count: number
           user_id: string
-        }[]
-      }
-      get_admin_professional_invitations: {
-        Args: { p_organization_id: string }
-        Returns: {
-          created_at: string
-          delivery_status: string
-          email: string
-          expires_at: string
-          full_name: string
-          invitation_id: string
-          organization_id: string
-          status: string
         }[]
       }
       get_appointment_for_google_sync: {
@@ -2465,6 +2465,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      set_professional_invitation_delivery: {
+        Args: { p_delivery_status: string; p_invitation_id: string }
+        Returns: undefined
+      }
       store_google_calendar_connection: {
         Args: {
           p_access_token_expires_at: string
@@ -2474,10 +2478,6 @@ export type Database = {
           p_refresh_token_ciphertext: string
           p_refresh_token_iv: string
         }
-        Returns: undefined
-      }
-      set_professional_invitation_delivery: {
-        Args: { p_delivery_status: string; p_invitation_id: string }
         Returns: undefined
       }
       submit_check_in: {
