@@ -30,6 +30,10 @@ try {
   if (currentContent !== tempContent) {
     console.error('ERROR: src/types/database.types.ts desincronizado de las migraciones.');
     console.error('Ejecuta `npm run db:types` para regenerar los tipos.');
+    const diff = execSync(`diff -u "${currentTypesPath}" "${tempTypesPath}" || true`, {
+      encoding: 'utf-8',
+    });
+    if (diff) console.error(diff);
     process.exit(1);
   }
 
