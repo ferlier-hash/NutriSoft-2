@@ -1676,7 +1676,11 @@ export type Database = {
         Returns: string
       }
       create_professional_invitation: {
-        Args: { p_email: string; p_full_name: string; p_organization_id: string }
+        Args: {
+          p_email: string
+          p_full_name: string
+          p_organization_id: string
+        }
         Returns: {
           created_at: string
           delivery_status: string
