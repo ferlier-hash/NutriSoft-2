@@ -1524,6 +1524,7 @@ export type Database = {
       }
     }
     Functions: {
+      accept_professional_invitations: { Args: never; Returns: number }
       acknowledge_alert: { Args: { p_alert_id: string }; Returns: boolean }
       assign_check_in: {
         Args: { p_due_date?: string; p_org_id: string; p_patient_id: string }
@@ -1544,6 +1545,10 @@ export type Database = {
           p_patient_id: string
         }
         Returns: string
+      }
+      cancel_admin_professional_invitation: {
+        Args: { p_invitation_id: string }
+        Returns: undefined
       }
       cancel_organization_subscription_schedule: {
         Args: { p_schedule_id: string }
@@ -1656,6 +1661,19 @@ export type Database = {
           p_org_id: string
         }
         Returns: string
+      }
+      create_professional_invitation: {
+        Args: { p_email: string; p_full_name: string; p_organization_id: string }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
+        }[]
       }
       create_professional_appointment: {
         Args: {
@@ -1903,6 +1921,19 @@ export type Database = {
           organization_name: string
           total_count: number
           user_id: string
+        }[]
+      }
+      get_admin_professional_invitations: {
+        Args: { p_organization_id: string }
+        Returns: {
+          created_at: string
+          delivery_status: string
+          email: string
+          expires_at: string
+          full_name: string
+          invitation_id: string
+          organization_id: string
+          status: string
         }[]
       }
       get_appointment_for_google_sync: {
@@ -2443,6 +2474,10 @@ export type Database = {
           p_refresh_token_ciphertext: string
           p_refresh_token_iv: string
         }
+        Returns: undefined
+      }
+      set_professional_invitation_delivery: {
+        Args: { p_delivery_status: string; p_invitation_id: string }
         Returns: undefined
       }
       submit_check_in: {
