@@ -4,7 +4,7 @@ import type { AdminAuditEventType, RealAdminAuditPage } from '../admin-audit.typ
 const eventSchema = z.object({
   event_id: z.string().uuid(),
   occurred_at: z.string().datetime({ offset: true }),
-  event_type: z.enum(['organization_created', 'organization_status_changed', 'subscription_changed', 'professional_membership_changed', 'professional_account_suspension_changed']),
+  event_type: z.enum(['organization_created', 'organization_status_changed', 'subscription_changed', 'professional_membership_changed', 'professional_account_suspension_changed', 'professional_invitation_changed']),
   organization_id: z.string().uuid().nullable(),
   organization_name: z.string().min(1),
   organization_slug: z.string().min(1).nullable(),

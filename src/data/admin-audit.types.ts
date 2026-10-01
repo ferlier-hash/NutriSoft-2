@@ -1,4 +1,4 @@
-export type AdminAuditEventType = 'organization_created' | 'organization_status_changed' | 'subscription_changed' | 'professional_membership_changed' | 'professional_account_suspension_changed';
+export type AdminAuditEventType = 'organization_created' | 'organization_status_changed' | 'subscription_changed' | 'professional_membership_changed' | 'professional_account_suspension_changed' | 'professional_invitation_changed';
 
 export interface RealAdminAuditEvent {
   eventId: string;
